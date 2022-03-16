@@ -1,0 +1,144 @@
+{
+  "type": "object",
+  "properties": {
+    "templateId":{
+      "type": "string","minLength": 1
+    },
+    "templateName":{
+      "type": "string","minLength": 0
+    },
+    "editable":{
+      "type": "boolean","enum":[true,false]
+    },
+    "password":{
+      "type": "string","minLength": 0
+    },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "elementAvaliableDataPath":{"type": "string"},
+          "elementId":{ "type": "string","minLength": 1 },
+          "elementPath":{ "type": "string","minLength": 1 },
+          "content":{ "type": "string","minLength": 1 },
+          "elementType":{ "type": "string","minLength": 1 },
+          "descript":{"type": "string"},
+          "addBlankPage":{"type":"boolean","enum":[true,false]},
+          "blankElementPath":{"type":"string"},
+          "blankElementContent":{"type":"string"},
+          "cycleFlag":{"type":"boolean","enum":[true,false]},
+          "cycleJsonDataPath":{ "type": "string","minLength": 1 },
+          "pageNumIsFirstPage":{"type":"boolean","enum":[true,false]},
+          "pageNumIsCalculate":{"type":"boolean","enum":[true,false]},
+          "pageNumIsDisplay":{"type":"boolean","enum":[true,false]},
+          "qualityTestType":{"type":"array","items":{"type":"string"}},
+          "uncommonCharsAnalysis":{"type":"boolean","enum":[true,false]},
+          "qualityElementHiatusCheck":{"type":"boolean","enum":[true,false]},
+          "pageNumDisplayPoss":{
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "fontSize": {
+                      "type": "number"
+                    },
+                    "textDescript": {
+                      "type": "string"
+                    },
+                    "fontStyle": {
+                      "type": "string"
+                    },
+                    "mark": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  }
+              },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": true,
+        "dependencies": {
+          "cycleJsonDataPath": {
+            "properties": {
+              "cycleFlag": {"type":"boolean","enum":[true]}
+            },
+            "required": ["cycle_flag"]
+          },
+          "blankElementPath": {
+            "properties": {
+              "addBlankPage": {"type":"boolean","enum":[true]}
+            },
+            "required": ["addBlankPage"]
+          },
+          "if": {
+            "properties": { "elementId": { "minLength": 1 } }
+          },
+          "then": {
+            "properties": { "elementPath": { "maxLength": 0 } }
+          },
+          "else": {
+            "properties": { "elementPath": { "minLength": 1 } }
+          }
+        }
+        },
+      "minItems": 1
+      },
+    "subject":{"type": "string"},
+    "author":{"type": "string"},
+    "keywords":{"type": "string"},
+    "title":{"type": "string"},
+    "producer":{"type": "string"},
+    "signatureProperties":{
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "keyword":{ "type": "string","minLength": 1 },
+          "signaturePath":{ "type": "string","minLength": 1 }
+        }
+      }
+    },
+      "pageNumDisplayPoss": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "fontSize": {
+              "type": "number"
+            },
+            "textDescript": {
+              "type": "string"
+            },
+            "fontStyle": {
+              "type": "string"
+            },
+            "mark": {
+              "type": "string"
+            },
+            "content": {
+              "type": "string"
+            }
+          }
+        }
+        },
+      "blankElementPath":{"type": "string"},
+      "blankElementContent":{"type": "string"}
+  },
+  "additionalProperties": false
+}

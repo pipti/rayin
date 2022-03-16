@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.rayin</groupId>
+    <artifactId>rayin-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <modules>
+        <module>rayin-htmladapter-base</module>
+        <module>rayin-font</module>
+        <module>rayin-htmladapter-openhtmltopdf</module>
+        <module>rayin-tools</module>
+        <module>rayin-test</module>
+        <module>rayin-htmladapter-spring-boot-starter</module>
+    </modules>
+
+    <properties>
+        <!-- 统一版本号 -->
+        <master.version>1.0.0</master.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring.cloud.version>2.0.3.RELEASE</spring.cloud.version>
+        <spring.cloud.alibaba.version>0.9.0.RELEASE</spring.cloud.alibaba.version>
+        <slf4j.version>1.7.26</slf4j.version>
+        <logback.version>1.2.3</logback.version>
+        <!--<spring.boot.mybatis>2.0.1</spring.boot.mybatis>-->
+        <redis.client.version>3.0.1</redis.client.version>
+        <!--<redis.data.version>1.7.4.RELEASE</redis.data.version>-->
+        <spring.boot.mybatis>1.3.2</spring.boot.mybatis>
+        <oracle.driver.version>11.2.0.4.0</oracle.driver.version>
+        <alibaba.druid.version>1.1.21</alibaba.druid.version>
+        <alibaba.fastjson.version>1.2.60</alibaba.fastjson.version>
+        <cxf.version>3.1.4</cxf.version>
+        <mysql-connector>5.1.46</mysql-connector>
+        <skipTests>true</skipTests>
+        <bouncycastle.version>1.64</bouncycastle.version>
+        <ofdrw.version>1.6.4</ofdrw.version>
+        <pdfbox.version>2.0.20</pdfbox.version>
+        <commons-io.version>2.4</commons-io.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <commons-compress.version>1.20</commons-compress.version>
+        <commons-pool2.version>2.6.1</commons-pool2.version>
+        <flying-saucer.version>9.1.20</flying-saucer.version>
+        <junit>4.13.2</junit>
+        <flexmark.version>0.62.2</flexmark.version>
+        <cn.hutool>5.7.22</cn.hutool>
+        <!-- 本地包版本号 -->
+        <rayin-parent>1.0.0</rayin-parent>
+        <rayin-model>1.0.0</rayin-model>
+        <rayin-htmladapter-base>1.0.0</rayin-htmladapter-base>
+        <rayin-htmladapter-itext5>1.0.0</rayin-htmladapter-itext5>
+        <rayin-htmladapter-itext2>1.0.0</rayin-htmladapter-itext2>
+        <rayin-font>1.0.0</rayin-font>
+        <rayin-srv-rest-paper>1.0.0</rayin-srv-rest-paper>
+        <rayin-srv-rest-web>1.0.0</rayin-srv-rest-web>
+        <rayin-tools>1.0.0</rayin-tools>
+        <rayin-pdftools>1.0.0</rayin-pdftools>
+        <rayin-pdfbox-pdftools>1.0.0</rayin-pdfbox-pdftools>
+        <rayin-srv-rest-pdf>1.0.0</rayin-srv-rest-pdf>
+        <rayin-cache>1.0.0</rayin-cache>
+        <rayin-cloud-base>1.0.0</rayin-cloud-base>
+        <rayin-third>1.0.0</rayin-third>
+        <rayin-openpdf>1.0.0</rayin-openpdf>
+        <rayin-srv-jwt>1.0.0</rayin-srv-jwt>
+        <rayin-api>1.0.0</rayin-api>
+        <rayin-htmladapter-pd4ml>1.0.0</rayin-htmladapter-pd4ml>
+        <rayin-htmladapter-openhtmltopdf>1.0.0</rayin-htmladapter-openhtmltopdf>
+        <rayin-srv-gateway>1.0.0</rayin-srv-gateway>
+        <rayin-srv-eureka>1.0.0</rayin-srv-eureka>
+        <rayin-srv-rest-print>1.0.0</rayin-srv-rest-print>
+        <rayin-srv-rest-web>1.0.0</rayin-srv-rest-web>
+        <rayin-srv-users>1.0.0</rayin-srv-users>
+        <rayin-client>1.0.0</rayin-client>
+        <rayin-ofd-com.rayin.ofd.render>1.0.0</rayin-ofd-com.rayin.ofd.render>
+        <rayin-htmladapter-spring-boot-starter>1.0.0</rayin-htmladapter-spring-boot-starter>
+    </properties>
+
+    <repositories>
+<!--        <repository>-->
+<!--            <id>org.ghost4j.repository.releases</id>-->
+<!--            <name>Ghost4J releases</name>-->
+<!--            <url>http://repo.ghost4j.org/maven2/releases</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>org.ghost4j.repository.snapshots</id>-->
+<!--            <name>Ghost4J snapshots</name>-->
+<!--            <url>http://repo.ghost4j.org/maven2/snapshots</url>-->
+<!--        </repository>-->
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--<dependency>-->
+                <!--<groupId>org.springframework.cloud</groupId>-->
+                <!--<artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
+                <!--<version>${spring.cloud.alibaba.version}</version>-->
+                <!--<type>pom</type>-->
+                <!--<scope>import</scope>-->
+            <!--</dependency>-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Finchley.SR3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${alibaba.fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.21</version>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.20</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>3.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${commons-compress.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-model</artifactId>
+                <version>${rayin-model}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-api</artifactId>
+                <version>${rayin-api}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-font</artifactId>
+                <version>${rayin-font}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-pdftools</artifactId>
+                <version>${rayin-pdftools}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-tools</artifactId>
+                <version>${rayin-tools}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
+                <version>${rayin-htmladapter-openhtmltopdf}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-htmladapter-itext5</artifactId>
+                <version>${rayin-htmladapter-itext5}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-htmladapter-itext2</artifactId>
+                <version>${rayin-htmladapter-itext2}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-htmladapter-pd4ml</artifactId>
+                <version>${rayin-htmladapter-pd4ml}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-htmladapter-spring-boot-starter</artifactId>
+                <version>${rayin-htmladapter-spring-boot-starter}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-htmladapter-base</artifactId>
+                <version>${rayin-htmladapter-base}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-api</artifactId>
+                <version>${rayin-api}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rayin</groupId>
+                <artifactId>rayin-client</artifactId>
+                <version>${rayin-client}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <!-- eureka依赖 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+
+    </build>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>newcore</id>-->
+            <!--<name>newcore</name>-->
+            <!--<url>http://10.18.13.68:8081/nexus/content/groups/public/</url>-->
+            <!--<releases>-->
+                <!--<enabled>true</enabled>-->
+            <!--</releases>-->
+            <!--<snapshots>-->
+                <!--<enabled>true</enabled>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
+    <!--</repositories>-->
+</project>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.rayin</groupId>
+    <version>1.0.0</version>
+    <artifactId>rayin-test</artifactId>
+    <properties>
+        <!-- 统一版本号 -->
+        <master.version>1.0.0</master.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <slf4j.version>1.7.26</slf4j.version>
+        <logback.version>1.2.3</logback.version>
+
+        <commons-io.version>2.4</commons-io.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <commons-compress.version>1.20</commons-compress.version>
+        <commons-pool2.version>2.6.1</commons-pool2.version>
+
+        <!-- 本地包版本号 -->
+        <rayin-htmladapter-base>1.0.0</rayin-htmladapter-base>
+        <rayin-font>1.0.0</rayin-font>
+        <rayin-htmladapter-openhtmltopdf>1.0.0</rayin-htmladapter-openhtmltopdf>
+        <rayin-htmladapter-spring-boot-starter>1.0.0</rayin-htmladapter-spring-boot-starter>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.rayin</groupId>
+            <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
+            <version>${rayin-htmladapter-openhtmltopdf}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.rayin</groupId>
+            <artifactId>rayin-font</artifactId>
+            <version>${rayin-font}</version>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.github.houbb</groupId>-->
+<!--            <artifactId>junitperf</artifactId>-->
+<!--            <version>1.0.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <!-- 防止被过滤转码，导致pdf无法读取 -->
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>ttc</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+
+            </plugin>
+        </plugins>
+    </build>
+</project>

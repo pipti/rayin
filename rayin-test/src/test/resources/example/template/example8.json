@@ -1,0 +1,10 @@
+{
+  "templateName":"template8",
+  "title":"template8",
+  "subject": "tag test",
+  "author":"rayin",
+  "keywords":"templateTest,key",
+  "elements":[
+    {"elementPath":"example/element/example8/element1.html"}
+  ]
+}
