@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.rayin</groupId>
+    <groupId>ink.rayin</groupId>
     <artifactId>rayin-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
@@ -77,22 +77,9 @@
         <rayin-srv-rest-web>1.0.0</rayin-srv-rest-web>
         <rayin-srv-users>1.0.0</rayin-srv-users>
         <rayin-client>1.0.0</rayin-client>
-        <rayin-ofd-com.rayin.ofd.render>1.0.0</rayin-ofd-com.rayin.ofd.render>
+        <rayin-ofd-ink.rayin.ofd.render>1.0.0</rayin-ofd-ink.rayin.ofd.render>
         <rayin-htmladapter-spring-boot-starter>1.0.0</rayin-htmladapter-spring-boot-starter>
     </properties>
-
-    <repositories>
-<!--        <repository>-->
-<!--            <id>org.ghost4j.repository.releases</id>-->
-<!--            <name>Ghost4J releases</name>-->
-<!--            <url>http://repo.ghost4j.org/maven2/releases</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>org.ghost4j.repository.snapshots</id>-->
-<!--            <name>Ghost4J snapshots</name>-->
-<!--            <url>http://repo.ghost4j.org/maven2/snapshots</url>-->
-<!--        </repository>-->
-    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -179,72 +166,40 @@
             </dependency>
 
             <dependency>
-                <groupId>com.rayin</groupId>
-                <artifactId>rayin-model</artifactId>
-                <version>${rayin-model}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.rayin</groupId>
-                <artifactId>rayin-api</artifactId>
-                <version>${rayin-api}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.rayin</groupId>
+                <groupId>ink.rayin</groupId>
                 <artifactId>rayin-font</artifactId>
                 <version>${rayin-font}</version>
             </dependency>
             <dependency>
-                <groupId>com.rayin</groupId>
-                <artifactId>rayin-pdftools</artifactId>
-                <version>${rayin-pdftools}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.rayin</groupId>
+                <groupId>ink.rayin</groupId>
                 <artifactId>rayin-tools</artifactId>
                 <version>${rayin-tools}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.rayin</groupId>
+                <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
                 <version>${rayin-htmladapter-openhtmltopdf}</version>
             </dependency>
             <dependency>
-                <groupId>com.rayin</groupId>
-                <artifactId>rayin-htmladapter-itext5</artifactId>
-                <version>${rayin-htmladapter-itext5}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.rayin</groupId>
-                <artifactId>rayin-htmladapter-itext2</artifactId>
-                <version>${rayin-htmladapter-itext2}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.rayin</groupId>
-                <artifactId>rayin-htmladapter-pd4ml</artifactId>
-                <version>${rayin-htmladapter-pd4ml}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.rayin</groupId>
+                <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-spring-boot-starter</artifactId>
                 <version>${rayin-htmladapter-spring-boot-starter}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.rayin</groupId>
+                <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-base</artifactId>
                 <version>${rayin-htmladapter-base}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.rayin</groupId>
+                <groupId>ink.rayin</groupId>
                 <artifactId>rayin-api</artifactId>
                 <version>${rayin-api}</version>
             </dependency>
             <dependency>
-                <groupId>com.rayin</groupId>
+                <groupId>ink.rayin</groupId>
                 <artifactId>rayin-client</artifactId>
                 <version>${rayin-client}</version>
             </dependency>
@@ -354,17 +309,4 @@
         </pluginManagement>
 
     </build>
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>newcore</id>-->
-            <!--<name>newcore</name>-->
-            <!--<url>http://10.18.13.68:8081/nexus/content/groups/public/</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
 </project>

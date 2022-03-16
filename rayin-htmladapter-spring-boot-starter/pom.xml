@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>rayin-parent</artifactId>
-        <groupId>com.rayin</groupId>
+        <groupId>ink.rayin</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -26,19 +26,19 @@
         </dependency>
 
         <dependency>
-            <groupId>com.rayin</groupId>
+            <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-base</artifactId>
             <version>${rayin-htmladapter-base}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.rayin</groupId>
+            <groupId>ink.rayin</groupId>
             <artifactId>rayin-font</artifactId>
             <version>${rayin-font}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.rayin</groupId>
+            <groupId>ink.rayin</groupId>
             <artifactId>rayin-tools</artifactId>
             <version>${rayin-tools}</version>
         </dependency>

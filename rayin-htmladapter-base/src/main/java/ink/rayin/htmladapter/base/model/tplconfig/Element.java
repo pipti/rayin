@@ -1,0 +1,169 @@
+package ink.rayin.htmladapter.base.model.tplconfig;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 单模板属性
+ *
+ * @date 2019-08-25
+ * @author Jonah wz
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Element {
+
+    /**
+     * 构件路径
+     */
+    @Getter
+    @Setter
+    private String elementPath;
+
+    /**
+     * 构件路径
+     */
+    @Getter
+    @Setter
+    private String elementId;
+
+    /**
+     * 构件类型
+     */
+    @Getter
+    @Setter
+    private String elementType;
+
+    /**
+     * 构件版本
+     */
+    @Getter
+    @Setter
+    private String elementVersion;
+
+    /**
+     * 构件名称
+     */
+    @Getter
+    @Setter
+    private String name;
+
+    /**
+     * 构件内容
+     */
+    @Getter
+    @Setter
+    private String content;
+
+//    @Getter
+//    @Setter
+//    private PageNumProperties pageNumProperties;
+    /**
+     * 页码属性
+     */
+    @Getter
+    @Setter
+    private boolean pageNumIsFirstPage;
+
+    @Getter
+    @Setter
+    private boolean pageNumIsCalculate;
+
+    @Getter
+    @Setter
+    private boolean pageNumIsDisplay;
+
+    @Getter
+    @Setter
+    private List<PageNumDisplayPos> pageNumDisplayPoss;
+
+    @Getter
+    @Setter
+    private PageNumStyle pageNumStyle;
+
+    @Getter
+    @Setter
+    private boolean addBlankPage;
+
+    /**
+     * 空白页模板路径
+     */
+    @Getter
+    @Setter
+    private String blankElementPath;
+
+    /**
+     * 空白页模板内容
+     */
+    @Getter
+    @Setter
+    private String blankElementContent;
+
+    /**
+     * 页数
+     */
+    @Getter
+    @Setter
+    private int pageCount;
+
+    /**
+     * 实际页码
+     */
+    @Getter
+    @Setter
+    private int pageNum;
+
+
+    /**
+     * 逻辑页码
+     */
+    @Getter
+    @Setter
+    private int logicPageNum;
+
+    /**
+     * 隐藏标签关键字
+     */
+    @Getter
+    @Setter
+    private Set<MarkInfo> markKeys;
+
+    /**
+     * 是否解析生僻字
+     */
+//    @Getter
+//    @Setter
+//    private boolean uncommonCharsAnalysis;
+
+
+    /**
+     * 构件可用数据显示路径
+     * 该参数主要控制构件是否显示，取决数据路径是否存在，如果不存则不显示
+     */
+    @Getter
+    @Setter
+    private String elementAvaliableDataPath;
+
+
+    /**
+     * 质检内容
+     * overlap 重叠
+     * boundary 边界
+     * out 超边界
+     * garbled 乱码
+     * stamp 印章
+     */
+//    @Getter
+//    @Setter
+//    private Set<String> qualityTestType;
+
+    /**
+     * 构件缺失检查
+     */
+//    @Getter
+//    @Setter
+//    private boolean qualityElementHiatusCheck;
+}
