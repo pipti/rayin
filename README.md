@@ -109,14 +109,34 @@ https://www.w3.org/TR/css-page-3/
 16. 实现隐藏标记，并可通过元数据进行获取起页码，坐标（可用于后续再加工的定位，例如签章位置）。
 17. 实现线程池。
 
-### 开始使用
-新建项目，引入依赖包
+## 开始使用
+### 新建项目，引入依赖包
+```xml
 <dependency>
     <groupId>com.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
     <version>1.0.0</version>
 </dependency>
+```
 
+### 创建构件或模板
+构件就是单个html
+模板是json配置文件
+具体参见帮助手册 <a href="https://www.yuque.com/wangzhu-yapmh/rayin/">https://www.yuque.com/wangzhu-yapmh/rayin/
+
+### 生成代码
+```java
+    PDFGeneratorInterface pdfGenerator = new PDFGenerator();
+    pdfGenerator.init();
+
+
+    //单个构件生成，数据参数可以为空
+    pdfGenerator.generatePdfFileByHtmlAndData(elementPath, jsonData, outputFilePath);
+
+    //通过模板定义生成，数据参数可以为空
+    pdfGenerator.generatePdfFileByTplConfigFile(tplconfigPath, jsonData, outputFile);
+
+```
 
 ## 帮助文档
-https://www.yuque.com/wangzhu-yapmh/rayin/
+<a href="https://www.yuque.com/wangzhu-yapmh/rayin/">https://www.yuque.com/wangzhu-yapmh/rayin/

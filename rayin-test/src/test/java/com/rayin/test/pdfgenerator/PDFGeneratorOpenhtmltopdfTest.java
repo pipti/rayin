@@ -238,11 +238,6 @@ public class PDFGeneratorOpenhtmltopdfTest {
     @Test
     public void getPageInfoTest() throws Exception {
         log.info("getPageInfoTest start time：" + new Timestamp(System.currentTimeMillis()));
-//        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("testdata/example8.json");
-//        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
-//
-//        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
-
         String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
