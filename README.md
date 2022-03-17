@@ -1,6 +1,6 @@
 # 睿印
-<img src="https://img.shields.io/badge/license-Apache-blue">
-    
+![Hex.pm](https://img.shields.io/hexpm/l/plug)
+
 ## 项目起源
 某大型公司的内部项目的启发而来。  
 项目过程中发现的问题：  
