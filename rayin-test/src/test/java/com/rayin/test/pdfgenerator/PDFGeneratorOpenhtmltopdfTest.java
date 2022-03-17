@@ -1,11 +1,11 @@
-package com.rayin.test.pdfgenerator;
+package ink.rayin.test.pdfgenerator;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.rayin.htmladapter.base.PDFGeneratorInterface;
-import com.rayin.htmladapter.base.utils.JsonSchemaValidator;
-import com.rayin.htmladapter.openhtmltopdf.service.PDFGenerator;
-import com.rayin.tools.utils.ResourceUtil;
+import ink.rayin.htmladapter.base.PDFGeneratorInterface;
+import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
+import ink.rayin.htmladapter.openhtmltopdf.service.PDFGenerator;
+import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
