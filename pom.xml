@@ -7,7 +7,7 @@
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>rayin-tools</module>
         <module>rayin-htmladapter-base</module>
@@ -18,7 +18,7 @@
 
     <properties>
         <!-- 统一版本号 -->
-        <master.version>1.0.0</master.version>
+        <master.version>1.0.0-SNAPSHOT</master.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,35 +50,28 @@
         <flexmark.version>0.62.2</flexmark.version>
         <cn.hutool>5.7.22</cn.hutool>
         <!-- 本地包版本号 -->
-        <rayin-parent>1.0.0</rayin-parent>
-        <rayin-model>1.0.0</rayin-model>
-        <rayin-htmladapter-base>1.0.0</rayin-htmladapter-base>
-        <rayin-htmladapter-itext5>1.0.0</rayin-htmladapter-itext5>
-        <rayin-htmladapter-itext2>1.0.0</rayin-htmladapter-itext2>
-        <rayin-font>1.0.0</rayin-font>
-        <rayin-srv-rest-paper>1.0.0</rayin-srv-rest-paper>
-        <rayin-srv-rest-web>1.0.0</rayin-srv-rest-web>
-        <rayin-tools>1.0.0</rayin-tools>
-        <rayin-pdftools>1.0.0</rayin-pdftools>
-        <rayin-pdfbox-pdftools>1.0.0</rayin-pdfbox-pdftools>
-        <rayin-srv-rest-pdf>1.0.0</rayin-srv-rest-pdf>
-        <rayin-cache>1.0.0</rayin-cache>
-        <rayin-cloud-base>1.0.0</rayin-cloud-base>
-        <rayin-third>1.0.0</rayin-third>
-        <rayin-openpdf>1.0.0</rayin-openpdf>
-        <rayin-srv-jwt>1.0.0</rayin-srv-jwt>
-        <rayin-api>1.0.0</rayin-api>
-        <rayin-htmladapter-pd4ml>1.0.0</rayin-htmladapter-pd4ml>
-        <rayin-htmladapter-openhtmltopdf>1.0.0</rayin-htmladapter-openhtmltopdf>
-        <rayin-srv-gateway>1.0.0</rayin-srv-gateway>
-        <rayin-srv-eureka>1.0.0</rayin-srv-eureka>
-        <rayin-srv-rest-print>1.0.0</rayin-srv-rest-print>
-        <rayin-srv-rest-web>1.0.0</rayin-srv-rest-web>
-        <rayin-srv-users>1.0.0</rayin-srv-users>
-        <rayin-client>1.0.0</rayin-client>
-        <rayin-ofd-ink.rayin.ofd.render>1.0.0</rayin-ofd-ink.rayin.ofd.render>
-        <rayin-htmladapter-spring-boot-starter>1.0.0</rayin-htmladapter-spring-boot-starter>
+        <rayin-parent>1.0.0-SNAPSHOT</rayin-parent>
+        <rayin-htmladapter-base>1.0.0-SNAPSHOT</rayin-htmladapter-base>
+        <rayin-font>1.0.0-SNAPSHOT</rayin-font>
+        <rayin-tools>1.0.0-SNAPSHOT</rayin-tools>
+        <rayin-htmladapter-openhtmltopdf>1.0.0-SNAPSHOT</rayin-htmladapter-openhtmltopdf>
+        <rayin-htmladapter-spring-boot-starter>1.0.0-SNAPSHOT</rayin-htmladapter-spring-boot-starter>
     </properties>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Jonah wz</name>
+            <email>wangzhu@cityape.tech</email>
+            <organization>cityape technologies inc.</organization>
+            <organizationUrl>http://www.cityape.tech</organizationUrl>
+        </developer>
+    </developers>
+
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -306,15 +299,74 @@
                 </plugin>
 
                 <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.7</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+
+                <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
                     </configuration>
                 </plugin>
-            </plugins>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                </plugin>
+            </plugins>
         </pluginManagement>
 
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>

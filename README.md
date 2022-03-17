@@ -116,7 +116,7 @@ https://www.w3.org/TR/css-page-3/
 ### 创建构件或模板
 构件就是单个html
 模板是json配置文件
-具体参见帮助手册 <a href="https://www.yuque.com/wangzhu-yapmh/rayin/">https://www.yuque.com/wangzhu-yapmh/rayin/
+具体参见帮助手册 [https://www.yuque.com/wangzhu-yapmh/rayin/](https://www.yuque.com/wangzhu-yapmh/rayin/)
 
 ### 生成代码
 ```java
@@ -133,7 +133,7 @@ https://www.w3.org/TR/css-page-3/
 ```
 
 ## 帮助文档
-https://www.yuque.com/wangzhu-yapmh/rayin/
+[https://www.yuque.com/wangzhu-yapmh/rayin/](https://www.yuque.com/wangzhu-yapmh/rayin/)
 
 ## 交流群
-<img src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
+<img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
