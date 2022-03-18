@@ -1,26 +1,20 @@
 {
-  "grpInsurAppl":
+  "insuranceGroup":
   {
-    "accessChannel": "",
-    "accessSource": "",
-    "agreementNo": "",
-    "applBusiType": "",
-    "applDate": "",
-    "applNo": "",
     "approNo": "火星组织",
     "arbitration": "",
     "argueType": "",
     "billClass": "012",
     "branchPostCode": "",
-    "cgNo": "2100wwxb3fg123#44$3123%%",
+    "insurNo": "2100wwxb3fg123#44$3123%%",
     "claimsGrpList":
     [],
-    "cntrCreateDate": "2100-08-12 15:02:00.000",
-    "cntrEstablishDate": "2100-07-28 00:00:00.000",
-    "cntrExpiryDate": "2101-05-31 00:00:00.000",
-    "cntrPrintType": "1",
-    "cntrSendType": "",
-    "cntrType": "L",
+    "contractCreateDate": "2100-08-12 15:02:00.000",
+    "contractEstablishDate": "2100-07-28 00:00:00.000",
+    "contractExpiryDate": "2101-05-31 00:00:00.000",
+    "contractPrintType": "1",
+    "contractSendType": "",
+    "contractType": "L",
     "constructInsurInfo": null,
     "entChannelFlag": "",
     "firPolCode": "",
@@ -38,18 +32,11 @@
     "listType": "",
     "lstProcType": "",
     "managebranchPath": "xx^7&3",
-    "notificaStat": "",
-    "orgTreeList":
-    [],
     "policyflg": "3",
     "polsum": 0,
     "premConfirmDate": "2100-08-12 14:56:00.000",
     "psnListHolderInfo": null,
     "renewTimes": 0,
-    "renewedCgNo": "",
-    "salesDevelopFlag": "",
-    "salesNoAdd": "",
-    "sgName": "",
     "sgNo": "374199&d@3343((8!",
     "signDate": "",
     "speciBusinessLogo": "",
@@ -82,7 +69,7 @@
       "policyList":
       [
         {
-          "cntrNo": "",
+          "contractNo": "",
           "faceAmnt": 44965000,
           "insurDur": 0,
           "insurDurUnit": "",
@@ -208,11 +195,11 @@
       {
         "accInfoList":
         [],
-        "applNo": "374199&d@3343((8!",
+        "applyNo": "374199&d@3343((8!",
         "batNo": "0",
         "bnfrInfoList":
         [],
-        "cgNo": "2100wwxb3fg123#44$3123%%",
+        "insurNo": "2100wwxb3fg123#44$3123%%",
         "feeGrpNo": 0,
         "grpPayAmount": 10,
         "hldrInfo":
@@ -311,11 +298,9 @@
       {
         "accInfoList":
         [],
-        "applNo": "374199&d@3343((8!",
+        "applyNo": "374199&d@3343((8!",
         "batNo": "0",
-        "bnfrInfoList":
-        [],
-        "cgNo": "2100wwxb3fg123#44$3123%%",
+        "insurNo": "2100wwxb3fg123#44$3123%%",
         "feeGrpNo": 0,
         "grpPayAmount": 10,
         "hldrInfo":
@@ -414,11 +399,11 @@
       {
         "accInfoList":
         [],
-        "applNo": "374199&d@3343((8!",
+        "applyNo": "374199&d@3343((8!",
         "batNo": "0",
         "bnfrInfoList":
         [],
-        "cgNo": "2100wwxb3fg123#44$3123%%",
+        "insurNo": "2100wwxb3fg123#44$3123%%",
         "feeGrpNo": 0,
         "grpPayAmount": 10,
         "hldrInfo":

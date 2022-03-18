@@ -1,7 +1,5 @@
 package ink.rayin.tools.utils;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * px pt in单位转换
  *
@@ -92,7 +90,7 @@ public class DisplayMeasureConvert {
         if (meas.trim().length() < 3) {
             return Float.valueOf(meas);
         }
-        if(StringUtils.isNumeric(meas)){
+        if(StringUtil.isNumeric(meas)){
             return Float.valueOf(meas);
         }
         String mes = meas.substring(lower.length() - 2, lower.length());

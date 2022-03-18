@@ -17,7 +17,6 @@
         <!-- Define the version of OPEN HTML TO PDF in the properties section of your POM. -->
         <openhtml.version>1.0.10</openhtml.version>
         <pdfbox.version>2.0.21</pdfbox.version>
-        <itext5.version>5.5.13.1</itext5.version>
     </properties>
 
     <dependencies>
@@ -132,6 +131,11 @@
                     <artifactId>bcprov-jdk14</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>1.60</version>
         </dependency>
     </dependencies>
     <build>

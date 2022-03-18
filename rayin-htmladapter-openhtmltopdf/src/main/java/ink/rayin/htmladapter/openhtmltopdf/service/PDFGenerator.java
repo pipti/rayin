@@ -13,15 +13,11 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import ink.rayin.htmladapter.openhtmltopdf.utils.PDFBoxPositionFindByKey;
-import ink.rayin.tools.utils.Charsets;
-import ink.rayin.tools.utils.DisplayMeasureConvert;
-import ink.rayin.tools.utils.ResourceUtil;
-import ink.rayin.tools.utils.UnicodeUtil;
+import ink.rayin.tools.utils.*;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.*;
@@ -161,7 +157,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
 
         //修改文件属性
         TemplateConfig pagesConfig = JSONObject.parseObject(tplStr, TemplateConfig.class);
-        if (StringUtils.isNotBlank(password)) {
+        if (StringUtil.isNotBlank(password)) {
             fileInfo.setSecretKey(password);
         }
         writePDFAttrs(os,fileInfo,pagesConfig);
@@ -209,7 +205,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
         for(Element el:pages){
             // 判断数据路径是否存在，如果为空则直接跳过
             try{
-                if(StringUtils.isNotBlank(el.getElementAvaliableDataPath())){
+                if(StringUtil.isNotBlank(el.getElementAvaliableDataPath())){
                     JsonPath.read(dataJson,el.getElementAvaliableDataPath());
                 }
             }catch(PathNotFoundException e){
@@ -272,7 +268,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
                                     for (PageNumDisplayPos pos : pp.getPageNumDisplayPoss()) {
                                         // 坐标页码设置
                                         if (pos.getX() != 0 && pos.getY() != 0) {
-                                            if (StringUtils.isNotEmpty(pos.getContent())) {
+                                            if (StringUtil.isNotBlank(pos.getContent())) {
                                                 try {
                                                     String pageNumContent = pos.getContent().replace("${pageNum}", pageNum + "").replace("${pageNumTotal}", pageNumTotal + "");
                                                     PDPageContentStream contentStream
@@ -281,7 +277,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
                                                     contentStream.beginText();
                                                     contentStream.newLineAtOffset(pos.getX(), overContentHeight - pos.getY());
 
-                                                    contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get(StringUtils.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"SimSun").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
+                                                    contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"SimSun").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
 
                                                     contentStream.showText(pageNumContent);
                                                     contentStream.endText();
@@ -309,7 +305,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
                                             for (PageNumDisplayPos posTpl : templatePageNumDisplayPos) {
                                                 // 坐标页码设置
                                                 if (posTpl.getX() != 0 && posTpl.getY() != 0) {
-                                                    if (StringUtils.isNotEmpty(posTpl.getContent())) {
+                                                    if (StringUtil.isNotBlank(posTpl.getContent())) {
 
                                                         try {
                                                             String pageNumContent = pos.getContent().replace("${pageNum}", pageNum + "").replace("${pageNumTotal}", pageNumTotal + "");
@@ -319,7 +315,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
                                                             contentStream.beginText();
                                                             contentStream.newLineAtOffset(pos.getX(), overContentHeight - pos.getY());
 
-                                                            contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get(StringUtils.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"SimSun").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
+                                                            contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"SimSun").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
 
                                                             contentStream.showText(pageNumContent);
                                                             contentStream.endText();
@@ -347,7 +343,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
 
 
                                         // 关键字页码设置
-                                        if(StringUtils.isNotBlank(pos.getMark())){
+                                        if(StringUtil.isNotBlank(pos.getMark())){
 
                                             List<float[]> fl = PDFBoxPositionFindByKey.findKeywordPagePostions(out.get(i).toByteArray(),pos.getMark(),j);
 
@@ -543,11 +539,11 @@ public class PDFGenerator implements PDFGeneratorInterface {
 
         String htmlContent = "";
 
-        if(StringUtils.isNotBlank(config.getContent())) {
+        if(StringUtil.isNotBlank(config.getContent())) {
             htmlContent = htmlStrDataFilling(config.getContent(), data);
         }
 
-        if(StringUtils.isNotBlank(config.getElementPath())){
+        if(StringUtil.isNotBlank(config.getElementPath())){
             htmlContent = htmlFileDataFilling(config.getElementPath(), data);
         }
 
@@ -572,10 +568,10 @@ public class PDFGenerator implements PDFGeneratorInterface {
             if(config.isAddBlankPage() == true && pageNum%2 == 1){
                 ByteArrayOutputStream blankOS ;
                 //如果配置空白页样式
-                if(StringUtils.isNotBlank(config.getBlankElementPath())){
+                if(StringUtil.isNotBlank(config.getBlankElementPath())){
                     blankOS = generatePdfSteamByHtmlAndData(config.getBlankElementPath(),data);
                 }else{
-                    if(StringUtils.isNotBlank(pagesConfig.getBlankElementPath())){
+                    if(StringUtil.isNotBlank(pagesConfig.getBlankElementPath())){
                         blankOS = generatePdfSteamByHtmlAndData(pagesConfig.getBlankElementPath(),data);
                     }else {
                         //如果没有配置获取默认样式
@@ -628,7 +624,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
     @Override
     public String htmlStrDataFilling(String htmlStr, JSONObject data) throws IOException, WriterException {
         String htmlContent = "";
-        if(StringUtils.isBlank(htmlStr)) return "";
+        if(StringUtil.isBlank(htmlStr)) return "";
 
         try{
             htmlContent = thymeleafHandler.templateEngineProcessByString(htmlStr, data);
@@ -680,7 +676,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
         Elements imgLinks = htmlDoc.getElementsByTag("img");
         for(org.jsoup.nodes.Element link : imgLinks){
             String src = link.attr("src");
-            if(StringUtils.isNotBlank(src)){
+            if(StringUtil.isNotBlank(src)){
                 if(src.startsWith("/") || src.startsWith("\\")){
                     link.attr("src","file:" + src);
                 }
@@ -691,18 +687,18 @@ public class PDFGenerator implements PDFGeneratorInterface {
         for (org.jsoup.nodes.Element link : divLinks) {
             String inner = link.text();
             String type = link.attr("type");
-            //String rValue = StringUtils.isNotBlank(link.attr("r-value"))?link.attr("r-value"):inner;
+            //String rValue = StringUtil.isNotBlank(link.attr("r-value"))?link.attr("r-value"):inner;
             String value = link.attr("value");
-            //String value = StringUtils.isNotBlank(dValue)?dValue:rValue;
+            //String value = StringUtil.isNotBlank(dValue)?dValue:rValue;
 
             //String format1 = link.attr("r-format").toUpperCase();
             //String format2 = link.attr("format").toUpperCase();
-           // String format = StringUtils.isBlank(format1)?format2:format1;
+           // String format = StringUtil.isBlank(format1)?format2:format1;
 
             String style = link.attr("style");
             String[] styles = style.split(";");
             
-            if(StringUtils.isNotBlank(type) && StringUtils.isNotBlank(value)){
+            if(StringUtil.isNotBlank(type) && StringUtil.isNotBlank(value)){
                 switch(type){
                     case "mark":
                         if(markKeys != null){
@@ -723,12 +719,12 @@ public class PDFGenerator implements PDFGeneratorInterface {
                             }
 
 //
-//                            if(StringUtils.isBlank(link.attr("width")) || !StringUtils.isNumeric(link.attr("width").replaceAll("[a-zA-Z]",""))){
+//                            if(StringUtil.isBlank(link.attr("width")) || !StringUtil.isNumeric(link.attr("width").replaceAll("[a-zA-Z]",""))){
 //                                width = 0;
 //                            }else{
 //                                width = Float.parseFloat(link.attr("width").replaceAll("[a-zA-Z]",""));
 //                            }
-//                            if(StringUtils.isBlank(link.attr("height")) || !StringUtils.isNumeric(link.attr("height").replaceAll("[a-zA-Z]",""))){
+//                            if(StringUtil.isBlank(link.attr("height")) || !StringUtil.isNumeric(link.attr("height").replaceAll("[a-zA-Z]",""))){
 //                                height = 0;
 //                            }else{
 //                                height = Float.parseFloat(link.attr("height").replaceAll("[a-zA-Z]",""));
@@ -739,25 +735,25 @@ public class PDFGenerator implements PDFGeneratorInterface {
                             markInfo.setHeight(height);
                             markKeys.add(markInfo);
                         }
-                        link.attr("style",StringUtils.isBlank(link.attr("style"))?"":(link.attr("style")+";") + "color:white;font-size:0.1px;border:0px;");
+                        link.attr("style",StringUtil.isBlank(link.attr("style"))?"":(link.attr("style")+";") + "color:white;font-size:0.1px;border:0px;");
                         link.append(value);
 //                        link.remove();
                         break;
 
                     case "file/pdf":
-                        if(StringUtils.isBlank(value)) {
+                        if(StringUtil.isBlank(value)) {
                             continue;
                         }
                         org.jsoup.nodes.Element p = link.parent();
                         link.remove();
                         org.jsoup.nodes.Element pp = p.parent();
                         org.jsoup.nodes.Element box = p;
-                        if(StringUtils.isBlank(p.html().replaceAll("[\n &nbsp;]",""))){
+                        if(StringUtil.isBlank(p.html().replaceAll("[\n &nbsp;]",""))){
                             p.remove();
                             box = pp;
                         }
 
-//                        if(StringUtils.isBlank(p.html().replaceAll("[\n ]",""))){
+//                        if(StringUtil.isBlank(p.html().replaceAll("[\n ]",""))){
 //                            p.remove();
 //                        }
                         ByteArrayOutputStream pdfOs = null;
@@ -803,20 +799,20 @@ public class PDFGenerator implements PDFGeneratorInterface {
 //                        int width;
 //                        int height;
 //                        int translate = 0;
-//                        if(StringUtils.isBlank(link.attr("width")) || !StringUtils.isNumeric(link.attr("width").replaceAll("[a-zA-Z]",""))){
+//                        if(StringUtil.isBlank(link.attr("width")) || !StringUtil.isNumeric(link.attr("width").replaceAll("[a-zA-Z]",""))){
 //                            width = 200;
 //                        }else{
 //                            width = Integer.parseInt(link.attr("width").replaceAll("[a-zA-Z]",""));
 //                        }
-//                        if(StringUtils.isBlank(link.attr("height")) || !StringUtils.isNumeric(link.attr("height").replaceAll("[a-zA-Z]",""))){
+//                        if(StringUtil.isBlank(link.attr("height")) || !StringUtil.isNumeric(link.attr("height").replaceAll("[a-zA-Z]",""))){
 //                            height = 50;
 //                        }else{
 //                            height = Integer.parseInt(link.attr("height").replaceAll("[a-zA-Z]",""));
 //                        }
-//                        if(StringUtils.isBlank(link.attr("translate")) || !StringUtils.isNumeric(link.attr("translate").replaceAll("[a-zA-Z]",""))){
+//                        if(StringUtil.isBlank(link.attr("translate")) || !StringUtil.isNumeric(link.attr("translate").replaceAll("[a-zA-Z]",""))){
 //                            translate = 0;
 //                        }else{
-//                            if(StringUtils.isNotBlank(link.attr("translate").replaceAll("[a-zA-Z]",""))){
+//                            if(StringUtil.isNotBlank(link.attr("translate").replaceAll("[a-zA-Z]",""))){
 //                                translate = Integer.parseInt(link.attr("translate").replaceAll("[a-zA-Z]",""));
 //                            }
 //                        }
@@ -874,7 +870,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
 //            List<ByteArrayOutputStream> newFiles = null;
 //
 //            String bodyContent = body.html().replaceAll("[\n &nbsp;]","");
-//            if(StringUtils.isNotBlank(bodyContent)){
+//            if(StringUtil.isNotBlank(bodyContent)){
 //                pdfPageOut = generatePdfStream(htmlDoc.html(),null);
 //                newFiles  = new ArrayList<ByteArrayOutputStream>();
 //                newFiles.add(pdfPageOut);
@@ -1111,7 +1107,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
         PDDocument doc = PDDocument.load(osCopy.toByteArray());
 
         PDDocumentInformation info = doc.getDocumentInformation();
-        if(!pagesConfig.isEditable() || StringUtils.isNotBlank(pagesConfig.getPassword())) {
+        if(!pagesConfig.isEditable() || StringUtil.isNotBlank(pagesConfig.getPassword())) {
             AccessPermission permissions = new AccessPermission();
             permissions.setCanModify(pagesConfig.isEditable());
             permissions.setCanExtractContent(pagesConfig.isEditable());
@@ -1127,7 +1123,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
         info.setTitle(pagesConfig.getTitle());
         info.setSubject(pagesConfig.getSubject());
         info.setKeywords(pagesConfig.getKeywords());
-//        info.setProducer(StringUtils.isBlank(pagesConfig.getProducer())?
+//        info.setProducer(StringUtil.isBlank(pagesConfig.getProducer())?
 //                UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"):pagesConfig.getProducer());
         info.setProducer(
                 UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"));

@@ -69,7 +69,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
                 + "/tmp/"
                 + "example2_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
 
-        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/template/example2.json"),null,outputFile);
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example2/tpl.json"),null,outputFile);
 
         log.info("simpleTemplateGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
     }
@@ -83,7 +83,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
     public void elementBindDataGenerateTest() throws Exception {
         log.info("elementBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/testdata/example3.json");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example3/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据单个构建配置生成PDF
@@ -115,7 +115,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
         log.info("templateBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
         //String jsonFileName = "card.json";
-        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/testdata/example4.json");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example4/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据构建配置生成PDF
@@ -131,7 +131,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
                 + "/tmp/"
                 + "example4_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
 
-        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/template/example4.json"),jsonData,outputFile);
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example4/tpl.json"),jsonData,outputFile);
 
         log.info("templateBindDataGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
     }
@@ -145,7 +145,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
     public void complexElementBindDataGenerateTest() throws Exception {
         log.info("elementBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/testdata/example5.json");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example5/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据单个构建配置生成PDF
@@ -177,7 +177,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
     public void complexTemplateGenerateTest() throws Exception {
         log.info("complexTemplateGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/testdata/example6.json");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example6/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据构建配置生成PDF
@@ -192,7 +192,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
                 + "/tmp/"
                 + "example6_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
 
-        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/template/example6.json"),jsonData,outputFile);
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example6/tpl.json"),jsonData,outputFile);
 
         log.info("complexTemplateGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
     }
@@ -206,7 +206,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
     public void specialTagGenerateTest() throws Exception {
         log.info("specialTagGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/testdata/example7.json");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example7/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据单个构建配置生成PDF
@@ -224,7 +224,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
                 + "/tmp/"
                 + "example7_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
 
-        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/template/example7.json"),jsonData,outputFile);
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example7/tpl.json"),jsonData,outputFile);
 
         log.info("specialTagGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
     }
@@ -248,7 +248,7 @@ public class PDFGeneratorOpenhtmltopdfTest {
                 + "/tmp/"
                 + "example8_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
 
-        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/template/example8.json"), null, outputFile);
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("example/element/example8/tpl.json"), null, outputFile);
 
         log.info(pdfGenerator.pdfPageInfoRead(ResourceUtil.getResourceAsStream(outputFile)));
 

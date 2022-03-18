@@ -32,7 +32,7 @@ public class PDFGeneratorOpenhtmltopdfSample {
     @Test
     public void fapiaoGenerateTest() throws Exception {
         log.info("fapiaoGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("sample/receipt/fapiao/element1_data.json");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("sample/receipt/fapiao/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据单个构建配置生成PDF
