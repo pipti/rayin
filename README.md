@@ -111,6 +111,12 @@ https://www.w3.org/TR/css-page-3/
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
     <version>1.0.0</version>
 </dependency>
+
+<dependency>
+    <groupId>com.rayin</groupId>
+    <artifactId>rayin-htmladapter-font</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
 ### 创建构件或模板
