@@ -7,14 +7,14 @@
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <modules>
         <module>rayin-tools</module>
         <module>rayin-htmladapter-base</module>
         <module>rayin-htmladapter-openhtmltopdf</module>
         <module>rayin-htmladapter-spring-boot-starter</module>
         <module>rayin-font</module>
-        <module>rayin-test</module>
+<!--        <module>rayin-test</module>-->
     </modules>
 
     <properties>
@@ -51,12 +51,12 @@
         <flexmark.version>0.62.2</flexmark.version>
         <cn.hutool>5.7.22</cn.hutool>
         <!-- 本地包版本号 -->
-        <rayin-parent>1.0.0-SNAPSHOT</rayin-parent>
-        <rayin-htmladapter-base>1.0.0-SNAPSHOT</rayin-htmladapter-base>
-        <rayin-font>1.0.0-SNAPSHOT</rayin-font>
-        <rayin-tools>1.0.0-SNAPSHOT</rayin-tools>
-        <rayin-htmladapter-openhtmltopdf>1.0.0-SNAPSHOT</rayin-htmladapter-openhtmltopdf>
-        <rayin-htmladapter-spring-boot-starter>1.0.0-SNAPSHOT</rayin-htmladapter-spring-boot-starter>
+        <rayin-parent>1.0.0</rayin-parent>
+        <rayin-htmladapter-base>1.0.0</rayin-htmladapter-base>
+        <rayin-font>1.0.0</rayin-font>
+        <rayin-tools>1.0.0</rayin-tools>
+        <rayin-htmladapter-openhtmltopdf>1.0.0</rayin-htmladapter-openhtmltopdf>
+        <rayin-htmladapter-spring-boot-starter>1.0.0</rayin-htmladapter-spring-boot-starter>
     </properties>
     <licenses>
         <license>
@@ -67,9 +67,7 @@
     <developers>
         <developer>
             <name>Jonah wz</name>
-            <email>wangzhu@cityape.tech</email>
-            <organization>cityape technologies inc.</organization>
-            <organizationUrl>http://www.cityape.tech</organizationUrl>
+            <email>carefreefly@163.com</email>
         </developer>
     </developers>
 
@@ -296,23 +294,38 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>3.0.0-M5</version>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.5</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-source-plugin</artifactId>-->
+<!--                <version>2.2.1</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>attach-sources</id>-->
+<!--                        <goals>-->
+<!--                            <goal>jar-no-fork</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 <!--            <plugin>-->
 <!--                <groupId>org.apache.maven.plugins</groupId>-->
 <!--                <artifactId>maven-javadoc-plugin</artifactId>-->

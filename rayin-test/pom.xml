@@ -25,10 +25,10 @@
         <commons-pool2.version>2.6.1</commons-pool2.version>
 
         <!-- 本地包版本号 -->
-        <rayin-htmladapter-base>1.0.0-SNAPSHOT</rayin-htmladapter-base>
-        <rayin-font>1.0.0-SNAPSHOT</rayin-font>
-        <rayin-htmladapter-openhtmltopdf>1.0.0-SNAPSHOT</rayin-htmladapter-openhtmltopdf>
-        <rayin-htmladapter-spring-boot-starter>1.0.0-SNAPSHOT</rayin-htmladapter-spring-boot-starter>
+        <rayin-htmladapter-base>1.0.0</rayin-htmladapter-base>
+        <rayin-font>1.0.0</rayin-font>
+        <rayin-htmladapter-openhtmltopdf>1.0.0</rayin-htmladapter-openhtmltopdf>
+        <rayin-htmladapter-spring-boot-starter>1.0.0</rayin-htmladapter-spring-boot-starter>
     </properties>
     <repositories>
         <repository>

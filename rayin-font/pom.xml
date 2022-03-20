@@ -5,12 +5,12 @@
     <parent>
         <artifactId>rayin-parent</artifactId>
         <groupId>ink.rayin</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-font</artifactId>
-    <version>${rayin-font}</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
 
@@ -30,6 +30,21 @@
                     </nonFilteredFileExtensions>
                 </configuration>
 
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
