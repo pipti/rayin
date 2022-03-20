@@ -21,7 +21,7 @@
 
         <commons-io.version>2.4</commons-io.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
-        <commons-compress.version>1.20</commons-compress.version>
+        <commons-compress.version>1.21</commons-compress.version>
         <commons-pool2.version>2.6.1</commons-pool2.version>
 
         <!-- 本地包版本号 -->

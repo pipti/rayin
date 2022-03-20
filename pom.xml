@@ -44,7 +44,7 @@
         <pdfbox.version>2.0.20</pdfbox.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
-        <commons-compress.version>1.20</commons-compress.version>
+        <commons-compress.version>1.21</commons-compress.version>
         <commons-pool2.version>2.6.1</commons-pool2.version>
         <flying-saucer.version>9.1.20</flying-saucer.version>
         <junit>4.13.2</junit>
@@ -112,11 +112,11 @@
                 <version>1.7.21</version>
             </dependency>
 
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.17</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>log4j</groupId>-->
+<!--                <artifactId>log4j</artifactId>-->
+<!--                <version>1.2.17</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>org.projectlombok</groupId>
