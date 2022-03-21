@@ -19,8 +19,8 @@
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
 
-        <commons-io.version>2.4</commons-io.version>
-        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-compress.version>1.21</commons-compress.version>
         <commons-pool2.version>2.6.1</commons-pool2.version>
 

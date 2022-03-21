@@ -36,18 +36,17 @@
         <spring.boot.mybatis>1.3.2</spring.boot.mybatis>
         <oracle.driver.version>11.2.0.4.0</oracle.driver.version>
         <alibaba.druid.version>1.1.21</alibaba.druid.version>
-        <alibaba.fastjson.version>1.2.60</alibaba.fastjson.version>
+        <alibaba.fastjson.version>1.2.79</alibaba.fastjson.version>
         <cxf.version>3.1.4</cxf.version>
         <mysql-connector>5.1.46</mysql-connector>
         <skipTests>true</skipTests>
         <bouncycastle.version>1.64</bouncycastle.version>
         <ofdrw.version>1.6.4</ofdrw.version>
         <pdfbox.version>2.0.20</pdfbox.version>
-        <commons-io.version>2.4</commons-io.version>
-        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-compress.version>1.21</commons-compress.version>
         <commons-pool2.version>2.6.1</commons-pool2.version>
-        <flying-saucer.version>9.1.20</flying-saucer.version>
         <junit>4.13.2</junit>
         <flexmark.version>0.62.2</flexmark.version>
         <cn.hutool>5.7.22</cn.hutool>

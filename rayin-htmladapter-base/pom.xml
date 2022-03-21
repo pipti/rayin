@@ -70,8 +70,21 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-databind</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.googlecode.libphonenumber</groupId>
+                    <artifactId>libphonenumber</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
+        <!-- 针对json-schema-validator com.googlecode.libphonenumber 版本更新-->
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>8.12.45</version>
+        </dependency>
+
+
+
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
