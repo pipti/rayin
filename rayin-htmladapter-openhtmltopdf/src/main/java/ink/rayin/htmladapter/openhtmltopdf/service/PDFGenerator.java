@@ -433,7 +433,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
             if(page.getMarkKeys() != null && page.getMarkKeys().size() > 0){
                 page.getMarkKeys().forEach(s->{
                     try {
-                        List<float[]> fl = SignatureService.findKeywords(os,s.getKeyword());
+                        List<float[]> fl = PDFBoxPositionFindByKey.findKeywordPagesPostions(os.toByteArray(),s.getKeyword());
                         fl.forEach(f->{
                             MarkInfo mi = new MarkInfo();
                             mi.setKeyword(s.getKeyword());

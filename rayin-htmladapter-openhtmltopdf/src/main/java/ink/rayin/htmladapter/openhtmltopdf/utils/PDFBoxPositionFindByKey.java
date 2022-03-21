@@ -66,15 +66,6 @@ public class PDFBoxPositionFindByKey {
         return hits;
     }
 
-//    public static void main(String[] args) throws IOException {
-//        String filePath = "/Users/eric/Downloads/document.pdf";
-//        File file = new File(filePath);
-//        PDDocument document = PDDocument.load(file);
-//        byte[] fb = IoUtil.toByteArray(new FileInputStream(file));
-//        //PDFBoxPositionFindByKey pdfBoxPositionFindByKey = new PDFBoxPositionFindByKey();
-//        log.debug(JSON.toJSON(PDFBoxPositionFindByKey.findKeywordPagesPostions(fb,"PMSSIGN")).toString());
-//    }
-
     /**
      * 搜索PDF关键字
      * @param pdfData
@@ -85,7 +76,6 @@ public class PDFBoxPositionFindByKey {
      */
     public static List<float[]> findKeywordPagesPostions(byte[] pdfData, String keyword) throws IOException {
         PDDocument document = PDDocument.load(pdfData);
-        //List<PageKeywordPositions> positions = new ArrayList<PageKeywordPositions>();
         List<float[]> pagesPositions = new ArrayList<>();
         for (int page = 1; page <= document.getNumberOfPages(); page++) {
             List<float[]> pagePositions = findKeywordPagePostions(pdfData,keyword,page);
@@ -109,10 +99,10 @@ public class PDFBoxPositionFindByKey {
         List<float[]> positions = new ArrayList<>();
         List<TextPositionSequence> hits = findKeywordPage(document, pageNum, keyword);
         for (TextPositionSequence hit : hits) {
-            TextPosition lastPosition = hit.textPositionAt(hit.length() - 1);
             float[] pos = new float[]{pageNum,hit.getX(),hit.getY()};
             positions.add(pos);
         }
         return positions;
     }
+
 }

@@ -19,6 +19,10 @@ import org.apache.pdfbox.text.TextPosition;
 
 import java.util.List;
 
+/**
+ * TextPositionSequence
+ * @author Jonah wz
+ */
 public class TextPositionSequence implements CharSequence{
     public TextPositionSequence(List<TextPosition> textPositions) {
         this(textPositions, 0, textPositions.size());
@@ -70,8 +74,9 @@ public class TextPositionSequence implements CharSequence{
     }
 
     public float getWidth() {
-        if (end == start)
+        if (end == start) {
             return 0;
+        }
         TextPosition first = textPositions.get(start);
         TextPosition last = textPositions.get(end - 1);
         return last.getWidthDirAdj() + last.getXDirAdj() - first.getXDirAdj();

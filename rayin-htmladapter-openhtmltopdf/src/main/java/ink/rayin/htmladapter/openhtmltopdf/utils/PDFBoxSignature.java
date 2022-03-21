@@ -40,7 +40,7 @@ import java.util.List;
 public class PDFBoxSignature {
 
     /**
-     * 签章
+     * 多个签章类型
      * @param password
      *            秘钥密码
      * @param keyStorePath
@@ -50,46 +50,16 @@ public class PDFBoxSignature {
      * @param signatureProperties
      *            签名坐标、页码、章信息
      */
-    public static void sign(String password, String keyStorePath, String inputFile, String signedFile,
+    public static void multipleSign(String password, String keyStorePath, String inputFile, String signedFile,
                             List<SignatureProperty> signatureProperties) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
-//        boolean externallySign = false;
-//        Security.addProvider(SecurityProvider.getProvider());
-//        //CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-//
-//
-//        // load the keystore
-//        KeyStore keyStore = KeyStore.getInstance("PKCS12");
-//        keyStore.load(new FileInputStream(keyStorePath), password.toCharArray());
-//
-//        //Certificate certificate = keyStore.getCertificateChain(keyStore.aliases().nextElement())[0];
-//
-//        // sign PDF
-//        String inPath = inputFile;
-//        File destFile;
-//        SignatureInfo signatureInfo =signatureInfos.get(0);
-//        try (FileInputStream fis = new FileInputStream(signatureInfo.getSignaturePath()))
-//        {
-//            CreateVisibleSignature signing = new CreateVisibleSignature(keyStore, password.toCharArray());
-//            signing.setVisibleSignDesigner(inPath, signatureInfo.getX(), signatureInfo.getY(), -50, fis, signatureInfo.getPageNum());
-//            signing.setVisibleSignatureProperties("name", "location", "Security", 0, 1, true);
-//            signing.setExternalSigning(externallySign);
-//            destFile = new File(signedFile);
-//            //signing.signPDF(new File(inPath), destFile, null);
-//            signing.signPDF(new FileInputStream(inPath), new FileOutputStream(destFile), null);
-//        } catch (UnrecoverableKeyException e) {
-//            e.printStackTrace();
-//        }
-
-//        sign(password, ResourceUtil.getResource(keyStorePath).getInputStream(),new FileInputStream(inputFile),
-//                new FileOutputStream(signedFile),signatureInfos);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        sign(password, ResourceUtil.getResource(keyStorePath).getInputStream(),ResourceUtil.getResourceAsStream(inputFile),
+        multipleSign(password, ResourceUtil.getResource(keyStorePath).getInputStream(),ResourceUtil.getResourceAsStream(inputFile),
                 bos, signatureProperties);
         FileUtils.writeByteArrayToFile(new File(signedFile),bos.toByteArray());
     }
 
     /**
-     * 签章
+     * 多个签章类型
      * @param password
      *            秘钥密码
      * @param keyStoreIn
@@ -101,7 +71,7 @@ public class PDFBoxSignature {
      * @param signatureProperties
      *            签名坐标、页码、章信息
      */
-    public static void sign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
+    public static void multipleSign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
                             List<SignatureProperty> signatureProperties) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
         boolean externallySign = false;
         Security.addProvider(SecurityProvider.getProvider());
@@ -142,7 +112,7 @@ public class PDFBoxSignature {
     }
 
     /**
-     *
+     * 单个签章类型
      * @param password 密码
      * @param keyStoreIn 秘钥
      * @param inputFileIs 输入pdf文件流
@@ -158,7 +128,7 @@ public class PDFBoxSignature {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static void signSameLocation(String password, InputStream keyStoreIn, InputStream inputFileIs,ByteArrayOutputStream signedFileOs,
+    public static void singleSign(String password, InputStream keyStoreIn, InputStream inputFileIs,ByteArrayOutputStream signedFileOs,
                                         SignatureProperty signatureProperty) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         ByteArrayOutputStream tos = new ByteArrayOutputStream();
         IOUtils.copy(inputFileIs,tos);
@@ -177,11 +147,11 @@ public class PDFBoxSignature {
             cloneSignatureProperty.setPageNum(i);
             signatureProperties.add(cloneSignatureProperty);
         }
-        sign(password, keyStoreIn, inputFileIs2, signedFileOs, signatureProperties);
+        multipleSign(password, keyStoreIn, inputFileIs2, signedFileOs, signatureProperties);
     }
 
     /**
-     *
+     * 单个签章类型
      * @param password
      * @param keyStorePath
      * @param inputFilePath
@@ -197,10 +167,10 @@ public class PDFBoxSignature {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static void signSameLocation(String password, String keyStorePath, String inputFilePath, String signedFilePath,
+    public static void singleSign(String password, String keyStorePath, String inputFilePath, String signedFilePath,
                             SignatureProperty signatureProperty) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        signSameLocation(password, new FileInputStream(keyStorePath),new FileInputStream(inputFilePath),
+        singleSign(password, new FileInputStream(keyStorePath),new FileInputStream(inputFilePath),
                 bos, signatureProperty);
         FileUtils.writeByteArrayToFile(new File(signedFilePath),bos.toByteArray());
     }
