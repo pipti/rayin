@@ -21,8 +21,8 @@ import lombok.Setter;
 
 /**
  * 标记信息
- * @Date 2020-03-22
- * @author Jonah wz
+ *
+ * @author Jonah wz 2020-03-22
  */
 @Data
 public class MarkInfo {

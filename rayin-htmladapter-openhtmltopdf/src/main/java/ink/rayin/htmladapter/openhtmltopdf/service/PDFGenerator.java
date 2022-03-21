@@ -1168,7 +1168,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws SAXException
-     * @date 2020-01-07
+     * 2020-01-07
      */
     @Override
     public HashMap<String, String> pdfAttrsRead(InputStream fis) throws IOException, ParserConfigurationException, SAXException {
@@ -1195,7 +1195,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws SAXException
-     * @date 2020-01-07
+     * 2020-01-07
      */
     @Override
     public String pdfPageInfoRead(InputStream fis) throws ParserConfigurationException, SAXException, IOException {

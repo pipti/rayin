@@ -38,7 +38,6 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import sun.net.www.protocol.file.FileURLConnection;
 
 import java.awt.*;
 import java.io.*;
@@ -54,8 +53,8 @@ import java.util.jar.JarFile;
  * OpenhttptopdfRenderBuilder对象工厂
  * 实例化OpenhttptopdfRenderBuilder对象，添加字体
  *
- * @author Jonah wz
- * @date 2019-08-10
+ * @author Jonah wz 2019-08-10
+ *
  * @version 1.0
  * @since 1.8
  */
@@ -199,7 +198,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
             logger.warn("本地目录「localfonts」 没有发现字体！");
         }
 
-        if(urlConn != null && (urlConn instanceof FileURLConnection)) {
+        if(urlConn != null) {
             fontsLocalDir = new File(ResourceUtil.getResource("fonts").getURI());
 
             if (fontsLocalDir != null && fontsLocalDir.isDirectory()) {
@@ -236,7 +235,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         }else{
             logger.warn("jar包 「rayin-font」 没有发现字体！");
         }
-        if(urlConn != null && (urlConn instanceof FileURLConnection)) {
+        if(urlConn != null) {
             fontsLocalDir = new File(ResourceUtil.getResource("fonts").getURI());
 
             if (fontsLocalDir != null && fontsLocalDir.isDirectory()) {

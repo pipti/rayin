@@ -90,7 +90,7 @@ public class CreateSignedTimeStamp implements SignatureInterface
      * 
      * @param document given Pdf
      * @param output Where the file will be written
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void signDetached(PDDocument document, OutputStream output) throws IOException
     {
@@ -135,35 +135,35 @@ public class CreateSignedTimeStamp implements SignatureInterface
         return new byte[] {};
     }
 
-    public static void main(String[] args) throws IOException
-    {
-        if (args.length != 3)
-        {
-            usage();
-            System.exit(1);
-        }
-
-        String tsaUrl = null;
-        if ("-tsa".equals(args[1]))
-        {
-            tsaUrl = args[2];
-        }
-        else
-        {
-            usage();
-            System.exit(1);
-        }
-
-        // sign PDF
-        CreateSignedTimeStamp signing = new CreateSignedTimeStamp(tsaUrl);
-
-        File inFile = new File(args[0]);
-        String name = inFile.getName();
-        String substring = name.substring(0, name.lastIndexOf('.'));
-
-        File outFile = new File(inFile.getParent(), substring + "_timestamped.pdf");
-        signing.signDetached(inFile, outFile);
-    }
+//    public static void main(String[] args) throws IOException
+//    {
+//        if (args.length != 3)
+//        {
+//            usage();
+//            System.exit(1);
+//        }
+//
+//        String tsaUrl = null;
+//        if ("-tsa".equals(args[1]))
+//        {
+//            tsaUrl = args[2];
+//        }
+//        else
+//        {
+//            usage();
+//            System.exit(1);
+//        }
+//
+//        // sign PDF
+//        CreateSignedTimeStamp signing = new CreateSignedTimeStamp(tsaUrl);
+//
+//        File inFile = new File(args[0]);
+//        String name = inFile.getName();
+//        String substring = name.substring(0, name.lastIndexOf('.'));
+//
+//        File outFile = new File(inFile.getParent(), substring + "_timestamped.pdf");
+//        signing.signDetached(inFile, outFile);
+//    }
 
     private static void usage()
     {

@@ -23,8 +23,7 @@ import java.util.List;
 /**
  * 单模板页码配置
  *
- * @date 2019-08-25
- * @author Jonah wz
+ * @author Jonah wz 2019-08-25
  */
 public class PageNumProperties {
 

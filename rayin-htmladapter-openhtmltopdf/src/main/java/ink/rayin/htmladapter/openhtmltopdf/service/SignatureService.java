@@ -31,7 +31,7 @@ public class SignatureService {
 
     /**
      * 根据关键字进行签章
-     * @param bos
+     * @param bos file ByteArrayOutputStream
      * @param keywordSignatureProperty
      */
     public static List<float[]> keywordSignature(ByteArrayOutputStream bos,
@@ -42,7 +42,7 @@ public class SignatureService {
 
     /**
      * 根据关键字进行搜索
-     * @param bos
+     * @param bos file ByteArrayOutputStream
      * @param keys
      */
     public static List<float[]> findKeywords(ByteArrayOutputStream bos,
@@ -54,7 +54,7 @@ public class SignatureService {
     /**
      * 多页签名
      */
-    public void multiplySignature(MultiplySignatureProperty multiplySignatureProperty){
-
-    }
+//    public void multiplySignature(MultiplySignatureProperty multiplySignatureProperty){
+//
+//    }
 }

@@ -17,8 +17,8 @@ package ink.rayin.htmladapter.base.utils;
 
 /**
  * 编码枚举
- * @author Jonah wz
- * @date 2019-6-3
+ * @author Jonah wz 2019-6-3
+ *
  */
 public enum CodeMessage {
     SUCCESS(0, "SUCCESS"),

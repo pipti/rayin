@@ -26,14 +26,26 @@ public class PageKeywordPositions {
 
     private List<float[]> positions;
 
+    /**
+     * 获取内容
+     * @return
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     * 设置内容
+     * @param content
+     */
     public void setContent(String content) {
         this.content = content;
     }
     /**
+     *
+     * 获取坐标信息
+     *
+     * @return
      * float[0]:页码
      * float[1]:x 坐标
      * float[2]:y 坐标
@@ -42,6 +54,10 @@ public class PageKeywordPositions {
         return positions;
     }
 
+    /**
+     * 设置坐标
+     * @param positions
+     */
     public void setPostions(List<float[]> positions) {
         this.positions = positions;
     }

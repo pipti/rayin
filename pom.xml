@@ -8,6 +8,7 @@
     <artifactId>rayin-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+    <name>rayin</name>
     <modules>
         <module>rayin-tools</module>
         <module>rayin-htmladapter-base</module>
@@ -25,7 +26,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <spring.cloud.version>2.0.3.RELEASE</spring.cloud.version>
+        <spring.cloud.version>2.6.4</spring.cloud.version>
         <spring.cloud.alibaba.version>0.9.0.RELEASE</spring.cloud.alibaba.version>
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -68,9 +69,14 @@
         <developer>
             <name>Jonah wz</name>
             <email>carefreefly@163.com</email>
+
         </developer>
     </developers>
-
+    <scm>
+        <url>https://gitee.com/Rayin/rayin</url>
+        <connection>https://gitee.com/Rayin/rayin.git</connection>
+        <developerConnection>https://gitee.com/Rayin/rayin.git</developerConnection>
+    </scm>
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -124,11 +130,11 @@
                 <version>1.18.20</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.auth0</groupId>
-                <artifactId>java-jwt</artifactId>
-                <version>3.2.0</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.auth0</groupId>-->
+<!--                <artifactId>java-jwt</artifactId>-->
+<!--                <version>3.2.0</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -204,10 +210,10 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>log4j</groupId>-->
+<!--            <artifactId>log4j</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -224,10 +230,10 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.auth0</groupId>-->
+<!--            <artifactId>java-jwt</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -339,7 +345,20 @@
 <!--                    </execution>-->
 <!--                </executions>-->
 <!--            </plugin>-->
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

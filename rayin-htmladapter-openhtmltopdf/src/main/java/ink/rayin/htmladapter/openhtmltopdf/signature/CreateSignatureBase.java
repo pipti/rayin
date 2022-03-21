@@ -94,6 +94,10 @@ public abstract class CreateSignatureBase implements SignatureInterface
         this.privateKey = privateKey;
     }
 
+    /**
+     * set certificateChain
+     * @param certificateChain
+     */
     public final void setCertificateChain(final Certificate[] certificateChain)
     {
         this.certificateChain = certificateChain;
@@ -104,6 +108,10 @@ public abstract class CreateSignatureBase implements SignatureInterface
         return certificateChain;
     }
 
+    /**
+     * set TSA url
+     * @param tsaUrl
+     */
     public void setTsaUrl(String tsaUrl)
     {
         this.tsaUrl = tsaUrl;

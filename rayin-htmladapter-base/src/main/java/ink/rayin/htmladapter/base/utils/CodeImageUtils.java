@@ -32,8 +32,8 @@ import java.util.Map;
 
 /**
  * 条形码，二维码生成图片工具类
- * @date 2019-09-07
- * @author Jonah wz
+ *
+ * @author Jonah wz 2019-09-07
  */
 public class CodeImageUtils {
 

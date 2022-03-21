@@ -148,10 +148,9 @@ public class HttpURLConnHelper {
      * 作用：实现网络访问文件，先给服务器通过“POST”方式提交数据，再返回相应的数据
      *
      * @param url
-     *            ：访问网络的url地址
+     *            访问网络的url地址
      * @param params
-     *            ：访问url时，需要传递给服务器的参数。格式为：username=wangxiangjun&password=abcde&
-     *            qq=32432432
+     *            访问url时，需要传递给服务器的参数。格式为：username=wangxiangjun&amp;password=abcde&amp;qq=32432432
      *            为了防止传中文参数时出现编码问题。采用URLEncoder.encode()对含中文的字符串进行编码处理。
      *            服务器端会自动对进行过编码的字符串进行decode()解码。
      * @return byte[]
@@ -208,7 +207,7 @@ public class HttpURLConnHelper {
     }
 
     /**
-     * 网络访问，上传附件 五个参数： 1、String url：指定表单提交的url地址 2、Map<String, String>
+     * 网络访问，上传附件 五个参数： 1、String url：指定表单提交的url地址 2、Map&lt;String, String&gt;
      * map：将上传控件之外的其他控件的数据信息存入map对象 3、String filePath：指定要上传到服务器的文件的客户端路径
      * 4、byte[] body_data：获取到要上传的文件的输入流信息，通过ByteArrayOutputStream流转成byte[]
      * 5、String charset：设置字符集
@@ -312,6 +311,11 @@ public class HttpURLConnHelper {
         return null;
     }
 
+    /**
+     * streamToByte
+     * @param is InputStream
+     * @return byte[]
+     */
     public static byte[] streamToByte(InputStream is) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int c = 0;

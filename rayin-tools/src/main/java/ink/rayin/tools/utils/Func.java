@@ -1129,12 +1129,12 @@ public class Func {
 	/**
 	 * 将json反序列化成对象
 	 *
+	 * @param <T>           T 泛型标记
 	 * @param in            InputStream
 	 * @param typeReference 泛型类型
-	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T parse(InputStream in, TypeReference<?> typeReference) {
+	public static <T> Object parse(InputStream in, TypeReference<?> typeReference) {
 		return JsonUtil.parse(in, typeReference);
 	}
 

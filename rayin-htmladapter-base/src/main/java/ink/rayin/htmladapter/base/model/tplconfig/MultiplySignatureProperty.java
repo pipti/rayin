@@ -21,7 +21,7 @@ import lombok.Setter;
 /**
  * 签名签章属性
  *
- * @date 2019-09-08
+ * 2019-09-08
  * @author Jonah wz
  */
 public class MultiplySignatureProperty {

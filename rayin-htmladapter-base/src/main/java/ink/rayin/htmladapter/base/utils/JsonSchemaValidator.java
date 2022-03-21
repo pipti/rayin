@@ -41,7 +41,6 @@ public class JsonSchemaValidator {
      * json schema校验
      * @param jsonNode 待校验的json
      * @param schemaNode json格式规则描述
-     * @return
      */
     public static void validateJsonByFgeByJsonNode(JsonNode jsonNode, JsonNode schemaNode) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -65,6 +64,11 @@ public class JsonSchemaValidator {
         }
     }
 
+    /**
+     * getJsonNodeFromString
+     * @param jsonStr json String
+     * @return JsonNode
+     */
     public static JsonNode getJsonNodeFromString(String jsonStr) {
         JsonNode jsonNode = null;
         try {
@@ -76,6 +80,11 @@ public class JsonSchemaValidator {
         return jsonNode;
     }
 
+    /**
+     * getJsonNodeFromFile
+     * @param filePath filePath
+     * @return JsonNode
+     */
     public static JsonNode getJsonNodeFromFile(String filePath) {
         JsonNode jsonNode = null;
         try {
@@ -88,6 +97,11 @@ public class JsonSchemaValidator {
         return jsonNode;
     }
 
+    /**
+     * getJsonNodeFromInputStream
+     * @param is InputStream
+     * @return JsonNode
+     */
     public static JsonNode getJsonNodeFromInputStream(InputStream is) {
         JsonNode jsonNode = null;
         try {

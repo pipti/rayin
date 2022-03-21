@@ -54,7 +54,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * signature is kept and added in an extra step without using PDFBox methods. This is disabled
      * by default.
      *
-     * @param lateExternalSigning
+     * @param lateExternalSigning lateExternalSigning
      */
     public void setLateExternalSigning(boolean lateExternalSigning)
     {
@@ -64,7 +64,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
     /**
      * Set visible signature designer for a new signature field.
      * 
-     * @param filename
+     * @param filename filename
      * @param x position of the signature field
      * @param y position of the signature field
      * @param zoomPercent increase (positive value) or decrease (negative value) image with x percent.
@@ -186,7 +186,6 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param signedFile The file to be signed.
      * @param tsaUrl optional TSA url
      * @throws IOException
-     * @return
      */
     public void signPDF(InputStream inputFile, OutputStream signedFile, String tsaUrl) throws IOException
     {

@@ -21,8 +21,7 @@ import lombok.Setter;
 /**
  * 单模板页码显示属性
  *
- * @date 2019-08-25
- * @author Jonah wz
+ * @author Jonah wz 2019-08-25
  */
 public class PageNumDisplayPos {
     @Getter

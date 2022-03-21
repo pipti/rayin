@@ -48,8 +48,8 @@ public interface PDFGeneratorInterface {
      * @param templateLocation 模板配置文件路径
      * @param jsonData  数据json
      * @param outputFilePath  输出文件路径
-     * @return
-     * @throws Exception
+     * @return RayinMeta 元数据类
+     * @throws Exception 抛出异常
      */
     RayinMeta generatePdfFileByTplConfigFile(String templateLocation, JSONObject jsonData,
                                              String outputFilePath) throws Exception;
@@ -61,7 +61,7 @@ public interface PDFGeneratorInterface {
      * @param os  输出文件路径
      * @param password  密码
      * @return RayinMeta PDF元数据
-     * @throws Exception
+     * @throws Exception 抛出异常
      */
     RayinMeta generateEncryptPdfStreamByConfigStr(String configStr, JSONObject jsonData,
                                                   ByteArrayOutputStream os, String password) throws Exception;
@@ -70,8 +70,8 @@ public interface PDFGeneratorInterface {
      * @param configStr  模板配置json
      * @param data   数据json
      * @param os         输出流
-     * @return
-     * @throws Exception
+     * @return RayinMeta 元数据类
+     * @throws Exception 抛出异常
      */
      RayinMeta generatePdfStreamByTplConfigStr(String configStr, JSONObject data,
                                                ByteArrayOutputStream os) throws Exception;
@@ -81,8 +81,8 @@ public interface PDFGeneratorInterface {
      * @param configStr  模板配置json
      * @param dataJson   数据json
      * @param os         输出流
-     * @return
-     * @throws Exception
+     * @return RayinMeta 元数据类
+     * @throws Exception 抛出异常
      */
 //    RayinMeta generateByTplConfigStrOnlineExport(String configStr, JSONObject dataJson,
 //                                                 ByteArrayOutputStream os) throws Exception;
@@ -94,8 +94,8 @@ public interface PDFGeneratorInterface {
      * @param htmlLocation 参见类说明
      * @param jsonData
      * @param outputFilePath
-     * @return
-     * @throws Exception
+     * @return boolean true or false
+     * @throws Exception 抛出异常
      */
     boolean generatePdfFileByHtmlAndData(String htmlLocation, JSONObject jsonData,
                                          String outputFilePath) throws Exception;
@@ -106,8 +106,8 @@ public interface PDFGeneratorInterface {
      * @param htmlLocation 构件路径
      * @param jsonData json数据
      * @param pp 页面信息
-     * @return
-     * @throws Exception
+     * @return PDF ByteArrayOutputStream
+     * @throws Exception 抛出异常
      */
     ByteArrayOutputStream generatePdfSteamByHtmlAndData(String htmlLocation, JSONObject jsonData, List<HashMap> pp) throws Exception;
 
@@ -119,7 +119,7 @@ public interface PDFGeneratorInterface {
      * @param data 数据
      * @param pp 页面信息
      * @return
-     * @throws Exception
+     * @throws Exception 抛出异常
      */
      //ByteArrayOutputStream generatePdfSteamByHtmlAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) throws Exception;
 
@@ -127,8 +127,8 @@ public interface PDFGeneratorInterface {
      * 将html文件与数据匹配生成转换后的字符串
      * @param htmlLocation
      * @param variables
-     * @return
-     * @throws IOException
+     * @return html字符串
+     * @throws IOException 抛出异常
      */
      String htmlFileDataFilling(String htmlLocation, JSONObject variables) throws IOException, WriterException;
 
@@ -145,8 +145,8 @@ public interface PDFGeneratorInterface {
      * 将html字符串与数据匹配生成转换后的字符串
      * @param htmlStr html字符串
      * @param variables 数据
-     * @return
-     * @throws IOException
+     * @return html字符串
+     * @throws IOException 抛出异常
      */
      String htmlStrDataFilling(String htmlStr, JSONObject variables) throws IOException, WriterException;
 
@@ -155,15 +155,15 @@ public interface PDFGeneratorInterface {
      * html转换为pdf
      * @param htmlStr
      * @param outputFile
-     * @throws Exception
+     * @throws Exception 抛出异常
      */
      void generatePdfFileByHtmlStr(String htmlStr, String outputFile) throws Exception;
 
     /**
      * html字符串转换为pdf字节流
      * @param htmlStr
-     * @return
-     * @throws Exception
+     * @return PDF ByteArrayOutputStream
+     * @throws Exception 抛出异常
      */
     ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlStr) throws Exception;
 
@@ -192,22 +192,22 @@ public interface PDFGeneratorInterface {
     /**
      * PDF 元数据读取
      * @param pdf pdf输入流
-     * @return
+     * @return 元数据HashMap
      * @throws IOException
      * @throws ParserConfigurationException
-     * @throws SAXException
-     * @date 2020-01-07
+     * @throws SAXException 抛出异常
+     * 2020-01-07
      */
      HashMap<String, String> pdfAttrsRead(InputStream pdf) throws IOException, ParserConfigurationException, SAXException;
 
     /**
      * PDF 模板元数据读取
      * @param pdf
-     * @return
-     * @throws IOException
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @date 2020-01-07
+     * @return json 字符串
+     * @throws IOException 抛出异常
+     * @throws ParserConfigurationException 抛出异常
+     * @throws SAXException 抛出异常
+     * 2020-01-07
      */
      String pdfPageInfoRead(InputStream pdf) throws ParserConfigurationException, SAXException, IOException;
 
@@ -215,8 +215,8 @@ public interface PDFGeneratorInterface {
      * 根据html文件路径生成pdf字节流
      * @param htmlLocation  构件路径
      * @param data     json数据
-     * @return
-     * @throws Exception
+     * @return PDF ByteArrayOutputStream
+     * @throws Exception 抛出异常
      */
      ByteArrayOutputStream generatePdfSteamByHtmlAndData(String htmlLocation, JSONObject data) throws Exception;
 
@@ -224,8 +224,8 @@ public interface PDFGeneratorInterface {
      * 根据html文件流（html）生成pdf字节流
      * @param htmlInputStream html输入流
      * @param data     json数据
-     * @return
-     * @throws Exception
+     * @return PDF ByteArrayOutputStream
+     * @throws Exception 抛出异常
      */
      ByteArrayOutputStream generatePdfSteamByHtmlAndData(InputStream htmlInputStream, JSONObject data) throws Exception;
 
@@ -238,8 +238,8 @@ public interface PDFGeneratorInterface {
      * @param y
      * @param width
      * @param height
-     * @return
-     * @throws Exception
+     * @return PDF ByteArrayOutputStream
+     * @throws Exception 抛出异常
      */
      ByteArrayOutputStream addImage(InputStream inputStream,byte[] imageByte, int page,float x,float y,float width, float height) throws Exception;
 
@@ -253,20 +253,20 @@ public interface PDFGeneratorInterface {
      * @param y
      * @param width
      * @param height
-     * @return
-     * @throws Exception
+     * @return PDF ByteArrayOutputStream
+     * @throws Exception 抛出异常
      */
      ByteArrayOutputStream addImage(InputStream inputStream, ByteArrayOutputStream out,byte[] imageByte, int page,float x,float y,float width, float height) throws Exception;
 
     /**
      * 默认初始化
-     * @throws Exception
+     * @throws Exception 抛出异常
      */
      void init() throws Exception;
 
     /**
      * 获取加载的字体名称
-     * @return
+     * @return  LinkedHashSet
      */
      LinkedHashSet<String> getFontNames();
 }

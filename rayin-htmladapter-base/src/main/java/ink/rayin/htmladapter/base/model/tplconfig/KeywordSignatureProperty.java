@@ -21,8 +21,7 @@ import lombok.Setter;
 /**
  * 签名签章属性
  *
- * @date 2019-09-08
- * @author Jonah wz
+ * @author Jonah wz 2019-09-08
  */
 public class KeywordSignatureProperty {
 

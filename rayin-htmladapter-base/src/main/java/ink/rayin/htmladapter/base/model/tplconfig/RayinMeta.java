@@ -24,8 +24,7 @@ import java.util.List;
 /**
  * 自定义源数据
  *
- * @date 2019-08-25
- * @author Jonah wz
+ * @author Jonah wz 2019-08-25
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RayinMeta {

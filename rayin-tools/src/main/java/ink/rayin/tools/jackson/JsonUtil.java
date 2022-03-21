@@ -85,7 +85,7 @@ public class JsonUtil {
 	 */
 	public static <T> T parse(String content, TypeReference<?> typeReference) {
 		try {
-			return getInstance().readValue(content, typeReference);
+			return (T) getInstance().readValue(content, typeReference);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -118,7 +118,7 @@ public class JsonUtil {
 	 */
 	public static <T> T parse(byte[] bytes, TypeReference<?> typeReference) {
 		try {
-			return getInstance().readValue(bytes, typeReference);
+			return (T) getInstance().readValue(bytes, typeReference);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -150,7 +150,7 @@ public class JsonUtil {
 	 */
 	public static <T> T parse(InputStream in, TypeReference<?> typeReference) {
 		try {
-			return getInstance().readValue(in, typeReference);
+			return (T) getInstance().readValue(in, typeReference);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -170,12 +170,12 @@ public class JsonUtil {
 				content = StringPool.LEFT_SQ_BRACKET + content + StringPool.RIGHT_SQ_BRACKET;
 			}
 
-			List<Map<String, Object>> list = getInstance().readValue(content, new TypeReference<List<T>>() {
+			List<T> result = getInstance().readValue(content, new TypeReference<List<T>>() {
 			});
-			List<T> result = new ArrayList<>();
-			for (Map<String, Object> map : list) {
-				result.add(toPojo(map, valueTypeRef));
-			}
+//			List<T> result = new ArrayList<>();
+//			for (Map<String, Object> map : list) {
+//				result.add(toPojo(map, valueTypeRef));
+//			}
 			return result;
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
@@ -194,13 +194,13 @@ public class JsonUtil {
 
 	public static <T> Map<String, T> toMap(String content, Class<T> valueTypeRef) {
 		try {
-			Map<String, Map<String, Object>> map = getInstance().readValue(content, new TypeReference<Map<String, T>>() {
+			return getInstance().readValue(content, new TypeReference<Map<String, T>>() {
 			});
-			Map<String, T> result = new HashMap<>(16);
-			for (Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
-				result.put(entry.getKey(), toPojo(entry.getValue(), valueTypeRef));
-			}
-			return result;
+//			Map<String, T> result = new HashMap<>(16);
+//			for (Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
+//				result.put(entry.getKey(), toPojo(entry.getValue(), valueTypeRef));
+//			}
+//			return result;
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}

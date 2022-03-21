@@ -23,8 +23,7 @@ import java.util.List;
 /**
  * 模板配置
  *
- * @date 2019-08-25
- * @author Jonah wz
+ * @author Jonah wz 2019-08-25
  */
 public class TemplateConfig {
 

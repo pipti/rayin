@@ -100,7 +100,6 @@ public class PDFBoxSignature {
      *            签章后文件流
      * @param signatureProperties
      *            签名坐标、页码、章信息
-     * @return
      */
     public static void sign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
                             List<SignatureProperty> signatureProperties) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {

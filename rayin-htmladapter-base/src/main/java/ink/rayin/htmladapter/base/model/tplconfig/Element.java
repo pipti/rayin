@@ -25,8 +25,7 @@ import java.util.Set;
 /**
  * 单模板属性
  *
- * @date 2019-08-25
- * @author Jonah wz
+ * @author Jonah wz 2019-08-25
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Element {
