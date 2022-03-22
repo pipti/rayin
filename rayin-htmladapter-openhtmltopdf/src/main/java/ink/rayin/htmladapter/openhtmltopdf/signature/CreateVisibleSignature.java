@@ -67,17 +67,25 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param filename filename
      * @param x position of the signature field
      * @param y position of the signature field
-     * @param zoomPercent increase (positive value) or decrease (negative value) image with x percent.
+     * @param width image width.
+     * @param height image heigth.
      * @param imageStream input stream of an image.
      * @param page the signature should be placed on
      * @throws IOException
      */
-    public void setVisibleSignDesigner(String filename, int x, int y, int zoomPercent, 
+    public void setVisibleSignDesigner(String filename, float x, float y, float width, float height,
             InputStream imageStream, int page) 
             throws IOException
     {
         visibleSignDesigner = new PDVisibleSignDesigner(filename, imageStream, page);
-        visibleSignDesigner.xAxis(x).yAxis(y).zoom(zoomPercent).adjustForRotation();
+        if(width != 0.0 && height != 0.0){
+            visibleSignDesigner.xAxis(x).yAxis(y).width(width).height(height).adjustForRotation();
+        } else if(width != 0.0 && height == 0.0){
+            visibleSignDesigner.xAxis(x).yAxis(y).width(width).adjustForRotation();
+        } else  if(width == 0.0 && height != 0.0){
+            visibleSignDesigner.xAxis(x).yAxis(y).height(height).adjustForRotation();
+        }
+
     }
     /**
      * Set visible signature designer for a new signature field.
@@ -85,17 +93,25 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param fileIn
      * @param x position of the signature field
      * @param y position of the signature field
-     * @param zoomPercent increase (positive value) or decrease (negative value) image with x percent.
+     * @param width image width.
+     * @param height image heigth.
      * @param imageStream input stream of an image.
      * @param page the signature should be placed on
      * @throws IOException
      */
-    public void setVisibleSignDesigner(InputStream fileIn, int x, int y, int zoomPercent,
+    public void setVisibleSignDesigner(InputStream fileIn, float x, float y, float width, float height,
                                        InputStream imageStream, int page)
             throws IOException
     {
         visibleSignDesigner = new PDVisibleSignDesigner(fileIn, imageStream, page);
-        visibleSignDesigner.xAxis(x).yAxis(y).zoom(zoomPercent).adjustForRotation();
+        //visibleSignDesigner.xAxis(x).yAxis(y).zoom(zoomPercent).adjustForRotation();
+        if(width != 0.0 && height != 0.0){
+            visibleSignDesigner.xAxis(x).yAxis(y).width(width).height(height).adjustForRotation();
+        } else if(width != 0.0 && height == 0.0){
+            visibleSignDesigner.xAxis(x).yAxis(y).width(width).adjustForRotation();
+        } else  if(width == 0.0 && height != 0.0){
+            visibleSignDesigner.xAxis(x).yAxis(y).height(height).adjustForRotation();
+        }
     }
 
 
@@ -603,7 +619,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
             signedDocumentFile = new File(documentFile.getParent(), substring + "_signed.pdf");
             // page is 1-based here
             page = 1;
-            signing.setVisibleSignDesigner(args[2], 0, 0, -50, imageStream, page);
+            signing.setVisibleSignDesigner(args[2], 0, 0, 100,100, imageStream, page);
         }
         signing.setVisibleSignatureProperties("name", "location", "Security", 0, page, true);
         signing.setExternalSigning(externalSig);

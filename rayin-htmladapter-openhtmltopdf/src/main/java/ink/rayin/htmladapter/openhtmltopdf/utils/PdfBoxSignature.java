@@ -15,6 +15,7 @@
  */
 package ink.rayin.htmladapter.openhtmltopdf.utils;
 
+import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.model.tplconfig.SignatureProperty;
 import ink.rayin.htmladapter.openhtmltopdf.signature.CreateVisibleSignature;
 import ink.rayin.tools.utils.ResourceUtil;
@@ -37,7 +38,7 @@ import java.util.List;
  * 签章
  * @author Jonah wz
  */
-public class PDFBoxSignature {
+public class PdfBoxSignature implements Signature {
 
     /**
      * 多个签章类型
@@ -50,10 +51,10 @@ public class PDFBoxSignature {
      * @param signatureProperties
      *            签名坐标、页码、章信息
      */
-    public static void multipleSign(String password, String keyStorePath, String inputFile, String signedFile,
+    public void multipleSign(String password, String keyStorePath, String inputFile, String signedFile,
                             List<SignatureProperty> signatureProperties) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        multipleSign(password, ResourceUtil.getResource(keyStorePath).getInputStream(),ResourceUtil.getResourceAsStream(inputFile),
+        multipleSign(password, ResourceUtil.getResourceAsStream(keyStorePath),ResourceUtil.getResourceAsStream(inputFile),
                 bos, signatureProperties);
         FileUtils.writeByteArrayToFile(new File(signedFile),bos.toByteArray());
     }
@@ -71,7 +72,7 @@ public class PDFBoxSignature {
      * @param signatureProperties
      *            签名坐标、页码、章信息
      */
-    public static void multipleSign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
+    public void multipleSign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
                             List<SignatureProperty> signatureProperties) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
         boolean externallySign = false;
         Security.addProvider(SecurityProvider.getProvider());
@@ -97,7 +98,7 @@ public class PDFBoxSignature {
                 signatureInfoBis = ResourceUtil.getResourceAsStream(signatureProperty.getSignatureImage());
             }
 
-            signing.setVisibleSignDesigner(inputFileIs1, signatureProperty.getX(), signatureProperty.getY(), signatureProperty.getZoomPercent(), signatureInfoBis, signatureProperty.getPageNum());
+            signing.setVisibleSignDesigner(inputFileIs1, signatureProperty.getX(), signatureProperty.getY(), signatureProperty.getWidth(),signatureProperty.getHeight(), signatureInfoBis, signatureProperty.getPageNum());
             signing.setVisibleSignatureProperties("name", "location", "Security", 0, signatureProperty.getPageNum(), true);
             signing.setExternalSigning(externallySign);
 
@@ -128,7 +129,7 @@ public class PDFBoxSignature {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static void singleSign(String password, InputStream keyStoreIn, InputStream inputFileIs,ByteArrayOutputStream signedFileOs,
+    public void singleSign(String password, InputStream keyStoreIn, InputStream inputFileIs,ByteArrayOutputStream signedFileOs,
                                         SignatureProperty signatureProperty) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         ByteArrayOutputStream tos = new ByteArrayOutputStream();
         IOUtils.copy(inputFileIs,tos);
@@ -167,10 +168,10 @@ public class PDFBoxSignature {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static void singleSign(String password, String keyStorePath, String inputFilePath, String signedFilePath,
+    public void singleSign(String password, String keyStorePath, String inputFilePath, String signedFilePath,
                             SignatureProperty signatureProperty) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        singleSign(password, new FileInputStream(keyStorePath),new FileInputStream(inputFilePath),
+        singleSign(password, ResourceUtil.getResourceAsStream(keyStorePath), ResourceUtil.getResourceAsStream(inputFilePath),
                 bos, signatureProperty);
         FileUtils.writeByteArrayToFile(new File(signedFilePath),bos.toByteArray());
     }

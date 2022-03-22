@@ -16,7 +16,7 @@
 package ink.rayin.htmladapter.openhtmltopdf.service;
 
 import com.alibaba.fastjson.JSONObject;
-import ink.rayin.htmladapter.base.PDFGeneratorInterface;
+import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.model.tplconfig.*;
 import ink.rayin.htmladapter.base.thymeleaf.ThymeleafHandler;
 import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRenderBuilder;
@@ -27,7 +27,7 @@ import com.google.zxing.WriterException;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import ink.rayin.htmladapter.openhtmltopdf.utils.PDFBoxPositionFindByKey;
+import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxPositionFindByKey;
 import ink.rayin.tools.utils.*;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.base.utils.RayinException;
@@ -67,15 +67,15 @@ import java.util.regex.Pattern;
  * @author Jonah Wang
  */
 
-public class PDFGenerator implements PDFGeneratorInterface {
-    private static Logger logger = LoggerFactory.getLogger(PDFGenerator.class);
+public class PdfBoxGenerator implements PdfGenerator {
+    private static Logger logger = LoggerFactory.getLogger(PdfBoxGenerator.class);
 
     private ThymeleafHandler thymeleafHandler = ThymeleafHandler.getInstance();
 
     private final String jsonSchema = "tpl_schema.json";
     private static JsonNode jsonSchemaNode;
 
-    public PDFGenerator() throws IOException {
+    public PdfBoxGenerator() throws IOException {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 
             if(jsonSchemaNode == null){
@@ -360,7 +360,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
                                         // 关键字页码设置
                                         if(StringUtil.isNotBlank(pos.getMark())){
 
-                                            List<float[]> fl = PDFBoxPositionFindByKey.findKeywordPagePostions(out.get(i).toByteArray(),pos.getMark(),j);
+                                            List<float[]> fl = PdfBoxPositionFindByKey.findKeywordPagePostions(out.get(i).toByteArray(),pos.getMark(),j);
 
                                             if(fl.size() > 0){
 
@@ -433,7 +433,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
             if(page.getMarkKeys() != null && page.getMarkKeys().size() > 0){
                 page.getMarkKeys().forEach(s->{
                     try {
-                        List<float[]> fl = PDFBoxPositionFindByKey.findKeywordPagesPostions(os.toByteArray(),s.getKeyword());
+                        List<float[]> fl = PdfBoxPositionFindByKey.findKeywordPagesPostions(os.toByteArray(),s.getKeyword());
                         fl.forEach(f->{
                             MarkInfo mi = new MarkInfo();
                             mi.setKeyword(s.getKeyword());
@@ -752,6 +752,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
                         }
                         link.attr("style",StringUtil.isBlank(link.attr("style"))?"":(link.attr("style")+";") + "color:white;font-size:0.1px;border:0px;");
                         link.append(value);
+
 //                        link.remove();
                         break;
 
@@ -1296,7 +1297,7 @@ public class PDFGenerator implements PDFGeneratorInterface {
     public static void main(String[] args) throws IOException {
         String html = "<br><br>html文本测试带标签的值，<b>佛挡杀佛</b><br>fdsf,f对方身份的<br><br><br>433ffdsfds";
 
-        PDFGenerator pbts = new PDFGenerator();
+        PdfBoxGenerator pbts = new PdfBoxGenerator();
         int offset = 0;
         pbts.SubStringIgnoreHtml(html,0,0 + 5);
         pbts.SubStringIgnoreHtml(html,0 + 5,0 + 10);

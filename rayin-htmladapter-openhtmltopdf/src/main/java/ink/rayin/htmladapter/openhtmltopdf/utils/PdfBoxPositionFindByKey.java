@@ -31,7 +31,7 @@ import java.util.List;
  * 2022-02-08
  */
 @Slf4j
-public class PDFBoxPositionFindByKey {
+public class PdfBoxPositionFindByKey {
 
     /**
      * 搜索PDF关键字

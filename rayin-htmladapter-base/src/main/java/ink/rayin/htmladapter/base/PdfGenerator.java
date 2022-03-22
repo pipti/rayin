@@ -42,7 +42,7 @@ import java.util.List;
  * </p>
  * @author Jonah wz
  */
-public interface PDFGeneratorInterface {
+public interface PdfGenerator {
     /**
      * 根据模板配置文件路径生成pdf
      * @param templateLocation 模板配置文件路径

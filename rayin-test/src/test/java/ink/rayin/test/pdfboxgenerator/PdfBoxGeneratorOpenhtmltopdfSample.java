@@ -1,10 +1,10 @@
-package ink.rayin.test.pdfgenerator;
+package ink.rayin.test.pdfboxgenerator;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
-import ink.rayin.htmladapter.base.PDFGeneratorInterface;
+import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
-import ink.rayin.htmladapter.openhtmltopdf.service.PDFGenerator;
+import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -17,10 +17,10 @@ import java.sql.Timestamp;
  * Openhtmltopdf adapter generator test class
  */
 @Slf4j
-public class PDFGeneratorOpenhtmltopdfSample {
-    PDFGeneratorInterface pdfGenerator = new PDFGenerator();
+public class PdfBoxGeneratorOpenhtmltopdfSample {
+    PdfGenerator pdfGenerator = new PdfBoxGenerator();
 
-    public PDFGeneratorOpenhtmltopdfSample() throws Exception {
+    public PdfBoxGeneratorOpenhtmltopdfSample() throws Exception {
         pdfGenerator.init();
     }
 

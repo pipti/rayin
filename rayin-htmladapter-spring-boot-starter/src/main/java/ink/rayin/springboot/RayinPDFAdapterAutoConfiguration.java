@@ -15,18 +15,15 @@
  */
 package ink.rayin.springboot;
 
-import ink.rayin.htmladapter.base.PDFGeneratorInterface;
+import ink.rayin.htmladapter.base.PdfGenerator;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import javax.annotation.Resource;
-
 
 @SpringBootConfiguration
-@ConditionalOnClass(PDFGeneratorInterface.class)
+@ConditionalOnClass(PdfGenerator.class)
 @EnableConfigurationProperties(RayinProperties.class)
 public class RayinPDFAdapterAutoConfiguration {
 //    @Resource

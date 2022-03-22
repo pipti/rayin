@@ -25,12 +25,13 @@ import lombok.Setter;
  */
 
 public class SignatureProperty {
-    public SignatureProperty(int x, int y, int pageNum, int zoomPercent, String signatureImage){
+    public SignatureProperty(float x, float y, int pageNum, float width,float height, String signatureImage){
         this.x = x;
         this.y = y;
         this.pageNum = pageNum;
         this.signatureImage = signatureImage;
-        this.zoomPercent = zoomPercent;
+        this.width = width;
+        this.height = height;
     }
 
     public SignatureProperty(){
@@ -43,11 +44,19 @@ public class SignatureProperty {
 
     @Getter
     @Setter
-    private int x;
+    private float x;
 
     @Getter
     @Setter
-    private int y;
+    private float y;
+
+    @Getter
+    @Setter
+    private float width;
+
+    @Getter
+    @Setter
+    private float height;
 
     /**
      * 路径或http、https、base64
@@ -56,7 +65,4 @@ public class SignatureProperty {
     @Setter
     private String signatureImage;
 
-    @Getter
-    @Setter
-    private int zoomPercent = -50;
 }
