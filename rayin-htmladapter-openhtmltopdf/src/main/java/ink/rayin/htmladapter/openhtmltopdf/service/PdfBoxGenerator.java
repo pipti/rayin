@@ -453,27 +453,8 @@ public class PdfBoxGenerator implements PdfGenerator {
             calPageNum = calPageNum + page.getPageCount();
         }
 
-
         efi.setPagesInfo(rp);
         efi.setMarkInfos(signInfo);
-//        logger.info(JSONObject.toJSONString(efi));
-
-//        PDDocument pdfDoc = PDDocument.load(os.toByteArray());
-//        // 设置pdf的可读属性以及密码
-//        if(!pagesConfig.isEditable()){
-//            AccessPermission ap = new AccessPermission();
-//            ap.setCanModify(false);
-//            ap.setCanModifyAnnotations(false);
-//            ap.setCanExtractContent(false);
-//            ap.setCanExtractForAccessibility(true);
-//            ap.setReadOnly();
-//
-//            ProtectionPolicy protection = new StandardProtectionPolicy(pagesConfig.getPassword(), pagesConfig.getPassword(), ap);
-//            pdfDoc.protect(protection);
-//
-//        }
-//        pdfDoc.save(os);
-//        pdfDoc.close();
 
         return efi;
     }
@@ -683,8 +664,6 @@ public class PdfBoxGenerator implements PdfGenerator {
             throws Exception {
         //解析是否存在embed标签，并对其进行解析
         List<ByteArrayOutputStream> apendFiles =  new ArrayList<>();
-//        //解决生僻字
-//        htmlContent = UnCommonCharacterAdapter.UnCommonCharacter(htmlContent);
 
         org.jsoup.nodes.Document htmlDoc = Jsoup.parse(htmlContent);
 
@@ -697,65 +676,20 @@ public class PdfBoxGenerator implements PdfGenerator {
                 }
             }
         }
-        Elements divLinks = htmlDoc.getElementsByTag("object");
-        
-        for (org.jsoup.nodes.Element link : divLinks) {
+        Elements objectLinks = htmlDoc.getElementsByTag("object");
+        //Elements divLinks = htmlDoc.getElementsByTag("object");
+        for (org.jsoup.nodes.Element link : objectLinks) {
             String inner = link.text();
             String type = link.attr("type");
-            //String rValue = StringUtil.isNotBlank(link.attr("r-value"))?link.attr("r-value"):inner;
             String value = link.attr("value");
-            //String value = StringUtil.isNotBlank(dValue)?dValue:rValue;
-
-            //String format1 = link.attr("r-format").toUpperCase();
-            //String format2 = link.attr("format").toUpperCase();
-           // String format = StringUtil.isBlank(format1)?format2:format1;
 
             String style = link.attr("style");
             String[] styles = style.split(";");
             
             if(StringUtil.isNotBlank(type) && StringUtil.isNotBlank(value)){
+                float width = 0;
+                float height = 0;
                 switch(type){
-                    case "mark":
-                        if(markKeys != null){
-                            float width = 0;
-                            float height = 0;
-                            //String border = "";
-                            for(String st:styles){
-                                if(st.indexOf("width:") >= 0){
-                                    width = DisplayMeasureConvert.webMeasureToPDFPoint(st.toLowerCase().replace("width:",""));
-                                   // width = Float.parseFloat(st.replaceAll("[a-zA-Z:; ]",""));
-                                    continue;
-                                }
-                                if(st.indexOf("height:") >= 0){
-                                    height = DisplayMeasureConvert.webMeasureToPDFPoint(st.toLowerCase().replace("height:",""));
-                                    //height = Float.parseFloat(st.replaceAll("[a-zA-Z:; ]",""));
-                                    continue;
-                                }
-                            }
-
-//
-//                            if(StringUtil.isBlank(link.attr("width")) || !StringUtil.isNumeric(link.attr("width").replaceAll("[a-zA-Z]",""))){
-//                                width = 0;
-//                            }else{
-//                                width = Float.parseFloat(link.attr("width").replaceAll("[a-zA-Z]",""));
-//                            }
-//                            if(StringUtil.isBlank(link.attr("height")) || !StringUtil.isNumeric(link.attr("height").replaceAll("[a-zA-Z]",""))){
-//                                height = 0;
-//                            }else{
-//                                height = Float.parseFloat(link.attr("height").replaceAll("[a-zA-Z]",""));
-//                            }
-                            MarkInfo markInfo = new MarkInfo();
-                            markInfo.setKeyword(value);
-                            markInfo.setWidth(width);
-                            markInfo.setHeight(height);
-                            markKeys.add(markInfo);
-                        }
-                        link.attr("style",StringUtil.isBlank(link.attr("style"))?"":(link.attr("style")+";") + "color:white;font-size:0.1px;border:0px;");
-                        link.append(value);
-
-//                        link.remove();
-                        break;
-
                     case "file/pdf":
                         if(StringUtil.isBlank(value)) {
                             continue;
@@ -769,9 +703,6 @@ public class PdfBoxGenerator implements PdfGenerator {
                             box = pp;
                         }
 
-//                        if(StringUtil.isBlank(p.html().replaceAll("[\n ]",""))){
-//                            p.remove();
-//                        }
                         ByteArrayOutputStream pdfOs = null;
                         try{
                             pdfOs = ResourceUtil.getResourceAsByte(value);
@@ -781,8 +712,6 @@ public class PdfBoxGenerator implements PdfGenerator {
 
 
                         PDDocument doc = PDDocument.load(pdfOs.toByteArray());
-                        //PDPage content;
-                        //float overContentWidth;
 
                         int elPageNum = doc.getNumberOfPages();
 
@@ -800,105 +729,39 @@ public class PdfBoxGenerator implements PdfGenerator {
                         }
                         doc.close();
                         pdfOs.close();
-                        //apendFiles.add(ResourceUtil.getResourceAsByte(value));
                         break;
-//                    //二维码
-//                    case "qrcode":
-//                        link.html("");
-//                        link.append("<img width=\""+ link.attr("width") + "\""
-//                                + " height=\""+ link.attr("height") + "\""
-//                                + "src=\"data:image/jpeg;base64,"+ CodeImageUtils.qrCodeImageBase64(value) + "\"/>");
-//                        break;
-//                    //条形码
-//                    case "barcode":
-//                        link.html("");
-//                        int width;
-//                        int height;
-//                        int translate = 0;
-//                        if(StringUtil.isBlank(link.attr("width")) || !StringUtil.isNumeric(link.attr("width").replaceAll("[a-zA-Z]",""))){
-//                            width = 200;
-//                        }else{
-//                            width = Integer.parseInt(link.attr("width").replaceAll("[a-zA-Z]",""));
-//                        }
-//                        if(StringUtil.isBlank(link.attr("height")) || !StringUtil.isNumeric(link.attr("height").replaceAll("[a-zA-Z]",""))){
-//                            height = 50;
-//                        }else{
-//                            height = Integer.parseInt(link.attr("height").replaceAll("[a-zA-Z]",""));
-//                        }
-//                        if(StringUtil.isBlank(link.attr("translate")) || !StringUtil.isNumeric(link.attr("translate").replaceAll("[a-zA-Z]",""))){
-//                            translate = 0;
-//                        }else{
-//                            if(StringUtil.isNotBlank(link.attr("translate").replaceAll("[a-zA-Z]",""))){
-//                                translate = Integer.parseInt(link.attr("translate").replaceAll("[a-zA-Z]",""));
-//                            }
-//                        }
-//
-//                        for(String st:styles){
-//                            if(st.indexOf("width:") >= 0){
-//                                width = Integer.parseInt(st.replaceAll("[a-zA-Z:; ]",""));
-//                                continue;
-//                            }
-//                            if(st.indexOf("height:") >= 0){
-//                                height = Integer.parseInt(st.replaceAll("[a-zA-Z:; ]",""));
-//                                continue;
-//                            }
-//                        }
-//
-//                        BarcodeFormat barcodeFormat;
-//
-//                        switch (format){
-//                            case "CODE_39":
-//                                barcodeFormat = BarcodeFormat.CODE_39;
-//                                break;
-//                            case "CODE_128":
-//                                barcodeFormat = BarcodeFormat.CODE_128;
-//                                break;
-//                            case "CODE_93":
-//                                barcodeFormat = BarcodeFormat.CODE_93;
-//                                break;
-//                            default:
-//                                barcodeFormat = BarcodeFormat.CODE_39;
-//                        }
-//
-//                            String bs = CodeImageUtils.barCodeImageBase64(value,
-//                                width,
-//                                height,
-//                                0,
-//                                barcodeFormat
-//                        );
-//
-//                        link.append("<img "
-//                                //"width=\""+ link.attr("width") + "\""
-//                                //+ " height=\""+ link.attr("height") + "\""
-//                                + "src=\"data:image/jpeg;base64,"+ bs + "\"/>");
-//
-//                        break;
+                    case "mark":
+                        if(markKeys != null){
+
+                            //String border = "";
+                            for(String st:styles){
+                                if(st.indexOf("width:") >= 0){
+                                    width = DisplayMeasureConvert.webMeasureToPDFPoint(st.toLowerCase().replace("width:",""));
+                                    // width = Float.parseFloat(st.replaceAll("[a-zA-Z:; ]",""));
+                                    continue;
+                                }
+                                if(st.indexOf("height:") >= 0){
+                                    height = DisplayMeasureConvert.webMeasureToPDFPoint(st.toLowerCase().replace("height:",""));
+                                    //height = Float.parseFloat(st.replaceAll("[a-zA-Z:; ]",""));
+                                    continue;
+                                }
+                            }
+
+                            MarkInfo markInfo = new MarkInfo();
+                            markInfo.setKeyword(value);
+                            markInfo.setWidth(width);
+                            markInfo.setHeight(height);
+                            markKeys.add(markInfo);
+                        }
+                        link.attr("style", StringUtil.isBlank(link.attr("style"))?"":(link.attr("style")+";") + "margin:"+ width/2 + "pt;color:white;display:inline;font-size:0.1px;border:0;");
+                        link.append(value);
+
+                        break;
                 }
 
             }
 
         }
-
-//        if(apendFiles.size() > 0){
-//            //如果pdf构件中有内容，则将内容放在第一页，后续追加pdf
-//            Elements body = htmlDoc.getElementsByTag("body");
-//            ByteArrayOutputStream pdfPageOut;
-//            List<ByteArrayOutputStream> newFiles = null;
-//
-//            String bodyContent = body.html().replaceAll("[\n &nbsp;]","");
-//            if(StringUtil.isNotBlank(bodyContent)){
-//                pdfPageOut = generatePdfStream(htmlDoc.html(),null);
-//                newFiles  = new ArrayList<ByteArrayOutputStream>();
-//                newFiles.add(pdfPageOut);
-//                for(ByteArrayOutputStream afs:apendFiles){
-//                    newFiles.add(afs);
-//                }
-//                return mergePDF(newFiles);
-//            }else{
-//                return mergePDF(apendFiles);
-//            }
-//
-//        }
 
         OpenhttptopdfRenderBuilder openhttptopdfRenderBuilder = null;
         PdfRendererBuilder pdfRendererBuilder = null;

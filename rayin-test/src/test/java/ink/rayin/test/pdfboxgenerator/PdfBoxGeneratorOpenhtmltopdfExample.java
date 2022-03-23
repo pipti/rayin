@@ -265,7 +265,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
 
     /**
      * example9
-     * 获取生成信息
+     * 签章
      * get page info test
      */
     @Test
