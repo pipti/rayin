@@ -33,6 +33,12 @@
 
         <dependency>
             <groupId>ink.rayin</groupId>
+            <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
+            <version>${rayin-htmladapter-openhtmltopdf}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ink.rayin</groupId>
             <artifactId>rayin-font</artifactId>
             <version>${rayin-font}</version>
         </dependency>

@@ -1,0 +1,6 @@
+
+spring:
+  application:
+    name: rayin-springboot-server
+  profiles:
+    active: dev

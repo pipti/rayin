@@ -16,11 +16,11 @@
 package ink.rayin.springboot;
 
 import ink.rayin.htmladapter.base.PdfGenerator;
+import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
 
 @SpringBootConfiguration
 @ConditionalOnClass(PdfGenerator.class)
@@ -29,9 +29,11 @@ public class RayinPDFAdapterAutoConfiguration {
 //    @Resource
 //    private RayinProperties properties;
     @Bean
-    @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PDFGenerator")
-    public Runnable createHtmlToPdfRunnable(){
-        return () -> {};
+    @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator")
+    public PdfGenerator createHtmlToPdfRunnable() throws Exception {
+        PdfBoxGenerator pdfBoxGenerator = new ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator();
+        pdfBoxGenerator.init();
+        return pdfBoxGenerator;
     }
 
     @Bean
