@@ -10,7 +10,7 @@ import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
 import ink.rayin.htmladapter.base.model.tplconfig.SignatureProperty;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
-import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxSignature;
+import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

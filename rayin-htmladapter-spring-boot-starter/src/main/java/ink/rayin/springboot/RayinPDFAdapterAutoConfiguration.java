@@ -33,6 +33,12 @@ public class RayinPDFAdapterAutoConfiguration {
     public Runnable createHtmlToPdfRunnable(){
         return () -> {};
     }
+
+    @Bean
+    @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature")
+    public Runnable createPdfBoxSignRunnable(){
+        return () -> {};
+    }
 //
 //    @Bean
 //    @ConditionalOnClass(name= "ink.rayin.htmladapter.itext5.service.PDFGenerator")

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ink.rayin.htmladapter.openhtmltopdf.utils;
+package ink.rayin.htmladapter.openhtmltopdf.service;
 
 import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.model.tplconfig.SignatureProperty;
