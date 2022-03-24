@@ -36,6 +36,7 @@ import java.util.List;
 
 /**
  * 签章
+ * 签章暂只是测试使用，不要用于生产环境
  * @author Jonah wz
  */
 public class PdfBoxSignature implements Signature {
@@ -101,7 +102,8 @@ public class PdfBoxSignature implements Signature {
             }
 
             signing.setVisibleSignDesigner(inputFileIs1, signatureProperty.getX(), signatureProperty.getY(), signatureProperty.getWidth(),signatureProperty.getHeight(), signatureInfoBis, signatureProperty.getPageNum());
-            signing.setVisibleSignatureProperties("name", "location", "Security", 0, signatureProperty.getPageNum(), true);
+            signing.setVisibleSignatureProperties(signatureProperty.getName(), signatureProperty.getLocation(),
+                    signatureProperty.getReason(), 0, signatureProperty.getPageNum(), signatureProperty.isVisualSignEnabled());
             signing.setExternalSigning(externallySign);
 
             signing.signPDF(inputFileIs2, signedFileOs, null);

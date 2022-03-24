@@ -15,6 +15,7 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,45 +25,49 @@ import lombok.Setter;
  * @author Jonah wz 2019-09-08
  */
 
+@Data
 public class SignatureProperty {
-    public SignatureProperty(float x, float y, int pageNum, float width,float height, String signatureImage){
+    public SignatureProperty(float x, float y, int pageNum, float width,float height,
+                             String signatureImage, String name, String location, String reason, boolean visualSignEnabled){
         this.x = x;
         this.y = y;
         this.pageNum = pageNum;
         this.signatureImage = signatureImage;
         this.width = width;
         this.height = height;
+        this.name = name;
+        this.location = location;
+        this.reason = reason;
+        this.visualSignEnabled = visualSignEnabled;
+    }
+
+    public SignatureProperty(float x, float y, int pageNum, float width,float height,
+                             String signatureImage, String name, String location, String reason){
+        this.x = x;
+        this.y = y;
+        this.pageNum = pageNum;
+        this.signatureImage = signatureImage;
+        this.width = width;
+        this.height = height;
+        this.name = name;
+        this.location = location;
+        this.reason = reason;
     }
 
     public SignatureProperty(){
 
     }
-    @Getter
-    @Setter
     private int pageNum;
-
-
-    @Getter
-    @Setter
     private float x;
-
-    @Getter
-    @Setter
     private float y;
-
-    @Getter
-    @Setter
     private float width;
-
-    @Getter
-    @Setter
     private float height;
-
     /**
      * 路径或http、https、base64
      */
-    @Getter
-    @Setter
     private String signatureImage;
-
+    private String name;
+    private String location;
+    private String reason;
+    private boolean visualSignEnabled = true;
 }
