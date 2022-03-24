@@ -753,7 +753,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                             markInfo.setHeight(height);
                             markKeys.add(markInfo);
                         }
-                        link.attr("style", StringUtil.isBlank(link.attr("style"))?"":(link.attr("style")+";") + "margin:"+ width/2 + "pt;color:white;display:inline;font-size:0.1px;border:0;");
+                        link.attr("style", StringUtil.isBlank(link.attr("style"))?"": "margin:"+ width/2 + "pt;color:white;display:inline;font-size:0.1px;border:0;" + (link.attr("style")+";"));
                         link.append(value);
 
                         break;

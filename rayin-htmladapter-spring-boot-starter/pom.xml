@@ -28,25 +28,21 @@
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-base</artifactId>
-            <version>${rayin-htmladapter-base}</version>
         </dependency>
 
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-            <version>${rayin-htmladapter-openhtmltopdf}</version>
         </dependency>
 
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-font</artifactId>
-            <version>${rayin-font}</version>
         </dependency>
 
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-tools</artifactId>
-            <version>${rayin-tools}</version>
         </dependency>
     </dependencies>
 

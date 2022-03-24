@@ -273,17 +273,22 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         log.info("exp9SignTest start time：" + new Timestamp(System.currentTimeMillis()));
         String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/data.json");
+        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
+
+        //依据构建配置生成PDF
+        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
 
         // 生成pdf路径
-        // generate pdf path
         outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example9_pdfbox_sign_"+System.currentTimeMillis() + ".pdf" : outputFile;
-//
-//        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example8/tpl.json"), null, outputFile);
-        String pageInfoJsonStr = pdfGenerator.pdfPageInfoRead(ResourceUtil.getResourceAsStream("examples/example9/example6.pdf"));
-        log.info(pdfGenerator.pdfPageInfoRead(ResourceUtil.getResourceAsStream("examples/example9/example6.pdf")));
+                + "example9_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/tpl.json"),jsonData,outputFile);
+
+        String pageInfoJsonStr = pdfGenerator.pdfPageInfoRead(ResourceUtil.getResourceAsStream(outputFile));
+        log.info(pageInfoJsonStr);
         Gson gson = new Gson();
         RayinMeta rayinMeta = gson.fromJson(pageInfoJsonStr, RayinMeta.class);
         List<MarkInfo> markInfoList = rayinMeta.getMarkInfos();
@@ -300,6 +305,12 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 spl.add(s);
             }
         }
+        // 生成pdf路径
+        // generate pdf path
+//        outputFile =  new File(outputFileClass)
+//                .getParentFile().getParent()
+//                + "/tmp/"
+//                + "example9_pdfbox_sign_"+System.currentTimeMillis() + ".pdf";
         pdfSign.multipleSign("123456","examples/example9/p12sign.p12","examples/example9/example6.pdf",
                 outputFile,spl);
         log.info("exp9SignTest end time：" + new Timestamp(System.currentTimeMillis()));
