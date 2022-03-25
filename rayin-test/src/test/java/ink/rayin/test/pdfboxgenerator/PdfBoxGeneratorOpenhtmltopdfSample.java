@@ -50,7 +50,7 @@ public class PdfBoxGeneratorOpenhtmltopdfSample {
                 + "fapiao_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
 
         //数据参数可以为空
-        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("sample/receipt/fapiao/element1.html"), jsonData, outputFile);
+        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("samples/receipt/fapiao/element1.html"), jsonData, outputFile);
 
         log.info("fapiaoGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
     }

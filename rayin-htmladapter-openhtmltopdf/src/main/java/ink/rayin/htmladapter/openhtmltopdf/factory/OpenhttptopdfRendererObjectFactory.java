@@ -42,6 +42,7 @@ import org.springframework.core.io.Resource;
 import java.awt.*;
 import java.io.*;
 import java.net.JarURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -180,26 +181,43 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      */
     private void FontCache() throws IOException, FontFormatException {
         File fontsLocalDir = null;
-        Resource jarFontsResource = ResourceUtil.getResource("fonts");
-        URL jarFontsUrl = null;
-        if(jarFontsResource != null){
-            jarFontsUrl = jarFontsResource.getURL();
-        }
-        Resource localFontsResource = ResourceUtil.getResource("fonts");
-        URL localFontsUrl = null;
-        if(localFontsResource != null){
-            localFontsUrl = localFontsResource.getURL();
+        Resource fontsResource = ResourceUtil.getResource("fonts");
+//        URL jarFontsUrl = null;
+//        if(jarFontsResource != null && (jarFontsResource instanceof JarURLConnection)){
+//            jarFontsUrl = jarFontsResource.getURL();
+//        }
+//        Resource localFontsResource = ResourceUtil.getResource("fonts");
+//        URI localFontsUrl = null;
+//        if(localFontsResource != null && !(localFontsResource instanceof JarURLConnection)){
+//            localFontsUrl = localFontsResource.getURI();
+//        }
+        File fontsFile = null;
+        URL fontsUrl = null;
+        if(fontsResource != null){
+            try{
+                fontsUrl = fontsResource.getURL();
+            }catch(FileNotFoundException e){
+                try {
+                    fontsFile = fontsResource.getFile();
+                }catch(FileNotFoundException p){
+                    logger.warn("没有发现字体！");
+                }
+            }
+        }else{
+            logger.warn("没有发现字体！");
+            return ;
         }
 
         URLConnection urlConn = null;
-        if(localFontsUrl != null){
-            urlConn = localFontsUrl.openConnection();
+        if(fontsFile != null || fontsUrl != null){
+//            urlConn = fontsUri.openConnection();
         }else{
-            logger.warn("本地目录「localfonts」 没有发现字体！");
+            logger.warn("没有发现字体！");
+            return ;
         }
 
-        if(urlConn != null) {
-            fontsLocalDir = new File(ResourceUtil.getResource("fonts").getURI());
+        if(fontsFile != null) {
+            fontsLocalDir = fontsFile;
 
             if (fontsLocalDir != null && fontsLocalDir.isDirectory()) {
                 List<File> flist = new ArrayList<File>();
@@ -229,48 +247,48 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                 }
             }
         }
-        urlConn = null;
-        if(jarFontsUrl != null){
-            urlConn = jarFontsUrl.openConnection();
-        }else{
-            logger.warn("jar包 「rayin-font」 没有发现字体！");
-        }
-        if(urlConn != null) {
-            fontsLocalDir = new File(ResourceUtil.getResource("fonts").getURI());
-
-            if (fontsLocalDir != null && fontsLocalDir.isDirectory()) {
-                List<File> flist = new ArrayList<File>();
-                dirAllFontFiles(fontsLocalDir,flist);
-                //fontResolver.addFontDirectory(ResourceLoader.getResource("fonts").getPath(),true);
-                for (int i = 0; i < flist.size(); i++) {
-                    File f = flist.get(i);
-                    if (f == null || f.isDirectory()) {
-                        break;
-                    }
-                    logger.debug("add local font =>" + f.getAbsolutePath());
-
-                    //将字体写入内存
-                    byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
-
-                    final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));;
-                    fontFileCacheIsb.put(fontFileName,fontByte);
-                    fontNames.add(fontFileName);
-                    fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
-                        @Override
-                        public InputStream supply() {
-                            logger.debug("fontFileName Requesting font");
-                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
-                        }
-                    });
-                }
-            }
-        }
+//        urlConn = null;
+//        if(jarFontsUrl != null){
+//            urlConn = jarFontsUrl.openConnection();
+//        }else{
+//            logger.warn("jar包 「rayin-font」 没有发现字体！");
+//        }
+//        if(fontsUri != null) {
+//            fontsLocalDir = new File(ResourceUtil.getResource("fonts").getURI());
+//
+//            if (fontsLocalDir != null && fontsLocalDir.isDirectory()) {
+//                List<File> flist = new ArrayList<File>();
+//                dirAllFontFiles(fontsLocalDir,flist);
+//                //fontResolver.addFontDirectory(ResourceLoader.getResource("fonts").getPath(),true);
+//                for (int i = 0; i < flist.size(); i++) {
+//                    File f = flist.get(i);
+//                    if (f == null || f.isDirectory()) {
+//                        break;
+//                    }
+//                    logger.debug("add local font =>" + f.getAbsolutePath());
+//
+//                    //将字体写入内存
+//                    byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
+//
+//                    final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));;
+//                    fontFileCacheIsb.put(fontFileName,fontByte);
+//                    fontNames.add(fontFileName);
+//                    fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
+//                        @Override
+//                        public InputStream supply() {
+//                            logger.debug("fontFileName Requesting font");
+//                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
+//                        }
+//                    });
+//                }
+//            }
+//        }
 
         JarURLConnection jarURLConnection = null;
 
-        if(urlConn != null && (urlConn instanceof JarURLConnection)){
+        if(fontsUrl != null){
             try {
-                jarURLConnection = (JarURLConnection) urlConn;
+                jarURLConnection = (JarURLConnection) fontsUrl.openConnection();
                 if(jarURLConnection == null){
                     logger.warn("没有发现「rayin-font」 字体jar！");
                     return;
