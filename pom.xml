@@ -17,7 +17,7 @@
         <module>rayin-htmladapter-openhtmltopdf</module>
         <module>rayin-htmladapter-spring-boot-starter</module>
         <module>rayin-font</module>
-        <module>rayin-springboot-server</module>
+<!--        <module>rayin-springboot-server</module>-->
         <!--        <module>rayin-springboot-server</module>-->
         <!--        <module>rayin-test</module>-->
     </modules>

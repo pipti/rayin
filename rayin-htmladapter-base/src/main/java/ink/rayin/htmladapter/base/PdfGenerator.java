@@ -259,10 +259,27 @@ public interface PdfGenerator {
      ByteArrayOutputStream addImage(InputStream inputStream, ByteArrayOutputStream out,byte[] imageByte, int page,float x,float y,float width, float height) throws Exception;
 
     /**
-     * 默认初始化
+     * 初始化
      * @throws Exception 抛出异常
      */
      void init() throws Exception;
+
+    /**
+     * 初始化
+     * @param customizeFontPathDirectory 自定义字体加载目录
+     * @throws Exception 抛出异常
+     */
+    void init(String customizeFontPathDirectory) throws Exception;
+
+    /**
+     * 初始化-线程池参数
+     * @param minIdle 最小线程
+     * @param maxIdle 最大空闲
+     * @param maxTotal 最大线程总数
+     * @param customizeFontPathDirectory 自定义字体目录，可空
+     * @throws Exception
+     */
+    void init(int minIdle,int maxIdle,int maxTotal, String customizeFontPathDirectory) throws Exception;
 
     /**
      * 获取加载的字体名称
