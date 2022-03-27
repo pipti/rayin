@@ -13,7 +13,9 @@ import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -26,6 +28,7 @@ import java.util.List;
  */
 
 @Slf4j
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PdfBoxGeneratorOpenhtmltopdfExample {
     PdfGenerator pdfGenerator = new PdfBoxGenerator();
     Signature pdfSign = new PdfBoxSignature();

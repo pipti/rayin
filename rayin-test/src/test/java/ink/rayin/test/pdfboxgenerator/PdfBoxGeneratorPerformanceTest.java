@@ -11,13 +11,16 @@ import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.File;
 import java.sql.Timestamp;
 
 @Slf4j
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PdfBoxGeneratorPerformanceTest {
     @Rule
     public JunitPerfRule junitPerfRule = new JunitPerfRule();

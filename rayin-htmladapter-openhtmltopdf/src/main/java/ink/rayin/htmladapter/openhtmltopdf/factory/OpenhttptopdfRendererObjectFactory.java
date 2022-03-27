@@ -555,7 +555,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
         builder.useCacheStore(PdfRendererBuilder.CacheStore.PDF_FONT_METRICS, fsCacheEx);
             fontFSSupplierCache.forEach((key,value)->{
-            builder.useFont(value,key, 0, BaseRendererBuilder.FontStyle.NORMAL, true);
+            builder.useFont(value,key, 500, BaseRendererBuilder.FontStyle.NORMAL, true);
         });
 
         builder.useFastMode();

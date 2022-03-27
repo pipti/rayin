@@ -7,7 +7,9 @@ import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -17,6 +19,7 @@ import java.sql.Timestamp;
  * Openhtmltopdf adapter generator test class
  */
 @Slf4j
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PdfBoxGeneratorOpenhtmltopdfSample {
     PdfGenerator pdfGenerator = new PdfBoxGenerator();
 

@@ -109,13 +109,13 @@ https://www.w3.org/TR/css-page-3/
 <dependency>
     <groupId>com.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 
 <dependency>
     <groupId>com.rayin</groupId>
     <artifactId>rayin-htmladapter-font</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.</version>
 </dependency>
 ```
 
@@ -141,5 +141,10 @@ https://www.w3.org/TR/css-page-3/
 ## 帮助文档
 [https://www.yuque.com/wangzhu-yapmh/rayin/](https://www.yuque.com/wangzhu-yapmh/rayin/)
 
+## 共享模板项目
+为了方便大家快速制作模板，大家可分享上传自己制作的模板。
+项目地址
+
 ## 交流群
 <img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
+
