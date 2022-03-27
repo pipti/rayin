@@ -60,8 +60,10 @@ https://github.com/danfickle/openhtmltopdf
 ### w3c css
 https://www.w3.org/TR/css-page-3/  
 主要针对@page 样式的设置，通用样式flyingsaucer基本支持，css2基本支持，css3部分支持。
-
-
+### Adobe Fonts 思源字体
+https://github.com/adobe-fonts
+### google Fonts noto-cjk
+https://github.com/googlefonts/noto-cjk
 
 ## 项目结构
 1. rayin-htmladapter-base                基础类包

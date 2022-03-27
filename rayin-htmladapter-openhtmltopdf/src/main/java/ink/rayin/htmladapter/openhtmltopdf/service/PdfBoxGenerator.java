@@ -299,7 +299,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                                     contentStream.beginText();
                                                     contentStream.newLineAtOffset(pos.getX(), overContentHeight - pos.getY());
 
-                                                    contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
+                                                    contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
 
                                                     contentStream.showText(pageNumContent);
                                                     contentStream.endText();
@@ -315,7 +315,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                                 contentStream.beginText();
                                                 contentStream.newLineAtOffset(pos.getX(), overContentHeight - pos.getY());
 
-                                                contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get("FangSong").supply()), 10);
+                                                contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
                                                 contentStream.showText(footerStr);
                                                 contentStream.endText();
                                                 contentStream.close();
@@ -337,7 +337,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                                             contentStream.beginText();
                                                             contentStream.newLineAtOffset(pos.getX(), overContentHeight - pos.getY());
 
-                                                            contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
+                                                            contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
 
                                                             contentStream.showText(pageNumContent);
                                                             contentStream.endText();
@@ -353,7 +353,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                                         contentStream.beginText();
                                                         contentStream.newLineAtOffset(posTpl.getX(), overContentHeight - posTpl.getY());
 
-                                                        contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get("FangSong").supply()), 10);
+                                                        contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
                                                         contentStream.showText(footerStr);
                                                         contentStream.endText();
                                                         contentStream.close();
@@ -376,7 +376,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                                 for(float[] f:fl){
                                                 contentStream.newLineAtOffset(f[0], f[1]);
                                                 }
-                                                contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get("FangSong").supply()), 10);
+                                                contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
                                                 contentStream.showText(footerStr);
                                                 contentStream.endText();
                                                 contentStream.close();
@@ -390,7 +390,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                     PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.PREPEND, false);
                                     contentStream.beginText();
                                     contentStream.newLineAtOffset(content.getMediaBox().getWidth()/2 - 30, 30);
-                                    contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCacheCache().get("FangSong").supply()), 10);
+                                    contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
                                     contentStream.showText(footerStr);
                                     contentStream.endText();
                                     contentStream.close();
@@ -794,12 +794,10 @@ public class PdfBoxGenerator implements PdfGenerator {
 
             } catch (Exception e) {
                 logger.error(htmlDoc.toString());
-                OpenhttptopdfRendererObjectFactory.returnPdfBoxRenderer(openhttptopdfRenderBuilder);
                 throw e;
             }
 
         } catch (Exception e) {
-            OpenhttptopdfRendererObjectFactory.returnPdfBoxRenderer(openhttptopdfRenderBuilder);
             throw e;
         } finally {
             OpenhttptopdfRendererObjectFactory.returnPdfBoxRenderer(openhttptopdfRenderBuilder);
@@ -807,7 +805,8 @@ public class PdfBoxGenerator implements PdfGenerator {
 
         PDDocument pdDoc = PDDocument.load(out.toByteArray());
         PDDocumentInformation pdInfo = pdDoc.getDocumentInformation();
-        pdInfo.setProducer("@MADE BY RAYIN");
+        pdInfo.setProducer(
+                UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"));
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         pdDoc.save(baos);
