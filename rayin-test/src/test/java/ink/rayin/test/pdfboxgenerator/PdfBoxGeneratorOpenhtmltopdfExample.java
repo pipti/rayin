@@ -319,4 +319,29 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         log.info("exp9SignTest end time：" + new Timestamp(System.currentTimeMillis()));
     }
 
+
+    /**
+     * example10
+     * 字体生成测试
+     * single element generate test
+     */
+    @Test
+    public void exp10FontsGenerateTest() throws Exception {
+        log.info("exp10FontsGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
+
+        String outputFile ="";
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+
+        // 生成pdf路径
+        // generate pdf path
+        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "example10_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+
+        //数据参数可以为空
+        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example10/element1.html"),null,outputFile);
+
+        log.info("exp10FontsGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+    }
 }

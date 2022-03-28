@@ -9,15 +9,14 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <name>rayin-parent</name>
-    <description>pdf generate tools</description>
-    <url>http://www.cityape.tech</url>
+    <description>pdf template generate tools</description>
+    <url>http://rayin.ink</url>
     <modules>
         <module>rayin-tools</module>
         <module>rayin-htmladapter-base</module>
         <module>rayin-htmladapter-openhtmltopdf</module>
         <module>rayin-htmladapter-spring-boot-starter</module>
-        <module>rayin-font</module>
-<!--        <module>rayin-springboot-server</module>-->
+<!--        <module>rayin-font</module>-->
         <!--        <module>rayin-springboot-server</module>-->
         <!--        <module>rayin-test</module>-->
     </modules>
@@ -46,7 +45,6 @@
         <skipTests>true</skipTests>
         <bouncycastle.version>1.64</bouncycastle.version>
         <ofdrw.version>1.6.4</ofdrw.version>
-        <pdfbox.version>2.0.20</pdfbox.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-compress.version>1.21</commons-compress.version>
@@ -71,7 +69,7 @@
     <developers>
         <developer>
             <name>Jonah wz</name>
-            <email>carefreefly@163.com</email>
+            <email>wangzhu@city.tech</email>
 
         </developer>
     </developers>

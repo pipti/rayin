@@ -410,11 +410,15 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 //            }
 //        }
 
+//        Resource fontsResource = ResourceUtil.getResource("fonts");
+//        URL jarFontsUrl = null;
+//        if(jarFontsResource != null && (jarFontsResource instanceof JarURLConnection)){
+//            jarFontsUrl = jarFontsResource.getURL();
+//        }
 
-
-        Resource defaultFontResource = ResourceUtil.getResource("rayin_default_font");
+        Resource defaultFontResource = ResourceUtil.getResource("rayin_default_fonts");
         URL defaultFontUrl = defaultFontResource.getURL();
-        if(defaultFontUrl != null){
+        if(defaultFontResource instanceof JarURLConnection){
             try {
                 jarURLConnection = (JarURLConnection) defaultFontUrl.openConnection();
                 if(jarURLConnection == null){
@@ -472,6 +476,37 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
+            }
+        }else{
+            File cFontsFile = defaultFontResource.getFile();
+            //fontsLocalDir = cFontsFile;
+
+            if (cFontsFile.isDirectory()) {
+                List<File> flist = new ArrayList<File>();
+                dirAllFontFiles(cFontsFile,flist);
+
+                for (int i = 0; i < flist.size(); i++) {
+                    File f = flist.get(i);
+                    if (f == null || f.isDirectory()) {
+                        break;
+                    }
+                    logger.debug("add extend local font =>" + f.getAbsolutePath());
+
+                    //将字体写入内存
+                    byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
+
+                    final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));
+                    fontFileCacheIsb.put(fontFileName,fontByte);
+                    fontNames.add(fontFileName);
+                    fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
+                        @Override
+                        public InputStream supply() {
+                            logger.debug("font file name Requesting font");
+                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
+                        }
+                    });
+
+                }
             }
         }
 
@@ -561,6 +596,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         List<String> validFileExtensions = new ArrayList();
         validFileExtensions.add("ttc");
         validFileExtensions.add("ttf");
+        validFileExtensions.add("otf");
         AutoFont.toBuilder(builder,AutoFont.findFontsInDirectory(Paths.get(ResourceUtil.getResource("fonts").getURI()) , validFileExtensions, true,true));
 
         builder.useFastMode();
