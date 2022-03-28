@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>ink.rayin</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1</version>
     <artifactId>rayin-test</artifactId>
     <properties>
         <!-- 统一版本号 -->
@@ -24,11 +24,7 @@
         <commons-compress.version>1.21</commons-compress.version>
         <commons-pool2.version>2.6.1</commons-pool2.version>
 
-        <!-- 本地包版本号 -->
-        <rayin-htmladapter-base>1.0.0</rayin-htmladapter-base>
-        <rayin-font>1.0.0</rayin-font>
-        <rayin-htmladapter-openhtmltopdf>1.0.0</rayin-htmladapter-openhtmltopdf>
-        <rayin-htmladapter-spring-boot-starter>1.0.0</rayin-htmladapter-spring-boot-starter>
+        <rayin-htmladapter-openhtmltopdf>1.0.1</rayin-htmladapter-openhtmltopdf>
     </properties>
     <repositories>
         <repository>
@@ -51,20 +47,6 @@
             <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
             <version>${rayin-htmladapter-openhtmltopdf}</version>
         </dependency>
-
-        <dependency>
-            <groupId>ink.rayin</groupId>
-            <artifactId>rayin-font</artifactId>
-            <version>${rayin-font}</version>
-        </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.github.houbb</groupId>-->
-<!--            <artifactId>junitperf</artifactId>-->
-<!--            <version>1.0.2</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -76,12 +58,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.21</version>
         </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>log4j</groupId>-->
-        <!--            <artifactId>log4j</artifactId>-->
-        <!--        </dependency>-->
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -93,32 +69,6 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.60</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-            <version>4.13.2</version>
-        </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.apache.commons</groupId>-->
-<!--            <artifactId>commons-pool2</artifactId>-->
-<!--            -->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>commons-beanutils</groupId>-->
-<!--            <artifactId>commons-beanutils</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>commons-io</groupId>-->
-<!--            <artifactId>commons-io</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.apache.commons</groupId>-->
-<!--            <artifactId>commons-compress</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>com.github.houbb</groupId>
             <artifactId>junitperf</artifactId>

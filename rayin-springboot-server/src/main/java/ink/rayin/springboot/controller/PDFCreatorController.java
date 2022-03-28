@@ -2,6 +2,7 @@ package ink.rayin.springboot.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import ink.rayin.htmladapter.base.PdfGenerator;
+import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.tools.utils.Charsets;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
 
 @Slf4j
@@ -19,10 +21,11 @@ import java.io.OutputStream;
 public class PDFCreatorController {
     @Autowired
     PdfGenerator pdfGenerator;
-
+    @Autowired
+    Signature signature;
 
     /**
-     * 项目模板生成接口
+     * 项目模板生成至目录
      *
      * @param tplName
      * @param jsonData
@@ -30,19 +33,26 @@ public class PDFCreatorController {
      */
     @GetMapping(value = "/pdf/create/tpl/{tplName}/file", produces = MediaType.APPLICATION_JSON_VALUE)
     public void pdfCreateByTplToFile(@PathVariable("tplName") String tplName, @RequestBody JSONObject jsonData) throws Exception {
-        pdfGenerator.generatePdfFileByTplConfigFile("tpl/"+tplName + "/tpl.json" , jsonData, "./tmp/a.pdf");
+        // 生成pdf路径
+        // generate pdf path
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFile = new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "example01_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+        pdfGenerator.generatePdfFileByTplConfigFile("tpl/"+tplName + "/tpl.json" , jsonData, outputFile);
     }
 
 
     /**
-     * 项目模板生成接口
+     * 项目模板生成输出流
      *
      * @param tplName
      * @param jsonData
      * @return
      */
     @PostMapping(value = "/pdf/create/tpl/{tplName}/os")
-    public void pdfCreateByTplToOS(@PathVariable("tplName") String tplName, @RequestBody JSONObject jsonData, HttpServletResponse response) throws Exception {
+    public void pdfCreateByTplToOS(@PathVariable("tplName") String tplName, @RequestBody(required = false) JSONObject jsonData, HttpServletResponse response) throws Exception {
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         pdfGenerator.generatePdfStreamByTplConfigStr(ResourceUtil.getResourceAsString("tpl/"+tplName + "/tpl.json", Charsets.UTF_8) , jsonData, bao);
         response.setContentType("application/pdf;charset=utf-8");

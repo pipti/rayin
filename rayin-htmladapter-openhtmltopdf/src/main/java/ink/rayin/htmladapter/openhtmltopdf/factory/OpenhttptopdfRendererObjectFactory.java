@@ -362,7 +362,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         //base包默认字体
         Resource defaultFontResource = ResourceUtil.getResource("rayin_default_fonts");
         URL defaultFontUrl = defaultFontResource.getURL();
-        if(defaultFontResource instanceof JarURLConnection){
+        if(defaultFontUrl.getPath().indexOf(".jar!") > 0){
             try {
                 jarURLConnection = (JarURLConnection) defaultFontUrl.openConnection();
                 if(jarURLConnection == null){

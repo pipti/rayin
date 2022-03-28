@@ -7,7 +7,7 @@
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>rayin-parent</name>
     <description>pdf template generate tools</description>
     <url>http://rayin.ink</url>
@@ -33,9 +33,7 @@
         <spring.cloud.alibaba.version>0.9.0.RELEASE</spring.cloud.alibaba.version>
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <!--<spring.boot.mybatis>2.0.1</spring.boot.mybatis>-->
         <redis.client.version>3.0.1</redis.client.version>
-        <!--<redis.data.version>1.7.4.RELEASE</redis.data.version>-->
         <spring.boot.mybatis>1.3.2</spring.boot.mybatis>
         <oracle.driver.version>11.2.0.4.0</oracle.driver.version>
         <alibaba.druid.version>1.1.21</alibaba.druid.version>
@@ -52,13 +50,6 @@
         <junit>4.13.2</junit>
         <flexmark.version>0.62.2</flexmark.version>
         <cn.hutool>5.7.22</cn.hutool>
-        <!-- 本地包版本号 -->
-        <rayin-parent>1.0.0</rayin-parent>
-        <rayin-htmladapter-base>1.0.0</rayin-htmladapter-base>
-        <rayin-font>1.0.0</rayin-font>
-        <rayin-tools>1.0.0</rayin-tools>
-        <rayin-htmladapter-openhtmltopdf>1.0.0</rayin-htmladapter-openhtmltopdf>
-        <rayin-htmladapter-spring-boot-starter>1.0.0</rayin-htmladapter-spring-boot-starter>
     </properties>
     <licenses>
         <license>
@@ -166,41 +157,25 @@
 
             <dependency>
                 <groupId>ink.rayin</groupId>
-                <artifactId>rayin-font</artifactId>
-                <version>${rayin-font}</version>
-            </dependency>
-            <dependency>
-                <groupId>ink.rayin</groupId>
                 <artifactId>rayin-tools</artifactId>
-                <version>${rayin-tools}</version>
+                <version>1.0.1</version>
             </dependency>
 
             <dependency>
                 <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-                <version>${rayin-htmladapter-openhtmltopdf}</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-spring-boot-starter</artifactId>
-                <version>${rayin-htmladapter-spring-boot-starter}</version>
+                <version>1.0.1</version>
             </dependency>
 
             <dependency>
                 <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-base</artifactId>
-                <version>${rayin-htmladapter-base}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>ink.rayin</groupId>
-                <artifactId>rayin-api</artifactId>
-                <version>${rayin-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>ink.rayin</groupId>
-                <artifactId>rayin-client</artifactId>
-                <version>${rayin-client}</version>
+                <version>1.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -210,12 +185,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>log4j</groupId>-->
-<!--            <artifactId>log4j</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -230,12 +199,6 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.auth0</groupId>-->
-<!--            <artifactId>java-jwt</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
@@ -320,32 +283,6 @@
         </pluginManagement>
 
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-source-plugin</artifactId>-->
-<!--                <version>2.2.1</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>attach-sources</id>-->
-<!--                        <goals>-->
-<!--                            <goal>jar-no-fork</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-javadoc-plugin</artifactId>-->
-<!--                <version>2.9.1</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>attach-javadocs</id>-->
-<!--                        <goals>-->
-<!--                            <goal>jar</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>

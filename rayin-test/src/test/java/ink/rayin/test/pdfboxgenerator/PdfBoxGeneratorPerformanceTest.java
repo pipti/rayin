@@ -31,7 +31,7 @@ public class PdfBoxGeneratorPerformanceTest {
     static{
         try {
             pdfGenerator = new PdfBoxGenerator();
-            pdfGenerator.init("/Users/eric/Library/Fonts");
+            pdfGenerator.init();
         } catch (Exception e) {
             e.printStackTrace();
         }

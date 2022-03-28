@@ -3,8 +3,10 @@ package ink.rayin.test.pdfboxgenerator;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import ink.rayin.htmladapter.base.PdfGenerator;
+import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
+import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.FixMethodOrder;
@@ -21,12 +23,15 @@ import java.sql.Timestamp;
 @Slf4j
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PdfBoxGeneratorOpenhtmltopdfSample {
-    PdfGenerator pdfGenerator = new PdfBoxGenerator();
-
-    public PdfBoxGeneratorOpenhtmltopdfSample() throws Exception {
-        pdfGenerator.init();
+    static PdfGenerator pdfGenerator;
+    static  {
+        try {
+            pdfGenerator = new PdfBoxGenerator();
+            pdfGenerator.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
     /**
      * fapiao
      * 发票样例生成测试
@@ -35,7 +40,7 @@ public class PdfBoxGeneratorOpenhtmltopdfSample {
     @Test
     public void fapiaoGenerateTest() throws Exception {
         log.info("fapiaoGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("sample/receipt/fapiao/data.json");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("samples/receipt/fapiao/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据单个构建配置生成PDF
