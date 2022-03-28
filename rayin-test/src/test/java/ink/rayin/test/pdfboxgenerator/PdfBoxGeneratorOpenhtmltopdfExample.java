@@ -67,7 +67,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     }
 
     /**
-     * example2
+     * example02
      * 简单的模板生成测试
      * simple template generate test
      */

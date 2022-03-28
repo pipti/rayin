@@ -119,7 +119,7 @@ https://github.com/googlefonts/noto-cjk
 ### 创建构件或模板
 构件就是单个html
 模板是json配置文件
-具体参见帮助手册 [https://www.yuque.com/wangzhu-yapmh/rayin/](https://www.yuque.com/wangzhu-yapmh/rayin/)
+具体参见帮助手册 [https://www.yuque.com/liuer_doc/rayin](https://www.yuque.com/liuer_doc/rayin)
 
 ### 生成代码
 ```java
@@ -135,7 +135,7 @@ https://github.com/googlefonts/noto-cjk
 ```
 
 ## 帮助文档
-[https://www.yuque.com/wangzhu-yapmh/rayin/](https://www.yuque.com/wangzhu-yapmh/rayin/)
+[https://www.yuque.com/liuer_doc/rayin](https://www.yuque.com/liuer_doc/rayin)
 
 ## 共享模板项目
 为了方便大家快速制作模板，大家可分享上传自己制作的模板。
