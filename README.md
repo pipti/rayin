@@ -67,11 +67,11 @@ https://github.com/googlefonts/noto-cjk
 
 ## 项目结构
 1. rayin-htmladapter-base                基础类包
-2. rayin-htmladapter-openhtmltopdf       openhtmltopdf生成pdf核心包
-3. rayin-font                            可商用中文字体包
-4. rayin-test                            测试样例
-5. rayin-tools                           工具类
-6. rayin-htmladapter-spring-boot-starter springboot启动适配
+2. rayin-tools                           工具类
+3. rayin-htmladapter-openhtmltopdf       openhtmltopdf生成pdf核心包
+4. rayin-htmladapter-spring-boot-starter springboot启动适配
+5. rayin-test                            测试样例
+6. rayin-springboot-serer                springboot-server 样例
 
 
 ## 列举一些实现功能与特性
@@ -114,11 +114,6 @@ https://github.com/googlefonts/noto-cjk
     <version>1.0.1</version>
 </dependency>
 
-<dependency>
-    <groupId>com.rayin</groupId>
-    <artifactId>rayin-htmladapter-font</artifactId>
-    <version>1.0.</version>
-</dependency>
 ```
 
 ### 创建构件或模板
@@ -130,8 +125,7 @@ https://github.com/googlefonts/noto-cjk
 ```java
     PDFGeneratorInterface pdfGenerator = new PDFGenerator();
     pdfGenerator.init();
-
-
+    
     //单个构件生成，数据参数可以为空
     pdfGenerator.generatePdfFileByHtmlAndData(elementPath, jsonData, outputFilePath);
 
