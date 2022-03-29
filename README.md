@@ -137,10 +137,6 @@ https://github.com/googlefonts/noto-cjk
 ## 帮助文档
 [https://www.yuque.com/liuer_doc/rayin](https://www.yuque.com/liuer_doc/rayin)
 
-## 共享模板项目
-为了方便大家快速制作模板，大家可分享上传自己制作的模板。
-项目地址
-
 ## 交流群
 <img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
 
