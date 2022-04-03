@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>ink.rayin</groupId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <artifactId>rayin-test</artifactId>
     <properties>
         <!-- 统一版本号 -->
@@ -23,8 +23,6 @@
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-compress.version>1.21</commons-compress.version>
         <commons-pool2.version>2.6.1</commons-pool2.version>
-
-        <rayin-htmladapter-openhtmltopdf>1.0.1</rayin-htmladapter-openhtmltopdf>
     </properties>
     <repositories>
         <repository>
@@ -45,7 +43,7 @@
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-            <version>${rayin-htmladapter-openhtmltopdf}</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -75,12 +73,6 @@
             <version>1.0.2</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.ibeetl</groupId>
-            <artifactId>beetl</artifactId>
-            <version>2.9.3</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -98,6 +90,15 @@
                     </nonFilteredFileExtensions>
                 </configuration>
 
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.4</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

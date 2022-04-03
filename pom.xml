@@ -7,7 +7,7 @@
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>rayin-parent</name>
     <description>pdf template generate tools</description>
     <url>http://rayin.ink</url>
@@ -16,8 +16,8 @@
         <module>rayin-htmladapter-base</module>
         <module>rayin-htmladapter-openhtmltopdf</module>
         <module>rayin-htmladapter-spring-boot-starter</module>
-        <!--        <module>rayin-springboot-server</module>-->
-        <!--        <module>rayin-test</module>-->
+                <module>rayin-springboot-server</module>
+                <module>rayin-test</module>
     </modules>
 
     <properties>
@@ -157,24 +157,24 @@
             <dependency>
                 <groupId>ink.rayin</groupId>
                 <artifactId>rayin-tools</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
 
             <dependency>
                 <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
             <dependency>
                 <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-spring-boot-starter</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
 
             <dependency>
                 <groupId>ink.rayin</groupId>
                 <artifactId>rayin-htmladapter-base</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
