@@ -84,7 +84,6 @@ public class ThymeleafHandler {
      * @return
      */
     public String templateEngineProcessByPath(String filePath, JSONObject var) throws IOException {
-        //HashMap map = (HashMap)JSON.parseObject(var.toJSONString(),Map.class);
         if(var != null){
             context.setVariables(JSON.parseObject(var.toJSONString(),Map.class));
         }
