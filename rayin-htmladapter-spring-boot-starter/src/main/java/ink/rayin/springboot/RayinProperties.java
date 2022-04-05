@@ -20,14 +20,66 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "rayin")
 public class RayinProperties {
+
+    /**
+     * pdf生成类名
+     */
+    private String generatorClass;
+
+    /**
+     * 字体路径
+     */
+    private String fontPath;
+    /**
+     * 最小线程
+     */
+    int minIdle = 5;
+    /**
+     * 最大空闲
+     */
+    int maxIdle = 8;
+    /**
+     * 最大线程总数
+     */
+    int maxTotal = 10;
+
     public String getGeneratorClass() {
         return generatorClass;
     }
-
     public void setGeneratorClass(String generatorClass) {
         this.generatorClass = generatorClass;
     }
 
-    private String generatorClass;
+    public String getFontPath() {
+        return fontPath;
+    }
+
+    public void setFontPath(String fontPath) {
+        this.fontPath = fontPath;
+    }
+
+    public int getMinIdle() {
+        return minIdle;
+    }
+
+    public void setMinIdle(int minIdle) {
+        this.minIdle = minIdle;
+    }
+
+    public int getMaxIdle() {
+        return maxIdle;
+    }
+
+    public void setMaxIdle(int maxIdle) {
+        this.maxIdle = maxIdle;
+    }
+
+    public int getMaxTotal() {
+        return maxTotal;
+    }
+
+    public void setMaxTotal(int maxTotal) {
+        this.maxTotal = maxTotal;
+    }
 }
 

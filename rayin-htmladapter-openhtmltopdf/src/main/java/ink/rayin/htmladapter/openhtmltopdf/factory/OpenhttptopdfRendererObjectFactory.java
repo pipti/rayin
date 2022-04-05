@@ -63,10 +63,10 @@ import java.util.jar.JarFile;
 public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<OpenhttptopdfRenderBuilder> {
     private static Logger logger = LoggerFactory.getLogger(OpenhttptopdfRendererObjectFactory.class);
 
-    private  HashMap<String,File> fontFileCache = new HashMap<String,File>();
+    private  HashMap<String,File> fontFileCache = new HashMap<>();
     private  static HashMap<String, FSSupplier<InputStream>> fontFSSupplierCache = new HashMap<String,FSSupplier<InputStream>>();
-    private  static HashMap<String, byte[]> fontFileCacheIsb = new HashMap<String,byte[]>();
-    private static LinkedHashSet<String> fontNames = new LinkedHashSet<String>();
+    private  static HashMap<String, byte[]> fontFileCacheIsb = new HashMap<>();
+    private static LinkedHashSet<String> fontNames = new LinkedHashSet<>();
 
     private static OpenhttptopdfRendererObjectFactory factory = new OpenhttptopdfRendererObjectFactory();
     private static GenericObjectPool<OpenhttptopdfRenderBuilder> objectPool;
@@ -91,19 +91,6 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      * 连接空闲的最小时间，达到此值后空闲链接将会被移除
      */
     private static long SoftMinEvictableIdleTimeMillis = 30000L;
-//    static{
-//
-//
-//    }
-//
-//    private String readFontFamilyName(File font) throws IOException, FontFormatException {
-//        Font f = Font.createFont(Font.TRUETYPE_FONT, font);
-//        logger.info("FamilyName:" + f.getFamily());
-//        logger.info("FontName:" + f.getFontName());
-//        logger.info("Name:" + f.getName());
-//        logger.info("PSName:" + f.getPSName());
-//        return f.getFamily();
-//    }
 
     private String readFontPSName(File font) throws IOException, FontFormatException {
         Font f = Font.createFont(Font.TRUETYPE_FONT, font);

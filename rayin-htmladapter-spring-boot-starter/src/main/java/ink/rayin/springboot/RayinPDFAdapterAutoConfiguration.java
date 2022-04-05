@@ -18,29 +18,32 @@ package ink.rayin.springboot;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
-import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+import javax.annotation.Resource;
+
 @SpringBootConfiguration
 @ConditionalOnClass(PdfGenerator.class)
 @EnableConfigurationProperties(RayinProperties.class)
 public class RayinPDFAdapterAutoConfiguration {
-//    @Resource
-//    private RayinProperties properties;
+    @Resource
+    private RayinProperties properties;
+
     @Bean
     @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator")
     public PdfGenerator createHtmlToPdfRunnable() throws Exception {
         PdfBoxGenerator pdfBoxGenerator = new ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator();
-        pdfBoxGenerator.init();
+        pdfBoxGenerator.init(properties.getMinIdle(),properties.getMaxIdle(), properties.getMaxTotal(), properties.getFontPath());
+
         return pdfBoxGenerator;
     }
 
     @Bean
     @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature")
-    public Signature createSignRunnable() throws Exception {
+    public Signature createSignRunnable() {
         return new ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature();
     }
 //    @Bean
