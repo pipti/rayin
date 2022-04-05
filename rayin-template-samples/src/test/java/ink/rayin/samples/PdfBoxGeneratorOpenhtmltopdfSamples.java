@@ -43,7 +43,7 @@ public class PdfBoxGeneratorOpenhtmltopdfSamples {
         fileList.forEach(f->{
 
             if(f.getName().equals("tpl.json")) {
-                log.info("samplesGenerate " + f.getName() + "start time：" + new Timestamp(System.currentTimeMillis()));
+                log.info("samplesGenerate [" + f.getParentFile().getName() + "] start time：" + new Timestamp(System.currentTimeMillis()));
                 String jsonDataFilePath = null;
                 try {
                     jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath(f.getParent() + "/data.json");
@@ -65,7 +65,7 @@ public class PdfBoxGeneratorOpenhtmltopdfSamples {
                     //数据参数可以为空
                     pdfGenerator.generatePdfFileByTplConfigFile(f.getAbsolutePath(), jsonData, outputFile);
 
-                    log.info("samplesGenerate "+ f.getName() +  " end time：" + new Timestamp(System.currentTimeMillis()));
+                    log.info("samplesGenerate ["+ f.getParentFile().getName() +  "] end time：" + new Timestamp(System.currentTimeMillis()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
