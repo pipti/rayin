@@ -3,10 +3,20 @@
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
 ![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
 ![Hex.pm](https://img.shields.io/badge/thymeleaf-3.0.11.RELEASE-green.svg)
-![Hex.pm](https://img.shields.io/badge/Release-V1.0.3-green.svg)
+![Hex.pm](https://img.shields.io/badge/Release-V1.0.4-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg)
+
 ## 睿印是什么
 数据+模板=动态生成PDF工具
+[html + json_ocnfig] + json_data => pdf
+
+## 优势
+1. 通过json_config更加灵活复用底板，解决业务多变，通过底板灵活组合进行复用，降低底板数量，提升效率。
+2. 可自动加载字体，无缝衔接中文字体显示，并支持生僻字显示。
+3. 通过线程池加载提升生成效率。
+4. 页码、空白页灵活定制。
+5. 隐藏标记，元数据信息为后续处理提供便利。
+6. 使用简便，可单独引用jar包，也可与服务集成。
 
 ## 项目起源
 某大型公司的内部项目的启发而来。  
@@ -112,6 +122,10 @@ https://github.com/googlefonts/noto-cjk
 12. 实现pdf文件信息的源数据设置和读取.
 13. 实现隐藏标记，并可通过元数据进行获取起页码，坐标（可用于后续再加工的定位，例如签章位置）。
 14. 实现线程池。
+
+### 项目地址
+Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin)
+GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ### 开始使用
 新建项目，引入依赖包
