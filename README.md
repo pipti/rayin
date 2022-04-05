@@ -1,6 +1,10 @@
 # 睿印
 ![Hex.pm](https://img.shields.io/hexpm/l/plug)
-
+![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
+![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
+![Hex.pm](https://img.shields.io/badge/thymeleaf-3.0.11.RELEASE-green.svg)
+![Hex.pm](https://img.shields.io/badge/Release-V1.0.3-green.svg)
+![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg)
 ## 睿印是什么
 数据+模板=动态生成PDF工具
 
@@ -115,7 +119,7 @@ https://github.com/googlefonts/noto-cjk
 <dependency>
     <groupId>com.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 
 ```
