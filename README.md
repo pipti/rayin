@@ -80,6 +80,7 @@ https://github.com/googlefonts/noto-cjk
 4. rayin-htmladapter-spring-boot-starter springboot启动适配
 5. rayin-test                            测试样例
 6. rayin-springboot-serer                springboot-server 样例
+7. rayin-template-samples                模板样例
 
 
 ## 列举一些实现功能与特性
