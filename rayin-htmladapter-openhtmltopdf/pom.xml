@@ -103,7 +103,11 @@
             <version>${openhtml.version}</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.0</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>

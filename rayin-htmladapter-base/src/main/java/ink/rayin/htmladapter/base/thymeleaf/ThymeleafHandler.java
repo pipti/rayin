@@ -58,8 +58,8 @@ public class ThymeleafHandler {
      */
     public String templateEngineProcessByString(String htmlStr, JSONObject var){
         if(var != null){
-           String jsonStr = var.toJSONString().replace("<","&lt;").replace(">","&gt;");
-            context.setVariables(gson.fromJson(jsonStr, Map.class));
+           // String jsonStr = var.toJSONString().replace("<","&lt;").replace(">","&gt;");
+            context.setVariables(gson.fromJson(var.toJSONString(), Map.class));
         }
         String r = null;
         try{

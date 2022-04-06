@@ -23,6 +23,8 @@ import com.openhtmltopdf.extend.FSSupplier;
 import com.openhtmltopdf.extend.impl.FSDefaultCacheStore;
 import com.openhtmltopdf.latexsupport.LaTeXDOMMutator;
 import com.openhtmltopdf.mathmlsupport.MathMLDrawer;
+import com.openhtmltopdf.objects.jfreechart.JFreeChartBarDiagramObjectDrawer;
+import com.openhtmltopdf.objects.jfreechart.JFreeChartPieDiagramObjectDrawer;
 import com.openhtmltopdf.objects.zxing.ZXingObjectDrawer;
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
@@ -533,6 +535,8 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         XRLog.setLoggingEnabled(false);
         DefaultObjectDrawerFactory factory = new DefaultObjectDrawerFactory();
         factory.registerDrawer("image/barcode", new ZXingObjectDrawer());
+        factory.registerDrawer("jfreechart/pie", new JFreeChartPieDiagramObjectDrawer());
+        factory.registerDrawer("jfreechart/bar", new JFreeChartBarDiagramObjectDrawer());
         builder.useObjectDrawerFactory(factory);
 
         openhttptopdfRenderBuilder.setPdfRendererBuilder(builder);

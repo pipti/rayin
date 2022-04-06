@@ -7,13 +7,15 @@ import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
+import ink.rayin.tools.utils.FileUtil;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 
 /**
@@ -59,6 +61,10 @@ public class PdfBoxGeneratorOpenhtmltopdfSample {
 
         //数据参数可以为空
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("samples/receipt/fapiao/element1.html"), jsonData, outputFile);
+//        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+//        pdfGenerator.generatePdfStreamByTplConfigStr(ResourceUtil.getResourceAsString("samples/receipt/fapiao/tpl.json", StandardCharsets.UTF_8), jsonData, bao);
+//
+//        FileUtil.toFile(new ByteArrayInputStream(bao.toByteArray()),new File(outputFile));
 
         log.info("fapiaoGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
     }
