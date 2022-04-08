@@ -55,6 +55,17 @@ public interface PdfGenerator {
                                              String outputFilePath) throws Exception;
 
     /**
+     * 根据模板配置字符串生成pdf
+     * @param tplConfigStr 模板配置字符串
+     * @param jsonData  数据json
+     * @param outputFilePath  输出文件路径
+     * @return RayinMeta 元数据类
+     * @throws Exception 抛出异常
+     */
+    RayinMeta generatePdfFileByTplConfigStr(String tplConfigStr, JSONObject jsonData,
+                                                   String outputFilePath) throws Exception;
+
+    /**
      * 根据模板配置字符串生成带密码的pdf
      * @param configStr 模板配置字符串
      * @param jsonData  数据json
@@ -109,7 +120,7 @@ public interface PdfGenerator {
      * @return PDF ByteArrayOutputStream
      * @throws Exception 抛出异常
      */
-    ByteArrayOutputStream generatePdfSteamByHtmlAndData(String htmlLocation, JSONObject jsonData, List<HashMap> pp) throws Exception;
+    ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject jsonData, List<HashMap> pp) throws Exception;
 
 
     /**
@@ -226,7 +237,7 @@ public interface PdfGenerator {
      * @return PDF ByteArrayOutputStream
      * @throws Exception 抛出异常
      */
-     ByteArrayOutputStream generatePdfSteamByHtmlAndData(String htmlLocation, JSONObject data) throws Exception;
+     ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject data) throws Exception;
 
     /**
      * 根据html文件流（html）生成pdf字节流
@@ -235,7 +246,16 @@ public interface PdfGenerator {
      * @return PDF ByteArrayOutputStream
      * @throws Exception 抛出异常
      */
-     ByteArrayOutputStream generatePdfSteamByHtmlAndData(InputStream htmlInputStream, JSONObject data) throws Exception;
+     ByteArrayOutputStream generatePdfSteamByHtmlStreamAndData(InputStream htmlInputStream, JSONObject data) throws Exception;
+
+    /**
+     * 根据html文件流（html）生成pdf字节流
+     * @param htmlStr html输入流
+     * @param data     json数据
+     * @return PDF ByteArrayOutputStream
+     * @throws Exception 抛出异常
+     */
+    ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject data) throws Exception;
 
     /**
      * 添加图片
@@ -314,7 +334,7 @@ public interface PdfGenerator {
      * @param outputFilePath 文件路径（带文件名）
      */
     void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs,
-                                      String outputFilePath);
+                                      String outputFilePath) throws Exception;
 
     /**
      * excel数据导入生成pdf，并生成至对应的目录中
@@ -335,7 +355,7 @@ public interface PdfGenerator {
      * @param outputFilePath 文件路径（带文件名）
      */
     void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs,
-                                      String outputFilePath);
+                                      String outputFilePath) throws Exception;
 
     /**
      * excel数据导入生成pdf，并生成压缩包
