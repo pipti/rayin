@@ -160,6 +160,14 @@ public interface PdfGenerator {
      void generatePdfFileByHtmlStr(String htmlStr, String outputFile) throws Exception;
 
     /**
+     * html转换为pdf
+     * @param htmlStr
+     * @param outputFile
+     * @throws Exception 抛出异常
+     */
+    void generatePdfFileByHtmlStr(String htmlStr, JSONObject variables, String outputFile) throws Exception;
+
+    /**
      * html字符串转换为pdf字节流
      * @param htmlStr
      * @return PDF ByteArrayOutputStream
@@ -286,4 +294,66 @@ public interface PdfGenerator {
      * @return  LinkedHashSet
      */
      LinkedHashSet<String> getFontNames();
+
+    /**
+     * excel数据导入生成pdf，并生成至对应的目录中
+     * 文件名为fileNamePrefix + "_" + 序号
+     * @param tplConfigStr 模板配置串
+     * @param excelIs excel文件流
+     * @param outputDirPath 输出目录
+     * @param fileNamePrefix 文件名前缀
+     */
+     void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs,
+                                 String outputDirPath,String fileNamePrefix) throws Exception;
+
+    /**
+     * excel数据导入生成pdf，并生成单个文件
+     *
+     * @param tplConfigStr 模板配置串
+     * @param excelIs excel文件流
+     * @param outputFilePath 文件路径（带文件名）
+     */
+    void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs,
+                                      String outputFilePath);
+
+    /**
+     * excel数据导入生成pdf，并生成至对应的目录中
+     * 文件名为fileNamePrefix + "_" + 序号
+     * @param elementStr 构件字符串
+     * @param excelIs excel文件流
+     * @param outputDirPath 输出目录
+     * @param fileNamePrefix 文件名前缀
+     */
+    void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs,
+                                      String outputDirPath,String fileNamePrefix) throws Exception;
+
+    /**
+     * excel数据导入生成pdf，并生成单个文件
+     *
+     * @param elementStr 构件字符串
+     * @param excelIs excel文件流
+     * @param outputFilePath 文件路径（带文件名）
+     */
+    void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs,
+                                      String outputFilePath);
+
+    /**
+     * excel数据导入生成pdf，并生成压缩包
+     *
+     * @param elementStr 构件字符串
+     * @param excelIs excel文件流
+     * @param outputFilePath 压缩包文件路径（带文件名）
+     */
+    void generatePdfFilesZipByEleAndExcel(String elementStr, InputStream excelIs,
+                                      String outputFilePath);
+
+    /**
+     * excel数据导入生成pdf，并生成压缩包
+     *
+     * @param tplConfigStr 模板配置串
+     * @param excelIs excel文件流
+     * @param outputFilePath 压缩包文件路径（带文件名）
+     */
+    void generatePdfFilesZipByTplAndExcel(String tplConfigStr, InputStream excelIs,
+                                          String outputFilePath);
 }

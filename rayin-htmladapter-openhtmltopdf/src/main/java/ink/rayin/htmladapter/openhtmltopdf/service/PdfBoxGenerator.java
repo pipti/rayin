@@ -15,6 +15,7 @@
  */
 package ink.rayin.htmladapter.openhtmltopdf.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.model.tplconfig.*;
@@ -653,6 +654,18 @@ public class PdfBoxGenerator implements PdfGenerator {
             f.getParentFile().mkdir();
         }
         FileUtils.writeByteArrayToFile(new File(outputFile), generatePdfStreamByHtmlStr(htmlStr).toByteArray());
+    }
+
+    /**
+     * html转换为pdf 文件
+     * @param htmlStr html字符串
+     * @param outputFile pdf文件路径
+     * @throws Exception
+     */
+    @Override
+    public void generatePdfFileByHtmlStr(String htmlStr, JSONObject data, String outputFile)
+            throws Exception {
+        generatePdfFileByHtmlStr(htmlStrDataFilling(htmlStr,data),outputFile);
     }
 
     @Override
@@ -1307,6 +1320,42 @@ public class PdfBoxGenerator implements PdfGenerator {
     @Override
     public LinkedHashSet<String> getFontNames(){
         return OpenhttptopdfRendererObjectFactory.getFontNames();
+    }
+
+    @Override
+    public void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) throws Exception {
+        JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
+        for(int i = 0; i < ja.size(); i++){
+            generatePdfFileByTplConfigFile(tplConfigStr,ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1) + ".pdf");
+        }
+    }
+
+    @Override
+    public void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) {
+
+    }
+
+    @Override
+    public void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) throws Exception {
+        JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
+        for(int i = 0; i < ja.size(); i++){
+            generatePdfFileByHtmlStr(elementStr, ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1)  + ".pdf");
+        }
+    }
+
+    @Override
+    public void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) {
+
+    }
+
+    @Override
+    public void generatePdfFilesZipByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) {
+
+    }
+
+    @Override
+    public void generatePdfFilesZipByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) {
+
     }
 
 
