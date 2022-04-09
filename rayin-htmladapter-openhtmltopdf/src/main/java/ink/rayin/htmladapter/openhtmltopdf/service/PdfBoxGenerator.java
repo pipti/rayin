@@ -918,50 +918,7 @@ public class PdfBoxGenerator implements PdfGenerator {
         //文件构建相关信息
         return fileInfo;
     }
-    @Override
-    public ByteArrayOutputStream addImage(InputStream inputStream,byte[] imageByte,
-                                          int page,float x,float y,float width, float height) throws Exception {
-        return addImage(inputStream,null, imageByte,page,x,y,width,height);
-    }
 
-    /**
-     * 为文档添加一个图片
-     * @param inputStream 文档流
-     * @param out 文档流
-     * @param imageByte 图片
-     * @param page 目标页
-     * @param x x坐标
-     * @param y y坐标
-     * @param width 宽
-     * @param height 高
-     * @return
-     * @throws Exception
-     */
-    @Override
-    public ByteArrayOutputStream addImage(InputStream inputStream, ByteArrayOutputStream out,byte[] imageByte,
-                                          int page,float x,float y,float width, float height)
-            throws Exception {
-
-//        PdfReader pdfReader = new PdfReader(inputStream);
-//        if (out == null) {
-//            out = new ByteArrayOutputStream();
-//        }
-//        PdfStamper stamp = new PdfStamper(pdfReader, out);
-//
-//        //设置图片位置与大小
-//        Image image = Image.getInstance(imageByte);
-//        image.setAbsolutePosition(x,y);
-//        image.scaleAbsoluteHeight(height);
-//        image.scaleAbsoluteWidth(width);
-//
-//        //在指定页添加图片
-//        PdfContentByte content = stamp.getUnderContent(page);
-//        content.addImage(image);
-//        stamp.close();
-//        pdfReader.close();
-//        return out;
-        return null;
-    }
     /**
      * 将字节流生成文件
      * @param os 输出流

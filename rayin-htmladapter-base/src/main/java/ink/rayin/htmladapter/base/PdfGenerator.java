@@ -87,19 +87,6 @@ public interface PdfGenerator {
                                                ByteArrayOutputStream os) throws Exception;
 
     /**
-     * 根据线上导出模板配置文件生成PDF
-     * @param configStr  模板配置json
-     * @param dataJson   数据json
-     * @param os         输出流
-     * @return RayinMeta 元数据类
-     * @throws Exception 抛出异常
-     */
-//    RayinMeta generateByTplConfigStrOnlineExport(String configStr, JSONObject dataJson,
-//                                                 ByteArrayOutputStream os) throws Exception;
-
-
-
-    /**
      * 根据单个html文件路径（非配置文件，即html路径）生成pdf至指定路径
      * @param htmlLocation 参见类说明
      * @param jsonData
@@ -110,29 +97,6 @@ public interface PdfGenerator {
     boolean generatePdfFileByHtmlAndData(String htmlLocation, JSONObject jsonData,
                                          String outputFilePath) throws Exception;
 
-
-    /**
-     * 根据html文件路径生成字节流
-     * @param htmlLocation 构件路径
-     * @param jsonData json数据
-     * @param pp 页面信息
-     * @return PDF ByteArrayOutputStream
-     * @throws Exception 抛出异常
-     */
-//    ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject jsonData, List<HashMap> pp) throws Exception;
-//
-
-    /**
-     * 根据模板配置对象生成PDF流
-     * @param pagesConfig 模板配置对象
-     * @param config 构件对象
-     * @param data 数据
-     * @param pp 页面信息
-     * @return
-     * @throws Exception 抛出异常
-     */
-     //ByteArrayOutputStream generatePdfSteamByHtmlAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) throws Exception;
-
     /**
      * 将html文件与数据匹配生成转换后的字符串
      * @param htmlLocation
@@ -141,15 +105,6 @@ public interface PdfGenerator {
      * @throws IOException 抛出异常
      */
      String htmlFileDataFilling(String htmlLocation, JSONObject variables) throws IOException, WriterException;
-
-//    /**
-//     * 将构件与数据匹配生成转换后的字符串
-//     * @param eleContentStr
-//     * @param variables
-//     * @return
-//     * @throws IOException
-//     */
-//     String eleConvertContentByContentStr(String eleContentStr, JSONObject variables) throws IOException, WriterException;
 
     /**
      * 将html字符串与数据匹配生成转换后的字符串
@@ -179,8 +134,8 @@ public interface PdfGenerator {
 
     /**
      * html字符串转换为pdf字节流
-     * @param htmlStr
-     * @return PDF ByteArrayOutputStream
+     * @param htmlStr html字符串
+     * @return PDF pdf输出流
      * @throws Exception 抛出异常
      */
     ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlStr) throws Exception;
@@ -203,29 +158,6 @@ public interface PdfGenerator {
      */
     ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject data) throws Exception;
 
-
-//    /**
-//     * html转换为pdf字节流
-//     * @param htmlContent
-//     * @return
-//     * @throws Exception
-//     */
-//     ByteArrayOutputStream generatePdfStreamHtml(String htmlContent, Set<MarkInfo> signatureKeys)
-//            throws Exception;
-
-
-
-//    /**
-//     * 将字节流生成文件
-//     * @param targetFile
-//     * @param outByte
-//     * @return
-//     * @throws Exception
-//     */
-//     RayinMeta writeTargetFileByByte(String targetFile, byte[] outByte)
-//            throws Exception;
-
-
     /**
      * PDF 元数据读取
      * @param pdf pdf输入流
@@ -247,47 +179,6 @@ public interface PdfGenerator {
      * 2020-01-07
      */
      String pdfPageInfoRead(InputStream pdf) throws ParserConfigurationException, SAXException, IOException;
-
-
-    /**
-     * 根据html文件流（html）生成pdf字节流
-     * @param htmlInputStream html输入流
-     * @param data     json数据
-     * @return PDF ByteArrayOutputStream
-     * @throws Exception 抛出异常
-     */
-//     ByteArrayOutputStream generatePdfSteamByHtmlStreamAndData(InputStream htmlInputStream, JSONObject data) throws Exception;
-
-
-
-    /**
-     * 添加图片
-     * @param inputStream
-     * @param imageByte
-     * @param page
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @return PDF ByteArrayOutputStream
-     * @throws Exception 抛出异常
-     */
-     ByteArrayOutputStream addImage(InputStream inputStream,byte[] imageByte, int page,float x,float y,float width, float height) throws Exception;
-
-    /**
-     * 添加图片
-     * @param inputStream
-     * @param out
-     * @param imageByte
-     * @param page
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @return PDF ByteArrayOutputStream
-     * @throws Exception 抛出异常
-     */
-     ByteArrayOutputStream addImage(InputStream inputStream, ByteArrayOutputStream out,byte[] imageByte, int page,float x,float y,float width, float height) throws Exception;
 
     /**
      * 初始化
@@ -335,6 +226,7 @@ public interface PdfGenerator {
      * @param tplConfigStr 模板配置串
      * @param excelIs excel文件流
      * @param outputFilePath 文件路径（带文件名）
+     * @throws Exception
      */
     void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs,
                                       String outputFilePath) throws Exception;
@@ -346,6 +238,7 @@ public interface PdfGenerator {
      * @param excelIs excel文件流
      * @param outputDirPath 输出目录
      * @param fileNamePrefix 文件名前缀
+     * @throws Exception
      */
     void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs,
                                       String outputDirPath,String fileNamePrefix) throws Exception;
@@ -356,27 +249,8 @@ public interface PdfGenerator {
      * @param elementStr 构件字符串
      * @param excelIs excel文件流
      * @param outputFilePath 文件路径（带文件名）
+     * @throws Exception
      */
     void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs,
                                       String outputFilePath) throws Exception;
-
-//    /**
-//     * excel数据导入生成pdf，并生成压缩包
-//     *
-//     * @param elementStr 构件字符串
-//     * @param excelIs excel文件流
-//     * @param outputFilePath 压缩包文件路径（带文件名）
-//     */
-//    void generatePdfFilesZipByEleAndExcel(String elementStr, InputStream excelIs,
-//                                      String outputFilePath);
-//
-//    /**
-//     * excel数据导入生成pdf，并生成压缩包
-//     *
-//     * @param tplConfigStr 模板配置串
-//     * @param excelIs excel文件流
-//     * @param outputFilePath 压缩包文件路径（带文件名）
-//     */
-//    void generatePdfFilesZipByTplAndExcel(String tplConfigStr, InputStream excelIs,
-//                                          String outputFilePath);
 }

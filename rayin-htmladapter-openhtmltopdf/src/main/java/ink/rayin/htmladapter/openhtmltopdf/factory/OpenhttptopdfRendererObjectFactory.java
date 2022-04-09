@@ -242,7 +242,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
                         @Override
                         public InputStream supply() {
-                            logger.debug("font file name Requesting font：" + fontFileName);
+                            //logger.debug("font file name Requesting font：" + fontFileName);
                             return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
                         }
                     });
@@ -339,7 +339,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
                         @Override
                         public InputStream supply() {
-                            logger.debug("font file name Requesting font");
+                            //logger.debug("font file name Requesting font");
                             return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
                         }
                     });
@@ -434,7 +434,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
                         @Override
                         public InputStream supply() {
-                            logger.debug("font file name Requesting font");
+                            //logger.debug("font file name Requesting font");
                             return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
                         }
                     });
@@ -546,26 +546,26 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
     @Override
     public void destroyObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) throws Exception {
-        logger.debug("destroyObject" );
+        //logger.debug("destroyObject" );
         pooledObject.getObject().setActive(false);
     }
 
     @Override
     public boolean validateObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) {
-        logger.debug("validateObject" );
+        //logger.debug("validateObject" );
         return pooledObject.getObject().isActive();
 
     }
 
     @Override
     public void activateObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) throws Exception {
-        logger.debug("activateObject");
+        //logger.debug("activateObject");
         pooledObject.getObject().setActive(true);
     }
 
     @Override
     public void passivateObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) throws Exception {
-        logger.debug("passivateObject");
+        //logger.debug("passivateObject");
         //pooledObject.getObject().setActive(false);
     }
 
