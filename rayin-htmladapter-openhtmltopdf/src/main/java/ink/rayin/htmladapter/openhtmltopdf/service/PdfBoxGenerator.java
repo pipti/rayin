@@ -216,12 +216,12 @@ public class PdfBoxGenerator implements PdfGenerator {
 
         /** 生成文件开始 **/
         //依据构建配置生成PDF
-        TemplateConfig pagesConfig = JSONObject.parseObject(tplConfigStr, TemplateConfig.class);
+        TemplateConfig templateConfig = JSONObject.parseObject(tplConfigStr, TemplateConfig.class);
         //遍历配置
-        List<Element> pages = pagesConfig.getElements();
+        List<Element> pages = templateConfig.getElements();
         List<PageNumDisplayPos> templatePageNumDisplayPos = null;
-        if(pagesConfig.getPageNumDisplayPoss() != null && pagesConfig.getPageNumDisplayPoss().size() > 0){
-            templatePageNumDisplayPos = pagesConfig.getPageNumDisplayPoss();
+        if(templateConfig.getPageNumDisplayPoss() != null && templateConfig.getPageNumDisplayPoss().size() > 0){
+            templatePageNumDisplayPos = templateConfig.getPageNumDisplayPoss();
         }
 
         List<ByteArrayOutputStream> out = new ArrayList();
@@ -241,7 +241,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                 continue;
             }
             //遍历构件并将生成的pdf字节流写入列表
-            ByteArrayOutputStream tmp = generatePdfSteamByHtmlFileAndData(pagesConfig,el,dataJson,pageProperties);
+            ByteArrayOutputStream tmp = generatePdfSteamByHtmlFileAndData(templateConfig,el,dataJson,pageProperties);
             if(tmp != null) {
                 out.add(tmp);
             }
@@ -294,79 +294,22 @@ public class PdfBoxGenerator implements PdfGenerator {
                                     //获取页码坐标
                                     for (PageNumDisplayPos pos : pp.getPageNumDisplayPoss()) {
                                         // 坐标页码设置
-                                        if (pos.getX() != 0 && pos.getY() != 0) {
-                                            if (StringUtil.isNotBlank(pos.getContent())) {
-                                                try {
-                                                    String pageNumContent = pos.getContent().replace("${pageNum}", pageNum + "").replace("${pageNumTotal}", pageNumTotal + "");
-                                                    PDPageContentStream contentStream
-                                                            = new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.PREPEND, false);
-
-                                                    contentStream.beginText();
-                                                    contentStream.newLineAtOffset(pos.getX(), overContentHeight - pos.getY());
-
-                                                    contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
-
-                                                    contentStream.showText(pageNumContent);
-                                                    contentStream.endText();
-                                                    contentStream.close();
-
-                                                } catch (DOMException e) {
-                                                    throw new RayinException("页码html标签格式设置错误！");
-                                                }
-
-                                            } else {
-                                                PDPageContentStream contentStream
-                                                        = new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.PREPEND, false);
-                                                contentStream.beginText();
-                                                contentStream.newLineAtOffset(pos.getX(), overContentHeight - pos.getY());
-
-                                                contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
-                                                contentStream.showText(footerStr);
-                                                contentStream.endText();
-                                                contentStream.close();
-                                            }
-                                        }
-                                        
-                                        //全局页码设置获取页码坐标
-                                        if (templatePageNumDisplayPos != null){
-                                            for (PageNumDisplayPos posTpl : templatePageNumDisplayPos) {
-                                                // 坐标页码设置
-                                                if (posTpl.getX() != 0 && posTpl.getY() != 0) {
-                                                    if (StringUtil.isNotBlank(posTpl.getContent())) {
-
-                                                        try {
-                                                            String pageNumContent = pos.getContent().replace("${pageNum}", pageNum + "").replace("${pageNumTotal}", pageNumTotal + "");
-                                                            PDPageContentStream contentStream =
-                                                                    new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.PREPEND, false);
-
-                                                            contentStream.beginText();
-                                                            contentStream.newLineAtOffset(pos.getX(), overContentHeight - pos.getY());
-
-                                                            contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
-
-                                                            contentStream.showText(pageNumContent);
-                                                            contentStream.endText();
-                                                            contentStream.close();
-
-                                                        } catch (DOMException e) {
-                                                            throw new RayinException("页码html标签格式设置错误！");
-                                                        }
-
-                                                    } else {
-                                                        PDPageContentStream contentStream =
-                                                                new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.PREPEND, false);
-                                                        contentStream.beginText();
-                                                        contentStream.newLineAtOffset(posTpl.getX(), overContentHeight - posTpl.getY());
-
-                                                        contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
-                                                        contentStream.showText(footerStr);
-                                                        contentStream.endText();
-                                                        contentStream.close();
-                                                    }
-                                                }
-                                            }
+                                        String pageNumContent = footerStr;
+                                        if (StringUtil.isNotBlank(pos.getContent())) {
+                                            pageNumContent = pos.getContent().replace("${pageNum}", pageNum + "").replace("${pageNumTotal}", pageNumTotal + "");
                                         }
 
+                                        PDPageContentStream contentStreamEl
+                                                = new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.PREPEND, false);
+
+                                        contentStreamEl.beginText();
+                                        contentStreamEl.newLineAtOffset(pos.getX()==0f?content.getMediaBox().getWidth()/2 - 30:pos.getX(), pos.getY() != 0f?overContentHeight - pos.getY():20);
+
+                                        contentStreamEl.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
+
+                                        contentStreamEl.showText(pageNumContent);
+                                        contentStreamEl.endText();
+                                        contentStreamEl.close();
 
 
                                         // 关键字页码设置
@@ -394,12 +337,41 @@ public class PdfBoxGenerator implements PdfGenerator {
                                 }else {
                                     PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.PREPEND, false);
                                     contentStream.beginText();
-                                    contentStream.newLineAtOffset(content.getMediaBox().getWidth()/2 - 30, 30);
+                                    contentStream.newLineAtOffset(content.getMediaBox().getWidth()/2 - 30, 20);
                                     contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
                                     contentStream.showText(footerStr);
                                     contentStream.endText();
                                     contentStream.close();
                                 }
+
+                                //全局页码设置获取页码坐标
+//                                if (templatePageNumDisplayPos != null){
+//                                    for (PageNumDisplayPos posTpl : templatePageNumDisplayPos) {
+//                                        // 坐标页码设置
+//                                        String pageNumContent = footerStr;
+//                                        if (StringUtil.isNotBlank(posTpl.getContent())) {
+//                                            pageNumContent = posTpl.getContent().replace("${pageNum}", pageNum + "").replace("${pageNumTotal}", pageNumTotal + "");
+//                                        }
+//
+//                                        try {
+//                                            PDPageContentStream contentStreamTpl =
+//                                                    new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.PREPEND, false);
+//
+//                                            contentStreamTpl.beginText();
+//                                            contentStreamTpl.newLineAtOffset(posTpl.getX()==0f?content.getMediaBox().getWidth()/2 - 30:posTpl.getX(), posTpl.getY() != 0f?overContentHeight - posTpl.getY():20);
+//
+//                                            contentStreamTpl.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(StringUtil.isNotBlank(posTpl.getFontFamily())?posTpl.getFontFamily():"FangSong").supply()), posTpl.getFontSize() != 0?posTpl.getFontSize():10);
+//
+//                                            contentStreamTpl.showText(pageNumContent);
+//                                            contentStreamTpl.endText();
+//                                            contentStreamTpl.close();
+//
+//                                        } catch (DOMException e) {
+//                                            throw new RayinException("页码html标签格式设置错误！");
+//                                        }
+//
+//                                    }
+//                                }
                             }else {
                                 break;
                             }
@@ -714,6 +686,7 @@ public class PdfBoxGenerator implements PdfGenerator {
             String inner = link.text();
             String type = link.attr("type");
             String value = link.attr("value");
+            String pages = link.attr("page");
 
             String style = link.attr("style");
             String[] styles = style.split(";");
@@ -754,11 +727,20 @@ public class PdfBoxGenerator implements PdfGenerator {
                         }else{
                             value = "file:" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
                         }
-                        for(int i = 1; i <= elPageNum; i++){
-                            //content = doc.getPage(i - 1);
-                            //overContentWidth = content.getMediaBox().getWidth();
-                            box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ i + "\"/>\n");
+
+                        if(StringUtil.isNotBlank(pages)){
+                            String[] pageB = pages.split(",");
+                            for(String k : pageB){
+                                box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
+                            }
+                        }else{
+                            for(int i = 1; i <= elPageNum; i++){
+                                //content = doc.getPage(i - 1);
+                                //overContentWidth = content.getMediaBox().getWidth();
+                                box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ i + "\"/>\n");
+                            }
                         }
+
                         doc.close();
                         pdfOs.close();
                         break;

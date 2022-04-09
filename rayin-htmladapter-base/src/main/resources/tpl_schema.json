@@ -52,10 +52,7 @@
                     "textDescript": {
                       "type": "string"
                     },
-                    "fontStyle": {
-                      "type": "string"
-                    },
-                    "mark": {
+                    "fontFamily": {
                       "type": "string"
                     },
                     "content": {
@@ -98,16 +95,6 @@
     "keywords":{"type": "string"},
     "title":{"type": "string"},
     "producer":{"type": "string"},
-    "signatureProperties":{
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "keyword":{ "type": "string","minLength": 1 },
-          "signaturePath":{ "type": "string","minLength": 1 }
-        }
-      }
-    },
       "pageNumDisplayPoss": {
         "type": "array",
         "items": {
@@ -125,7 +112,7 @@
             "textDescript": {
               "type": "string"
             },
-            "fontStyle": {
+            "fontFamily": {
               "type": "string"
             },
             "mark": {
