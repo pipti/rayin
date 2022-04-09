@@ -236,38 +236,13 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
 
 
     /**
-     * example08
-     * 获取生成信息
-     * get page info test
-     */
-    @Test
-    public void exp08GetPageInfoTest() throws Exception {
-        log.info("exp08GetPageInfoTest start time：" + new Timestamp(System.currentTimeMillis()));
-
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
-
-        // 生成pdf路径
-        // generate pdf path
-        String outputFile = new File(outputFileClass)
-                .getParentFile().getParent()
-                + "/tmp/"
-                + "example08_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
-
-        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example8/tpl.json"), null, outputFile);
-
-        log.info(pdfGenerator.pdfPageInfoRead(ResourceUtil.getResourceAsStream(outputFile)));
-
-        log.info("exp08GetPageInfoTest end time：" + new Timestamp(System.currentTimeMillis()));
-    }
-
-    /**
-     * example9
+     * example8
      * 签章
      * get page info test
      */
     @Test
-    public void exp09SignTest() throws Exception {
-        log.info("exp09SignTest start time：" + new Timestamp(System.currentTimeMillis()));
+    public void exp08SignTest() throws Exception {
+        log.info("exp08SignTest start time：" + new Timestamp(System.currentTimeMillis()));
 
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/data.json");
@@ -280,7 +255,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example09_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+                + "example08_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/tpl.json"),jsonData,outputFile);
 
@@ -298,7 +273,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 s.setY(m.getY());
                 s.setWidth(m.getWidth());
                 s.setHeight(m.getHeight());
-                s.setSignatureImage("examples/example9/rayinsign.gif");
+                s.setSignatureImage("examples/example8/rayinsign.gif");
                 spl.add(s);
             }
         }
@@ -308,20 +283,20 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
 //                .getParentFile().getParent()
 //                + "/tmp/"
 //                + "example9_pdfbox_sign_"+System.currentTimeMillis() + ".pdf";
-        pdfSign.multipleSign("123456","examples/example9/p12sign.p12","examples/example9/example6.pdf",
+        pdfSign.multipleSign("123456", "examples/example8/p12sign.p12", "examples/example8/example6.pdf",
                 outputFile,spl);
-        log.info("exp09SignTest end time：" + new Timestamp(System.currentTimeMillis()));
+        log.info("exp08SignTest end time：" + new Timestamp(System.currentTimeMillis()));
     }
 
 
     /**
-     * example10
+     * example09
      * 字体生成测试
      * single element generate test
      */
     @Test
-    public void exp10FontsGenerateTest() throws Exception {
-        log.info("exp10FontsGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
+    public void exp09FontsGenerateTest() throws Exception {
+        log.info("exp09FontsGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
@@ -330,11 +305,11 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example10_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+                + "example09_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         //数据参数可以为空
-        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example10/element1.html"),null,outputFile);
+        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example9/element1.html"),null,outputFile);
 
-        log.info("exp10FontsGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        log.info("exp09FontsGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
     }
 }
