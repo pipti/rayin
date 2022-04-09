@@ -50,15 +50,14 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     public void exp01ElementGenerateTest() throws Exception {
         log.info("exp01ElementGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
         // generate pdf path
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example01_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example01_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         //数据参数可以为空
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example1/element1.html"),null,outputFile);
@@ -75,15 +74,14 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     public void exp02SimpleTemplateGenerateTest() throws Exception {
         log.info("exp02SimpleTemplateGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
         // generate pdf path
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example02_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example02_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example2/tpl.json"),null,outputFile);
 
@@ -106,16 +104,14 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //generate pdf by element
         JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
 
-
-        String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
         // generate pdf path
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example03_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example03_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example3/element1.html"),jsonData,outputFile);
 
@@ -137,15 +133,13 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //依据构建配置生成PDF
         JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
 
-
-        String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example04_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example04_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example4/tpl.json"),jsonData,outputFile);
 
@@ -168,16 +162,14 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //generate pdf by element
         JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
 
-
-        String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
         // generate pdf path
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example05_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example05_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example5/element1.html"),jsonData,outputFile);
 
@@ -199,14 +191,13 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //依据构建配置生成PDF
         JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
 
-        String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example06_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example06_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/tpl.json"),jsonData,outputFile);
 
@@ -229,16 +220,14 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //generate pdf by element
         JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
 
-
-        String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
         // generate pdf path
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example07_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example07_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example7/tpl.json"),jsonData,outputFile);
 
@@ -254,15 +243,15 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     public void exp08GetPageInfoTest() throws Exception {
         log.info("exp08GetPageInfoTest start time：" + new Timestamp(System.currentTimeMillis()));
-        String outputFile ="";
+
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
         // generate pdf path
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example08_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example08_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example8/tpl.json"), null, outputFile);
 
@@ -279,7 +268,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     public void exp09SignTest() throws Exception {
         log.info("exp09SignTest start time：" + new Timestamp(System.currentTimeMillis()));
-        String outputFile ="";
+
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
@@ -288,10 +277,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
 
         // 生成pdf路径
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example09_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example09_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/tpl.json"),jsonData,outputFile);
 
@@ -334,15 +323,14 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     public void exp10FontsGenerateTest() throws Exception {
         log.info("exp10FontsGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String outputFile ="";
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
         // generate pdf path
-        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+        String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example10_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+                + "example10_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
         //数据参数可以为空
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example10/element1.html"),null,outputFile);
