@@ -1,4 +1,0 @@
-var a = 1;
-var b = date();
-var c = '2';
-return a+1;

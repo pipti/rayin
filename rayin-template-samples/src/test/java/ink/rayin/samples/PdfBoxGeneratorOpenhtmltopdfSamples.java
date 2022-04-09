@@ -41,7 +41,6 @@ public class PdfBoxGeneratorOpenhtmltopdfSamples {
     public void samplesGenerate() throws Exception {
         List<File> fileList = FileUtil.list(ResourceUtil.getResourceAbsolutePathByClassPath("samples"));
         fileList.forEach(f->{
-
             if(f.getName().equals("tpl.json")) {
                 log.info("samplesGenerate [" + f.getParentFile().getName() + "] start time：" + new Timestamp(System.currentTimeMillis()));
                 String jsonDataFilePath = null;

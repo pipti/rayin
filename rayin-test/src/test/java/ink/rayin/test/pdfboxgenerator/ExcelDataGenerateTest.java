@@ -50,7 +50,7 @@ public class ExcelDataGenerateTest {
         String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
                 + "/tmp/"
-                + "example11_openhtmltopdf_" + System.currentTimeMillis() + ".pdf";
+                + "example10_openhtmltopdf_" + System.currentTimeMillis() + ".pdf";
         pdfGenerator.generatePdfFileByTplAndExcel(ResourceUtil.getResourceAsString("examples/example10/tpl.json", StandardCharsets.UTF_8),
                 ResourceUtil.getResourceAsStream("examples/example10/data.xlsx"),outputFile);
         log.info("exp10generateFileByExcelTest end time：" + new Timestamp(System.currentTimeMillis()));
