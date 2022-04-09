@@ -150,10 +150,10 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
     pdfGenerator.init();
     
     //单个构件生成，数据参数可以为空
-    pdfGenerator.generatePdfFileByHtmlAndData(elementPath, jsonData, outputFilePath);
+    pdfGenerator.generatePdfFileByHtmlAndData(htmlLocation, jsonData, outputFilePath);
 
     //通过模板定义生成，数据参数可以为空
-    pdfGenerator.generatePdfFileByTplConfigFile(tplconfigPath, jsonData, outputFile);
+    pdfGenerator.generatePdfFileByTplConfigFile(templateLocation, jsonData, outputFilePath);
 
 ```
 
