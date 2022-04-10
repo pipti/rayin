@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <style type="text/css">
+
+    body {
+      font-family: FangSong,HanaMinB;
+      word-break:break-all;
+      /*设置背景色*/
+      /*background: #00FF00 ;*/
+      /*设置背景图片*/
+      /*background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;*/
+    }
+
+    /** 第一页样式 **/
+    /*@page :first{*/
+      /*size: A4 ;*/
+      /*margin: 0.5cm;*/
+      /*margin-bottom: 6cm;*/
+      /*@bottom-center{*/
+        /*content: element(footer-left);*/
+      /*}*/
+    /*}*/
+
+    /*@media print {*/
+      /*div.footer-left{*/
+        /*display: block;*/
+        /*position: running(footer-left);*/
+      /*}*/
+    /*}*/
+    /*旋转div试例*/
+    .rotate_div{
+      margin:100px;
+      width:200px;
+      height:100px;
+      background-color:yellow;
+      /* Rotate div */
+      transform:rotate(90deg);
+    }
+
+    table{
+      table-layout:fixed;
+      border-collapse:collapse;
+      width:100%;
+      -fs-table-paginate:paginate;
+      page-break-inside:auto;
+    }
+
+    tr { page-break-inside:avoid; page-break-after:auto;}
+    td{
+      border-collapse:collapse;
+    }
+    th{
+      border-collapse:collapse;
+    }
+
+    /*强制分页 如果不使用分页符，可在块中追加分页样式，例如<div class="page_break"></div> 或 <div class="page-break-after:always;"></div>*/
+    .page_break { page-break-after:always;}
+  </style>
+  <style id="eprint_page_style">
+    /** 指定pdf纸张大小 **/
+    @page {
+      size: A4 ;
+      margin: 1cm;
+      /*margin-bottom: 1cm;*/
+      /*border: thin solid black;*/
+    }
+  </style>
+</head>
+<body>
+<div>开始编辑</div>
+</body>
+</html>
