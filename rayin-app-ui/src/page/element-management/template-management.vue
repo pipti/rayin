@@ -2,7 +2,8 @@
   <div>
     <el-row>
       <el-col :span="8">
-        <el-button type="primary" plain size="medium" style="border-radius: 0px" @click="tplAdd"><i class="el-icon-document-add"></i>新增模板</el-button>
+        <el-button type="primary" plain size="medium" style="border-radius: 0px" @click="tplAdd">
+          <i class="el-icon-document-add"></i>新增模板</el-button>
 <!--        <el-button plain size="medium" style="border-radius: 0px"><i class="el-icon-delete"></i>删除模板</el-button>-->
         <el-tooltip class="item" effect="dark" placement="right-start" style="border-radius: 0px">
           <div slot="content">模板是通过构件进行组合生成，前提是先进行构件的设计，才能配置模板</div>

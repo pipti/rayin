@@ -19,9 +19,10 @@
 <!--      >-->
 <!--        :isConflictCheck="true" :is-conflict-check="true"-->
         <el-col :span="7">
-        <el-tabs :tab-position="tabPosition" type="card" :style="{height:(this.$store.state.windowHeight - 150)+ 'px'}" id="resourceTab" v-model="activeName">
+        <el-tabs :tab-position="tabPosition" type="border-card"
+                 :style="{height:(this.$store.state.windowHeight - 135)+ 'px'}" id="resourceTab" v-model="activeName">
           <el-tab-pane label="设置">
-            <div :style="{height: (this.$store.state.windowHeight - 150)+ 'px'}">
+            <div :style="{height: (this.$store.state.windowHeight - 135)+ 'px'}">
               <div style="width:100%;text-align: right">
                 <el-button-group>
                   <el-button type="primary" icon="el-icon-setting" @click="pageAttrsSet" size="mini">设置</el-button>
@@ -210,7 +211,7 @@
 <!--      >-->
         <el-col :span="1"></el-col>
         <el-col :span="16">
-          <el-tabs type="card" @tab-click="tabHandleClick" :style="{height:(this.$store.state.windowHeight - 150)+ 'px'}" id="designTab">
+          <el-tabs type="border-card" @tab-click="tabHandleClick" :style="{height:(this.$store.state.windowHeight - 135)+ 'px'}" id="designTab">
             <el-tab-pane label="设计" style="padding:0px">
 
                 <tinymce-editor ref="editor"
@@ -219,7 +220,7 @@
                                 @objectSelected="objectSelected"
                                 :init="editorInit"
                                 @editorLoadComplete="editContentInit" style="overflow:visible"
-                                :style="{height:(this.$store.state.windowHeight - 210)+ 'px',width:this.pageWidth + 'cm',border:'1px solid #E4E7ED',margin:'auto'}">
+                                :style="{height:(this.$store.state.windowHeight - 220)+ 'px',width:this.pageWidth + 'cm',border:'1px solid #E4E7ED',margin:'auto'}">
                 </tinymce-editor>
                 <!--<button @click="clear">清空内容</button>-->
                 <!--{{elHtmlCode}}-->
