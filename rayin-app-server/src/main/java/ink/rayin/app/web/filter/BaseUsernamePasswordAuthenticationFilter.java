@@ -74,8 +74,8 @@ public class BaseUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 		Authentication authentication = null;
 		try{
 			authentication = this.getAuthenticationManager().authenticate(userNamePasswordAuthRequest);
-		}catch(BadCredentialsException e){
-			throw new RayinBusinessException("用户认证失败，请确认用户名或密码是否正确");
+		}catch(Exception e){
+			throw new BadCredentialsException("用户认证失败，请确认用户名或密码是否正确");
 		}
 
 		return authentication;

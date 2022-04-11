@@ -7,7 +7,7 @@
         </el-col>
         <el-col :span="11">
           <div style="width:100%;text-align: left">
-            <img src="/static/images/logo3.png" style="width:200px;">
+            <img src="/static/images/logo5.png" style="width:200px;">
           </div>
         </el-col>
         <el-col :span="12">

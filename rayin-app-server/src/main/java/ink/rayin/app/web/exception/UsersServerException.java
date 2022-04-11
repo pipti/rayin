@@ -1,11 +1,15 @@
 package ink.rayin.app.web.exception;
 
 
+import org.springframework.security.core.AuthenticationException;
+
 /**
  * 业务异常处理
- * Created by tangyongmao on 2019-6-4 11:01:45.
+ *
+ * @author tangyongmao
+ * @date 2019-6-4 11:01:45
  */
-public class UsersServerException extends RuntimeException {
+public class UsersServerException extends AuthenticationException {
     private static final long serialVersionUID = 1416428042965937111L;
     private BusinessCodeMessage codeMessage;
     private int code;

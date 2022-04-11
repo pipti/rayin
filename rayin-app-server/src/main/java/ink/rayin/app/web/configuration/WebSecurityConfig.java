@@ -1,8 +1,7 @@
 package ink.rayin.app.web.configuration;
 
 import ink.rayin.app.web.cache.RedisTemplateUtil;
-import ink.rayin.app.web.filter.EprintLogoutHandler;
-import ink.rayin.app.web.model.LoginProperties;
+import ink.rayin.app.web.filter.RayinLogoutHandler;
 import ink.rayin.app.web.service.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import javax.annotation.Resource;
 
@@ -31,8 +28,10 @@ import javax.annotation.Resource;
  **/
 @Component
 @Configuration
-@EnableWebSecurity// 这个注解必须加，开启Security
-@EnableGlobalMethodSecurity(prePostEnabled = true)//保证post之前的注解可以使用
+// 这个注解必须加，开启Security
+@EnableWebSecurity
+//保证post之前的注解可以使用
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Resource
@@ -40,7 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Resource
 	private UserServiceImpl userService;
-
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -50,7 +48,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 给 swagger 放行；不需要权限能访问的资源
 //		.antMatchers("/swagger-ui.html", "/swagger-resources/**", "/images/**", "/webjars/**", "/v2/api-docs", "/configuration/ui", "/configuration/security");
 	}
-
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		//TODO 权限加载
@@ -62,7 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/users/wx/callback").permitAll()
 				.antMatchers("/users/websocket/*").permitAll()
 				.antMatchers("/users/mobile/*").permitAll()
-				.antMatchers("/**").permitAll()
+				.antMatchers("/users/login").permitAll()
+				//.antMatchers("/**").permitAll()
 				.antMatchers("/test1/**").hasAnyRole("ADMIN")
 				.antMatchers("/test2/**").hasAnyRole("USER")
 				.antMatchers("/test2/**").hasAnyRole("USER")
@@ -76,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement().disable()
 				.cors()
 				.and()
+
 				//跨域配置
 //				.headers().
 //				addHeaderWriter(new StaticHeadersWriter(Arrays.asList(
@@ -85,12 +84,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //				.apply(new JsonLoginConfigurer<>()).loginSuccessHandler(jsonLoginSuccessHandler())
 //				.and()
 				.logout()
-		        .logoutUrl("/users/logout").addLogoutHandler(new EprintLogoutHandler(redisTemplateUtil))   //默认就是"/logout"
+		        .logoutUrl("/users/logout").addLogoutHandler(new RayinLogoutHandler(redisTemplateUtil))   //默认就是"/logout"
 				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
 				.and()
 //				.apply(new ValidateConfigurer<>(loginProperties,redisTemplate)).and()
 		    .apply(new LoginConfigurer<>(redisTemplateUtil)).loginSuccessHandler(jsonLoginSuccessHandler())
 				.and().sessionManagement().disable();
+
+
 	}
 
 	@Bean

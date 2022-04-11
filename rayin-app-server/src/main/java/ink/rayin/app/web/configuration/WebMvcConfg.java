@@ -17,7 +17,7 @@ public class WebMvcConfg extends WebMvcConfigurationSupport {
     public void addInterceptors(InterceptorRegistry registry) {
         // addPathPatterns 用于添加拦截规则, 这里假设拦截 /url 后面的全部链接
         List<String> includePathPatterns = new ArrayList<String>();
-        includePathPatterns.add("/rest/web/user/**");
+        includePathPatterns.add("/user/**");
         // excludePathPatterns 用户排除拦截
         List<String> excludePathPatterns = new ArrayList<String>();
         // excludePathPatterns.add("");

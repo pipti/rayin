@@ -4,7 +4,7 @@
     <el-row style="height: 20px">
       <el-col :span="12" >
         <div>
-          <el-image src="/static/images/logo3.png" style="width:210px"/>
+          <el-image src="/static/images/logo5.png" style="width:210px"/>
         </div>
       </el-col>
       <el-col :span="12" >

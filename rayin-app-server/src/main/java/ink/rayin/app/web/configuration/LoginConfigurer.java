@@ -2,6 +2,7 @@ package ink.rayin.app.web.configuration;
 
 import ink.rayin.app.web.cache.RedisTemplateUtil;
 import ink.rayin.app.web.filter.BaseUsernamePasswordAuthenticationFilter;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.session.NullAuthenticated
  *
  * @create: 2020-1-14 15:54:35
  **/
+@Configuration
 public class LoginConfigurer<T extends LoginConfigurer<T, B>, B extends HttpSecurityBuilder<B>> extends AbstractHttpConfigurer<T, B>  {
 
 	private BaseUsernamePasswordAuthenticationFilter authFilter;

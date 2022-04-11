@@ -174,7 +174,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
-
+<!--		<dependency>-->
+<!--			<groupId>org.reflections</groupId>-->
+<!--			<artifactId>reflections</artifactId>-->
+<!--			<version>0.9.9-RC1</version>-->
+<!--		</dependency>-->
 <!--		<dependency>-->
 <!--			<groupId>org.w3c.dom</groupId>-->
 <!--			<artifactId>svg</artifactId>-->

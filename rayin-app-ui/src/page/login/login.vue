@@ -1,15 +1,13 @@
 <template>
   <el-container>
-    <el-row style="height: 20px">
+    <el-row style="height: 30px">
       <el-col :span="12" >
-        <div>
-          <el-image src="/static/images/logo3.png" style="width:210px"/>
-        </div>
+          <el-image src="/static/images/logo5.png" style="width:210px"/>
       </el-col>
-      <el-col :span="12" >
-        <div style="text-align: right;width:100%;margin-top:5px">
+      <el-col :span="12" style="text-align: right">
+<!--        <div style="text-align: right;width:100%;margin-top:5px;height: 50px;border: 1px solid black">-->
           <el-button type="primary" plain size="small" @click="toSignup">注册</el-button>
-        </div>
+<!--        </div>-->
       </el-col>
     </el-row>
     <el-row><el-divider></el-divider></el-row>
@@ -40,8 +38,6 @@
                 <el-image :src="captchaDataLoginPass" style="width:130px" ondragstart="return false;" class="imgCode" @click="refurbishCode('loginPass')" draggable="false"/>
               </el-form-item>
               <el-button type="primary" icon="el-icon-user-solid" @click="login" style="width:80%">登 录</el-button>
-              <hr>
-              <span @click="toPhoneLogin">手机登录</span>
             </el-form>
             <el-dialog
               title="温馨提示"

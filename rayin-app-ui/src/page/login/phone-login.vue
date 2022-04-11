@@ -4,7 +4,7 @@
     <el-row style="height: 20px">
       <el-col :span="12" >
         <div>
-          <el-image src="/static/images/logo3.png" style="width:210px"/>
+          <el-image src="/static/images/logo5.png" style="width:210px"/>
         </div>
       </el-col>
       <el-col :span="12" >
@@ -64,7 +64,7 @@
         logining: false,
         sendAuthCode:true,/*布尔值，通过v-show控制显示‘获取按钮’还是‘倒计时’ */
         auth_time: 0, /*倒计时 计数器*/
-       
+
 
         // 表单验证，需要在 el-form-item 元素中增加 prop 属性
         rules: {
@@ -75,7 +75,7 @@
             {required: true, message: '验证码为必填项', trigger: 'blur'}
           ]
         },
-        
+
         dialogVisible: false,
         message: ''
       }
@@ -84,15 +84,15 @@
       // 验证
       getAuthCode () {
         // 1.首先判断是否未输入手机号码
-        if(this.form.username != '' ){ 
+        if(this.form.username != '' ){
           // 2.使用正则判断手机输入的验证码是否符合规范
-          if(/^1[3456789]\d{9}$/.test(this.form.username)){ 
+          if(/^1[3456789]\d{9}$/.test(this.form.username)){
             // 3.设置倒计时间为60s
             this.auth_time = 60;
             // 4.隐藏获取验证码按钮,展示倒计时模块
             this.sendAuthCode = false;
             // 5.调用后端获取验证码接口的函数
-            this.getPhoneCode() 
+            this.getPhoneCode()
             var auth_timetimer = setInterval(()=>{
               // 6.设置每秒钟递减
               this.auth_time--;
@@ -190,5 +190,5 @@ header{
     color: #FA5555;
     cursor: pointer;
   }
-  
+
 </style>

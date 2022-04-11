@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author: tangyongmao
  * @create: 2020-06-19 12:28
  **/
-public class EprintLogoutHandler implements LogoutHandler {
+public class RayinLogoutHandler implements LogoutHandler {
 
     private RedisTemplateUtil redisTemplateUtil;
 
-    public EprintLogoutHandler (RedisTemplateUtil redisTemplate) {
+    public RayinLogoutHandler(RedisTemplateUtil redisTemplate) {
         this.redisTemplateUtil = redisTemplate;
     }
 

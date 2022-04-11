@@ -36,7 +36,7 @@ spring:
 #        mode: LEGACYHTML5
   application:
     #应用名称
-    name: users-rest
+    name: rayin-app
   profiles:
     active: ${maven.profiles.active}
   datasource:
