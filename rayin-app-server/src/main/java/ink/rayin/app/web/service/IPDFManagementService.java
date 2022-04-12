@@ -21,6 +21,6 @@ import java.util.List;
  * @since JDK 1.8
  */
 public interface IPDFManagementService {
-    public List minioOssQuery(UserOrganization uo, String searchKey) throws InvalidPortException, InvalidEndpointException, XmlParserException, InsufficientDataException, NoSuchAlgorithmException, IOException, InternalException, InvalidKeyException, InvalidBucketNameException, ErrorResponseException;
+    public List minioOssQuery(UserOrganization uo, String searchKey);
     public List aliyunOssQuery(UserOrganization uo, String searchKey);
 }

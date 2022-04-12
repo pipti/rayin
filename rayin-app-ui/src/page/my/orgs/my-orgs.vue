@@ -73,17 +73,17 @@
               <el-input v-model="selectOrg.organizationName" placeholder="请输入项目名称" style="width:285px" tabindex="0" ref="orgName"></el-input>
             </el-form-item>
             <el-form-item label="ACCESS_KEY">
-              <el-input v-model="selectOrg.accessKey" placeholder="" style="width:285px"  readonly></el-input>
+              <el-input v-model="selectOrg.accessKey" placeholder="新建保存后自动生成" style="width:285px"  readonly></el-input>
             </el-form-item>
             <el-form-item label="SECRET_KEY">
-              <el-input v-model="selectOrg.secretKey" placeholder="" style="width:285px" readonly></el-input>
+              <el-input v-model="selectOrg.secretKey" placeholder="新建保存后自动生成" style="width:285px" readonly></el-input>
             </el-form-item>
-            <el-form-item label="上链存证" v-if="selectOrg.owner===true">
-              <el-tooltip class="item" effect="dark" placement="top-start" style="border-radius: 0px;font-size: 20px">
-                <div slot="content">当前项目区块链上链开关，开启后该项目生成的凭证可以在开放联盟链上链存证</div>
-                <el-checkbox v-model="selectOrg.deposit" :checked="selectOrg.deposit === true"></el-checkbox>
-              </el-tooltip>
-            </el-form-item>
+<!--            <el-form-item label="上链存证" v-if="selectOrg.owner===true">-->
+<!--              <el-tooltip class="item" effect="dark" placement="top-start" style="border-radius: 0px;font-size: 20px">-->
+<!--                <div slot="content">当前项目区块链上链开关，开启后该项目生成的凭证可以在开放联盟链上链存证</div>-->
+<!--                <el-checkbox v-model="selectOrg.deposit" :checked="selectOrg.deposit === true"></el-checkbox>-->
+<!--              </el-tooltip>-->
+<!--            </el-form-item>-->
 <!--            <el-form-item label="第三方存储URL">-->
 <!--              <el-input v-model="selectOrg.thirdStorageUrl" placeholder="" style="width:285px" tabindex="1"></el-input>-->
 <!--            </el-form-item>-->
@@ -227,12 +227,12 @@ export default {
         label: 'aliyun-oss'
       },
       {
-        value: 'tencent-oss',
-        label: 'tencent-oss'
+        value: 'tencent-cos',
+        label: 'tencent-cos'
       },
       {
-        value: 'aws-oss',
-        label: 'aws-oss'
+        value: 'huawei-oss',
+        label: 'huawei-oss'
       }]
     }
   },

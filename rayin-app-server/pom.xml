@@ -126,22 +126,35 @@
 			<version>2.9.2</version>
 		</dependency>
 
-		<dependency>
-			<groupId>io.minio</groupId>
-			<artifactId>minio</artifactId>
-			<version>7.0.1</version>
-		</dependency>
-
+		<!--AliOss-->
 		<dependency>
 			<groupId>com.aliyun.oss</groupId>
 			<artifactId>aliyun-sdk-oss</artifactId>
 			<version>3.11.3</version>
 		</dependency>
-
+		<!--MinIO-->
 		<dependency>
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
-			<version>7.0.1</version>
+			<version>8.3.7</version>
+		</dependency>
+		<!--QiNiu-->
+		<dependency>
+			<groupId>com.qiniu</groupId>
+			<artifactId>qiniu-java-sdk</artifactId>
+			<version>7.9.5</version>
+		</dependency>
+		<!--腾讯COS-->
+		<dependency>
+			<groupId>com.qcloud</groupId>
+			<artifactId>cos_api</artifactId>
+			<version>5.6.8</version>
+		</dependency>
+		<!--华为云Obs-->
+		<dependency>
+			<groupId>com.huaweicloud</groupId>
+			<artifactId>esdk-obs-java</artifactId>
+			<version>3.19.7</version>
 		</dependency>
 
 <!--		<dependency>-->

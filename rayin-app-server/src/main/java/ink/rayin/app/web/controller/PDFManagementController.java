@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.xmlpull.v1.XmlPullParserException;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
@@ -66,8 +65,7 @@ public class PDFManagementController {
                                              @UserId String userId,
                                              @RequestBody JSONObject params,
                                              @RequestParam Integer pageCurrent,
-                                             @RequestParam Integer pageSize)
-            throws InvalidPortException, InvalidEndpointException, XmlPullParserException, InsufficientDataException, NoSuchAlgorithmException, IOException, InvalidKeyException, InternalException, InvalidBucketNameException, ErrorResponseException, XmlParserException {
+                                             @RequestParam Integer pageSize) {
 
         UserOrganization uo = new UserOrganization();
         uo.setUserId(userId);
@@ -155,10 +153,7 @@ public class PDFManagementController {
     })
     @PostMapping(value = {"/organization/pdf/view"})
     public RestResponse organizationPDFView(@OrgId String orgId,
-              @UserId String userId, @RequestBody(required = true) JSONObject jsonObject)
-            throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException,
-            InsufficientDataException, InvalidResponseException, InternalException, InvalidBucketNameException, ErrorResponseException,
-            XmlParserException {
+              @UserId String userId, @RequestBody(required = true) JSONObject jsonObject) throws IOException {
         UserOrganization uo = new UserOrganization();
         uo.setUserId(userId);
         uo.setOrganizationId(orgId);

@@ -1,10 +1,13 @@
 <template>
   <el-container>
-    <el-row style="height: 20px">
+    <el-row style="height: 30px">
       <el-col :span="12" >
-        <div>
-          <el-image src="/static/images/logo5.png" style="width:210px"/>
-        </div>
+        <el-image src="/static/images/logo5.png" style="width:210px"/>
+      </el-col>
+      <el-col :span="12" style="text-align: right">
+        <!--        <div style="text-align: right;width:100%;margin-top:5px;height: 50px;border: 1px solid black">-->
+        <el-button type="primary" plain size="small" @click="toLogin">登录</el-button>
+        <!--        </div>-->
       </el-col>
     </el-row>
     <el-divider></el-divider>
@@ -116,6 +119,9 @@ export default {
           return false
         }
       });
+    },
+    toLogin() {
+      router.push('/')
     }
   }
 }

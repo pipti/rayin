@@ -126,11 +126,11 @@ axios.interceptors.response.use(
         case 401:
           ElementUI.Message({
             showClose: true,
-            message: (error.response.data.message !== null?error.response.data.message:'验证失败，请重新登录'),
+            message: (error.response.data.message !== null ? error.response.data.message : '验证失败，请重新登录'),
             type: 'error'
           })
           router.push({name: 'Login', params: {}})
-          //router.go(0)
+          // router.go(0)
           break
         // 403 token过期
         // 登录过期对用户进行提示

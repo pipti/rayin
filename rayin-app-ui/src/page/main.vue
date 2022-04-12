@@ -45,7 +45,7 @@
         <el-col :span="4">
           <div style="width:100%;text-align: right;">
             <el-link  style="margin-bottom: 10px;margin-right: 10px" @click="titleRouterClick('main')">首页</el-link>
-            <el-link style="margin-bottom: 10px">帮助</el-link>
+            <el-link style="margin-bottom: 10px" href="http://rayin.ink/" target="_blank">帮助</el-link>
             <el-dropdown trigger="click" @command="handleCommand">
             <span class="el-dropdown-link">
               <el-avatar src="/static/images/face1.jpg"></el-avatar>

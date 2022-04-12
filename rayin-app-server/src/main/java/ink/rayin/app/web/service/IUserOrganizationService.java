@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import ink.rayin.app.web.model.UserOrganization;
 import ink.rayin.app.web.model.Users;
 import io.minio.errors.*;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -105,8 +104,5 @@ public interface IUserOrganizationService {
 	 */
 	void userOrganizationDel(UserOrganization uo,String userId);
 
-	void userOrganizationThirdStorageTest(UserOrganization uo,String userId,String organizationId) throws InvalidPortException,
-			InvalidEndpointException, IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
-			InvalidResponseException, InternalException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException,
-			XmlParserException;
+	void userOrganizationThirdStorageTest(UserOrganization uo,String userId,String organizationId) throws IOException;
 }

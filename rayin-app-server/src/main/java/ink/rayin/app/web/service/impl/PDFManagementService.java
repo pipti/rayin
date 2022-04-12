@@ -32,27 +32,28 @@ import java.util.List;
 public class PDFManagementService implements IPDFManagementService {
 
     @Override
-    public List minioOssQuery(UserOrganization uo, String searchKey) throws InvalidPortException, InvalidEndpointException, XmlParserException, InsufficientDataException, NoSuchAlgorithmException, IOException, InternalException, InvalidKeyException, InvalidBucketNameException, ErrorResponseException {
-        MinioClient minioClient = new MinioClient(uo.getThirdStorageUrl(),
-                uo.getThirdStorageAccessKey(),
-                uo.getThirdStorageSecretKey());
-        List rs = new ArrayList();
-        if(StringUtils.isNotBlank(searchKey)){
-            Iterable<Result<Item>> results = minioClient.listObjects(uo.getThirdStorageBucket(),searchKey);
-            for (Result<Item> result : results) {
-                Item item = result.get();
-                rs.add(item);
-            }
-
-            return rs;
-        }else{
-            Iterable<Result<Item>> results = minioClient.listObjects(uo.getThirdStorageBucket());
-            for (Result<Item> result : results) {
-                Item item = result.get();
-                rs.add(item);
-            }
-            return rs;
-        }
+    public List minioOssQuery(UserOrganization uo, String searchKey) {
+//        MinioClient minioClient = new MinioClient(uo.getThirdStorageUrl(),
+//                uo.getThirdStorageAccessKey(),
+//                uo.getThirdStorageSecretKey());
+//        List rs = new ArrayList();
+//        if(StringUtils.isNotBlank(searchKey)){
+//            Iterable<Result<Item>> results = minioClient.listObjects(uo.getThirdStorageBucket(),searchKey);
+//            for (Result<Item> result : results) {
+//                Item item = result.get();
+//                rs.add(item);
+//            }
+//
+//            return rs;
+//        }else{
+//            Iterable<Result<Item>> results = minioClient.listObjects(uo.getThirdStorageBucket());
+//            for (Result<Item> result : results) {
+//                Item item = result.get();
+//                rs.add(item);
+//            }
+//            return rs;
+//        }
+        return null;
     }
 
     @Override
