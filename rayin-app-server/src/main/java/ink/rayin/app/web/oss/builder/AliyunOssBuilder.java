@@ -1,19 +1,3 @@
-/*
- *      Copyright (c) 2018-2028, Chill Zhuang All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *
- *  Redistributions of source code must retain the above copyright notice,
- *  this list of conditions and the following disclaimer.
- *  Redistributions in binary form must reproduce the above copyright
- *  notice, this list of conditions and the following disclaimer in the
- *  documentation and/or other materials provided with the distribution.
- *  Neither the name of the dreamlu.net developer nor the names of its
- *  contributors may be used to endorse or promote products derived from
- *  this software without specific prior written permission.
- *  Author: Chill 庄骞 (smallchill@163.com)
- */
 package ink.rayin.app.web.oss.builder;
 
 import com.aliyun.oss.ClientConfiguration;
@@ -31,16 +15,10 @@ import ink.rayin.app.web.oss.rule.OssRule;
  *
  * @author Chill
  */
-public class AliOssBuilder {
+public class AliyunOssBuilder {
 
 	@SneakyThrows
 	public static OssTemplate template(OssProperties ossProperties, OssRule ossRule) {
-		// 创建配置类
-//		OssProperties ossProperties = new OssProperties();
-//		ossProperties.setEndpoint(oss.getEndpoint());
-//		ossProperties.setAccessKey(oss.getAccessKey());
-//		ossProperties.setSecretKey(oss.getSecretKey());
-//		ossProperties.setBucketName(oss.getBucketName());
 		// 创建ClientConfiguration。ClientConfiguration是OSSClient的配置类，可配置代理、连接超时、最大连接数等参数。
 		ClientConfiguration conf = new ClientConfiguration();
 		// 设置OSSClient允许打开的最大HTTP连接数，默认为1024个。
