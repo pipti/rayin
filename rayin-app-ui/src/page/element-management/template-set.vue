@@ -215,18 +215,18 @@
                   </el-switch>
                 </template>
               </el-table-column>
-              <el-table-column
-                prop="uncommonCharsAnalysis"
-                label="生僻字解析"
-                width="100">
-                <template slot-scope="scope">
-                  <el-switch
-                    v-model="scope.row.uncommonCharsAnalysis"
-                    active-text="是"
-                    inactive-text="否">
-                  </el-switch>
-                </template>
-              </el-table-column>
+<!--              <el-table-column-->
+<!--                prop="uncommonCharsAnalysis"-->
+<!--                label="生僻字解析"-->
+<!--                width="100">-->
+<!--                <template slot-scope="scope">-->
+<!--                  <el-switch-->
+<!--                    v-model="scope.row.uncommonCharsAnalysis"-->
+<!--                    active-text="是"-->
+<!--                    inactive-text="否">-->
+<!--                  </el-switch>-->
+<!--                </template>-->
+<!--              </el-table-column>-->
               <el-table-column
                 prop="uncommonCharsAnalysis"
                 label="页码属性"

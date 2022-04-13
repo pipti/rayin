@@ -9,6 +9,7 @@ import '@/css/common_stlye.css'
 import axios from 'axios'
 import {getToken, setToken} from '@/util/auth'
 import VueWechatTitle from 'vue-wechat-title'
+import VueClipboard from 'vue-clipboard2'
 
 import Vuex from 'vuex'
 import store from './vuex/store'
@@ -23,7 +24,7 @@ Vue.use(Vuex)
 Vue.use(codemirror)
 Vue.use(VueWechatTitle)
 Vue.component('icon', Icon)
-
+Vue.use(VueClipboard)
 axios.defaults.timeout = 10000
 // 返回其他状态吗
 // axios.defaults.validateStatus = function (status) {

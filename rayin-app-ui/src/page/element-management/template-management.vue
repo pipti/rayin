@@ -212,16 +212,28 @@ export default {
     tplTest (row) {
       this.$router.push({name: 'TemplateTest', params: {tplRow: row, searchKey: this.searchKey}})
     },
-    tplGenerate(row){
-      // 删除模板
+    tplGenerate (row) {
+      // 生成存储测试
       axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateGenerate.url,
         row,
         {})
         .then(res => {
-          this.tlData.splice(index, 1)
-        }).catch(function (error) {
-        console.log(error)
-      })
+          this.$confirm('<textarea rows="6" style="width:100%">' + res.data.content.presignedLink + '</textarea>', '访问链接', {
+            confirmButtonText: '拷贝',
+            cancelButtonText: '关闭',
+            dangerouslyUseHTMLString: true
+          }).then(() => {
+            this.$copyText(res.data.content.presignedLink).then(() => {
+              this.$message({
+                type: 'info',
+                message: `链接已拷贝至剪切板`
+              })
+            }, function (e) {
+              alert('无法拷贝至剪切板！')
+              console.log(e)
+            })
+          })
+        })
     },
     tplLogicalDel (index, row) {
       console.log(row)
