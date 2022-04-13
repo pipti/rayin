@@ -30,6 +30,10 @@ public class RayinFile {
 	 */
 	private String link;
 	/**
+	 * 文件地址
+	 */
+	private String presignedLink;
+	/**
 	 * 域名地址
 	 */
 	private String domain;

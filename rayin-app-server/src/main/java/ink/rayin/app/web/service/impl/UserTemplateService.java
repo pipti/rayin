@@ -11,13 +11,17 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import ink.rayin.app.web.dao.*;
 import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.model.*;
+import ink.rayin.app.web.oss.builder.OssBuilder;
+import ink.rayin.app.web.oss.model.RayinFile;
 import ink.rayin.app.web.service.IUserTemplateService;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.model.tplconfig.Element;
 import ink.rayin.htmladapter.base.model.tplconfig.PageNumDisplayPos;
+import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
 import ink.rayin.htmladapter.base.model.tplconfig.TemplateConfig;
 
 import ink.rayin.tools.utils.BeanConvert;
+import ink.rayin.tools.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -26,7 +30,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
@@ -63,6 +69,8 @@ public class UserTemplateService implements IUserTemplateService {
 	private UserOrganizationMapper userOrganizationMapper;
 	@Resource
 	private OrganizationMapper organizationMapper;
+	@Resource
+	private OssBuilder ossBuilder;
 	/**
 	 * 模板查询
 	 *
@@ -373,9 +381,24 @@ public class UserTemplateService implements IUserTemplateService {
 	 * @return
 	 */
 	@Override
-	public JSONObject userTemplateTest(UserTemplate ut) throws Exception{
-		//TODO 开发中
-		return null;
+	public JSONObject templateGenerate(UserTemplate ut) throws Exception{
+		UserTemplate utr = userTemplateMapper.selectOne(Wrappers.<UserTemplate>query().lambda().eq(UserTemplate::getUserId,ut.getUserId())
+				.eq(UserTemplate::getOrganizationId,ut.getOrganizationId())
+				.eq(UserTemplate::getTemplateId,ut.getTemplateId())
+				.eq(UserTemplate::getTemplateVersion,ut.getTemplateVersion()));
+		JSONObject r = new JSONObject();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		RayinMeta pdfMeta = pdfCreateService.generateEncryptPdfStreamByConfigStr(utr.getTplConfig(),JSON.parseObject(ut.getTestData()),baos,null);
+
+		UserOrganization query = new UserOrganization();
+		query.setOrganizationId(ut.getOrganizationId());
+		query.setUserId(ut.getUserId());
+		UserOrganization userOrg = userOrganizationMapper.userOrganizationQueryOne(query);
+		if(StringUtils.isBlank(userOrg.getThirdStorageBucket())){
+			throw new RayinBusinessException("请在项目中设置存储桶名称！");
+		}
+		RayinFile rayinFile = ossBuilder.template().putFile(userOrg.getThirdStorageBucket(), StringUtil.randomUUID() + ".pdf",new ByteArrayInputStream(baos.toByteArray()));
+		return JSON.parseObject(JSON.toJSONString(rayinFile));
 	}
 
 

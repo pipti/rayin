@@ -31,6 +31,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -125,6 +126,12 @@ public class TencentCosTemplate implements OssTemplate {
 		return getOssHost(bucketName).concat(StringPool.SLASH).concat(fileName);
 	}
 
+	@Override
+	public String filePresignedLink(String bucketName, String fileName) {
+		Date expiration = new Date(System.currentTimeMillis() + 3600 * 1000);
+		return cosClient.generatePresignedUrl(bucketName,fileName,expiration).toString();
+	}
+
 	/**
 	 * 文件对象
 	 *
@@ -188,6 +195,7 @@ public class TencentCosTemplate implements OssTemplate {
 		file.setName(key);
 		file.setDomain(getOssHost(bucketName));
 		file.setLink(fileLink(bucketName, key));
+		file.setPresignedLink(filePresignedLink(bucketName, key));
 		return file;
 	}
 

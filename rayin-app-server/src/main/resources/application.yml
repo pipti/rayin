@@ -1,34 +1,12 @@
 server:
-  port: ${maven.server.port}
+  port: 8961
   servlet:
     application-display-name: rayin-app-server
 #    context-path: /users-rest
 #spring:
 #  messages:
 #    basename: i18n/Messages,i18n/PagesConfig
-#  datasource:
-#      type: com.alibaba.druid.pool.DruidDataSource          # 配置当前要使用的数据源的操作类型
-#      driver-class-name: oracle.jdbc.driver.OracleDriver    # 配置数据库的驱动程序类
-#      #url: jdbc:oracle:thin:@10.253.128.56:1521:orcl        # 数据库连接地址
-#      url: jdbc:oracle:thin:@(DESCRIPTION=(FAILOVER=ON)(ADDRESS_LIST=(LOAD_BALANCE=ON)(ADDRESS=(PROTOCOL=TCP)(HOST=10.20.28.53)(PORT=10120))(ADDRESS=(PROTOCOL=TCP)(HOST=10.20.28.52)(PORT=10120)))(CONNECT_DATA=(SERVICE_NAME=cpmsuop)))
-#      username: uopadmin
-#      #username: uop_sc
-#      password: PMS2019@Clic
-#      #password: uop_sc
-#      dbcp2:                                                # 进行数据库连接池的配置
-#        min-idle: 2                                         # 数据库连接池的最小维持连接数
-#        initial-size: 2                                     # 初始化提供的连接数
-#        max-total: 5                                        # 最大的连接数
-#        max-wait-millis: 1800
-#  freemarker:
-#    cache: true
-#  tempalte-loader-path: classpath:/templates
-#  suffix: .ftl
-#mybatis:
-#  config-location: classpath:mybatis/mybatis.cfg.xml      # mybatis配置文件所在路径
-#  #type-aliases-package: cn.com.vo                        # 定义所有操作类的别名所在包
-#  mapper-locations:                                       # 所有的mapper映射文件
-#  - classpath:mybatis/mapper/**/*.xml
+
 spring:
 #      thymeleaf:
 #        cache: false
@@ -36,51 +14,9 @@ spring:
 #        mode: LEGACYHTML5
   application:
     #应用名称
-    name: rayin-app
+    name: rayin-app-server
   profiles:
-    active: ${maven.profiles.active}
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: ${maven.jdbc.ds.default.url}
-    username: ${maven.jdbc.ds.default.user}
-    password: ${maven.jdbc.ds.default.password}
-    driver-class-name: com.mysql.jdbc.Driver
-    hikari:
-      auto-commit: true
-      #空闲连接超时时长
-      idle-timeout: 60000
-      #连接超时时长
-      connection-timeout: 60000
-      #最大生命周期，0不过期
-      max-lifetime: 0
-      #最小空闲连接数
-      minimum-idle: 20
-      #最大连接数量
-      maximum-pool-size: 20
-  redis:
-    #哨兵配置（生产）
-#    sentinel:
-#      master: ${maven.cache.redis.default.master}
-#      nodes: ${maven.cache.redis.default.nodes}
-    database: 0
-    # Redis服务器地址（开发测试环境）
-    host: ${maven.cache.redis.default.host}
-    # Redis服务器连接端口
-    port: ${maven.cache.redis.default.port}
-    # Redis服务器连接密码（默认为空）
-    password: ${maven.cache.redis.default.password}
-    jedis:
-      pool:
-        #连接池最大连接数（使用负值表示没有限制）
-        max-active: 100
-        #连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-wait: -1s
-        #连接池中的最大空闲连接
-        max-idle: 10
-        #连接池中的最小空闲连接
-        min-idle: 0
-        #连接超时时间（毫秒）
-    timeout: 10s
+    active: local
   mvc:
     view:
       prefix: /
@@ -98,19 +34,3 @@ mybatis:
   mapper-Locations: classpath*:/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-
-
-rayin:
-  rootUri: ./resources
-  file:
-    folder:
-  storage:
-    url:
-  security:
-    code:
-      image:
-        #图片高度
-        length: 6
-        #宽度
-        width: 100
-  font-path: /Users/eric/Library/Fonts

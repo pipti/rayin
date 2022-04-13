@@ -172,6 +172,14 @@ axios.interceptors.response.use(
             type: 'error'
           })
           break
+        // 504请求不存在
+        case 504:
+          ElementUI.Message({
+            showClose: true,
+            message: '服务不可用，请联系系统管理员！',
+            type: 'error'
+          })
+          break
         default:
           ElementUI.Message({
             showClose: true,

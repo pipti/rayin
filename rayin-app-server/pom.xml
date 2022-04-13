@@ -204,72 +204,72 @@
 <!--			<version>1.4.01</version>-->
 <!--		</dependency>-->
     </dependencies>
-	<profiles>
-		<!--开发配置-->
-		<profile>
-			<id>local</id>
-			<properties>
-				<env>local</env>
-				<dict_except>none</dict_except>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-		<!--开发配置-->
-		<profile>
-			<id>develop</id>
-			<properties>
-				<env>develop</env>
-				<dict_except>none</dict_except>
-			</properties>
+<!--	<profiles>-->
+<!--		&lt;!&ndash;开发配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>local</id>-->
+<!--			<properties>-->
+<!--				<env>local</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+<!--			<activation>-->
+<!--				<activeByDefault>true</activeByDefault>-->
+<!--			</activation>-->
+<!--		</profile>-->
+<!--		&lt;!&ndash;开发配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>develop</id>-->
+<!--			<properties>-->
+<!--				<env>develop</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
 
-		</profile>
-		<!--系统测试配置-->
-		<profile>
-			<id>test</id>
-			<properties>
-				<env>test</env>
-				<dict_except>none</dict_except>
-			</properties>
-		</profile>
-		<!--性能测试配置-->
-		<profile>
-			<id>performtest</id>
-			<properties>
-				<env>performtest</env>
-				<dict_except>none</dict_except>
-			</properties>
+<!--		</profile>-->
+<!--		&lt;!&ndash;系统测试配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>test</id>-->
+<!--			<properties>-->
+<!--				<env>test</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+<!--		</profile>-->
+<!--		&lt;!&ndash;性能测试配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>performtest</id>-->
+<!--			<properties>-->
+<!--				<env>performtest</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
 
-		</profile>
-		<!--验收测试配置-->
-		<profile>
-			<id>acceptable</id>
-			<properties>
-				<env>acceptable</env>
-				<dict_except>none</dict_except>
-			</properties>
+<!--		</profile>-->
+<!--		&lt;!&ndash;验收测试配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>acceptable</id>-->
+<!--			<properties>-->
+<!--				<env>acceptable</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
 
-		</profile>
-		<!--生产配置-->
-		<profile>
-			<id>product</id>
-			<properties>
-				<env>product</env>
-				<dict_except>none</dict_except>
-			</properties>
+<!--		</profile>-->
+<!--		&lt;!&ndash;生产配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>product</id>-->
+<!--			<properties>-->
+<!--				<env>product</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
 
-		</profile>
-		<!--生产灰度配置-->
-		<profile>
-			<id>productgray</id>
-			<properties>
-				<env>productgray</env>
-				<dict_except>none</dict_except>
-			</properties>
+<!--		</profile>-->
+<!--		&lt;!&ndash;生产灰度配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>productgray</id>-->
+<!--			<properties>-->
+<!--				<env>productgray</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
 
-		</profile>
-	</profiles>
+<!--		</profile>-->
+<!--	</profiles>-->
 	<build>
 		<finalName>rayin-app-server</finalName>
 		<resources>
@@ -281,9 +281,9 @@
 				</excludes>
 			</resource>
 		</resources>
-		<filters>
-			<filter>${basedir}/src/main/resources/profile/${env}.properties</filter>
-		</filters>
+<!--		<filters>-->
+<!--			<filter>${basedir}/src/main/resources/profile/${env}.properties</filter>-->
+<!--		</filters>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

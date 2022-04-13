@@ -33,6 +33,7 @@ import ink.rayin.app.web.oss.rule.OssRule;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -170,6 +171,14 @@ public class MinioTemplate implements OssTemplate {
 	@SneakyThrows
 	public String fileLink(String bucketName, String fileName) {
 		return ossProperties.getEndpoint().concat(StringPool.SLASH).concat(getBucketName(bucketName)).concat(StringPool.SLASH).concat(fileName);
+	}
+
+	@Override
+	@SneakyThrows
+	public String filePresignedLink(String bucketName, String fileName) {
+		GetPresignedObjectUrlArgs getPresignedObjectUrlArgs =
+		GetPresignedObjectUrlArgs.builder().expiry(3600 * 1000).object(fileName).bucket(bucketName).build();
+		return client.getPresignedObjectUrl(getPresignedObjectUrlArgs);
 	}
 
 	@Override

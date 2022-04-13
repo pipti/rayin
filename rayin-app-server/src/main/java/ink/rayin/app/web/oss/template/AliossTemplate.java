@@ -122,9 +122,15 @@ public class AliossTemplate implements OssTemplate {
 	}
 
 	@Override
-	@SneakyThrows
 	public String fileLink(String bucketName, String fileName) {
-		return getOssHost(bucketName).concat(StringPool.SLASH).concat(fileName);
+		return getOssHost(getBucketName(bucketName)).concat(StringPool.SLASH).concat(fileName);
+	}
+
+	@Override
+	@SneakyThrows
+	public String filePresignedLink(String bucketName, String fileName) {
+		Date expiration = new Date(System.currentTimeMillis() + 3600 * 1000);
+		return ossClient.generatePresignedUrl(bucketName,fileName,expiration).toString();
 	}
 
 	/**
@@ -137,6 +143,7 @@ public class AliossTemplate implements OssTemplate {
 	@SneakyThrows
 	public RayinFile putFile(MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), file.getOriginalFilename(), file);
+
 	}
 
 	/**
@@ -190,6 +197,7 @@ public class AliossTemplate implements OssTemplate {
 		file.setName(key);
 		file.setDomain(getOssHost(bucketName));
 		file.setLink(fileLink(bucketName, key));
+		file.setPresignedLink(filePresignedLink(bucketName, key));
 		return file;
 	}
 

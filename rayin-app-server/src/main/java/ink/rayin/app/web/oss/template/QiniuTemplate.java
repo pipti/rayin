@@ -34,6 +34,7 @@ import ink.rayin.app.web.oss.rule.OssRule;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -128,6 +129,16 @@ public class QiniuTemplate implements OssTemplate {
 
 	@Override
 	@SneakyThrows
+	public String filePresignedLink(String bucketName, String fileName) {
+		String encodedFileName = URLEncoder.encode(fileName, "utf-8").replace("+", "%20");
+		String publicUrl = String.format("%s/%s", ossProperties.getEndpoint(), encodedFileName);
+		//1小时，可以自定义链接过期时间
+		long expireInSeconds = 3600;
+		return auth.privateDownloadUrl(publicUrl, expireInSeconds);
+	}
+
+	@Override
+	@SneakyThrows
 	public RayinFile putFile(MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), file.getOriginalFilename(), file);
 	}
@@ -178,6 +189,7 @@ public class QiniuTemplate implements OssTemplate {
 		file.setName(key);
 		file.setDomain(getOssHost());
 		file.setLink(fileLink(bucketName, key));
+		file.setPresignedLink(filePresignedLink(bucketName, key));
 		return file;
 	}
 

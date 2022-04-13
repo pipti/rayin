@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,6 +90,12 @@ public class HuaweiObsTemplate implements OssTemplate {
 	@Override
 	public String fileLink(String bucketName, String fileName) {
 		return getOssHost(getBucketName(bucketName)).concat(StringPool.SLASH).concat(fileName);
+	}
+
+	@Override
+	@SneakyThrows
+	public String filePresignedLink(String bucketName, String fileName) {
+		return null;
 	}
 
 	@Override
@@ -171,6 +178,7 @@ public class HuaweiObsTemplate implements OssTemplate {
 		file.setOriginalName(originalName);
 		file.setName(key);
 		file.setLink(fileLink(bucketName, key));
+		file.setPresignedLink(filePresignedLink(bucketName, key));
 		return file;
 	}
 

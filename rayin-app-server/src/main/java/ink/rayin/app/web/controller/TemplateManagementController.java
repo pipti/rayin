@@ -207,11 +207,17 @@ public class TemplateManagementController {
         return RestResponse.success(userTemplateService.userTemplateView(parameter));
     }
 
-    @PostMapping(value = "/template/test")
-    public RestResponse templateTest(@UserId String userId,
-                                     @RequestBody UserTemplate parameter) throws Exception {
+//    @PostMapping(value = "/template/test")
+//    public RestResponse templateTest(@UserId String userId,
+//                                     @RequestBody UserTemplate parameter) throws Exception {
+//
+//        return RestResponse.success(userTemplateService.userTemplateTest(parameter));
+//    }
 
-        return RestResponse.success(userTemplateService.userTemplateTest(parameter));
+    @PostMapping(value = "/template/tplGenerate")
+    public RestResponse templateGenerate(@UserId String userId,
+                                     @RequestBody UserTemplate parameter) throws Exception {
+        return RestResponse.success(userTemplateService.templateGenerate(parameter));
     }
 
 

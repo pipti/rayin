@@ -14,30 +14,32 @@
 1. 隐藏标记控件，用于标记PDF的位置关键字，设置后会在生成PDF的元数据中获取相关关键字对应页码以及坐标；
 ``` html
 <!-- 隐藏标记控件，用于标记PDF的位置关键字，设置后会在生成PDF的元数据中获取相关关键字对应页码以及坐标 -->
-<eprint type="mark" value="关键字"></eprint>
+<!-- 也可指定宽度样式 例如：style="width:50pt;height:20pt;"-->
+<!-- 也可指定位置样式 例如：style="position:absolute;top:10pt,right:10pt"-->
+<object type="mark" value="关键字"/>
 ```
 2. PDF控件，用于PDF中嵌入PDF；
 ``` html
-<!-- PDF控件，用于PDF中嵌入PDF -->
-<eprint type="pdf" value="绝对路径/http链接"></eprint>
+<!-- PDF控件，用于PDF中嵌入PDF 不设置page则默认全部-->
+<object type="file/pdf" value="绝对路径/http链接" page="1,2,3"></object>
 ```
 3. 二维码控件，用于PDF中嵌入PDF；
 ``` html
 <!-- 二维码控件，用于PDF中嵌入PDF -->
-<eprint type="qrcode" value="二维码编码值"></eprint>
+<object type="image/barcode" value="二维码编码值"></object>
 ```
 4. 条形码控件，format编码类型包括：CODE_39、CODE_128、CODE_93；
 ``` html
 <!-- 条形码控件，format编码类型包括：CODE_39、CODE_128、CODE_93 -->
-<eprint type="barcode" value="条形码编码固定值" format="编码方式"></eprint>
+<object type="image/barcode" value="条形码编码固定值" format="编码方式"></object>
 
 
-<eprint type="barcode" data-th-value="${json路径动态值}" format="编码方式"></eprint>
+<object type="image/barcode" data-th-value="${json路径动态值}" format="编码方式"></object>
 ```
 
 如果使用数据标签对应value中，可使用data-th-value，例如
 ```
-<eprint type="pdf" data-th-value="${json路径}"></eprint>
+<object type="file/pdf"  data-th-value="${json路径}"></object>
 ```
 # 三、常用数据绑定标签
 1. 文本类数据绑定标签 data-th-text,通常在<span>、<div>、<td>标签中，可通过左侧数据标签中选择数据->选择右侧编辑器控件->点击左侧绑定标签 添加。
@@ -56,7 +58,7 @@
 
 3. 脱离html标签的数据绑定标签，utext会将数据中的html标签解析后显示
 ```
-<th:block th:utext="${policy}"/>
+<data-th:block th:utext="${policy}"/>
 ```
 
 4. 函数标签

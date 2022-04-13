@@ -124,6 +124,15 @@ public interface OssTemplate {
 	String fileLink(String bucketName, String fileName);
 
 	/**
+	 * 获取文件外网可访问临时签名地址
+	 *
+	 * @param bucketName 存储桶名称
+	 * @param fileName   存储桶对象名称
+	 * @return String
+	 */
+	String filePresignedLink(String bucketName, String fileName);
+
+	/**
 	 * 上传文件
 	 *
 	 * @param file 上传文件类

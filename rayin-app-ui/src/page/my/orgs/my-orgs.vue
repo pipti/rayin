@@ -93,12 +93,12 @@
 <!--            <el-form-item label="第三方存储SK">-->
 <!--              <el-input v-model="selectOrg.thirdStorageSecretKey" placeholder="" style="width:285px" tabindex="3"></el-input>-->
 <!--            </el-form-item>-->
-<!--            <el-form-item label="第三方存储PDF桶名">-->
-<!--              <el-input v-model="selectOrg.thirdStorageBucket" placeholder="" style="width:285px" tabindex="4"></el-input>-->
-<!--            </el-form-item>-->
-<!--            <el-form-item label="第三方存储资源桶名">-->
-<!--              <el-input v-model="selectOrg.thirdStorageResourceBucket" placeholder="" style="width:285px" tabindex="4"></el-input>-->
-<!--            </el-form-item>-->
+            <el-form-item label="存储PDF桶名">
+              <el-input v-model="selectOrg.thirdStorageBucket" placeholder="" style="width:285px" tabindex="4"></el-input>
+            </el-form-item>
+            <el-form-item label="存储资源桶名">
+              <el-input v-model="selectOrg.thirdStorageResourceBucket" placeholder="" style="width:285px" tabindex="4"></el-input>
+            </el-form-item>
 <!--            <el-form-item label="存储类型">-->
 <!--              <template>-->
 <!--                <el-select placeholder="请选择存储类型" v-model="selectOrg.ossType" style="width:285px">-->

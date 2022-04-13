@@ -6,7 +6,7 @@
         <!--<el-button type="primary" plain size="medium" style="border-radius: 0px"><i class="el-icon-upload2"></i>构件上载</el-button>-->
         <!--<el-button plain size="medium" style="border-radius: 0px"><i class="el-icon-delete"></i>构件删除</el-button>-->
         <el-tooltip class="item" effect="dark" placement="right-start" style="border-radius: 0px">
-          <div slot="content">用于管理构件，构件是模板的基础组成部分</div>
+          <div slot="content">用于管理构件，构件是模板的基础组成部分，通过html进行样式的设计和数据绑定</div>
           <el-button size="medium"><i class="el-icon-help"></i>提示</el-button>
         </el-tooltip>
 

@@ -140,7 +140,7 @@
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="tplEdit(scope.index, scope.row)">编辑</el-button>
               <el-button type="text" size="small" @click="tplTest(scope.row)">模板测试</el-button>
-              <el-button type="text" size="small" @click="tplTest(scope.row)" disabled>接口测试</el-button>
+              <el-button type="text" size="small" @click="tplGenerate(scope.row)">生成</el-button>
               <el-popover
                 placement="bottom"
                 width="200"
@@ -212,6 +212,17 @@ export default {
     tplTest (row) {
       this.$router.push({name: 'TemplateTest', params: {tplRow: row, searchKey: this.searchKey}})
     },
+    tplGenerate(row){
+      // 删除模板
+      axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateGenerate.url,
+        row,
+        {})
+        .then(res => {
+          this.tlData.splice(index, 1)
+        }).catch(function (error) {
+        console.log(error)
+      })
+    },
     tplLogicalDel (index, row) {
       console.log(row)
       // 删除构件
@@ -250,7 +261,7 @@ export default {
       })
     },
     tplResumeClick (index, row) {
-    // 删除构件
+    // 恢复模板
       axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateResume.url,
         row,
         {})

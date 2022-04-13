@@ -70,7 +70,7 @@ public interface IUserTemplateService {
 	 * @param ut
 	 * @return
 	 */
-	JSONObject userTemplateTest(UserTemplate ut) throws Exception;
+	JSONObject templateGenerate(UserTemplate ut) throws Exception;
 	/**
 	 * 模板恢复
 	 * @param uem

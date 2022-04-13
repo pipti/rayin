@@ -45,7 +45,6 @@ export default {
       //      active2: 0,
       //      active3: 0,
       imgList: [
-        '/static/help/images/guide_1.png',
         '/static/help/images/guide_2.png',
         '/static/help/images/guide_3.png',
         '/static/help/images/guide_4.png',
