@@ -16,6 +16,7 @@
  */
 package ink.rayin.app.web.oss.template;
 
+import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.utils.DateUtil;
 import ink.rayin.tools.utils.Func;
 import ink.rayin.tools.utils.StringPool;
@@ -27,13 +28,12 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.enums.PolicyType;
 import ink.rayin.app.web.oss.model.RayinFile;
-import ink.rayin.app.web.oss.model.OssFile;
+import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -54,7 +54,7 @@ public class MinioTemplate implements OssTemplate {
 	/**
 	 * 存储桶命名规则
 	 */
-	private final OssRule ossRule;
+	private final StoreRule ossRule;
 
 	/**
 	 * 配置类
@@ -131,17 +131,17 @@ public class MinioTemplate implements OssTemplate {
 
 	@Override
 	@SneakyThrows
-	public OssFile statFile(String fileName) {
+	public StoreFile statFile(String fileName) {
 		return statFile(ossProperties.getBucketName(), fileName);
 	}
 
 	@Override
 	@SneakyThrows
-	public OssFile statFile(String bucketName, String fileName) {
+	public StoreFile statFile(String bucketName, String fileName) {
 		StatObjectResponse stat = client.statObject(
 			StatObjectArgs.builder().bucket(getBucketName(bucketName)).object(fileName).build()
 		);
-		OssFile ossFile = new OssFile();
+		StoreFile ossFile = new StoreFile();
 		ossFile.setName(Func.isEmpty(stat.object()) ? fileName : stat.object());
 		ossFile.setLink(fileLink(ossFile.getName()));
 		ossFile.setHash(String.valueOf(stat.hashCode()));
@@ -257,6 +257,11 @@ public class MinioTemplate implements OssTemplate {
 	public void removeFiles(String bucketName, List<String> fileNames) {
 		Stream<DeleteObject> stream = fileNames.stream().map(DeleteObject::new);
 		client.removeObjects(RemoveObjectsArgs.builder().bucket(getBucketName(bucketName)).objects(stream::iterator).build());
+	}
+
+	@Override
+	public RayinFiles getFileList(String bucketName, String keyPrefix) {
+		return null;
 	}
 
 	/**

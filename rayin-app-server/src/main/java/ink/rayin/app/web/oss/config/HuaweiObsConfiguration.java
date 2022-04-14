@@ -6,8 +6,8 @@ import com.obs.services.ObsConfiguration;
 import lombok.AllArgsConstructor;
 import ink.rayin.app.web.oss.template.HuaweiObsTemplate;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.RayinOssRule;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.RayinStoreRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -30,9 +30,9 @@ public class HuaweiObsConfiguration {
 	private final OssProperties ossProperties;
 
 	@Bean
-	@ConditionalOnMissingBean(OssRule.class)
-	public OssRule ossRule() {
-		return new RayinOssRule();
+	@ConditionalOnMissingBean(StoreRule.class)
+	public StoreRule ossRule() {
+		return new RayinStoreRule();
 	}
 
 	@Bean
@@ -60,8 +60,8 @@ public class HuaweiObsConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(HuaweiObsTemplate.class)
-	@ConditionalOnBean({ObsClient.class, OssRule.class})
-	public HuaweiObsTemplate huaweiobsTemplate(ObsClient ossClient, OssRule ossRule) {
+	@ConditionalOnBean({ObsClient.class, StoreRule.class})
+	public HuaweiObsTemplate huaweiobsTemplate(ObsClient ossClient, StoreRule ossRule) {
 		return new HuaweiObsTemplate(ossClient, ossProperties, ossRule);
 	}
 }

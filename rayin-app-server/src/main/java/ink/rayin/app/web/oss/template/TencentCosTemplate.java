@@ -20,13 +20,14 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.CannedAccessControlList;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectResult;
+import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.utils.StringPool;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.model.RayinFile;
-import ink.rayin.app.web.oss.model.OssFile;
+import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,7 +47,7 @@ import java.util.List;
 public class TencentCosTemplate implements OssTemplate {
 	private final COSClient cosClient;
 	private final OssProperties ossProperties;
-	private final OssRule ossRule;
+	private final StoreRule ossRule;
 
 	@Override
 	@SneakyThrows
@@ -84,15 +85,15 @@ public class TencentCosTemplate implements OssTemplate {
 
 	@Override
 	@SneakyThrows
-	public OssFile statFile(String fileName) {
+	public StoreFile statFile(String fileName) {
 		return statFile(ossProperties.getBucketName(), fileName);
 	}
 
 	@Override
 	@SneakyThrows
-	public OssFile statFile(String bucketName, String fileName) {
+	public StoreFile statFile(String bucketName, String fileName) {
 		ObjectMetadata stat = cosClient.getObjectMetadata(getBucketName(bucketName), fileName);
-		OssFile ossFile = new OssFile();
+		StoreFile ossFile = new StoreFile();
 		ossFile.setName(fileName);
 		ossFile.setLink(fileLink(ossFile.getName()));
 		ossFile.setHash(stat.getContentMD5());
@@ -221,6 +222,11 @@ public class TencentCosTemplate implements OssTemplate {
 	@SneakyThrows
 	public void removeFiles(String bucketName, List<String> fileNames) {
 		fileNames.forEach(fileName -> removeFile(getBucketName(bucketName), fileName));
+	}
+
+	@Override
+	public RayinFiles getFileList(String bucketName, String keyPrefix) {
+		return null;
 	}
 
 	/**

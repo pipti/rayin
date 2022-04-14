@@ -7,7 +7,7 @@ import com.qiniu.util.Auth;
 import lombok.AllArgsConstructor;
 import ink.rayin.app.web.oss.template.QiniuTemplate;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
 public class QiniuConfiguration {
 
 	private final OssProperties ossProperties;
-	private final OssRule ossRule;
+	private final StoreRule ossRule;
 
 	@Bean
 	@ConditionalOnMissingBean(com.qiniu.storage.Configuration.class)

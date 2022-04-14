@@ -8,7 +8,7 @@ import com.qcloud.cos.region.Region;
 import lombok.AllArgsConstructor;
 import ink.rayin.app.web.oss.template.TencentCosTemplate;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Configuration;
 public class TencentCosConfiguration {
 
 	private final OssProperties ossProperties;
-	private final OssRule ossRule;
+	private final StoreRule ossRule;
 
 
 	@Bean

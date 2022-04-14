@@ -146,6 +146,10 @@ const webappApiConfig = {
     OrganizationPDFView:{
       url: "/api/organization/pdf/view",
       method: "get"
+    },
+    OrganizationFileDownload:{
+      url: "/api/organization/pdf/download",
+      method: "post"
     }
   },
   OrganizationIndex: {
@@ -199,8 +203,8 @@ const webappApiConfig = {
       url: "/api/resource/file/del",
       method: "get"
     },
-    organizationFileUrl:{
-      url: "/api/resource/file/url",
+    organizationFileDownload:{
+      url: "/api/resource/file/download",
       method: "get"
     }
   },

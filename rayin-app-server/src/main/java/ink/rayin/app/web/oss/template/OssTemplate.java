@@ -18,7 +18,8 @@ package ink.rayin.app.web.oss.template;
 
 
 import ink.rayin.app.web.oss.model.RayinFile;
-import ink.rayin.app.web.oss.model.OssFile;
+import ink.rayin.app.web.oss.model.RayinFiles;
+import ink.rayin.app.web.oss.model.StoreFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -78,7 +79,7 @@ public interface OssTemplate {
 	 * @param fileName 存储桶文件名称
 	 * @return InputStream
 	 */
-	OssFile statFile(String fileName);
+	StoreFile statFile(String fileName);
 
 	/**
 	 * 获取文件信息
@@ -87,7 +88,7 @@ public interface OssTemplate {
 	 * @param fileName   存储桶文件名称
 	 * @return InputStream
 	 */
-	OssFile statFile(String bucketName, String fileName);
+	StoreFile statFile(String bucketName, String fileName);
 
 	/**
 	 * 获取文件相对路径
@@ -208,5 +209,11 @@ public interface OssTemplate {
 	 */
 	void removeFiles(String bucketName, List<String> fileNames);
 
-
+	/**
+	 * 获取文件列表
+	 * @param bucketName
+	 * @param keyPrefix
+	 * @return
+	 */
+	RayinFiles getFileList(String bucketName, String keyPrefix);
 }

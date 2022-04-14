@@ -15,13 +15,13 @@
         </el-input>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="23">
-      </el-col>
-      <el-col :span="1" style="text-align: center">
-        <el-button type="text" @click="orgIndexClick" size="big">筛选</el-button>
-      </el-col>
-    </el-row>
+<!--    <el-row>-->
+<!--      <el-col :span="23">-->
+<!--      </el-col>-->
+<!--      <el-col :span="1" style="text-align: center">-->
+<!--        <el-button type="text" @click="orgIndexClick" size="big">筛选</el-button>-->
+<!--      </el-col>-->
+<!--    </el-row>-->
     <el-row>
       <el-col :span="4" v-for="(orgIndex, $index) in orgIndexes" :key="orgIndex.indexId" v-if="orgIndex.status && orgIndex.indexValue !== null">
         <el-card  class="fork" size="small">
@@ -47,6 +47,14 @@
 <!--      </el-col>-->
 <!--    </el-row>-->
     <el-row>
+      <div>
+        <el-link type="primary" :underline="false" @click="fileBack(prefix.substring(0,prefix.length - 1).lastIndexOf('/') === -1?'':
+        prefix.substring(0, prefix.substring(0,prefix.length - 1).lastIndexOf('/') + 1))" v-if="prefix !== ''">返回</el-link>
+        &nbsp;&nbsp;
+        <span style="font-size: 10px">{{prefix}}</span>
+      </div>
+    </el-row>
+    <el-row>
       <el-col>
         <template>
           <el-table
@@ -55,17 +63,20 @@
             :height="this.$store.state.tableHeight">
             <el-table-column
               fixed
-              prop="x-cms-system-meta-createDate"
+              label="文件名"
+            >
+              <template slot-scope="scope">
+                <el-link type="primary" :underline="false" @click="fileEnter(scope.row.name)" v-if="scope.row.fileType === 'doc'">{{scope.row.name}}</el-link>
+                <span v-if="scope.row.fileType !== 'doc'">{{scope.row.name}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="putTimeStr"
               label="上传日期"
               width="200">
             </el-table-column>
             <el-table-column
-              prop="id"
-              label="文件名"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="Size"
+              prop="lengthStr"
               label="文件大小"
               width="200">
             </el-table-column>
@@ -74,10 +85,13 @@
               label="操作"
               width="300">
               <template slot-scope="scope">
-                <el-button @click="fileViewClick(scope.row)" type="text" size="small">查看</el-button>
-                <el-button @click="handleClick(scope.row)" type="text" size="small" disabled>浏览记录</el-button>
-                <el-button @click="downloadPdf(scope.row)" type="text" size="small">下载</el-button>
-                <el-button @click="shareUrlClick(scope.row)" type="text" size="small">分享</el-button>
+                <el-button @click="fileViewClick(scope.row)" type="text" size="small" v-if="scope.row.fileType === 'doc'" disabled>查看</el-button>
+                <el-button @click="fileViewClick(scope.row)" type="text" size="small" v-if="scope.row.fileType !== 'doc'">查看</el-button>
+<!--                <el-button @click="handleClick(scope.row)" type="text" size="small" disabled>浏览记录</el-button>-->
+<!--                <el-button @click="downloadPdf(scope.row)" type="text" size="small" v-if="scope.row.fileType === 'doc'" disabled>下载</el-button>-->
+<!--                <el-button @click="downloadPdf(scope.row)" type="text" size="small" v-if="scope.row.fileType !== 'doc'">下载</el-button>-->
+                <el-button @click="copy(scope.row)" type="text" size="small" v-if="scope.row.fileType === 'doc'" disabled>分享</el-button>
+                <el-button @click="copy(scope.row)" type="text" size="small" v-if="scope.row.fileType !== 'doc'">分享</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -223,6 +237,7 @@
 
 <script>
 import axios from 'axios'
+import FileSaver from 'file-saver'
 export default {
   name: 'PDFQuery',
   data () {
@@ -242,14 +257,24 @@ export default {
       isSelected: false,
       selectIndexes: [],
       pdfUrl: '',
-      dialogVisible: false
+      dialogVisible: false,
+      prefix: '',
+      prePrefix: ''
     }
   },
   methods: {
+    fileEnter (fileName) {
+      console.log(fileName)
+      this.handleCurrentChange(1, this.prefix + fileName)
+    },
+    fileBack (fileName) {
+      console.log(fileName)
+      this.handleCurrentChange(1, fileName)
+    },
     handleClick (key, keyPath) {
       console.log(key, keyPath)
     },
-    handleCurrentChange (val) {
+    handleCurrentChange (val, prefix) {
       let queryParams = {}
       this.orgIndexes.forEach(function (item, index) {
         if (item.indexValue !== null && item.status) {
@@ -260,11 +285,13 @@ export default {
       if (this.searchKey !== null) {
         queryParams.dimParam = this.searchKey
       }
-      axios.post(this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationPDFQuery.url + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize,
+      axios.post(this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationPDFQuery.url + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize + '&prefix=' + prefix,
         {queryParams},
         {})
         .then(res => {
-          this.pdfData = res.data.content.data
+          this.prePrefix = this.prefix
+          this.prefix = res.data.content.prefix
+          this.pdfData = res.data.content.fileList
           this.pdfCurrentPage = res.data.content.currentPage
           this.pdfDataTotal = res.data.content.pdfDataTotal
           this.pdfPageCount = res.data.content.pdfPageCount
@@ -282,7 +309,7 @@ export default {
     fileViewClick (row) {
       console.log(row.id)
       axios.post(this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationPDFView.url,
-        {id: row.id, bucket: row.bucket})
+        {id: row.id, url: row.presignedLink})
         .then(res => {
           sessionStorage.setItem('pdfData', res.data.content.pdfFile)
           this.drawerPdfViewer = true
@@ -350,8 +377,8 @@ export default {
           console.log(error)
         })
     },
-    copy (data) {
-      let url = data
+    copy (row) {
+      let url = row.presignedLink
       let oInput = document.createElement('input')
       oInput.value = url
       document.body.appendChild(oInput)
@@ -359,24 +386,35 @@ export default {
       console.log(oInput.value)
       document.execCommand('Copy') // 执行浏览器复制命令
       oInput.remove()
-      this.$message.success('复制成功')
+      this.$message.success('分享链接复制成功')
     },
     dialogClose () {
       this.dialogVisible = false
     },
     downloadPdf (row) {
-      axios.get('/api/organization/pdf/url' + '/' + 'b-eprint-test' + '/' + row.id)
+      axios.post(this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationFileDownload.url, row)
         .then(res => {
           // console.log(res.data.content.pdfFile)
           // this.$confirm(res.data.content, '下载地址', {
           //   cancelButtonText: '关闭',
           //   type: 'confirm'
           // })
-          window.location.href = res.data.content
+          // window.location.href = res.data
+          // console.log(res)
+          const blob = new Blob([res.data], {type: 'application/pdf'})
+          FileSaver.saveAs(blob, row.name.substring(0, row.name - 1))
+
         })
         .catch(function (error) {
           console.log(error)
         })
+      // const blob = new Blob([res], {type: ''})
+      // if(this.elementForm.name === null)
+      // FileSaver.saveAs(blob, row.name)
+      // let a = document.createElement('a')
+      // a.href = row.presignedLink
+      // a.click()
+      // window.location.href = row.presignedLink
     },
     clearParams () {
       this.orgIndexes.forEach(function (item, index) {
@@ -391,8 +429,8 @@ export default {
     }
   },
   mounted () {
-    // this.handleCurrentChange(1)
-    this.orgQueryIndex(1)
+    this.handleCurrentChange(1, this.prefix)
+    // this.orgQueryIndex(1)
   }
 }
 </script>

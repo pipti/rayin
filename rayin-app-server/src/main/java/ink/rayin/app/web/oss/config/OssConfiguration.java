@@ -3,8 +3,8 @@ package ink.rayin.app.web.oss.config;
 import ink.rayin.app.web.oss.builder.OssBuilder;
 import lombok.AllArgsConstructor;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.RayinOssRule;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.RayinStoreRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,9 +23,9 @@ public class OssConfiguration {
 	private final OssProperties ossProperties;
 
 	@Bean
-	@ConditionalOnMissingBean(OssRule.class)
-	public OssRule ossRule() {
-		return new RayinOssRule();
+	@ConditionalOnMissingBean(StoreRule.class)
+	public StoreRule ossRule() {
+		return new RayinStoreRule();
 	}
 
 	@Bean

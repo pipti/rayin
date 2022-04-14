@@ -14,29 +14,41 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package ink.rayin.app.web.oss.rule;
+package ink.rayin.app.web.oss.model;
+
+import lombok.Data;
+
+import java.util.Date;
 
 /**
- * Oss通用规则
+ * OssFile
  *
  * @author Chill
  */
-public interface OssRule {
-
+@Data
+public class StoreFile {
 	/**
-	 * 获取存储桶规则
-	 *
-	 * @param bucketName 存储桶名称
-	 * @return String
+	 * 文件地址
 	 */
-	String bucketName(String bucketName);
-
+	private String link;
 	/**
-	 * 获取文件名规则
-	 *
-	 * @param originalFilename 文件名
-	 * @return String
+	 * 文件名
 	 */
-	String fileName(String originalFilename);
-
+	private String name;
+	/**
+	 * 文件hash值
+	 */
+	public String hash;
+	/**
+	 * 文件大小
+	 */
+	private long length;
+	/**
+	 * 文件上传时间
+	 */
+	private Date putTime;
+	/**
+	 * 文件contentType
+	 */
+	private String contentType;
 }

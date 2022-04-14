@@ -8,7 +8,7 @@ import ink.rayin.app.web.oss.template.AliossTemplate;
 import ink.rayin.app.web.oss.template.OssTemplate;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 
 /**
  * 阿里云存储构建类
@@ -18,7 +18,7 @@ import ink.rayin.app.web.oss.rule.OssRule;
 public class AliyunOssBuilder {
 
 	@SneakyThrows
-	public static OssTemplate template(OssProperties ossProperties, OssRule ossRule) {
+	public static OssTemplate template(OssProperties ossProperties, StoreRule ossRule) {
 		// 创建ClientConfiguration。ClientConfiguration是OSSClient的配置类，可配置代理、连接超时、最大连接数等参数。
 		ClientConfiguration conf = new ClientConfiguration();
 		// 设置OSSClient允许打开的最大HTTP连接数，默认为1024个。

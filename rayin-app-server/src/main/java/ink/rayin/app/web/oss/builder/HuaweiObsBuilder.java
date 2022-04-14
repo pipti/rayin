@@ -3,7 +3,7 @@ package ink.rayin.app.web.oss.builder;
 import com.obs.services.ObsClient;
 import com.obs.services.ObsConfiguration;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import ink.rayin.app.web.oss.template.HuaweiObsTemplate;
 import lombok.SneakyThrows;
 
@@ -15,7 +15,7 @@ import lombok.SneakyThrows;
 public class HuaweiObsBuilder {
 
 	@SneakyThrows
-	public static HuaweiObsTemplate template(OssProperties ossProperties, OssRule ossRule) {
+	public static HuaweiObsTemplate template(OssProperties ossProperties, StoreRule ossRule) {
 
 		ObsConfiguration conf = new ObsConfiguration();
 		// 设置OSSClient允许打开的最大HTTP连接数，默认为1024个。

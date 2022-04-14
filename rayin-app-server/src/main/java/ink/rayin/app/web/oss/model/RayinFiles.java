@@ -19,36 +19,21 @@ package ink.rayin.app.web.oss.model;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
- * OssFile
+ * BladeFile
  *
  * @author Chill
  */
 @Data
-public class OssFile {
+public class RayinFiles {
 	/**
-	 * 文件地址
+	 * 文件列表
 	 */
-	private String link;
+	private List<RayinFile> fileList;
 	/**
-	 * 文件名
+	 * 文件前缀
 	 */
-	private String name;
-	/**
-	 * 文件hash值
-	 */
-	public String hash;
-	/**
-	 * 文件大小
-	 */
-	private long length;
-	/**
-	 * 文件上传时间
-	 */
-	private Date putTime;
-	/**
-	 * 文件contentType
-	 */
-	private String contentType;
+	private String prefix;
 }

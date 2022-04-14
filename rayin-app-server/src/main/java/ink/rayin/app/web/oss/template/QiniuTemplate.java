@@ -22,15 +22,16 @@ import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
+import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.utils.CollectionUtil;
 import ink.rayin.tools.utils.Func;
 import ink.rayin.tools.utils.StringPool;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.model.RayinFile;
-import ink.rayin.app.web.oss.model.OssFile;
+import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -49,7 +50,7 @@ public class QiniuTemplate implements OssTemplate {
 	private final UploadManager uploadManager;
 	private final BucketManager bucketManager;
 	private final OssProperties ossProperties;
-	private final OssRule ossRule;
+	private final StoreRule ossRule;
 
 	@Override
 	@SneakyThrows
@@ -85,15 +86,15 @@ public class QiniuTemplate implements OssTemplate {
 
 	@Override
 	@SneakyThrows
-	public OssFile statFile(String fileName) {
+	public StoreFile statFile(String fileName) {
 		return statFile(ossProperties.getBucketName(), fileName);
 	}
 
 	@Override
 	@SneakyThrows
-	public OssFile statFile(String bucketName, String fileName) {
+	public StoreFile statFile(String bucketName, String fileName) {
 		FileInfo stat = bucketManager.stat(getBucketName(bucketName), fileName);
-		OssFile ossFile = new OssFile();
+		StoreFile ossFile = new StoreFile();
 		ossFile.setName(Func.isEmpty(stat.key) ? fileName : stat.key);
 		ossFile.setLink(fileLink(ossFile.getName()));
 		ossFile.setHash(stat.hash);
@@ -215,6 +216,11 @@ public class QiniuTemplate implements OssTemplate {
 	@SneakyThrows
 	public void removeFiles(String bucketName, List<String> fileNames) {
 		fileNames.forEach(fileName -> removeFile(getBucketName(bucketName), fileName));
+	}
+
+	@Override
+	public RayinFiles getFileList(String bucketName, String keyPrefix) {
+		return null;
 	}
 
 	/**

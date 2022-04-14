@@ -209,14 +209,14 @@ public class UserElementService implements IUserElementService{
 		uw.eq("element_version",uem.getElementVersion());
 		uw.eq("organization_id",uem.getOrganizationId());
 
-		//Html2Image html2Image = Html2Image.fromHtml(uem.getContent());
-		//final Base64.Encoder encoder = Base64.getEncoder();
-		//ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		//html2Image.getImageRenderer().setAutoHeight(true);
-		//ImageIO.write(html2Image.getImageRenderer().getBufferedImage(), "png", baos);
+		Html2Image html2Image = Html2Image.fromHtml(uem.getContent());
+		final Base64.Encoder encoder = Base64.getEncoder();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		html2Image.getImageRenderer().setAutoHeight(true);
+		ImageIO.write(html2Image.getImageRenderer().getBufferedImage(), "png", baos);
 
-		//byte[] bytes = baos.toByteArray();
-		//uem.setElementThum("data:image/jpeg;base64," + encoder.encodeToString(bytes));
+		byte[] bytes = baos.toByteArray();
+		uem.setElementThum("data:image/jpeg;base64," + encoder.encodeToString(bytes));
 		//logger.debug("构件缩略图大小" + (bytes.length/8/1024));
 
 

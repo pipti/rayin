@@ -18,27 +18,22 @@ package ink.rayin.app.web.oss.template;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
-import com.aliyun.oss.model.MatchMode;
-import com.aliyun.oss.model.ObjectMetadata;
-import com.aliyun.oss.model.PolicyConditions;
-import com.aliyun.oss.model.PutObjectResult;
+import com.aliyun.oss.model.*;
+import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.jackson.JsonUtil;
 import ink.rayin.tools.utils.StringPool;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.model.RayinFile;
-import ink.rayin.app.web.oss.model.OssFile;
+import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * AliossTemplate
@@ -49,7 +44,7 @@ import java.util.Map;
 public class AliossTemplate implements OssTemplate {
 	private final OSSClient ossClient;
 	private final OssProperties ossProperties;
-	private final OssRule ossRule;
+	private final StoreRule ossRule;
 
 	@Override
 	@SneakyThrows
@@ -85,15 +80,15 @@ public class AliossTemplate implements OssTemplate {
 
 	@Override
 	@SneakyThrows
-	public OssFile statFile(String fileName) {
+	public StoreFile statFile(String fileName) {
 		return statFile(ossProperties.getBucketName(), fileName);
 	}
 
 	@Override
 	@SneakyThrows
-	public OssFile statFile(String bucketName, String fileName) {
+	public StoreFile statFile(String bucketName, String fileName) {
 		ObjectMetadata stat = ossClient.getObjectMetadata(getBucketName(bucketName), fileName);
-		OssFile ossFile = new OssFile();
+		StoreFile ossFile = new StoreFile();
 		ossFile.setName(fileName);
 		ossFile.setLink(fileLink(ossFile.getName()));
 		ossFile.setHash(stat.getContentMD5());
@@ -317,6 +312,51 @@ public class AliossTemplate implements OssTemplate {
 	 */
 	public String getOssHost() {
 		return getOssHost(ossProperties.getBucketName());
+	}
+
+	/**
+	 * 获取文件列表
+	 * @param bucketName
+	 * @param keyPrefix
+	 * @return
+	 */
+	@Override
+	public RayinFiles getFileList(String bucketName, String keyPrefix){
+		// 构造ListObjectsV2Request请求。
+		ListObjectsV2Request listObjectsV2Request = new ListObjectsV2Request(bucketName);
+
+		// 设置prefix参数来获取fun目录下的所有文件与文件夹。
+		listObjectsV2Request.setPrefix(keyPrefix);
+
+		// 设置正斜线（/）为文件夹的分隔符。
+		listObjectsV2Request.setDelimiter("/");
+
+		// 发起列举请求。
+		ListObjectsV2Result result = ossClient.listObjectsV2(listObjectsV2Request);
+
+		List<OSSObjectSummary> sums = result.getObjectSummaries();
+		List<RayinFile> files = new ArrayList<>();
+		RayinFiles rayinFiles =  new RayinFiles();
+		RayinFile rayinFile;
+		for (OSSObjectSummary s : sums) {
+			rayinFile = new RayinFile();
+			rayinFile.setName(s.getKey().substring(s.getKey().lastIndexOf(StringPool.SLASH)));
+			rayinFile.setPutTime(s.getLastModified());
+			rayinFile.setLength(s.getSize());
+			rayinFile.setPresignedLink(filePresignedLink(bucketName,s.getKey()));
+			rayinFile.setFileType(s.getType());
+			files.add(rayinFile);
+		}
+		for (String commonPrefix : result.getCommonPrefixes()) {
+			rayinFile = new RayinFile();
+			rayinFile.setName(commonPrefix.substring(keyPrefix.length()));
+			rayinFile.setFileType("doc");
+			rayinFile.setPrefix(keyPrefix);
+			files.add(rayinFile);
+		}
+		rayinFiles.setPrefix(keyPrefix);
+		rayinFiles.setFileList(files);
+		return rayinFiles;
 	}
 
 }

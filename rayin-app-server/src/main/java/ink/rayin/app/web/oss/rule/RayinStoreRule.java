@@ -22,13 +22,14 @@ import ink.rayin.tools.utils.StringPool;
 import ink.rayin.tools.utils.StringUtil;
 import lombok.AllArgsConstructor;
 
+
 /**
  * 默认存储桶生成规则
  *
  * @author Chill
  */
 @AllArgsConstructor
-public class RayinOssRule implements OssRule {
+public class RayinStoreRule implements StoreRule {
 
 	@Override
 	public String bucketName(String bucketName) {
@@ -37,7 +38,8 @@ public class RayinOssRule implements OssRule {
 
 	@Override
 	public String fileName(String originalFilename) {
-		return "upload" + StringPool.SLASH + DateUtil.today() + StringPool.SLASH + StringUtil.randomUUID() + StringPool.DOT + FileUtil.getFileExtension(originalFilename);
+		int l = originalFilename.lastIndexOf(StringPool.SLASH);
+		return originalFilename.substring(0,l) + StringPool.SLASH + DateUtil.today() + StringPool.SLASH + StringUtil.randomUUID() + StringPool.DOT + FileUtil.getFileExtension(originalFilename);
 	}
 
 }

@@ -21,6 +21,7 @@ import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
 import ink.rayin.htmladapter.base.model.tplconfig.TemplateConfig;
 
 import ink.rayin.tools.utils.BeanConvert;
+import ink.rayin.tools.utils.StringPool;
 import ink.rayin.tools.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -397,7 +398,9 @@ public class UserTemplateService implements IUserTemplateService {
 		if(StringUtils.isBlank(userOrg.getThirdStorageBucket())){
 			throw new RayinBusinessException("请在项目中设置存储桶名称！");
 		}
-		RayinFile rayinFile = ossBuilder.template().putFile(userOrg.getThirdStorageBucket(), StringUtil.randomUUID() + ".pdf",new ByteArrayInputStream(baos.toByteArray()));
+		RayinFile rayinFile = ossBuilder.template().putFile(userOrg.getThirdStorageBucket(),
+				ut.getOrganizationId() + StringPool.SLASH + ut.getTemplateId() + StringPool.SLASH +
+						StringUtil.randomUUID() + ".pdf",new ByteArrayInputStream(baos.toByteArray()));
 		return JSON.parseObject(JSON.toJSONString(rayinFile));
 	}
 

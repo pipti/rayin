@@ -10,22 +10,27 @@ import ink.rayin.app.web.model.UserIndexesUser;
 import ink.rayin.app.web.model.UserOrganization;
 import ink.rayin.app.web.annotation.OrgId;
 import ink.rayin.app.web.annotation.UserId;
+import ink.rayin.app.web.oss.builder.OssBuilder;
+import ink.rayin.app.web.oss.model.RayinFile;
+import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.app.web.service.impl.UserIndexesService;
 import ink.rayin.app.web.service.impl.UserOrganizationService;
+import ink.rayin.tools.utils.ResourceUtil;
+import ink.rayin.tools.utils.StringPool;
 import io.minio.errors.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -50,7 +55,8 @@ public class PDFManagementController {
 
     @Resource
     UserIndexesService userIndexesService;
-
+    @Resource
+    OssBuilder ossBuilder;
     @Value("${rayin.storage.url}")
     String storageUrl;
     /**
@@ -65,7 +71,8 @@ public class PDFManagementController {
                                              @UserId String userId,
                                              @RequestBody JSONObject params,
                                              @RequestParam Integer pageCurrent,
-                                             @RequestParam Integer pageSize) {
+                                             @RequestParam Integer pageSize,
+                                             @RequestParam String prefix) {
 
         UserOrganization uo = new UserOrganization();
         uo.setUserId(userId);
@@ -89,19 +96,19 @@ public class PDFManagementController {
 //            });
 //        }
         //查询固定值索引
-        UserIndexes userIndexes = new UserIndexes();
-        userIndexes.setOrganizationId(orgId);
-        userIndexes.setUserId(userId);
-        Page<UserIndexes> page = new Page<>();
-        page.setCurrent(1);
-        page.setSize(100);
-        IPage<UserIndexesUser> iPage = userIndexesService.userIndexQuery(page,userIndexes);
-        List<UserIndexesUser> userIndexesUsers = iPage.getRecords();
-        userIndexesUsers.forEach(userIndexesUser -> {
-            params.put(userIndexesUser.getIndexName(),userIndexesUser.getValue());
-        });
-        Map<String,String> paramMap = createParamIndexMap(userIndexes,params);
-        paramMap.remove("dimParam");
+//        UserIndexes userIndexes = new UserIndexes();
+//        userIndexes.setOrganizationId(orgId);
+//        userIndexes.setUserId(userId);
+//        Page<UserIndexes> page = new Page<>();
+//        page.setCurrent(1);
+//        page.setSize(100);
+//        IPage<UserIndexesUser> iPage = userIndexesService.userIndexQuery(page,userIndexes);
+//        List<UserIndexesUser> userIndexesUsers = iPage.getRecords();
+//        userIndexesUsers.forEach(userIndexesUser -> {
+//            params.put(userIndexesUser.getIndexName(),userIndexesUser.getValue());
+//        });
+//        Map<String,String> paramMap = createParamIndexMap(userIndexes,params);
+//        paramMap.remove("dimParam");
         //
 //        try {
 //            com.beisun.cms.client.common.util.Page<Map<String, Object>> pages = cmsClient.lookupObjectByBucket(orgId,pageCurrent,pageSize,paramMap);
@@ -110,7 +117,7 @@ public class PDFManagementController {
 //            e.printStackTrace();
 //        }
 
-
+        RayinFiles rayinFiles = ossBuilder.template().getFileList(uo.getThirdStorageBucket(),uo.getOrganizationId() + StringPool.SLASH + prefix);
 //        MinioClient minioClient = new MinioClient(uo.getThirdStorageUrl(),
 //                uo.getThirdStorageAccessKey(),
 //                uo.getThirdStorageSecretKey());
@@ -131,7 +138,9 @@ public class PDFManagementController {
 //            }
 //            return RestResponse.success(rs);
 //        }
-        return RestResponse.success();
+
+        rayinFiles.setPrefix(rayinFiles.getPrefix().substring(uo.getOrganizationId().length() + 1));
+        return RestResponse.success(rayinFiles);
     }
 
     /**
@@ -154,16 +163,17 @@ public class PDFManagementController {
     @PostMapping(value = {"/organization/pdf/view"})
     public RestResponse organizationPDFView(@OrgId String orgId,
               @UserId String userId, @RequestBody(required = true) JSONObject jsonObject) throws IOException {
-        UserOrganization uo = new UserOrganization();
-        uo.setUserId(userId);
-        uo.setOrganizationId(orgId);
-        uo = userOrganizationService.userOrganizationQueryOne(uo);
-
-        String objectId = jsonObject.getString("id");
-        String bucket = jsonObject.getString("bucket");
-        if(uo == null){
-            throw new RayinBusinessException("您无权访问该项目的文件内容！");
-        }
+//        UserOrganization uo = new UserOrganization();
+//        uo.setUserId(userId);
+//        uo.setOrganizationId(orgId);
+//        uo = userOrganizationService.userOrganizationQueryOne(uo);
+//
+//        String objectId = jsonObject.getString("id");
+//        String key = jsonObject.getString("key");
+        String url = jsonObject.getString("url");
+//        if(uo == null){
+//            throw new RayinBusinessException("您无权访问该项目的文件内容！");
+//        }
 //        if(StringUtils.isBlank(uo.getThirdStorageAccessKey()) ||
 //                StringUtils.isBlank(uo.getThirdStorageSecretKey()) ||
 //                StringUtils.isBlank(uo.getThirdStorageUrl()) ||
@@ -174,7 +184,8 @@ public class PDFManagementController {
 //        MinioClient minioClient = new MinioClient(uo.getThirdStorageUrl(),
 //                uo.getThirdStorageAccessKey(),
 //                uo.getThirdStorageSecretKey());
-        InputStream in = null;
+        ByteArrayOutputStream bos = ResourceUtil.getResourceAsByte(url);
+//        InputStream in = null;
 //        try {
 //            CmsObject cmsObject = cmsClient.simpleDownload(orgId,objectId);
 //            in = cmsObject.getObjectContent();
@@ -182,28 +193,31 @@ public class PDFManagementController {
 //            e.printStackTrace();
 //        }
 //        InputStream in = minioClient.getObject(uo.getThirdStorageBucket(), objName);
+        //ossBuilder.template().
         JSONObject r = new JSONObject();
         final Base64.Encoder encoder = Base64.getEncoder();
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len;
-        byte[] dataBytes;
-        while ((len = in.read(buffer)) != -1 ) {
-            baos.write(buffer, 0, len);
-        }
-        dataBytes = baos.toByteArray();
-        baos.flush();
-        String res = encoder.encodeToString(dataBytes);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        byte[] buffer = new byte[1024];
+//        int len;
+//        byte[] dataBytes;
+//        while ((len = in.read(buffer)) != -1 ) {
+//            baos.write(buffer, 0, len);
+//        }
+//        dataBytes = baos.toByteArray();
+//        baos.flush();
+        String res = encoder.encodeToString(bos.toByteArray());
         r.put("pdfFile",res);
-        in.close();
+//        in.close();
         return RestResponse.success(r);
     }
 
 
-    @GetMapping(value = {"/organization/pdf/url/{id}"})
-    public RestResponse organizationPDFurl(@OrgId String orgId,
-                                            @UserId String userId,@PathVariable("id") String objectId) {
+    @PostMapping(value = {"/organization/pdf/download"})
+    public void organizationPDFDownload(@OrgId String orgId,
+                                            @UserId String userId,
+                                           @RequestBody(required = true) RayinFile rayinFile,
+                                           HttpServletResponse httpServletResponse) throws IOException {
         UserOrganization uo = new UserOrganization();
         uo.setUserId(userId);
         uo.setOrganizationId(orgId);
@@ -218,15 +232,32 @@ public class PDFManagementController {
 //                StringUtils.isBlank(uo.getThirdStorageBucket())){
 //            throw new RayinBusinessException("请在项目中设置第三方存储配置！");
 //        }
+        String url = rayinFile.getPresignedLink();
 
-        String url = null;
 //        try {
 //            url = cmsClient.privateDownloadUrl(orgId,objectId,String.valueOf(System.currentTimeMillis()+ 60 * 60 *1000));
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        url = storageUrl + url;
-        return RestResponse.success(url);
+        ByteArrayOutputStream byteOs = ResourceUtil.getResourceAsByte(url);
+
+        httpServletResponse.setContentType("application/pdf;charset=utf-8");
+        httpServletResponse.setHeader("Content-disposition", "attachment; filename=" + rayinFile.getName().substring(0, rayinFile.getName().length() - 1));
+        httpServletResponse.setHeader("Content-Length", String.valueOf(byteOs.toByteArray().length));
+
+//        BufferedInputStream bufferedIs = new BufferedInputStream(new ByteArrayInputStream(byteOs.toByteArray()));;
+//        BufferedOutputStream bufferedOs = new BufferedOutputStream(httpServletResponse.getOutputStream());
+//        byte[] buff = new byte[2048];
+//        int bytesRead;
+//        while ((bytesRead = bufferedIs.read(buff, 0, buff.length)) != -1) {
+//            bufferedOs.write(buff, 0, bytesRead);
+//        }
+//        bufferedIs.close();
+//        bufferedOs.close();
+        OutputStream stream = httpServletResponse.getOutputStream();
+        stream.write(byteOs.toByteArray());
+        stream.flush();
+        stream.close();
     }
     /**
      * 创建索引信息

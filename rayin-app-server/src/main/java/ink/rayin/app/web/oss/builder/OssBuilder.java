@@ -1,8 +1,8 @@
 package ink.rayin.app.web.oss.builder;
 
 import ink.rayin.app.web.oss.enums.OssEnum;
-import ink.rayin.app.web.oss.rule.OssRule;
-import ink.rayin.app.web.oss.rule.RayinOssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
+import ink.rayin.app.web.oss.rule.RayinStoreRule;
 import ink.rayin.app.web.oss.template.OssTemplate;
 import ink.rayin.app.web.oss.props.OssProperties;
 import ink.rayin.tools.utils.Func;
@@ -54,7 +54,7 @@ public class OssBuilder {
 			synchronized (OssBuilder.class) {
 				template = templatePool.get(tenantId);
 				if (Func.hasEmpty(template)) {
-					OssRule ossRule = new RayinOssRule();
+					StoreRule ossRule = new RayinStoreRule();
 					// 若采用默认设置则开启多租户模式, 若是用户自定义oss则不开启
 
 					if (ossProperties.getName().equals(OssEnum.MINIO.getName())) {

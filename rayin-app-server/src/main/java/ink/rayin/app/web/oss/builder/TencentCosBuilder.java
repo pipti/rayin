@@ -9,7 +9,7 @@ import ink.rayin.app.web.oss.template.OssTemplate;
 import ink.rayin.app.web.oss.template.TencentCosTemplate;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 
 /**
  * 腾讯云存储构建类
@@ -19,7 +19,7 @@ import ink.rayin.app.web.oss.rule.OssRule;
 public class TencentCosBuilder {
 
 	@SneakyThrows
-	public static OssTemplate template(OssProperties ossProperties, OssRule ossRule) {
+	public static OssTemplate template(OssProperties ossProperties, StoreRule ossRule) {
 		// 初始化用户身份信息（secretId, secretKey）
 		COSCredentials credentials = new BasicCOSCredentials(ossProperties.getAccessKey(), ossProperties.getSecretKey());
 		// 设置 bucket 的区域, COS 地域的简称请参照 https://cloud.tencent.com/document/product/436/6224

@@ -3,18 +3,18 @@ package ink.rayin.app.web.oss.template;
 import com.obs.services.ObsClient;
 import com.obs.services.model.ObjectMetadata;
 import com.obs.services.model.PutObjectResult;
+import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.utils.StringPool;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.model.RayinFile;
-import ink.rayin.app.web.oss.model.OssFile;
+import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ public class HuaweiObsTemplate implements OssTemplate {
 
 	private final ObsClient obsClient;
 	private final OssProperties ossProperties;
-	private final OssRule ossRule;
+	private final StoreRule ossRule;
 
 	@Override
 	public void makeBucket(String bucketName) {
@@ -55,14 +55,14 @@ public class HuaweiObsTemplate implements OssTemplate {
 	}
 
 	@Override
-	public OssFile statFile(String fileName) {
+	public StoreFile statFile(String fileName) {
 		return statFile(ossProperties.getBucketName(), fileName);
 	}
 
 	@Override
-	public OssFile statFile(String bucketName, String fileName) {
+	public StoreFile statFile(String bucketName, String fileName) {
 		ObjectMetadata stat = obsClient.getObjectMetadata(getBucketName(bucketName), fileName);
-		OssFile ossFile = new OssFile();
+		StoreFile ossFile = new StoreFile();
 		ossFile.setName(fileName);
 		ossFile.setLink(fileLink(ossFile.getName()));
 		ossFile.setHash(stat.getContentMd5());
@@ -142,6 +142,11 @@ public class HuaweiObsTemplate implements OssTemplate {
 	@Override
 	public void removeFiles(String bucketName, List<String> fileNames) {
 		fileNames.forEach(fileName -> removeFile(getBucketName(bucketName), fileName));
+	}
+
+	@Override
+	public RayinFiles getFileList(String bucketName, String keyPrefix) {
+		return null;
 	}
 
 	/**

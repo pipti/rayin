@@ -203,6 +203,12 @@
 <!--			<artifactId>xml-apis</artifactId>-->
 <!--			<version>1.4.01</version>-->
 <!--		</dependency>-->
+
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>flying-saucer-core</artifactId>
+			<version>9.1.22</version>
+		</dependency>
     </dependencies>
 <!--	<profiles>-->
 <!--		&lt;!&ndash;开发配置&ndash;&gt;-->

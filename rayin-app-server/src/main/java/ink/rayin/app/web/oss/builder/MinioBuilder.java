@@ -5,7 +5,7 @@ import ink.rayin.app.web.oss.template.OssTemplate;
 import io.minio.MinioClient;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.props.OssProperties;
-import ink.rayin.app.web.oss.rule.OssRule;
+import ink.rayin.app.web.oss.rule.StoreRule;
 
 /**
  * Minio云存储构建类
@@ -15,7 +15,7 @@ import ink.rayin.app.web.oss.rule.OssRule;
 public class MinioBuilder {
 
 	@SneakyThrows
-	public static OssTemplate template(OssProperties ossProperties, OssRule ossRule) {
+	public static OssTemplate template(OssProperties ossProperties, StoreRule ossRule) {
 		// 创建配置类
 //		OssProperties ossProperties = new OssProperties();
 //		ossProperties.setEndpoint(oss.getEndpoint());

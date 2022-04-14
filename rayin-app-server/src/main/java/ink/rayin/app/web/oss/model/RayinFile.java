@@ -18,6 +18,11 @@ package ink.rayin.app.web.oss.model;
 
 import lombok.Data;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Formatter;
+
 /**
  * BladeFile
  *
@@ -49,4 +54,50 @@ public class RayinFile {
 	 * 附件表ID
 	 */
 	private Long attachId;
+
+	/**
+	 * 文件上传时间
+	 */
+	private Date putTime;
+	private String putTimeStr;
+	/**
+	 * 文件大小
+	 */
+	private long length;
+	private String lengthStr;
+	/**
+	 * 文件大小
+	 */
+	private String fileType;
+
+	/**
+	 * 文件前缀
+	 */
+	private String prefix;
+
+	public String getPutTimeStr(){
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		if(putTime != null){
+			return dateFormatter.format(putTime);
+		}
+		return null;
+	}
+
+	public String getLengthStr(){
+		long kb = 1024;
+		long mb = kb * 1024;
+		long gb = mb * 1024;
+
+		if (length >= gb) {
+			return String.format("%.1f GB", (float) length / gb);
+		} else if (length >= mb) {
+			float f = (float) length / mb;
+			return String.format(f > 100 ? "%.0f MB" : "%.1f MB", f);
+		} else if (length >= kb) {
+			float f = (float) length / kb;
+			return String.format(f > 100 ? "%.0f KB" : "%.1f KB", f);
+		} else {
+			return String.format("%d B", length);
+		}
+	}
 }
