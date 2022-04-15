@@ -1,6 +1,6 @@
 package ink.rayin.app.web.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import ink.rayin.app.web.cache.KeyUtil;
@@ -8,14 +8,12 @@ import ink.rayin.app.web.cache.RedisTemplateUtil;
 import ink.rayin.app.web.dao.OrganizationMapper;
 import ink.rayin.app.web.dao.UserInfoMapper;
 import ink.rayin.app.web.dao.UserMapper;
+import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.exception.UsersServerException;
 import ink.rayin.app.web.model.OrganizationModel;
 import ink.rayin.app.web.model.UserInfoModel;
 import ink.rayin.app.web.model.UserModel;
 import ink.rayin.app.web.vo.UserVo;
-import ink.rayin.tools.utils.Base64Util;
-import ink.rayin.tools.utils.Func;
-import ink.rayin.tools.utils.ResourceUtil;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +37,9 @@ import java.util.*;
 
 
 
+/**
+ * @author Jonah wz
+ */
 @Service
 @Slf4j
 public class UserServiceImpl implements UserDetailsService {
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserDetailsService {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public String[] saveUserLoginInfo(UserDetails user) throws UnsupportedEncodingException {
+    public String[] saveUserLoginInfo(UserDetails user) {
         //状态标志
         String salt = BCrypt.gensalt();
         String username = user.getUsername();
@@ -85,7 +86,8 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
     public UserServiceImpl(RedisTemplateUtil redisTemplate) {
-        this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();  //默认使用 bcrypt， strength=10
+        //默认使用 bcrypt， strength=10
+        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         this.redisTemplateUtil = redisTemplate;
     }
 
@@ -100,11 +102,11 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
     @Transactional
-    public String createUser(UserModel userModel) throws Exception{
+    public String createUser(UserModel userModel){
         //TODO 统一返回码
         UserModel user = userMapper.getUserByUsername(userModel.getUsername());
         if (user != null) {
-            throw new Exception("1002 - 该用户已存在");
+            throw new RayinBusinessException("1002 - 该用户已存在");
         }
         //TODO userId 生成规则
         String id = UUID.randomUUID().toString().replaceAll("-","");
@@ -117,17 +119,17 @@ public class UserServiceImpl implements UserDetailsService {
         userInfoModel.setPhone(userModel.getUsername());
         int result2 = userInfoMapper.insert(userInfoModel);
         if (result <= 0 || result2 <= 0) {
-            throw new Exception("1003 - 用户注册失败");
+            throw new RayinBusinessException("1003 - 用户注册失败");
         }
         return "success";
     }
 
     @Transactional
-    public String createUserByMobile(UserModel userModel) throws Exception{
+    public String createUserByMobile(UserModel userModel) {
         //TODO 统一返回码
         UserModel user = userMapper.getUserByMobile(userModel.getUsername());
         if (user != null) {
-            throw new Exception("1002 - 该用户已存在");
+            throw new RayinBusinessException("1002 - 该用户已存在");
         }
         //TODO userId 生成规则
         String id = UUID.randomUUID().toString().replaceAll("-","");
@@ -142,7 +144,7 @@ public class UserServiceImpl implements UserDetailsService {
         userInfoModel.setNickName(userModel.getNickName());
         int result2 = userInfoMapper.insert(userInfoModel);
         if (result <= 0 || result2 <= 0) {
-            throw new Exception("1003 - 用户注册失败");
+            throw new RayinBusinessException("1003 - 用户注册失败");
         }
         return "success";
     }
@@ -157,7 +159,7 @@ public class UserServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username){
         UserModel userModel = userMapper.getUserByUsername(username);
         if (userModel == null) {
-            throw new UsernameNotFoundException(username + "：用户名/密码错误！请确认输入是否正确！");
+            throw new RayinBusinessException(username + "：用户名/密码错误！请确认输入是否正确！");
         }
         UserDetails userDetails = User.builder().
                 username(userModel.getUsername()).
@@ -221,7 +223,7 @@ public class UserServiceImpl implements UserDetailsService {
     public UserModel getUserInfoFromDb(String username) throws UsernameNotFoundException {
         UserModel userModel = userMapper.getUserByUsername(username);
         if (userModel == null) {
-            throw new UsersServerException("未找该用户相关信息！");
+            throw new RayinBusinessException("未找该用户相关信息！");
         }
         return userModel;
     }
@@ -269,10 +271,12 @@ public class UserServiceImpl implements UserDetailsService {
         }else{
             userModel = redisUserModel;
         }
-        //redisTemplate.updateExpire(key,Long.valueOf(1800));//用户状态设置半小时后过期
+        //用户状态设置半小时后过期
+        //redisTemplate.updateExpire(key,Long.valueOf(1800));
         Algorithm algorithm = Algorithm.HMAC256(userModel.getSalt());
         logger.debug("token密码盐：" + userModel.getSalt());
-        Date date = new Date(System.currentTimeMillis() + 3600 * 1000);  //设置token过期时间为1小时
+        //设置token过期时间为1小时
+        Date date = new Date(System.currentTimeMillis() + 3600 * 1000);
         return JWT.create()
                 .withSubject(userModel.getUsername())
                 .withClaim("userId",userModel.getId())

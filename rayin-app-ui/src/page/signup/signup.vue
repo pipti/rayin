@@ -107,13 +107,16 @@ export default {
                 {
                   'Content-Type': 'application/json;charset=UTF-8'
                   //将表单数据传递转化为form-data类型
-                },
-              withCredentials : true
+                }
             })
             .then(function (response) {
-              router.push('/')
+              if(response.data.code === 0){
+                router.push('/')
+              }
             })
-            .catch(function (error) { alert(error); });
+            // .catch(function (error) {
+            //   alert(error);
+            // });
         } else {
           this.dialogVisible = true
           return false

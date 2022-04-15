@@ -63,8 +63,8 @@
                 <!--<el-dropdown-item v-for="(item,index) in orgs" :key='index'><span>{{item.organizationName}}</span>-->
                 <!--</el-dropdown-item>-->
                 <!--<el-divider style="margin: 0"></el-divider>-->
-                <el-dropdown-item command="toMy" disabled><span>个人设置</span></el-dropdown-item>
-                <el-dropdown-item disabled>信息中心</el-dropdown-item>
+<!--                <el-dropdown-item command="toMy" disabled><span>个人设置</span></el-dropdown-item>-->
+<!--                <el-dropdown-item disabled>信息中心</el-dropdown-item>-->
                 <el-dropdown-item command="logout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>

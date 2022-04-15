@@ -68,14 +68,17 @@ axios.interceptors.response.use(
           message: response.data.message,
           type: 'success'
         })
+
+        return
       }
 
-      if (response.data.message && response.data.code === -1) {
+      if (response.data.message && response.data.code === -1 || response.data.code === 99999) {
         ElementUI.Message({
           showClose: true,
           message: response.data.message,
           type: 'error'
         })
+        return
       }
 
       // console.log('interceptors =>')

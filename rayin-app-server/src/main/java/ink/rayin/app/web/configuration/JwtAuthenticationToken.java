@@ -1,6 +1,8 @@
 package ink.rayin.app.web.configuration;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +24,12 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 	private UserDetails principal;
 	private String credentials;
 	private DecodedJWT token;
-	
+
+	/** 当前token是否为刷新后的token */
+	@Getter
+	@Setter
+	private boolean isNewToken;
+
 	public JwtAuthenticationToken(DecodedJWT token) {
 		super(Collections.emptyList());
 		this.token = token;

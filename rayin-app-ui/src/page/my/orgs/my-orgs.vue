@@ -73,10 +73,10 @@
               <el-input v-model="selectOrg.organizationName" placeholder="请输入项目名称" style="width:285px" tabindex="0" ref="orgName"></el-input>
             </el-form-item>
             <el-form-item label="ACCESS_KEY">
-              <el-input v-model="selectOrg.accessKey" placeholder="新建保存后自动生成" style="width:285px"  readonly></el-input>
+              <el-input v-model="selectOrg.accessKey" placeholder="用于接口调用认证，新建保存后自动生成" style="width:285px"  readonly></el-input>
             </el-form-item>
             <el-form-item label="SECRET_KEY">
-              <el-input v-model="selectOrg.secretKey" placeholder="新建保存后自动生成" style="width:285px" readonly></el-input>
+              <el-input v-model="selectOrg.secretKey" placeholder="用于接口调用认证，新建保存后自动生成" style="width:285px" readonly></el-input>
             </el-form-item>
 <!--            <el-form-item label="上链存证" v-if="selectOrg.owner===true">-->
 <!--              <el-tooltip class="item" effect="dark" placement="top-start" style="border-radius: 0px;font-size: 20px">-->
@@ -94,11 +94,11 @@
 <!--              <el-input v-model="selectOrg.thirdStorageSecretKey" placeholder="" style="width:285px" tabindex="3"></el-input>-->
 <!--            </el-form-item>-->
             <el-form-item label="存储PDF桶名">
-              <el-input v-model="selectOrg.thirdStorageBucket" placeholder="" style="width:285px" tabindex="4"></el-input>
+              <el-input v-model="selectOrg.thirdStorageBucket" placeholder="请设置对象存储桶名称" style="width:285px" tabindex="4"></el-input>
             </el-form-item>
-            <el-form-item label="存储资源桶名">
-              <el-input v-model="selectOrg.thirdStorageResourceBucket" placeholder="" style="width:285px" tabindex="4"></el-input>
-            </el-form-item>
+<!--            <el-form-item label="存储资源桶名">-->
+<!--              <el-input v-model="selectOrg.thirdStorageResourceBucket" placeholder="" style="width:285px" tabindex="4"></el-input>-->
+<!--            </el-form-item>-->
 <!--            <el-form-item label="存储类型">-->
 <!--              <template>-->
 <!--                <el-select placeholder="请选择存储类型" v-model="selectOrg.ossType" style="width:285px">-->
@@ -165,8 +165,8 @@
           </el-row>
           <el-row style="margin-top: 30px">
             <el-col :span="24" style="text-align: center">
-              <el-button type="primary" icon="el-icon-setting" @click="orgSetSaveClick" size="small" style="width:150px">保存</el-button>
-              <el-button type="primary" icon="el-icon-coin" @click="storageTestClick" size="small" style="width:100px">存储测试</el-button>
+              <el-button type="primary" icon="el-icon-setting" @click="orgSetSaveClick" size="small" style="width:260px">保存</el-button>
+<!--              <el-button type="primary" icon="el-icon-coin" @click="storageTestClick" size="small" style="width:100px">存储测试</el-button>-->
             </el-col>
           </el-row>
           <el-row :span="24" style="text-align: center;margin-top: 20px">

@@ -17,7 +17,7 @@ import ink.rayin.app.web.service.impl.UserIndexesService;
 import ink.rayin.app.web.service.impl.UserOrganizationService;
 import ink.rayin.tools.utils.ResourceUtil;
 import ink.rayin.tools.utils.StringPool;
-import io.minio.errors.*;
+import ink.rayin.tools.utils.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -80,6 +80,9 @@ public class PDFManagementController {
         uo = userOrganizationService.userOrganizationQueryOne(uo);
         if(uo == null){
             throw new RayinBusinessException("您无权访问该项目的文件内容！");
+        }
+        if(StringUtil.isBlank(uo.getThirdStorageBucket())){
+            throw new RayinBusinessException("请在项目中设置存储桶名称！");
         }
 //        if(StringUtils.isBlank(uo.getThirdStorageAccessKey()) ||
 //                StringUtils.isBlank(uo.getThirdStorageSecretKey()) ||

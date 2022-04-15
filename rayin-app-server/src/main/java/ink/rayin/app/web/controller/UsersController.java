@@ -33,7 +33,6 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class UsersController {
-    private static Logger logger = LoggerFactory.getLogger(UsersController.class);
     @Resource
     private RedisTemplateUtil redisTemplateUtil;
 
@@ -49,7 +48,7 @@ public class UsersController {
     }
 
     @PostMapping(value = "/users/signup")
-    public RestResponse<String> signUp(@RequestBody UserModel userModel, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public RestResponse<String> signUp(@RequestBody UserModel userModel) throws Exception {
 
 //        String phoneCode = redisTemplateUtil.get("register_sms_" + userModel.getUsername(),String.class);
 //        if (!StringUtils.isEmpty(phoneCode) && userModel.getVerifyCode().equals(phoneCode)){

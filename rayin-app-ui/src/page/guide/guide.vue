@@ -50,8 +50,7 @@ export default {
         '/static/help/images/guide_4.png',
         '/static/help/images/guide_5.png',
         '/static/help/images/guide_6.png',
-        '/static/help/images/guide_7.png',
-        '/static/help/images/guide_8.png'
+        '/static/help/images/guide_7.png'
       ]
     }
   },
