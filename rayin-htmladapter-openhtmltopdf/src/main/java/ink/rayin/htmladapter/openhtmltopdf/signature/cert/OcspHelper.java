@@ -113,9 +113,9 @@ public class OcspHelper
      * @return the OCSPResp, when the request was successful, else a corresponding exception will be
      * thrown. Never returns null.
      *
-     * @throws IOException
-     * @throws OCSPException
-     * @throws RevokedCertificateException
+     * @throws IOException IOException
+     * @throws OCSPException OCSPException
+     * @throws RevokedCertificateException RevokedCertificateException
      */
     public OCSPResp getResponseOcsp() throws IOException, OCSPException, RevokedCertificateException
     {

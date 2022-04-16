@@ -110,7 +110,7 @@ public abstract class CreateSignatureBase implements SignatureInterface
 
     /**
      * set TSA url
-     * @param tsaUrl
+     * @param tsaUrl tsaUrl
      */
     public void setTsaUrl(String tsaUrl)
     {

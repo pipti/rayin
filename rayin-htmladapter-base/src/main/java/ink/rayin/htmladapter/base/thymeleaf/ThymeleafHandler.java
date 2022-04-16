@@ -52,9 +52,9 @@ public class ThymeleafHandler {
     }
 
     /**
-     * 模板字符串
-     * @param htmlStr
-     * @return
+     * 构件字符串
+     * @param htmlStr html字符串
+     * @return html字符串
      */
     public String templateEngineProcessByString(String htmlStr, JSONObject var){
         if(var != null){

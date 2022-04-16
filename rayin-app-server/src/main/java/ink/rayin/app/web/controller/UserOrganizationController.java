@@ -54,11 +54,8 @@ public class UserOrganizationController implements UserOrganizationApi {
     public RestResponse userOrganizationQuery(@UserId String userId,
                                               @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
 
-        UserOrganization uo = new UserOrganization();
-        uo.setUserId(userId);
-
         Page page = new Page(pageCurrent, pageSize);
-        IPage<UserOrganization> pages = userOrganizationService.userOrganizationQuery(page, uo);
+        IPage<UserOrganization> pages = userOrganizationService.userOrganizationQuery(page, UserOrganization.builder().userId(userId).build());
         return RestResponse.success(pages);
     }
 
@@ -75,11 +72,8 @@ public class UserOrganizationController implements UserOrganizationApi {
     public RestResponse userOrganizationMemberQuery(@OrgId String orgId,
                                      @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
 
-        UserOrganization uo = new UserOrganization();
-        uo.setOrganizationId(orgId);
-
         Page page = new Page(pageCurrent, pageSize);
-        IPage<UserOrganization> pages = userOrganizationService.userMemberQuery(page, uo);
+        IPage<UserOrganization> pages = userOrganizationService.userMemberQuery(page, UserOrganization.builder().organizationId(orgId).build());
         return RestResponse.success(pages);
     }
 
@@ -116,10 +110,7 @@ public class UserOrganizationController implements UserOrganizationApi {
                                                   @OrgId String orgId,
                                                   @RequestBody Users parameter) throws Exception {
 
-        UserOrganization uo = new UserOrganization();
-        uo.setOrganizationId(orgId);
-        uo.setUserId(parameter.getId());
-        if(userOrganizationService.userOrganizationMemberAdd(uo) > 0){
+        if(userOrganizationService.userOrganizationMemberAdd(UserOrganization.builder().organizationId(orgId).userId(parameter.getId()).build()) > 0){
             return RestResponse.success();
         }else{
             return RestResponse.failed(BusinessCodeMessage.FAILED);

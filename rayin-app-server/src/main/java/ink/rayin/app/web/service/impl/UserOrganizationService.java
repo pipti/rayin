@@ -203,8 +203,7 @@ public class UserOrganizationService implements IUserOrganizationService {
 
 		UpdateWrapper<UserOrganization> qw3 = new UpdateWrapper<UserOrganization>();
 		qw3.eq("user_id", userId).eq("organization_id", orgId);
-		UserOrganization lostOwner = new UserOrganization();
-		lostOwner.setOwner(false);
+
 		//TODO 通知移交用户
 		Organization organization = organizationMapper.selectById(uo.getOrganizationId());
 		Message message = new Message();
@@ -212,18 +211,17 @@ public class UserOrganizationService implements IUserOrganizationService {
 		message.setInfo("您成为'" + organization.getOrganizationName() + "'项目所有者");
 		message.setUrl("test");
 		message.setChecked(false);
-		return userOrganizationMapper.update(lostOwner, qw3);
+		return userOrganizationMapper.update(UserOrganization.builder().owner(false).build(), qw3);
 	}
 
 	/**
 	 * 项目保存更新
-	 *
 	 * @param uo
 	 * @return
 	 */
 	@Override
-	@Transactional
-	public int userOrganizationSave(UserOrganization uo, String userId, String organizationId) throws Exception {
+	@Transactional(rollbackFor=Exception.class)
+	public int userOrganizationSave(UserOrganization uo, String userId, String organizationId) {
 		Organization o = new Organization();
 		o.setIcon(uo.getIcon());
 		o.setIconColor(uo.getIconColor());
@@ -264,18 +262,18 @@ public class UserOrganizationService implements IUserOrganizationService {
 //				throw e;
 //			}
 			//为桶创建索引
-			List<String> mapping = new ArrayList<>();
-			mapping.add("sys_id");
-			mapping.add("organization_id");
-			mapping.add("transaction_no");
-			mapping.add("blockChain_hash");
-			mapping.add("template_id");
-			mapping.add("template_version");
-			mapping.add("file_type");
-			mapping.add("quality");
-			mapping.add("quality_info");
-			mapping.add("receipt");
-			mapping.add("template_alias");
+//			List<String> mapping = new ArrayList<>();
+//			mapping.add("sys_id");
+//			mapping.add("organization_id");
+//			mapping.add("transaction_no");
+//			mapping.add("blockChain_hash");
+//			mapping.add("template_id");
+//			mapping.add("template_version");
+//			mapping.add("file_type");
+//			mapping.add("quality");
+//			mapping.add("quality_info");
+//			mapping.add("receipt");
+//			mapping.add("template_alias");
 
 //			try {
 //				String res = cmsClient.createMapping(o.getOrganizationId(),mapping);
@@ -285,34 +283,34 @@ public class UserOrganizationService implements IUserOrganizationService {
 
 			//TODO 为项目创建资源根目录
 //			File file = new File(folder);
-			InputStream inputStreamMd5;
-			String md5 = "";
-			try {
-				inputStreamMd5 = ResourceUtil.getResourceAsStream("folder.text");
-				md5 = DigestUtils.md5Hex(inputStreamMd5);
-			} catch (FileNotFoundException e) {
-				throw e;
-			} catch (IOException e) {
-				throw e;
-			}
-			InputStream inputStream = null;
-			try {
-				inputStream = ResourceUtil.getResourceAsStream("folder.text");
-			} catch (FileNotFoundException e) {
-				throw e;
-			} catch (IOException e) {
-				throw e;
-			}
-			Map<String, Object> map = new HashMap<>();
-			map.put("sys_id", "rayin");
-			map.put("organization_id", o.getOrganizationId());
-			map.put("folder_level", "0");
-			map.put("folder_id", "root");
-			map.put("folder", "/");
-			map.put("father_folder_id", "/");
-			map.put("data_type", "folder");
-			map.put("data_name", "/");
-			Map<String, Object> cm = null;
+//			InputStream inputStreamMd5;
+//			String md5 = "";
+//			try {
+//				inputStreamMd5 = ResourceUtil.getResourceAsStream("folder.text");
+//				md5 = DigestUtils.md5Hex(inputStreamMd5);
+//			} catch (FileNotFoundException e) {
+//				throw e;
+//			} catch (IOException e) {
+//				throw e;
+//			}
+//			InputStream inputStream = null;
+//			try {
+//				inputStream = ResourceUtil.getResourceAsStream("folder.text");
+//			} catch (FileNotFoundException e) {
+//				throw e;
+//			} catch (IOException e) {
+//				throw e;
+//			}
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("sys_id", "rayin");
+//			map.put("organization_id", o.getOrganizationId());
+//			map.put("folder_level", "0");
+//			map.put("folder_id", "root");
+//			map.put("folder", "/");
+//			map.put("father_folder_id", "/");
+//			map.put("data_type", "folder");
+//			map.put("data_name", "/");
+//			Map<String, Object> cm = null;
 //			try {
 //				cm = cmsClient.simpleUpload(Constants.CMS_RESOURCE_BUCKET,true,md5,inputStream,map);
 //			} catch (CmsException e) {

@@ -161,7 +161,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      * @param maxIdle 最大空闲
      * @param maxTotal 最大线程总数
      * @param customizeFontPathDirectory 自定义字体目录，可空
-     * @throws Exception
+     * @throws Exception exception
      */
     public static void init(int minIdle,int maxIdle,int maxTotal, String customizeFontPathDirectory) throws Exception {
         cFontPathDirectory = customizeFontPathDirectory;
@@ -175,6 +175,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      * 获取OpenhttptopdfRenderBuilder实例
      *
      * @return OpenhttptopdfRenderBuilder
+     * @throws Exception exception
      */
     public static OpenhttptopdfRenderBuilder getPdfRendererBuilderInstance() throws Exception {
         logger.debug("pollActiveNum:" + objectPool.getNumActive());
@@ -191,6 +192,8 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
     /**
      * 归还openhtpdfRenderObject对象
+     * @param openhtpdfRenderObject  openhtpdfRenderObject
+     * @throws Exception exception
      */
     public static void returnPdfBoxRenderer(OpenhttptopdfRenderBuilder openhtpdfRenderObject) throws Exception {
         if(openhtpdfRenderObject != null && openhtpdfRenderObject.isActive() == true) {

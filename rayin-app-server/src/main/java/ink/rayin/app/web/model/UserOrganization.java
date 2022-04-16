@@ -1,7 +1,10 @@
 package ink.rayin.app.web.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -19,6 +22,9 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserOrganization implements Serializable{
     private String userId;
     private String organizationId;

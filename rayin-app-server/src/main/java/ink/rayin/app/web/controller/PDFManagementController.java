@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
+import org.checkerframework.checker.nullness.qual.AssertNonNullIfNonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,10 +75,7 @@ public class PDFManagementController {
                                              @RequestParam Integer pageSize,
                                              @RequestParam String prefix) {
 
-        UserOrganization uo = new UserOrganization();
-        uo.setUserId(userId);
-        uo.setOrganizationId(orgId);
-        uo = userOrganizationService.userOrganizationQueryOne(uo);
+        UserOrganization uo = userOrganizationService.userOrganizationQueryOne(UserOrganization.builder().userId(userId).organizationId(orgId).build());
         if(uo == null){
             throw new RayinBusinessException("您无权访问该项目的文件内容！");
         }
@@ -221,10 +219,7 @@ public class PDFManagementController {
                                             @UserId String userId,
                                            @RequestBody(required = true) RayinFile rayinFile,
                                            HttpServletResponse httpServletResponse) throws IOException {
-        UserOrganization uo = new UserOrganization();
-        uo.setUserId(userId);
-        uo.setOrganizationId(orgId);
-        uo = userOrganizationService.userOrganizationQueryOne(uo);
+        UserOrganization uo = userOrganizationService.userOrganizationQueryOne(UserOrganization.builder().userId(userId).organizationId(orgId).build());
 
         if(uo == null){
             throw new RayinBusinessException("您无权访问该项目的文件内容！");

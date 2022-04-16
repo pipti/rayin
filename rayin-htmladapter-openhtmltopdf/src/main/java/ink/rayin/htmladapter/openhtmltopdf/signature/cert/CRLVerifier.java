@@ -262,6 +262,11 @@ public final class CRLVerifier
     /**
      * Downloads a CRL from given HTTP/HTTPS/FTP URL, e.g.
      * http://crl.infonotary.com/crl/identity-ca.crl
+     * @param crlURL crlURL
+     * @return X509CRL
+     * @throws IOException IOException
+     * @throws CertificateException CertificateException
+     * @throws CRLException CRLException
      */
     public static X509CRL downloadCRLFromWeb(String crlURL)
             throws IOException, CertificateException, CRLException
@@ -276,9 +281,9 @@ public final class CRLVerifier
      * Extracts all CRL distribution point URLs from the "CRL Distribution
      * Point" extension in a X.509 certificate. If CRL distribution point
      * extension is unavailable, returns an empty list.
-     * @param cert
+     * @param cert cert
      * @return List of CRL distribution point URLs.
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static List<String> getCrlDistributionPoints(X509Certificate cert)
             throws IOException

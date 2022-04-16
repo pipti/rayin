@@ -245,10 +245,7 @@ public class UserServiceImpl implements UserDetailsService {
             return "原密码不正确";
         }
 
-        UserModel user = new UserModel();
-        user.setId(userId);
-        user.setPassword(passwordEncoder.encode(newPassword));
-        if (!userMapper.updateUserByUserId(user)) {
+        if (!userMapper.updateUserByUserId(UserModel.builder().id(userId).password(passwordEncoder.encode(newPassword)).build())) {
             return "密码修改失败";
         }
         return null;

@@ -112,7 +112,7 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param templateLocation 模板配置json文件路径
      * @param jsonData  数据json
      * @param outputFilePath  输出文件路径
-     * @return
+     * @return 元数据对象
      */
     @SneakyThrows
     @Override
@@ -195,7 +195,7 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param tplConfigStr  模板配置json
      * @param dataJson   数据json
      * @param os         输出流
-     * @return
+     * @return 元数据对象
      */
     @SneakyThrows
     @Override
@@ -415,7 +415,7 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param htmlLocation 模板文件路径
      * @param jsonObject 需要合成的json数据
      * @param outputFilePath 输出pdf路径
-     * @return
+     * @return boolean
      */
     @SneakyThrows
     @Override
@@ -533,8 +533,7 @@ public class PdfBoxGenerator implements PdfGenerator {
      * 将构件html与数据匹配生成转换后的字符串
      * @param htmlStr html字符串
      * @param data json数据
-     * @return
-     * @throws IOException
+     * @return html字符串
      */
     @SneakyThrows
     @Override
@@ -811,9 +810,10 @@ public class PdfBoxGenerator implements PdfGenerator {
 
     /**
      * 将字节流生成文件
-     * @param targetFile
-     * @param outByte
+     * @param targetFile 目标文件
+     * @param outByte 元文件字节
      * @return 元数据信息
+     * @throws Exception exception
      */
     public RayinMeta writeTargetFileByByte(String targetFile, byte[] outByte)
             throws Exception {
@@ -960,7 +960,7 @@ public class PdfBoxGenerator implements PdfGenerator {
      * 根据tpl生成字节流
      * @param templatePath  模板路径
      * @param jsonData      json数据
-     * @return
+     * @return 输出流
      */
     @SneakyThrows
     @Override

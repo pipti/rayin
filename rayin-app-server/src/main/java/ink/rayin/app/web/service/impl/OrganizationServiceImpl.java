@@ -1,8 +1,10 @@
 package ink.rayin.app.web.service.impl;
 
 import ink.rayin.app.web.dao.OrganizationMapper;
+import ink.rayin.app.web.dao.UserOrganizationMapper;
 import ink.rayin.app.web.model.OrganizationModel;
 import ink.rayin.app.web.model.UserModel;
+import ink.rayin.app.web.model.UserOrganization;
 import ink.rayin.app.web.service.OrganizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,16 +26,17 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Resource
     private OrganizationMapper organizationMapper;
+    @Resource
+    private UserOrganizationMapper userOrganizationMapper;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @Override
     public void createOrganization(UserModel userModel, OrganizationModel organizationModel) {
         String orgId = UUID.randomUUID().toString().replaceAll("-","");
         organizationModel.setOrganizationId(orgId);
-        organizationMapper.insertUserOrganization(userModel.getId(),organizationModel.getOrganizationId());
+
+        userOrganizationMapper.insert(UserOrganization.builder().userId(userModel.getId()).organizationId(organizationModel.getOrganizationId()).build());
         organizationMapper.insert(organizationModel);
-
-
     }
 
     @Override

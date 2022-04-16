@@ -68,11 +68,11 @@ public class PdfBoxPositionFindByKey {
 
     /**
      * 搜索PDF关键字
-     * @param pdfData
-     * @param keyword
-     * @return
+     * @param pdfData pdf byte
+     * @param keyword 关键字
+     * @return 关键字列表
      *  float[0]:pageNum, float[1]:x, float[2]:y
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static List<float[]> findKeywordPagesPostions(byte[] pdfData, String keyword) throws IOException {
         PDDocument document = PDDocument.load(pdfData);
@@ -87,12 +87,12 @@ public class PdfBoxPositionFindByKey {
 
     /**
      * 指定页搜索关键字
-     * @param pdfData
-     * @param keyword
-     * @param pageNum
+     * @param pdfData pdf byte
+     * @param keyword 关键字
+     * @param pageNum 页码
      * @return
      *  float[0]:pageNum, float[1]:x, float[2]:y
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static List<float[]> findKeywordPagePostions(byte[] pdfData, String keyword, int pageNum) throws IOException {
         PDDocument document = PDDocument.load(pdfData);

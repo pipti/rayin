@@ -90,7 +90,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
     /**
      * Set visible signature designer for a new signature field.
      *
-     * @param fileIn
+     * @param fileIn fileIn
      * @param x position of the signature field
      * @param y position of the signature field
      * @param width image width.
@@ -122,7 +122,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * 
      * @param zoomPercent increase (positive value) or decrease (negative value) image with x percent.
      * @param imageStream input stream of an image.
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void setVisibleSignDesigner(int zoomPercent, InputStream imageStream) 
             throws IOException
@@ -134,12 +134,12 @@ public class CreateVisibleSignature extends CreateSignatureBase
     /**
      * Set visible signature properties for new signature fields.
      * 
-     * @param name
-     * @param location
-     * @param reason
-     * @param preferredSize
-     * @param page
-     * @param visualSignEnabled
+     * @param name name
+     * @param location location
+     * @param reason reason
+     * @param preferredSize preferredSize
+     * @param page page
+     * @param visualSignEnabled visualSignEnabled
      */
     public void setVisibleSignatureProperties(String name, String location, String reason, int preferredSize, 
             int page, boolean visualSignEnabled)
@@ -152,10 +152,10 @@ public class CreateVisibleSignature extends CreateSignatureBase
     /**
      * Set visible signature properties for existing signature fields.
      * 
-     * @param name
-     * @param location
-     * @param reason
-     * @param visualSignEnabled
+     * @param name name
+     * @param location location
+     * @param reason reason
+     * @param visualSignEnabled visualSignEnabled
      */
     public void setVisibleSignatureProperties(String name, String location, String reason,
             boolean visualSignEnabled)
@@ -188,7 +188,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param inputFile The source pdf document file.
      * @param signedFile The file to be signed.
      * @param tsaUrl optional TSA url
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void signPDF(File inputFile, File signedFile, String tsaUrl) throws IOException
     {
@@ -201,7 +201,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param inputFile The source pdf document file.
      * @param signedFile The file to be signed.
      * @param tsaUrl optional TSA url
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void signPDF(InputStream inputFile, OutputStream signedFile, String tsaUrl) throws IOException
     {
@@ -216,7 +216,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param signedFile The file to be signed.
      * @param tsaUrl optional TSA url
      * @param signatureFieldName optional name of an existing (unsigned) signature field
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void signPDF(File inputFile, File signedFile, String tsaUrl, String signatureFieldName) throws IOException
     {
@@ -375,7 +375,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param signedFile The file to be signed.
      * @param tsaUrl optional TSA url
      * @param signatureFieldName optional name of an existing (unsigned) signature field
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void signPDF(InputStream inputFile, OutputStream signedFile,
                         String tsaUrl, String signatureFieldName) throws IOException
@@ -561,12 +561,12 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * [2] document that will be signed
      * [3] image of visible signature
      *
-     * @param args
-     * @throws KeyStoreException
-     * @throws CertificateException
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws UnrecoverableKeyException
+     * @param args args
+     * @throws KeyStoreException KeyStoreException
+     * @throws CertificateException CertificateException
+     * @throws IOException IOException
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws UnrecoverableKeyException UnrecoverableKeyException
      */
     public static void main(String[] args) throws KeyStoreException, CertificateException,
             IOException, NoSuchAlgorithmException, UnrecoverableKeyException

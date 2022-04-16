@@ -1,0 +1,84 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://123.56.174.253:3306/rayin?useUnicode=true&amp;characterEncoding=UTF-8&useSSL=false
+    username: beisuntest
+    password: Qwer4321!
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      auto-commit: true
+      #空闲连接超时时长
+      idle-timeout: 60000
+      #连接超时时长
+      connection-timeout: 60000
+      #最大生命周期，0不过期
+      max-lifetime: 0
+      #最小空闲连接数
+      minimum-idle: 20
+      #最大连接数量
+      maximum-pool-size: 20
+  redis:
+    #哨兵配置（生产）
+#    sentinel:
+#      master: ${maven.cache.redis.default.master}
+#      nodes: ${maven.cache.redis.default.nodes}
+    database: 0
+    # Redis服务器地址（开发测试环境）
+    host: 127.0.0.1
+    # Redis服务器连接端口
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    password: Qwer4321!
+    jedis:
+      pool:
+        #连接池最大连接数（使用负值表示没有限制）
+        max-active: 100
+        #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1s
+        #连接池中的最大空闲连接
+        max-idle: 10
+        #连接池中的最小空闲连接
+        min-idle: 0
+        #连接超时时间（毫秒）
+    timeout: 10s
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  jmx:
+    default-domain: rayin-users
+#logging:
+#  file:   rayin-app-server.log # 日志文件,绝对路径或相对路径
+#  path:   ${maven.logging.rootPath} # 保存日志文件目录路径
+#  config: classpath:logback-custom.xml # 日志配置文件,Spring Boot默认使用classpath路径下的日志配置文件,如:logback.xml
+#  level:  # 日志级别
+#    org.springframework.web: DEBUG # 配置spring web日志级别
+
+mybatis:
+  mapper-Locations: classpath*:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+rayin:
+  rootUri: ./resources
+  file:
+    folder:
+  storage:
+    url:
+  security:
+    code:
+      image:
+        #图片高度
+        length: 6
+        #宽度
+        width: 100
+  font-path: /Users/eric/Library/Fonts
+oss:
+  name: aliyunoss
+  endpoint: oss-cn-beijing.aliyuncs.com
+  accessKey: LTAI5t75UMJgXzy5YxyU1fWp
+  secretKey: 3FlOi4DXGSns4sApBpN7vLDhesHhWo
+  # 腾讯需要
+  # appId:
+  # region:

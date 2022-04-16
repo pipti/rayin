@@ -29,10 +29,12 @@ public class AutoFont {
      * Returns a list of fonts in a given directory.
      * NOTE: Should not be used repeatedly as each font found is parsed to get the family name.
      *
+     * @param directory  directory
      * @param validFileExtensions list of file extensions that are fonts - usually Collections.singletonList("ttf")
      * @param recurse whether to look in sub-directories recursively
      * @param followLinks whether to follow symbolic links in the file system
      * @return a list of fonts.
+     * @throws IOException IOException
      */
     public static List<CSSFont> findFontsInDirectory(
             Path directory, List<String> validFileExtensions, boolean recurse, boolean followLinks) throws IOException {
@@ -51,6 +53,9 @@ public class AutoFont {
      * Returns a list of fonts in a given directory. Recursively searches directory and
      * sub-directories for .ttf files. Follows symbolic links.
      * NOTE: Should not be used repeatedly as each font found is parsed to get the family name.
+     * @param directory  directory
+     * @return css font lsit
+     * @throws  IOException IOException
      */
     public static List<CSSFont> findFontsInDirectory(Path directory) throws IOException {
         return findFontsInDirectory(directory, Collections.singletonList("ttf"), true, true);
@@ -61,6 +66,8 @@ public class AutoFont {
      * for the CSS font-family property.
      *
      * WARNING: Basic escaping, may not be robust to attack.
+     * @param fontsList fontsList
+     * @return family
      */
     public static String toCSSEscapedFontFamily(List<CSSFont> fontsList) {
         return fontsList.stream()
@@ -71,6 +78,9 @@ public class AutoFont {
 
     /**
      * Adds all fonts in the list to the builder.
+     * @param builder builder
+     * @param fonts fonts
+     *
      */
     public static void toBuilder(PdfRendererBuilder builder, List<CSSFont> fonts) {
         for (CSSFont font : fonts) {
@@ -101,6 +111,7 @@ public class AutoFont {
 
         /**
          * WARNING: Basic escaping, may not be robust to attack.
+         * @return family
          */
         public String familyCssEscaped() {
             return this.family.replace("'", "\\'");

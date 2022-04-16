@@ -160,8 +160,8 @@ public class SigUtils
      * Log if the certificate is not valid for signature usage. Doing this
      * anyway results in Adobe Reader failing to validate the PDF.
      *
-     * @param x509Certificate 
-     * @throws CertificateParsingException
+     * @param x509Certificate  x509Certificate
+     * @throws CertificateParsingException CertificateParsingException
      */
     public static void checkCertificateUsage(X509Certificate x509Certificate)
             throws CertificateParsingException
@@ -195,8 +195,8 @@ public class SigUtils
     /**
      * Log if the certificate is not valid for timestamping.
      *
-     * @param x509Certificate
-     * @throws CertificateParsingException
+     * @param x509Certificate x509Certificate
+     * @throws CertificateParsingException CertificateParsingException
      */
     public static void checkTimeStampCertificateUsage(X509Certificate x509Certificate)
             throws CertificateParsingException
@@ -213,8 +213,8 @@ public class SigUtils
     /**
      * Log if the certificate is not valid for responding.
      *
-     * @param x509Certificate
-     * @throws CertificateParsingException
+     * @param x509Certificate x509Certificate
+     * @throws CertificateParsingException CertificateParsingException
      */
     public static void checkResponderCertificateUsage(X509Certificate x509Certificate)
             throws CertificateParsingException
@@ -233,6 +233,7 @@ public class SigUtils
      * 
      * @param document to get its last signature
      * @return last signature or null when none found
+     * @throws  IOException IOException
      */
     public static PDSignature getLastRelevantSignature(PDDocument document) throws IOException {
         Comparator<PDSignature> comparatorByOffset =
@@ -296,11 +297,11 @@ public class SigUtils
      * Please post bad PDF files that succeed and good PDF files that fail in
      * <a href="https://issues.apache.org/jira/browse/PDFBOX-3017">PDFBOX-3017</a>.
      *
-     * @param certificatesStore
-     * @param certFromSignedData
-     * @param signDate
-     * @throws CertificateVerificationException
-     * @throws CertificateException
+     * @param certificatesStore certificatesStore
+     * @param certFromSignedData certFromSignedData
+     * @param signDate signDate
+     * @throws CertificateVerificationException CertificateVerificationException
+     * @throws CertificateException CertificateException
      */
     public static void verifyCertificateChain(Store certificatesStore,
                                               X509Certificate certFromSignedData, Date signDate)

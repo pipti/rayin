@@ -98,7 +98,7 @@ public class UserTemplateService implements IUserTemplateService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public int userTemplateSave(UserTemplate ut) throws IllegalAccessException, IOException, InstantiationException {
+	public int userTemplateSave(UserTemplate ut)  {
 
 		// 插入模板配置
 		int i;
@@ -362,7 +362,7 @@ public class UserTemplateService implements IUserTemplateService {
 	 * @return
 	 */
 	@Override
-	public JSONObject userTemplateView(UserTemplate ut) throws Exception {
+	public JSONObject userTemplateView(UserTemplate ut) {
 		UserTemplate utr = userTemplateMapper.selectOne(Wrappers.<UserTemplate>query().lambda().eq(UserTemplate::getUserId,ut.getUserId())
 				.eq(UserTemplate::getOrganizationId,ut.getOrganizationId())
 				.eq(UserTemplate::getTemplateId,ut.getTemplateId())
@@ -382,7 +382,7 @@ public class UserTemplateService implements IUserTemplateService {
 	 * @return
 	 */
 	@Override
-	public JSONObject templateGenerate(UserTemplate ut) throws Exception{
+	public JSONObject templateGenerate(UserTemplate ut){
 		UserTemplate utr = userTemplateMapper.selectOne(Wrappers.<UserTemplate>query().lambda().eq(UserTemplate::getUserId,ut.getUserId())
 				.eq(UserTemplate::getOrganizationId,ut.getOrganizationId())
 				.eq(UserTemplate::getTemplateId,ut.getTemplateId())
@@ -391,10 +391,8 @@ public class UserTemplateService implements IUserTemplateService {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		RayinMeta pdfMeta = pdfCreateService.generateEncryptPdfStreamByConfigStr(utr.getTplConfig(),JSON.parseObject(ut.getTestData()),baos,null);
 
-		UserOrganization query = new UserOrganization();
-		query.setOrganizationId(ut.getOrganizationId());
-		query.setUserId(ut.getUserId());
-		UserOrganization userOrg = userOrganizationMapper.userOrganizationQueryOne(query);
+		UserOrganization userOrg = userOrganizationMapper.userOrganizationQueryOne(
+				UserOrganization.builder().organizationId(ut.getOrganizationId()).userId(ut.getUserId()).build());
 		if(StringUtils.isBlank(userOrg.getThirdStorageBucket())){
 			throw new RayinBusinessException("请在项目中设置存储桶名称！");
 		}
