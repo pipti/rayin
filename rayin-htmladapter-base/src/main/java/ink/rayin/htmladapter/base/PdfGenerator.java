@@ -48,10 +48,9 @@ public interface PdfGenerator {
      * @param jsonData  数据json
      * @param outputFilePath  输出文件路径
      * @return RayinMeta 元数据类
-     * @throws Exception 抛出异常
      */
     RayinMeta generatePdfFileByTplConfigFile(String templateLocation, JSONObject jsonData,
-                                             String outputFilePath) throws Exception;
+                                             String outputFilePath);
 
     /**
      * 根据模板配置字符串生成pdf
@@ -59,10 +58,9 @@ public interface PdfGenerator {
      * @param jsonData  数据json
      * @param outputFilePath  输出文件路径
      * @return RayinMeta 元数据类
-     * @throws Exception 抛出异常
      */
     RayinMeta generatePdfFileByTplConfigStr(String tplConfigStr, JSONObject jsonData,
-                                                   String outputFilePath) throws Exception;
+                                                   String outputFilePath);
 
     /**
      * 根据模板配置字符串生成带密码的pdf
@@ -71,20 +69,18 @@ public interface PdfGenerator {
      * @param os  输出文件路径
      * @param password  密码
      * @return RayinMeta PDF元数据
-     * @throws Exception 抛出异常
      */
     RayinMeta generateEncryptPdfStreamByConfigStr(String tplConfigStr, JSONObject jsonData,
-                                                  ByteArrayOutputStream os, String password) throws Exception;
+                                                  ByteArrayOutputStream os, String password);
     /**
      * 根据模板配置字符串生成PDF流
      * @param tplConfigStr  模板配置json
      * @param data   数据json
      * @param os         输出流
      * @return RayinMeta 元数据类
-     * @throws Exception 抛出异常
      */
      RayinMeta generatePdfStreamByTplConfigStr(String tplConfigStr, JSONObject data,
-                                               ByteArrayOutputStream os) throws Exception;
+                                               ByteArrayOutputStream os);
 
     /**
      * 根据单个html文件路径（非配置文件，即html路径）生成pdf至指定路径
@@ -92,106 +88,90 @@ public interface PdfGenerator {
      * @param jsonData
      * @param outputFilePath
      * @return boolean true or false
-     * @throws Exception 抛出异常
      */
     boolean generatePdfFileByHtmlAndData(String htmlLocation, JSONObject jsonData,
-                                         String outputFilePath) throws Exception;
+                                         String outputFilePath);
 
     /**
      * 将html文件与数据匹配生成转换后的字符串
      * @param htmlLocation
      * @param variables
      * @return html字符串
-     * @throws IOException 抛出异常
      */
-     String htmlFileDataFilling(String htmlLocation, JSONObject variables) throws IOException, WriterException;
+     String htmlFileDataFilling(String htmlLocation, JSONObject variables);
 
     /**
      * 将html字符串与数据匹配生成转换后的字符串
      * @param htmlStr html字符串
      * @param variables 数据
      * @return html字符串
-     * @throws IOException 抛出异常
      */
-     String htmlStrDataFilling(String htmlStr, JSONObject variables) throws IOException, WriterException;
+     String htmlStrDataFilling(String htmlStr, JSONObject variables);
 
 
     /**
      * html转换为pdf
      * @param htmlStr
      * @param outputFile
-     * @throws Exception 抛出异常
      */
-     void generatePdfFileByHtmlStr(String htmlStr, String outputFile) throws Exception;
+     void generatePdfFileByHtmlStr(String htmlStr, String outputFile);
 
     /**
      * html转换为pdf
      * @param htmlStr
      * @param outputFile
-     * @throws Exception 抛出异常
      */
-    void generatePdfFileByHtmlStr(String htmlStr, JSONObject variables, String outputFile) throws Exception;
+    void generatePdfFileByHtmlStr(String htmlStr, JSONObject variables, String outputFile);
 
     /**
      * html字符串转换为pdf字节流
      * @param htmlStr html字符串
      * @return PDF pdf输出流
-     * @throws Exception 抛出异常
      */
-    ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlStr) throws Exception;
+    ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlStr);
 
     /**
      * 根据html文件流（html）生成pdf字节流
      * @param htmlStr html输入流
      * @param data     json数据
      * @return PDF ByteArrayOutputStream
-     * @throws Exception 抛出异常
      */
-    ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject data) throws Exception;
+    ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject data);
 
     /**
      * 根据html文件路径生成pdf字节流
      * @param htmlLocation  构件路径
      * @param data     json数据
      * @return PDF ByteArrayOutputStream
-     * @throws Exception 抛出异常
      */
-    ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject data) throws Exception;
+    ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject data);
 
     /**
      * PDF 元数据读取
      * @param pdf pdf输入流
      * @return 元数据HashMap
-     * @throws IOException
-     * @throws ParserConfigurationException
-     * @throws SAXException 抛出异常
      * 2020-01-07
      */
-     HashMap<String, String> pdfAttrsRead(InputStream pdf) throws IOException, ParserConfigurationException, SAXException;
+     HashMap<String, String> pdfAttrsRead(InputStream pdf);
 
     /**
      * PDF 模板元数据读取
      * @param pdf
      * @return json 字符串
-     * @throws IOException 抛出异常
-     * @throws ParserConfigurationException 抛出异常
-     * @throws SAXException 抛出异常
      * 2020-01-07
      */
-     String pdfPageInfoRead(InputStream pdf) throws ParserConfigurationException, SAXException, IOException;
+     String pdfPageInfoRead(InputStream pdf);
 
     /**
      * 初始化
-     * @throws Exception 抛出异常
      */
-     void init() throws Exception;
+     void init();
 
     /**
      * 初始化
      * @param customizeFontPathDirectory 自定义字体加载目录
-     * @throws Exception 抛出异常
      */
-    void init(String customizeFontPathDirectory) throws Exception;
+    void init(String customizeFontPathDirectory);
 
     /**
      * 初始化-线程池参数
@@ -199,9 +179,8 @@ public interface PdfGenerator {
      * @param maxIdle 最大空闲
      * @param maxTotal 最大线程总数
      * @param customizeFontPathDirectory 自定义字体目录，可空
-     * @throws Exception
      */
-    void init(int minIdle,int maxIdle,int maxTotal, String customizeFontPathDirectory) throws Exception;
+    void init(int minIdle,int maxIdle,int maxTotal, String customizeFontPathDirectory);
 
     /**
      * 获取加载的字体名称
@@ -218,7 +197,7 @@ public interface PdfGenerator {
      * @param fileNamePrefix 文件名前缀
      */
      void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs,
-                                 String outputDirPath,String fileNamePrefix) throws Exception;
+                                 String outputDirPath,String fileNamePrefix);
 
     /**
      * excel数据导入生成pdf，并生成单个文件
@@ -226,10 +205,9 @@ public interface PdfGenerator {
      * @param tplConfigStr 模板配置串
      * @param excelIs excel文件流
      * @param outputFilePath 文件路径（带文件名）
-     * @throws Exception
      */
     void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs,
-                                      String outputFilePath) throws Exception;
+                                      String outputFilePath);
 
     /**
      * excel数据导入生成pdf，并生成至对应的目录中
@@ -238,10 +216,9 @@ public interface PdfGenerator {
      * @param excelIs excel文件流
      * @param outputDirPath 输出目录
      * @param fileNamePrefix 文件名前缀
-     * @throws Exception
      */
     void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs,
-                                      String outputDirPath,String fileNamePrefix) throws Exception;
+                                      String outputDirPath,String fileNamePrefix);
 
     /**
      * excel数据导入生成pdf，并生成单个文件
@@ -249,8 +226,7 @@ public interface PdfGenerator {
      * @param elementStr 构件字符串
      * @param excelIs excel文件流
      * @param outputFilePath 文件路径（带文件名）
-     * @throws Exception
      */
     void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs,
-                                      String outputFilePath) throws Exception;
+                                      String outputFilePath);
 }

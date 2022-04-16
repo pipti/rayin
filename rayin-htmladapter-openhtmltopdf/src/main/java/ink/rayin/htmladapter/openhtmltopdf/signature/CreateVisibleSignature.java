@@ -71,7 +71,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param height image heigth.
      * @param imageStream input stream of an image.
      * @param page the signature should be placed on
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void setVisibleSignDesigner(String filename, float x, float y, float width, float height,
             InputStream imageStream, int page) 
@@ -97,7 +97,7 @@ public class CreateVisibleSignature extends CreateSignatureBase
      * @param height image heigth.
      * @param imageStream input stream of an image.
      * @param page the signature should be placed on
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void setVisibleSignDesigner(InputStream fileIn, float x, float y, float width, float height,
                                        InputStream imageStream, int page)

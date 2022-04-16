@@ -57,7 +57,7 @@ public class CreateEmbeddedTimeStamp
      * Embeds the given PDF file with signed timestamp(s). Alters the original file on disk.
      * 
      * @param file the PDF file to sign and to overwrite
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void embedTimeStamp(File file) throws IOException
     {
@@ -69,7 +69,7 @@ public class CreateEmbeddedTimeStamp
      * 
      * @param inFile The pdf file possibly containing signatures
      * @param outFile Where the changed document will be saved
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void embedTimeStamp(File inFile, File outFile) throws IOException
     {

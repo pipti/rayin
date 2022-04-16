@@ -96,7 +96,7 @@ public abstract class CreateSignatureBase implements SignatureInterface
 
     /**
      * set certificateChain
-     * @param certificateChain
+     * @param certificateChain certificateChain
      */
     public final void setCertificateChain(final Certificate[] certificateChain)
     {
@@ -130,7 +130,7 @@ public abstract class CreateSignatureBase implements SignatureInterface
      * to an external application), read <a href="https://stackoverflow.com/questions/41767351">this
      * answer</a> or <a href="https://stackoverflow.com/questions/56867465">this answer</a>.
      *
-     * @throws IOException
+     * @throws IOException IOException
      */
     @Override
     public byte[] sign(InputStream content) throws IOException

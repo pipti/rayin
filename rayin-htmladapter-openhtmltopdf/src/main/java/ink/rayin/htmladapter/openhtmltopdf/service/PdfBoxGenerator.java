@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2030, Janah wz 王柱 (carefreefly@163.com).
+ * Copyright (c) 2022-2030, Janah Wang 王柱 (carefreefly@163.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,28 @@ package ink.rayin.htmladapter.openhtmltopdf.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import ink.rayin.htmladapter.base.PdfGenerator;
-import ink.rayin.htmladapter.base.model.tplconfig.*;
-import ink.rayin.htmladapter.base.thymeleaf.ThymeleafHandler;
-import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRenderBuilder;
-import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRendererObjectFactory;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.zxing.WriterException;
-
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxPositionFindByKey;
-import ink.rayin.tools.utils.*;
+import ink.rayin.htmladapter.base.PdfGenerator;
+import ink.rayin.htmladapter.base.model.tplconfig.*;
+import ink.rayin.htmladapter.base.thymeleaf.ThymeleafHandler;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.base.utils.RayinException;
+import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRenderBuilder;
+import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRendererObjectFactory;
+import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxPositionFindByKey;
+import ink.rayin.tools.utils.*;
+import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
-import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.encryption.*;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.jsoup.Jsoup;
@@ -47,19 +49,14 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.DOMException;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,17 +80,17 @@ public class PdfBoxGenerator implements PdfGenerator {
             if(jsonSchemaNode == null){
                 new RayinException("json校验文件不存在！初始化失败");
             }
-
-        //}
     }
 
+    @SneakyThrows
     @Override
-    public void init() throws Exception {
+    public void init(){
         OpenhttptopdfRendererObjectFactory.init();
     }
 
+    @SneakyThrows
     @Override
-    public void init(String customizeFontPathDirectory) throws Exception {
+    public void init(String customizeFontPathDirectory){
         OpenhttptopdfRendererObjectFactory.init(customizeFontPathDirectory);
     }
 
@@ -103,10 +100,10 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param maxIdle 最大空闲
      * @param maxTotal 最大线程总数
      * @param customizeFontPathDirectory 自定义字体目录，可空
-     * @throws Exception
      */
+    @SneakyThrows
     @Override
-    public void init(int minIdle, int maxIdle, int maxTotal, String customizeFontPathDirectory) throws Exception {
+    public void init(int minIdle, int maxIdle, int maxTotal, String customizeFontPathDirectory) {
         OpenhttptopdfRendererObjectFactory.init(minIdle, maxIdle, maxTotal, customizeFontPathDirectory);
     }
 
@@ -116,17 +113,18 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param jsonData  数据json
      * @param outputFilePath  输出文件路径
      * @return
-     * @throws Exception
      */
+    @SneakyThrows
     @Override
     public RayinMeta generatePdfFileByTplConfigFile(String templateLocation, JSONObject jsonData,
-                                                    String outputFilePath) throws Exception {
+                                                    String outputFilePath) {
         return generatePdfFileByTplConfigStr(ResourceUtil.getResourceAsString(templateLocation, StandardCharsets.UTF_8), jsonData, outputFilePath);
     }
 
+    @SneakyThrows
     @Override
     public RayinMeta generatePdfFileByTplConfigStr(String tplConfigStr, JSONObject jsonData,
-                                                    String outputFilePath) throws Exception {
+                                                    String outputFilePath){
         //通过path获取配置json
         JsonNode tplConfigJsonDataNode = JsonSchemaValidator.getJsonNodeFromString(tplConfigStr);
 
@@ -175,9 +173,10 @@ public class PdfBoxGenerator implements PdfGenerator {
 
         return fileInfo;
     }
+    @SneakyThrows
     @Override
     public RayinMeta generateEncryptPdfStreamByConfigStr(String tplConfigStr, JSONObject jsonData,
-                                                         ByteArrayOutputStream os, String password) throws Exception {
+                                                         ByteArrayOutputStream os, String password) {
 
         //生成的文件
         RayinMeta fileInfo = generatePdfStreamByTplConfigStr(tplConfigStr,jsonData,os);
@@ -197,15 +196,12 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param dataJson   数据json
      * @param os         输出流
      * @return
-     * @throws Exception
      */
+    @SneakyThrows
     @Override
     public RayinMeta generatePdfStreamByTplConfigStr(String tplConfigStr, JSONObject dataJson,
-                                                     ByteArrayOutputStream os) throws Exception {
+                                                     ByteArrayOutputStream os) {
         /** 校验配置开始 **/
-        //TODO 获取tpl_code配置  初始化项目时校验 根据所有tplcode配置校验配置是否正确
-
-
 
         JsonNode tplConfigJsonDataNode = JsonSchemaValidator.getJsonNodeFromString(tplConfigStr);
         if(tplConfigJsonDataNode == null){
@@ -344,34 +340,6 @@ public class PdfBoxGenerator implements PdfGenerator {
                                     contentStream.close();
                                 }
 
-                                //全局页码设置获取页码坐标
-//                                if (templatePageNumDisplayPos != null){
-//                                    for (PageNumDisplayPos posTpl : templatePageNumDisplayPos) {
-//                                        // 坐标页码设置
-//                                        String pageNumContent = footerStr;
-//                                        if (StringUtil.isNotBlank(posTpl.getContent())) {
-//                                            pageNumContent = posTpl.getContent().replace("${pageNum}", pageNum + "").replace("${pageNumTotal}", pageNumTotal + "");
-//                                        }
-//
-//                                        try {
-//                                            PDPageContentStream contentStreamTpl =
-//                                                    new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.PREPEND, false);
-//
-//                                            contentStreamTpl.beginText();
-//                                            contentStreamTpl.newLineAtOffset(posTpl.getX()==0f?content.getMediaBox().getWidth()/2 - 30:posTpl.getX(), posTpl.getY() != 0f?overContentHeight - posTpl.getY():20);
-//
-//                                            contentStreamTpl.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(StringUtil.isNotBlank(posTpl.getFontFamily())?posTpl.getFontFamily():"FangSong").supply()), posTpl.getFontSize() != 0?posTpl.getFontSize():10);
-//
-//                                            contentStreamTpl.showText(pageNumContent);
-//                                            contentStreamTpl.endText();
-//                                            contentStreamTpl.close();
-//
-//                                        } catch (DOMException e) {
-//                                            throw new RayinException("页码html标签格式设置错误！");
-//                                        }
-//
-//                                    }
-//                                }
                             }else {
                                 break;
                             }
@@ -413,7 +381,6 @@ public class PdfBoxGenerator implements PdfGenerator {
             pa.setPageNumIsCalculate(page.isPageNumIsCalculate());
             pa.setPageNumIsDisplay(page.isPageNumIsDisplay());
             pa.setPageNumIsFirstPage(page.isPageNumIsFirstPage());
-//            pa.setQualityTestType(page.getQualityTestType());
             if(page.getMarkKeys() != null && page.getMarkKeys().size() > 0){
                 page.getMarkKeys().forEach(s->{
                     try {
@@ -449,65 +416,25 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param jsonObject 需要合成的json数据
      * @param outputFilePath 输出pdf路径
      * @return
-     * @throws Exception
      */
+    @SneakyThrows
     @Override
     public boolean generatePdfFileByHtmlAndData(String htmlLocation, JSONObject jsonObject,
-                                                String outputFilePath) throws Exception {
-        //logger.debug(htmlContent);
+                                                String outputFilePath) {
         this.generatePdfFileByHtmlStr(ResourceUtil.getResourceAsString(htmlLocation, StandardCharsets.UTF_8), jsonObject, outputFilePath);
 
         return true;
     }
 
     /**
-     * 根据构件html文件路径生成pdf
-     * @param htmlLocation 构件html路径
-     * @param jsonData     json数据
-     * @return
-     * @throws Exception
-     */
-//    @Override
-//    public ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject jsonData, List<HashMap> pp) throws Exception {
-//        String htmlContent = htmlFileDataFilling(htmlLocation, jsonData);
-//
-//        logger.info(htmlContent);
-//        return this.generatePdfStreamByHtmlStr(htmlContent);
-//    }
-
-    /**
-     * 根据构件html文件流生成字节流
-     * @param htmlIs        模板文件流
-     * @param jsonData      需要合成的json数据
-     * @return
-     * @throws Exception
-     */
-//    @Override
-//    public ByteArrayOutputStream generatePdfSteamByHtmlStreamAndData(InputStream htmlIs, JSONObject jsonData) throws Exception {
-//        StringBuffer t = new StringBuffer(500);
-//        BufferedReader br = null;
-//        Reader reader = new InputStreamReader(htmlIs);
-//        String data = null;
-//
-//        br = new BufferedReader(reader);
-//        while ((data = br.readLine()) != null) {
-//            t.append(data);
-//        }
-//
-//        String htmlContent = htmlStrDataFilling(t.toString(),
-//                jsonData);
-//        return this.generatePdfStreamByHtmlStr(htmlContent);
-//    }
-
-    /**
      * 根据构件html字符串生成pdf
      * @param htmlStr   构件html字符串
      * @param jsonData  需要合成的json数据
-     * @return
-     * @throws Exception
+     * @return 输出流
      */
+    @SneakyThrows
     @Override
-    public ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject jsonData) throws Exception {
+    public ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject jsonData) {
         String htmlContent = htmlStrDataFilling(htmlStr, jsonData);
         return this.generatePdfStreamByHtmlStr(htmlContent);
     }
@@ -520,10 +447,10 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param config
      * @param data
      * @param pp
-     * @return
-     * @throws Exception
+     * @return 输出流
      */
-    private ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) throws Exception {
+    @SneakyThrows
+    private ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) {
 
         String htmlContent = "";
 
@@ -587,11 +514,11 @@ public class PdfBoxGenerator implements PdfGenerator {
      * 将构件html与数据匹配生成转换后的字符串
      * @param htmlLocation html路径
      * @param data json数据
-     * @return
-     * @throws IOException
+     * @return html字符串
      */
+    @SneakyThrows
     @Override
-    public String htmlFileDataFilling(String htmlLocation, JSONObject data) throws IOException, WriterException {
+    public String htmlFileDataFilling(String htmlLocation, JSONObject data) {
         String htmlContent = "";
         try{
             htmlContent = thymeleafHandler.templateEngineProcessByPath(htmlLocation, data);
@@ -609,10 +536,13 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @return
      * @throws IOException
      */
+    @SneakyThrows
     @Override
-    public String htmlStrDataFilling(String htmlStr, JSONObject data) throws IOException, WriterException {
+    public String htmlStrDataFilling(String htmlStr, JSONObject data) {
         String htmlContent = "";
-        if(StringUtil.isBlank(htmlStr)) return "";
+        if(StringUtil.isBlank(htmlStr)) {
+            return "";
+        };
 
         try{
             htmlContent = thymeleafHandler.templateEngineProcessByString(htmlStr, data);
@@ -627,11 +557,10 @@ public class PdfBoxGenerator implements PdfGenerator {
      * html转换为pdf 文件
      * @param htmlStr html字符串
      * @param outputFile pdf文件路径
-     * @throws Exception
      */
+    @SneakyThrows
     @Override
-    public void generatePdfFileByHtmlStr(String htmlStr, String outputFile)
-            throws Exception {
+    public void generatePdfFileByHtmlStr(String htmlStr, String outputFile){
 
         File f = new File(outputFile);
         if (f != null && !f.getParentFile().exists()) {
@@ -644,24 +573,23 @@ public class PdfBoxGenerator implements PdfGenerator {
      * html转换为pdf 文件
      * @param htmlStr html字符串
      * @param outputFile pdf文件路径
-     * @throws Exception
      */
+    @SneakyThrows
     @Override
-    public void generatePdfFileByHtmlStr(String htmlStr, JSONObject data, String outputFile)
-            throws Exception {
+    public void generatePdfFileByHtmlStr(String htmlStr, JSONObject data, String outputFile){
         generatePdfFileByHtmlStr(htmlStrDataFilling(htmlStr,data),outputFile);
     }
 
+    @SneakyThrows
     @Override
-    public ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlContent) throws Exception{
+    public ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlContent){
         return generatePdfStreamByHtmlStr(htmlContent, null);
     }
 
     /**
      * html转换为pdf字节流
      * @param htmlContent
-     * @return
-     * @throws Exception
+     * @return 输出流
      */
 
     private ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlContent, Set<MarkInfo> markKeys)
@@ -681,7 +609,6 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
         }
         Elements objectLinks = htmlDoc.getElementsByTag("object");
-        //Elements divLinks = htmlDoc.getElementsByTag("object");
         for (org.jsoup.nodes.Element link : objectLinks) {
             String inner = link.text();
             String type = link.attr("type");
@@ -751,12 +678,10 @@ public class PdfBoxGenerator implements PdfGenerator {
                             for(String st:styles){
                                 if(st.indexOf("width:") >= 0){
                                     width = DisplayMeasureConvert.webMeasureToPDFPoint(st.toLowerCase().replace("width:",""));
-                                    // width = Float.parseFloat(st.replaceAll("[a-zA-Z:; ]",""));
                                     continue;
                                 }
                                 if(st.indexOf("height:") >= 0){
                                     height = DisplayMeasureConvert.webMeasureToPDFPoint(st.toLowerCase().replace("height:",""));
-                                    //height = Float.parseFloat(st.replaceAll("[a-zA-Z:; ]",""));
                                     continue;
                                 }
                             }
@@ -888,8 +813,7 @@ public class PdfBoxGenerator implements PdfGenerator {
      * 将字节流生成文件
      * @param targetFile
      * @param outByte
-     * @return
-     * @throws Exception
+     * @return 元数据信息
      */
     public RayinMeta writeTargetFileByByte(String targetFile, byte[] outByte)
             throws Exception {
@@ -923,8 +847,7 @@ public class PdfBoxGenerator implements PdfGenerator {
      * 将字节流生成文件
      * @param os 输出流
      * @param outByte 待生成文件byte
-     * @return
-     * @throws Exception
+     * @return 元数据信息
      */
     private RayinMeta writeTargetFile(ByteArrayOutputStream os, byte[] outByte)
             throws Exception {
@@ -943,11 +866,10 @@ public class PdfBoxGenerator implements PdfGenerator {
 
     /**
      * 写入PDF文件属性
-     * @param os
-     * @param epfileInfo
-     * @param pagesConfig
+     * @param os 输出流
+     * @param epfileInfo 元数据
+     * @param pagesConfig 页面配置属性
      * @return
-     * @throws Exception
      */
     private void writePDFAttrs(ByteArrayOutputStream os, RayinMeta epfileInfo, TemplateConfig pagesConfig) throws Exception {
 
@@ -972,8 +894,6 @@ public class PdfBoxGenerator implements PdfGenerator {
         info.setTitle(pagesConfig.getTitle());
         info.setSubject(pagesConfig.getSubject());
         info.setKeywords(pagesConfig.getKeywords());
-//        info.setProducer(StringUtil.isBlank(pagesConfig.getProducer())?
-//                UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"):pagesConfig.getProducer());
         info.setProducer(
                 UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"));
 
@@ -986,26 +906,21 @@ public class PdfBoxGenerator implements PdfGenerator {
         final Base64.Encoder encoder = Base64.getEncoder();
         logger.info(JSONObject.toJSONString(epfileInfo));
         info.setCustomMetadataValue("PagesInfo",encoder.encodeToString(JSONObject.toJSONString(epfileInfo).getBytes()));
-
-       // ByteArrayOutputStream baos = new ByteArrayOutputStream();
         os.reset();
         doc.save(os);
         doc.close();
-       // return baos;
     }
 
 
     /**
      * PDF 模板元数据读取
-     * @param fis
-     * @return
-     * @throws IOException
-     * @throws ParserConfigurationException
-     * @throws SAXException
+     * @param fis 输入文件流
+     * @return 元数据
      * 2020-01-07
      */
+    @SneakyThrows
     @Override
-    public HashMap<String, String> pdfAttrsRead(InputStream fis) throws IOException, ParserConfigurationException, SAXException {
+    public HashMap<String, String> pdfAttrsRead(InputStream fis) {
         // 读取要合并的文档
         PDDocument document = PDDocument.load(fis);
         PDDocumentInformation info = document.getDocumentInformation();
@@ -1024,15 +939,13 @@ public class PdfBoxGenerator implements PdfGenerator {
 
     /**
      * PDF 文件信息读取
-     * @param fis
-     * @return
-     * @throws IOException
-     * @throws ParserConfigurationException
-     * @throws SAXException
+     * @param fis 输入文件流
+     * @return 元数据信息base64
      * 2020-01-07
      */
+    @SneakyThrows
     @Override
-    public String pdfPageInfoRead(InputStream fis) throws ParserConfigurationException, SAXException, IOException {
+    public String pdfPageInfoRead(InputStream fis) {
         HashMap pra = pdfAttrsRead(fis);
         //写入文件相关配置信息包括页码，单模板类型以及页码起始页
         final Base64.Decoder decoder = Base64.getDecoder();
@@ -1048,14 +961,13 @@ public class PdfBoxGenerator implements PdfGenerator {
      * @param templatePath  模板路径
      * @param jsonData      json数据
      * @return
-     * @throws Exception
      */
+    @SneakyThrows
     @Override
-    public ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String templatePath, JSONObject jsonData) throws Exception {
+    public ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String templatePath, JSONObject jsonData){
 
         String htmlContent = htmlFileDataFilling(templatePath,
                 jsonData);
-        //logger.info(htmlContent);
         return this.generatePdfStreamByHtmlStr(htmlContent);
     }
 
@@ -1135,15 +1047,10 @@ public class PdfBoxGenerator implements PdfGenerator {
         pbts.SubStringIgnoreHtml(html,0,0 + 5);
         pbts.SubStringIgnoreHtml(html,0 + 5,0 + 10);
         pbts.SubStringIgnoreHtml(html,0 + 10,0 + 50);
-        //System.out.println(pbts.SubStringIgnoreHtml(html,1,15));
-
     }
 
 
     private int calText(Node n,int offset,int beginIndex,int endIndex){
-//        if(offset >= endIndex){
-//            return -1;
-//        }
         if(n.childNodeSize() == 0) {
             if (n instanceof org.jsoup.nodes.Element || n instanceof Comment) {
                 return offset;
@@ -1159,16 +1066,9 @@ public class PdfBoxGenerator implements PdfGenerator {
                     return offset;
                 }
                 if ((offset + nodelen > beginIndex)  && (offset + nodelen < endIndex)) {
-                    //offset = beginIndex;
                     if (offset < beginIndex && n instanceof TextNode) {
-                        //System.out.println("text:" + tmp.substring(beginIndex - offset, nodelen));
-                        //n = new TextNode(n.toString().substring(beginIndex - offset, n.toString().length()));
                         ((TextNode) n).text(tmp.substring(beginIndex - offset, nodelen));
-                        // b.add(new TextNode(n.toString().substring(beginIndex - offset, n.toString().length())));
                     } else {
-                        // n = new TextNode(n.toString().substring(beginIndex - offset, n.toString().length()));
-                        //System.out.println("text:" + tmp);
-                        //b.add(n);
                         if(n instanceof TextNode){
                             ((TextNode) n).text(tmp);
                         }
@@ -1179,11 +1079,6 @@ public class PdfBoxGenerator implements PdfGenerator {
                 }
 
                 if ((offset + nodelen) >= endIndex && offset < endIndex) {
-//                    if (offset < beginIndex) {
-//                        System.out.println("text:" + tmp.substring(beginIndex - offset, endIndex - offset));
-//                        ((TextNode) n).text(tmp.substring(beginIndex - offset, endIndex - offset));
-//                        offset = offset + nodelen;
-//                    } else
                     if(offset == endIndex){
                         return -1;
                     }else{
@@ -1199,16 +1094,9 @@ public class PdfBoxGenerator implements PdfGenerator {
                 }
             }
         }else{
-            //int a = 0;
-
             List<Node> ln = n.childNodes();
             for (int i = 0; i < ln.size(); i++) {
 
-//                if(offset > endIndex){
-//                    ln.get(i).remove();
-//                    i--;
-//                    continue;
-//                }
                 if(offset != endIndex && offset != -1){
                     offset = calText(ln.get(i),offset,beginIndex,endIndex);
                 }
@@ -1224,34 +1112,8 @@ public class PdfBoxGenerator implements PdfGenerator {
                     i--;
                     continue;
                 }
-
-
-
-
-
-
-
-
-//                if(offset >= beginIndex && offset <= endIndex){
-//
-//
-//                }
             }
 
-//            for(Node nc:n.childNodes()){
-//                if(offset == -1 || offset == endIndex){
-//                    nc.remove();
-//                    continue;
-//                    //((TextNode) nc).text("");
-//                    //return offset;
-//                }
-//
-//                if(offset < endIndex && offset != -1){
-//                    offset = calText(nc,offset,beginIndex,endIndex);
-//                }
-//                a++;
-//
-//            }
             return offset;
         }
         return offset;
@@ -1273,16 +1135,18 @@ public class PdfBoxGenerator implements PdfGenerator {
         return OpenhttptopdfRendererObjectFactory.getFontNames();
     }
 
+    @SneakyThrows
     @Override
-    public void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) throws Exception {
+    public void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
         JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
         for(int i = 0; i < ja.size(); i++){
             generatePdfFileByTplConfigStr(tplConfigStr,ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1) + ".pdf");
         }
     }
 
+    @SneakyThrows
     @Override
-    public void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) throws Exception {
+    public void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) {
         JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
 
         List<ByteArrayOutputStream> bosl = new ArrayList();
@@ -1296,8 +1160,9 @@ public class PdfBoxGenerator implements PdfGenerator {
         FileUtil.toFile(new ByteArrayInputStream(out.toByteArray()),new File(outputFilePath));
     }
 
+    @SneakyThrows
     @Override
-    public void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) throws Exception {
+    public void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
         JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
 
         for(int i = 0; i < ja.size(); i++){
@@ -1305,8 +1170,9 @@ public class PdfBoxGenerator implements PdfGenerator {
         }
     }
 
+    @SneakyThrows
     @Override
-    public void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) throws Exception {
+    public void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) {
         JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
 
         List<ByteArrayOutputStream> bosl = new ArrayList();
@@ -1317,16 +1183,6 @@ public class PdfBoxGenerator implements PdfGenerator {
         ByteArrayOutputStream out = this.mergePDF(bosl);
         FileUtil.toFile(new ByteArrayInputStream(out.toByteArray()),new File(outputFilePath));
     }
-//
-//    @Override
-//    public void generatePdfFilesZipByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) {
-//
-//    }
-//
-//    @Override
-//    public void generatePdfFilesZipByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) {
-//
-//    }
 
 
     /**
