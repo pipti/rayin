@@ -10,7 +10,7 @@
 
     editor.addCommand('pdfmedia', function () {
 
-        editor.execCommand('mceInsertContent', false, '<div etype="pdf" data-th-value="" format="" keyword=""></div>');
+        editor.execCommand('mceInsertContent', false, '<object type="file/pdf" data-th-value="" page=""></>');
 
     });
   };

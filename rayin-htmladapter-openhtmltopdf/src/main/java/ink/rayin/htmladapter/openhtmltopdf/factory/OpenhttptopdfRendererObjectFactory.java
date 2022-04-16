@@ -271,7 +271,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     jarEntry = jarEntrys.nextElement();
                     jarFileName = jarEntry.getName();
 
-                    if(jarEntry.isDirectory() || ".afm;.pfm;.ttf;.otf;.ttc".indexOf(jarFileName.substring(jarFileName.lastIndexOf(".")).toLowerCase()) < 0){
+                    if(jarEntry.isDirectory() || ".ttf".indexOf(jarFileName.substring(jarFileName.lastIndexOf(".")).toLowerCase()) < 0){
                     }else{
                         File jarfile = inputStreamToFile(jarFile.getInputStream(jarEntry),jarFileName.substring(jarFileName.lastIndexOf("/"),jarFileName.lastIndexOf(".")),
                                 jarFileName.substring(jarFileName.lastIndexOf(".")) );
@@ -489,7 +489,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                 @Override
                 public boolean accept(File dir, String name) {
                     String lower = name.toLowerCase();
-                    return lower.endsWith(".ttf") || lower.endsWith(".ttc") || lower.endsWith(".otf");
+                    return lower.endsWith(".ttf");
                 }});
 
             for(File f:files){

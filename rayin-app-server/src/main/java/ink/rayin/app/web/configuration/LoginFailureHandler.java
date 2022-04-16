@@ -31,8 +31,6 @@ public class LoginFailureHandler implements AuthenticationFailureHandler{
 			AuthenticationException exception) throws IOException, ServletException {
 		//TODO 根据不同异常封装返回码
 
-//		response.setStatus(HttpStatus.UNAUTHORIZED.value());
-//		response.se
 		Gson gson = new Gson();
 
 		response.setContentType("application/json;charset=UTF-8");

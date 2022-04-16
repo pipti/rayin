@@ -72,7 +72,7 @@ axios.interceptors.response.use(
         return
       }
 
-      if (response.data.message && response.data.code === -1 || response.data.code === 99999) {
+      if (response.data.message && (response.data.code === -1 || response.data.code === 99999)) {
         ElementUI.Message({
           showClose: true,
           message: response.data.message,

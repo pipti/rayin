@@ -403,7 +403,6 @@ export default {
           // console.log(res)
           const blob = new Blob([res.data], {type: 'application/pdf'})
           FileSaver.saveAs(blob, row.name.substring(0, row.name - 1))
-
         })
         .catch(function (error) {
           console.log(error)
