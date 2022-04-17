@@ -257,7 +257,7 @@ public class UserServiceImpl implements UserDetailsService {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public String ThirdUserLoginInfoWithToken(UserModel userModel) throws UnsupportedEncodingException {
+    public String ThirdUserLoginInfoWithToken(UserModel userModel) {
 
         String key = KeyUtil.makeKey("RAYIN","-",userModel.getUsername());
         //UserModel userModelCache = jwtService.getUserInfoFromCache(username);

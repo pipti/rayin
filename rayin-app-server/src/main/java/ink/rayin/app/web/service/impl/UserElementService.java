@@ -95,14 +95,12 @@ public class UserElementService implements IUserElementService{
 		if(StringUtils.isBlank(uem.getName())){
 			qw.eq("organization_id",uem.getOrganizationId()).eq("del_flag",uem.getDelFlag())
 					.orderByDesc("create_time").orderByDesc("update_time");
-			//userElementList = userElementMapper.selectElementPage(page,uem);
 		}else{
 			qw.eq("organization_id",uem.getOrganizationId()).eq("del_flag",uem.getDelFlag())
 					.and(i->i.like("name", uem.getName()).or().like("memo",uem.getName())
 							.or().like("user_name",uem.getName())
 							.or().like("element_id",uem.getName()))
 			.orderByDesc("create_time").orderByDesc("update_time");
-			//userElementList = userElementMapper.selectElementByNamePage(page,uem);
 		}
 
 		IPage<UserElement> userElementList = userElementMapper.selectPage(page,qw);
@@ -119,7 +117,6 @@ public class UserElementService implements IUserElementService{
                     eq(UserElementFavorites::getUserId,userId));
             k.setColled(collectCount > 0?true:false);
 		});
-		//userElementList.setRecords(userElements);
 		return userElementList;
 	}
 
@@ -161,11 +158,8 @@ public class UserElementService implements IUserElementService{
 		qw.eq("user_id",userId);
 		qw.eq("organization_id",orgId);
 		qw.eq("element_id",uef.getElementId());
-		// UserElementFavorites userElementFavorites = userElementFavoritesMapper.selectOne(qw);
 		int i = 0;
 		if(userElementFavoritesMapper.selectCount(qw) > 0){
-			//uef.setCreateTime(null);
-			//uef.setUpdateTime(new Date());
 			i = userElementFavoritesMapper.delete(qw);
 		}else{
 			uef.setCreateTime(new Date());
@@ -217,7 +211,6 @@ public class UserElementService implements IUserElementService{
 
 		byte[] bytes = baos.toByteArray();
 		uem.setElementThum("data:image/jpeg;base64," + encoder.encodeToString(bytes));
-		//logger.debug("构件缩略图大小" + (bytes.length/8/1024));
 
 
 		userElementMapper.update(uem,uw);
@@ -245,7 +238,6 @@ public class UserElementService implements IUserElementService{
 		UserElementModifyHistory uemh;
 		if(ueo != null){
 			uevh = BeanConvert.convert(ueo,UserElementVersionHistory.class);
-			//uevh = new UserElementVersionHistory(ueo);
 			userElementVersionHistoryMapper.insert(uevh);
 
 			uemh = BeanConvert.convert(ueo,UserElementModifyHistory.class);
@@ -257,16 +249,15 @@ public class UserElementService implements IUserElementService{
 			userElement.setCreateTime(new Date());
 			userElement.setElementVersion((Double.parseDouble(userElement.getElementVersion()) + 0.01) + "");
 			try {
+				Html2Image html2Image = Html2Image.fromHtml(userElement.getContent());
+				final Base64.Encoder encoder = Base64.getEncoder();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				html2Image.getImageRenderer().setAutoHeight(true);
+				ImageIO.write(html2Image.getImageRenderer().getBufferedImage(), "png", baos);
 
-				//Html2Image html2Image = Html2Image.fromHtml(userElement.getContent());
-				//final Base64.Encoder encoder = Base64.getEncoder();
-				//ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				//html2Image.getImageRenderer().setAutoHeight(true);
-				//ImageIO.write(html2Image.getImageRenderer().getBufferedImage(), "png", baos);
-
-				//byte[] bytes = baos.toByteArray();
-				//userElement.setElementThum("data:image/jpeg;base64," + encoder.encodeToString(bytes));
-				//logger.debug("构件缩略图大小" + (bytes.length / 8 / 1024));
+				byte[] bytes = baos.toByteArray();
+				userElement.setElementThum("data:image/jpeg;base64," + encoder.encodeToString(bytes));
+				logger.debug("构件缩略图大小" + (bytes.length / 8 / 1024));
 			}catch(Exception e){
 				logger.error(e.getMessage(),e);
 			}
@@ -632,7 +623,7 @@ public class UserElementService implements IUserElementService{
 	 * @param userId
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int share(ElementShare elementShare, String userId) {
 		UserElement userElement = userElementMapper.selectOne(new QueryWrapper<UserElement>().lambda().eq(UserElement::getOrganizationId,elementShare.getOrganizationId())
@@ -676,7 +667,7 @@ public class UserElementService implements IUserElementService{
 	 * @param userId
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int cancelShare(ElementShare elementShare, String userId) {
 		UserElement userElement = userElementMapper.selectOne(new QueryWrapper<UserElement>().lambda().eq(UserElement::getOrganizationId,elementShare.getOrganizationId())
@@ -784,7 +775,7 @@ public class UserElementService implements IUserElementService{
 	 * @param elementShare
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public boolean copyElement(ElementShare elementShare,String userId) {
 		//check
 		shareStatus(elementShare);
@@ -833,7 +824,7 @@ public class UserElementService implements IUserElementService{
 	 * @param userId
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public boolean like(ElementShare elementShare, String userId) {
 		//check
 		shareStatus(elementShare);

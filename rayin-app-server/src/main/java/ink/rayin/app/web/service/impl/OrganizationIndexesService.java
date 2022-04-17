@@ -36,7 +36,7 @@ public class OrganizationIndexesService implements IOrganizationIndexesService {
         return organizationIndexesMapper.organizationIndexesQuery(page,organizationId);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int organizationIndexSave(OrganizationIndexes organizationIndexes) {
         String jsonPath = organizationIndexes.getJsonPath();

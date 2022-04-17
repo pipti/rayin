@@ -38,7 +38,7 @@ public class OrganizationDataService implements IOrganizationDataService {
         return organizationDataMapper.insert(organizationData);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int organizationDataDel(List<OrganizationData> organizationData) {
         AtomicInteger res = new AtomicInteger();

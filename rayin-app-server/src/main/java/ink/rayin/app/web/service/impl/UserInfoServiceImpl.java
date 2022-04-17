@@ -20,14 +20,9 @@ import javax.annotation.Resource;
 public class UserInfoServiceImpl implements UserInfoService {
     @Resource
     private UserInfoMapper userInfoMapper;
-    @Resource
-    private UserMapper userMapper;
     @Override
     public UserInfoModel getUserInfo(String userId) {
-        //UserModel user = userMapper.getUserByUserId(userId);
         UserInfoModel userInfo = userInfoMapper.getUserByInfoById(userId);
-        //userInfo.setUsername(user.getUsername());
-
         return userInfo;
     }
 

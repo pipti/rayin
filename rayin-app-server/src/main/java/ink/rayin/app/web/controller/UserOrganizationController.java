@@ -40,8 +40,6 @@ public class UserOrganizationController implements UserOrganizationApi {
     @Resource
     IOrganizationIndexesService organizationIndexesService;
 
-    @Resource
-    IOrganizationDataService organizationDataService;
     /**
      * 项目查询
      *
@@ -183,19 +181,19 @@ public class UserOrganizationController implements UserOrganizationApi {
      * @param parameter
      * @return
      */
-    @RequestMapping(value = "/organization/third/storage/test")
-    public RestResponse userOrganizationThirdStorageTest(@UserId String userId,
-                                             @OrgId String orgId,
-                                             @RequestBody UserOrganization parameter) throws Exception {
-        try{
-            userOrganizationService.userOrganizationThirdStorageTest(parameter,userId,orgId);
-            return RestResponse.success(0,"测试成功");
-        }catch(Exception e){
-            e.printStackTrace();
-            return RestResponse.failed(-1,"测试失败！原因：" + e.getMessage());
-        }
-
-    }
+//    @RequestMapping(value = "/organization/third/storage/test")
+//    public RestResponse userOrganizationThirdStorageTest(@UserId String userId,
+//                                             @OrgId String orgId,
+//                                             @RequestBody UserOrganization parameter) throws Exception {
+//        try{
+//            userOrganizationService.userOrganizationThirdStorageTest(parameter,userId,orgId);
+//            return RestResponse.success(0,"测试成功");
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            return RestResponse.failed(-1,"测试失败！原因：" + e.getMessage());
+//        }
+//
+//    }
 
     /**
      * 项目自定义索引保存

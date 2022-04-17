@@ -474,9 +474,9 @@ public class UserOrganizationService implements IUserOrganizationService {
 	 * @param userId
 	 * @param organizationId
 	 */
-	@Override
-	public void  userOrganizationThirdStorageTest(UserOrganization uo, String userId, String organizationId) throws IOException {
-		File file = new File(ResourceUtil.getResourceAbsolutePathByClassPath("storage_test.pdf"));
-		log.debug(JSON.toJSONString(ossBuilder.template().putFile(uo.getThirdStorageBucket(),file.getName(),new FileInputStream(file))));
-	}
+//	@Override
+//	public void  userOrganizationThirdStorageTest(UserOrganization uo, String userId, String organizationId) throws IOException {
+//		File file = new File(ResourceUtil.getResourceAbsolutePathByClassPath("storage_test.pdf"));
+//		log.debug(JSON.toJSONString(ossBuilder.template().putFile(uo.getThirdStorageBucket(),file.getName(),new FileInputStream(file))));
+//	}
 }

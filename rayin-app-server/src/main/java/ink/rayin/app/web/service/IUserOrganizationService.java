@@ -104,5 +104,5 @@ public interface IUserOrganizationService {
 	 */
 	void userOrganizationDel(UserOrganization uo,String userId);
 
-	void userOrganizationThirdStorageTest(UserOrganization uo,String userId,String organizationId) throws IOException;
+//	void userOrganizationThirdStorageTest(UserOrganization uo,String userId,String organizationId) throws IOException;
 }
