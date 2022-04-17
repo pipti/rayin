@@ -8,7 +8,9 @@ import java.io.Serializable;
 
 /**
  * result实体类
- * Created by tangyongmao on 2019-6-3.
+ *
+ * @author tangyongmao
+ * @date 2019-6-3
  */
 public class RestResponse<T> implements Serializable{
     private int code;

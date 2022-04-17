@@ -1,5 +1,8 @@
 package ink.rayin.app.web;
 
+/**
+ * @author Jonah Wang
+ */
 public class Constants {
     /**
      * 系统编号

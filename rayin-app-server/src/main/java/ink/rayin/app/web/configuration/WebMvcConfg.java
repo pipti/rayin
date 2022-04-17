@@ -20,8 +20,7 @@ public class WebMvcConfg extends WebMvcConfigurationSupport {
         includePathPatterns.add("/user/**");
         // excludePathPatterns 用户排除拦截
         List<String> excludePathPatterns = new ArrayList<String>();
-        // excludePathPatterns.add("");
-        //```registry.addInterceptor(getTokenInterceptor()).addPathPatterns(includePathPatterns).excludePathPatterns(excludePathPatterns);
+
     }
 
     @Override

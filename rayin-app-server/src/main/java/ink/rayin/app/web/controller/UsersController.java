@@ -34,9 +34,6 @@ import java.util.Map;
 @RestController
 public class UsersController {
     @Resource
-    private RedisTemplateUtil redisTemplateUtil;
-
-    @Resource
     private UserServiceImpl userService;
 
     @Resource

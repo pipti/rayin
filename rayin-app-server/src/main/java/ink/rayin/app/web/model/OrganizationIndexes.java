@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * @program: rayin-app-parent
  * @description: OrganizationIndexes
- * @author: 作者名字
+ * @author: tym
  * @create: 2020-06-21 20:40
  **/
 @Data

@@ -26,9 +26,6 @@ public class ValidateCodeController {
     public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
 
     @Resource
-    private ValidateCodeGenerator imageCodeGenerator;
-
-    @Resource
     private RedisTemplateUtil redisTemplateUtil;
 
     @GetMapping("/users/code/image")

@@ -25,9 +25,7 @@ import java.nio.charset.Charset;
 /**
  *
  * @description: 登录过滤
- *
  * @author: tym
- *
  * @create: 2020-1-14 15:54:35
  **/
 public class BaseUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {

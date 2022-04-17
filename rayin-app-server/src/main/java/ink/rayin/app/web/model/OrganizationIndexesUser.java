@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 /**
  * @program: rayin-app-parent
  * @description:
- * @author: 作者名字
+ * @author: tym
  * @create: 2020-06-22 10:38
  **/
 @Data

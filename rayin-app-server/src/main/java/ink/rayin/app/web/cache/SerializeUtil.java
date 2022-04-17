@@ -8,7 +8,9 @@ import java.io.ObjectOutputStream;
 
 /**
  * 序列化与反序列化工具类，序列化方式为IO序列化 反序列化包含指定Class和不指定Class方式，
- * Created by tangyongmao on 2019-6-4 14:34:37.
+ *
+ * @author tangyongmao
+ * @date 2019-6-4 14:34:37
  */
 public class SerializeUtil {
 

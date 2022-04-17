@@ -315,7 +315,8 @@ export default {
           this.selectOrg,
           {})
           .then(res => {
-
+                this.orgQuery(1)
+                this.drawerOrgSetViewer = false
           }).catch(function (error) {
             console.log(error)
           })
@@ -334,75 +335,73 @@ export default {
             this.orgtTipVisual = false
             localStorage.setItem('orgs', JSON.stringify(this.orgs))
           }
-          console.log(this.orgtTipVisual)
-          // this.orgs = data
         })
     },
-    storageTestClick () {
-      if (this.selectOrg.thirdStorageAccessKey === null || this.selectOrg.thirdStorageAccessKey === undefined) {
-        this.$message({
-          showClose: true,
-          message: '请添加第三方存储access_key',
-          type: 'error'
-        })
-        return
-      }
-
-      if (this.selectOrg.thirdStorageSecretKey === '' || this.selectOrg.thirdStorageSecretKey === undefined) {
-        this.$message({
-          showClose: true,
-          message: '请添加第三方存储secret_key',
-          type: 'error'
-        })
-        return
-      }
-
-      if (this.selectOrg.thirdStorageUrl === '' || this.selectOrg.thirdStorageUrl === undefined) {
-        this.$message({
-          showClose: true,
-          message: '请添加第三方存储服务url',
-          type: 'error'
-        })
-        return
-      }
-
-      if (this.selectOrg.thirdStorageBucket === null || this.selectOrg.thirdStorageBucket === undefined) {
-        this.$message({
-          showClose: true,
-          message: '请添加第三方存储服务PDFbucket',
-          type: 'error'
-        })
-        return
-      }
-
-      if (this.selectOrg.thirdStorageResourceBucket === null || this.selectOrg.thirdStorageResourceBucket === undefined) {
-        this.$message({
-          showClose: true,
-          message: '请添加第三方存储服务资源bucket',
-          type: 'error'
-        })
-        return
-      }
-      console.log(this.selectOrg.ossType)
-      if (this.selectOrg.ossType === null || this.selectOrg.ossType === undefined) {
-        this.$message({
-          showClose: true,
-          message: '请选择存储类型',
-          type: 'error'
-        })
-        return
-      }
-
-      axios.post(this.GLOBAL.webappApiConfig.OrganizationManager.OrganizationThirdStorageTest.url,
-        this.selectOrg,
-        {})
-        .then(res => {
-          console.log(res)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    }
+    // storageTestClick () {
+    //   if (this.selectOrg.thirdStorageAccessKey === null || this.selectOrg.thirdStorageAccessKey === undefined) {
+    //     this.$message({
+    //       showClose: true,
+    //       message: '请添加第三方存储access_key',
+    //       type: 'error'
+    //     })
+    //     return
+    //   }
+    //
+    //   if (this.selectOrg.thirdStorageSecretKey === '' || this.selectOrg.thirdStorageSecretKey === undefined) {
+    //     this.$message({
+    //       showClose: true,
+    //       message: '请添加第三方存储secret_key',
+    //       type: 'error'
+    //     })
+    //     return
+    //   }
+    //
+    //   if (this.selectOrg.thirdStorageUrl === '' || this.selectOrg.thirdStorageUrl === undefined) {
+    //     this.$message({
+    //       showClose: true,
+    //       message: '请添加第三方存储服务url',
+    //       type: 'error'
+    //     })
+    //     return
+    //   }
+    //
+    //   if (this.selectOrg.thirdStorageBucket === null || this.selectOrg.thirdStorageBucket === undefined) {
+    //     this.$message({
+    //       showClose: true,
+    //       message: '请添加第三方存储服务PDFbucket',
+    //       type: 'error'
+    //     })
+    //     return
+    //   }
+    //
+    //   if (this.selectOrg.thirdStorageResourceBucket === null || this.selectOrg.thirdStorageResourceBucket === undefined) {
+    //     this.$message({
+    //       showClose: true,
+    //       message: '请添加第三方存储服务资源bucket',
+    //       type: 'error'
+    //     })
+    //     return
+    //   }
+    //   console.log(this.selectOrg.ossType)
+    //   if (this.selectOrg.ossType === null || this.selectOrg.ossType === undefined) {
+    //     this.$message({
+    //       showClose: true,
+    //       message: '请选择存储类型',
+    //       type: 'error'
+    //     })
+    //     return
+    //   }
+    //
+    //   axios.post(this.GLOBAL.webappApiConfig.OrganizationManager.OrganizationThirdStorageTest.url,
+    //     this.selectOrg,
+    //     {})
+    //     .then(res => {
+    //       console.log(res)
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error)
+    //     })
+    // }
   },
   mounted () {
     this.orgQuery(1)

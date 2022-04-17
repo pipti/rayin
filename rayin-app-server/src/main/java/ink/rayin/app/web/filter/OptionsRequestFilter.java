@@ -11,9 +11,7 @@ import java.io.IOException;
 /**
  *
  * @description: 跨域配置过滤
- *
  * @author: tym
- *
  * @create: 2020-1-14 15:54:35
  **/
 public class OptionsRequestFilter extends OncePerRequestFilter{

@@ -41,7 +41,6 @@ import java.util.HashMap;
 @CrossOrigin
 @RestController
 public class TemplateManagementController {
-    private static Logger logger = LoggerFactory.getLogger(TemplateManagementController.class);
     @Resource
     UserTemplateService userTemplateService;
 

@@ -30,7 +30,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+			Authentication authentication) throws IOException {
 		String[] res = userServiceImpl.saveUserLoginInfo((UserDetails)authentication.getPrincipal());
 		String token = res[0];
 		String userId = res[1];

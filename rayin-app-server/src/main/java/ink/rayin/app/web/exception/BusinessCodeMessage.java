@@ -2,7 +2,9 @@ package ink.rayin.app.web.exception;
 
 /**
  * 编码枚举
- * Created by tangyongmao on 2019-6-3.
+ *
+ * @author tangyongmao
+ * @date 2019-6-3
  */
 public enum BusinessCodeMessage {
     SUCCESS(0, "操作成功"),

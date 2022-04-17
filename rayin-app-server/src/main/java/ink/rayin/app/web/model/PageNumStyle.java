@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
  * 单模板页码样式
  *
  * @date 2019-08-25
- * @author Eric Wang
+ * @author Jonah Wang
  */
 @Data
 @Accessors(chain = true)

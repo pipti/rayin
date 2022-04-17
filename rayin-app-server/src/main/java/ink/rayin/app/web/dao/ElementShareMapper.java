@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @program: rayin-app-parent
  * @description:
- * @author: 作者名字
+ * @author: tangyongmao
  * @create: 2020-11-10 17:16
  **/
 @Repository

@@ -19,9 +19,9 @@ import javax.annotation.Resource;
  * [用户管理Controller].
  * [用户管理 WebApp Rest API]
  * <h3>version info：</h3><br>
- * v1.0 2020-03-31 Eric Wang create<br>
+ * v1.0 2020-03-31 Jonah Wang create<br>
  * <br>
- * @author Wang Zhu
+ * @author Jonah Wang
  * @version 1.0
  * @since JDK 1.8
  */

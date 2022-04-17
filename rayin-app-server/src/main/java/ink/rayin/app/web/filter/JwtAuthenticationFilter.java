@@ -31,9 +31,7 @@ import java.util.List;
 /**
  *
  * @description: JWT 过滤器
- *
  * @author: tym
- *
  * @create: 2020-1-14 15:54:35
  **/
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
