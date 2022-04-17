@@ -50,17 +50,6 @@ public class UsersController {
     @PostMapping(value = "/users/signup")
     public RestResponse<String> signUp(@RequestBody UserModel userModel) throws Exception {
 
-//        String phoneCode = redisTemplateUtil.get("register_sms_" + userModel.getUsername(),String.class);
-//        if (!StringUtils.isEmpty(phoneCode) && userModel.getVerifyCode().equals(phoneCode)){
-//            try {
-//                userService.createUserByMobile(userModel);
-//                return RestResponse.success();
-//            } catch (Exception e) {
-//                return RestResponse.failed(-1,e.getMessage());
-//            }
-//        }else {
-//           return RestResponse.failed(-1,"1001 - 短信验证码无效");
-//        }
         userService.createUser(userModel);
         return RestResponse.success();
     }

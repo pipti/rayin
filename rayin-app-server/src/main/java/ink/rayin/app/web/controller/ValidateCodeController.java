@@ -33,16 +33,12 @@ public class ValidateCodeController {
 
     @GetMapping("/users/code/image")
     public RestResponse createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        ImageCode imageCode = imageCodeGenerator.createCode(new ServletWebRequest(request));
         String sessionId = request.getSession().getId();
         String refreshType = request.getParameter("refreshType");
 
 
         SpecCaptcha specCaptcha = new SpecCaptcha(160, 48, 4);
         String verCode = specCaptcha.text().toLowerCase();
-//        ImageModel imageModel = new ImageModel();
-//        imageModel.setCode(verCode);
-//        imageModel.setExpireTime(60);
         log.debug("验证码：" + verCode);
         if(StringUtils.isNoneBlank(refreshType)){
             redisTemplateUtil.save(sessionId + refreshType,verCode,Long.valueOf(60*5));
@@ -52,7 +48,5 @@ public class ValidateCodeController {
 
 
         return RestResponse.success(specCaptcha.toBase64());
-        //写给response 响应
-//        ImageIO.write(imageCode.getImage(),"JPEG",response.getOutputStream());
     }
 }

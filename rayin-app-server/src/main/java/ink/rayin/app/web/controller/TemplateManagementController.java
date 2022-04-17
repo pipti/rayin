@@ -15,6 +15,7 @@ import ink.rayin.htmladapter.base.utils.RayinException;
 import ink.rayin.tools.utils.Base64Util;
 import ink.rayin.tools.utils.DigestUtil;
 import ink.rayin.tools.utils.GZipUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,8 @@ import java.util.HashMap;
  * @version 1.0
  * @since JDK 1.8
  */
+
+@Slf4j
 @CrossOrigin
 @RestController
 public class TemplateManagementController {

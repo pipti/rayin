@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 public interface UserOrganizationApi {
-    @GetMapping(value = "/organization/index/getAll")
-    List<OrganizationIndexesUser> userOrganizationIndexGetAll(@RequestParam("orgId") String orgId , @RequestParam("pageCurrent") Integer pageCurrent, @RequestParam("pageSize") Integer pageSize) throws Exception;
+//    @GetMapping(value = "/organization/index/getAll")
+//    List<OrganizationIndexesUser> userOrganizationIndexGetAll(@RequestParam("orgId") String orgId , @RequestParam("pageCurrent") Integer pageCurrent, @RequestParam("pageSize") Integer pageSize) throws Exception;
 }

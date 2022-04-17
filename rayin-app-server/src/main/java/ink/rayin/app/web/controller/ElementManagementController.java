@@ -9,11 +9,9 @@ import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.app.web.model.*;
 import ink.rayin.app.web.annotation.OrgId;
 import ink.rayin.app.web.annotation.UserId;
-import ink.rayin.app.web.service.IOrganizationResourceService;
 import ink.rayin.app.web.service.impl.UserElementService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,10 +32,9 @@ import java.util.HashMap;
  * @version 1.0
  * @since JDK 1.8
  */
-@CrossOrigin
+@Slf4j
 @RestController
 public class ElementManagementController {
-    private static Logger logger = LoggerFactory.getLogger(ElementManagementController.class);
     @Resource
     private PdfGenerator PdfGenerator;
     @Resource
@@ -118,7 +115,7 @@ public class ElementManagementController {
         final Base64.Encoder encoder = Base64.getEncoder();
         long start = System.currentTimeMillis();
         r.put("filedata", encoder.encodeToString(PdfGenerator.generatePdfStreamByHtmlStr(html).toByteArray()));
-        logger.debug("生成时间：" + (System.currentTimeMillis() - start)/1000 + "s");
+        log.debug("生成时间：" + (System.currentTimeMillis() - start)/1000 + "s");
         return r;
     }
 

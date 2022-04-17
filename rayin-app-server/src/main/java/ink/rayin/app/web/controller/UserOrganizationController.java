@@ -8,15 +8,11 @@ import ink.rayin.app.web.exception.BusinessCodeMessage;
 import ink.rayin.app.web.service.impl.UserOrganizationService;
 import ink.rayin.app.web.model.*;
 import ink.rayin.app.web.annotation.UserId;
-import ink.rayin.app.web.service.IOrganizationDataService;
-import ink.rayin.app.web.service.IOrganizationIndexesService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import java.util.List;
 
 
 /**
@@ -37,8 +33,8 @@ public class UserOrganizationController implements UserOrganizationApi {
     @Resource
     UserOrganizationService userOrganizationService;
 
-    @Resource
-    IOrganizationIndexesService organizationIndexesService;
+//    @Resource
+//    IOrganizationIndexesService organizationIndexesService;
 
     /**
      * 项目查询
@@ -200,15 +196,15 @@ public class UserOrganizationController implements UserOrganizationApi {
      * @param organizationIndexes
      * @return
      */
-    @PostMapping(value = "/organization/index/save")
-    public RestResponse userOrganizationIndexSave(@UserId String userId,
-                                                         @OrgId String orgId,
-                                                         @RequestBody OrganizationIndexes organizationIndexes) throws Exception {
-        organizationIndexes.setOrganizationId(orgId);
-        organizationIndexes.setUserId(userId);
-        organizationIndexesService.organizationIndexSave(organizationIndexes);
-        return RestResponse.success();
-    }
+//    @PostMapping(value = "/organization/index/save")
+//    public RestResponse userOrganizationIndexSave(@UserId String userId,
+//                                                         @OrgId String orgId,
+//                                                         @RequestBody OrganizationIndexes organizationIndexes) throws Exception {
+//        organizationIndexes.setOrganizationId(orgId);
+//        organizationIndexes.setUserId(userId);
+//        organizationIndexesService.organizationIndexSave(organizationIndexes);
+//        return RestResponse.success();
+//    }
 
     /**
      * 项目自定义索引删除
@@ -231,21 +227,21 @@ public class UserOrganizationController implements UserOrganizationApi {
      * @return
      * @throws Exception
      */
-    @GetMapping(value = "/organization/index/query")
-    public RestResponse userOrganizationIndexQuery(@OrgId String orgId,
-                                                   @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
-        Page page = new Page(pageCurrent, pageSize);
-
-        IPage<OrganizationIndexesUser> pages =  organizationIndexesService.organizationIndexQuery(page,orgId);
-        return RestResponse.success(pages);
-    }
-
-    @Override
-    public List<OrganizationIndexesUser> userOrganizationIndexGetAll(@RequestParam String orgId,
-                                                                     @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
-        Page page = new Page(pageCurrent, pageSize);
-
-        IPage<OrganizationIndexesUser> pages =  organizationIndexesService.organizationIndexQuery(page,orgId);
-        return pages.getRecords();
-    }
+//    @GetMapping(value = "/organization/index/query")
+//    public RestResponse userOrganizationIndexQuery(@OrgId String orgId,
+//                                                   @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
+//        Page page = new Page(pageCurrent, pageSize);
+//
+//        IPage<OrganizationIndexesUser> pages =  organizationIndexesService.organizationIndexQuery(page,orgId);
+//        return RestResponse.success(pages);
+//    }
+//
+//    @Override
+//    public List<OrganizationIndexesUser> userOrganizationIndexGetAll(@RequestParam String orgId,
+//                                                                     @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
+//        Page page = new Page(pageCurrent, pageSize);
+//
+//        IPage<OrganizationIndexesUser> pages =  organizationIndexesService.organizationIndexQuery(page,orgId);
+//        return pages.getRecords();
+//    }
 }
