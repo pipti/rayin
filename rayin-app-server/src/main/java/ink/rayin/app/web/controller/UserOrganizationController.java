@@ -55,7 +55,7 @@ public class UserOrganizationController implements UserOrganizationApi {
                                               @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
 
         Page page = new Page(pageCurrent, pageSize);
-        IPage<UserOrganization> pages = userOrganizationService.userOrganizationQuery(page, UserOrganization.builder().userId(userId).build());
+        IPage<UserOrganization> pages = userOrganizationService.userOrganizationQuery(page, new UserOrganization().setUserId(userId));
         return RestResponse.success(pages);
     }
 
@@ -73,7 +73,7 @@ public class UserOrganizationController implements UserOrganizationApi {
                                      @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
 
         Page page = new Page(pageCurrent, pageSize);
-        IPage<UserOrganization> pages = userOrganizationService.userMemberQuery(page, UserOrganization.builder().organizationId(orgId).build());
+        IPage<UserOrganization> pages = userOrganizationService.userMemberQuery(page, new UserOrganization().setOrganizationId(orgId));
         return RestResponse.success(pages);
     }
 
@@ -110,7 +110,7 @@ public class UserOrganizationController implements UserOrganizationApi {
                                                   @OrgId String orgId,
                                                   @RequestBody Users parameter) throws Exception {
 
-        if(userOrganizationService.userOrganizationMemberAdd(UserOrganization.builder().organizationId(orgId).userId(parameter.getId()).build()) > 0){
+        if(userOrganizationService.userOrganizationMemberAdd(new UserOrganization().setOrganizationId(orgId).setUserId(parameter.getId())) > 0){
             return RestResponse.success();
         }else{
             return RestResponse.failed(BusinessCodeMessage.FAILED);

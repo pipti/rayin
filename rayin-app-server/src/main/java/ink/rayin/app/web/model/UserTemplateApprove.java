@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -23,6 +24,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
+@Accessors(chain = true)
 public class UserTemplateApprove implements Serializable {
 
     @TableId(type = IdType.ASSIGN_UUID)

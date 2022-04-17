@@ -2,6 +2,7 @@ package ink.rayin.app.web.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -21,8 +22,8 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Data
+@Accessors(chain = true)
 public class UserTemplateElement implements Serializable {
-
     String organizationId;
     String templateId;
     String templateVersion;

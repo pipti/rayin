@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
@@ -22,9 +23,10 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
-@SuperBuilder
-@AllArgsConstructor
-@NoArgsConstructor
+//@SuperBuilder
+//@AllArgsConstructor
+//@NoArgsConstructor
+@Accessors(chain = true)
 public class UserOrganization implements Serializable{
     private String userId;
     private String organizationId;

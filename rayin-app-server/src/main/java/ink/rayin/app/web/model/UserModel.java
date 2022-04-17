@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
@@ -15,9 +16,10 @@ import java.io.Serializable;
  * @create: 2020-01-21 17:58
  **/
 @Data
-@SuperBuilder
-@AllArgsConstructor
-@NoArgsConstructor
+//@SuperBuilder
+//@AllArgsConstructor
+//@NoArgsConstructor
+@Accessors(chain = true)
 public class UserModel implements Serializable {
     private static final long serialVersionUID = 1L;
     String id;

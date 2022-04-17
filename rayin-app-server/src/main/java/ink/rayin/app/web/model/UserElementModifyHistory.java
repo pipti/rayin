@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -22,6 +23,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
+@Accessors(chain = true)
 public class UserElementModifyHistory implements Serializable {
 
     @TableId(type = IdType.ASSIGN_UUID)

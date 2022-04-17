@@ -8,7 +8,7 @@
 
 ## 睿印是什么
 数据+模板=动态生成PDF工具
-[html + json_ocnfig] + json_data => pdf
+[html + json_config] + json_data => pdf
 
 ## 优势
 1. 通过json_config更加灵活复用底板，解决业务多变，通过底板灵活组合进行复用，降低底板数量，提升效率。
@@ -78,9 +78,9 @@ https://github.com/danfickle/openhtmltopdf
 ### w3c css
 https://www.w3.org/TR/css-page-3/  
 主要针对@page 样式的设置，通用样式flyingsaucer基本支持，css2基本支持，css3部分支持。
-### Adobe Fonts 思源字体
+### Adobe Fonts 开源思源字体
 https://github.com/adobe-fonts
-### google Fonts noto-cjk
+### google Fonts 开源noto-cjk
 https://github.com/googlefonts/noto-cjk
 
 ## 项目结构
@@ -124,7 +124,7 @@ https://github.com/googlefonts/noto-cjk
 14. 实现线程池。
 
 ### 项目地址
-Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin)
+Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin) <br>
 GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ### 开始使用

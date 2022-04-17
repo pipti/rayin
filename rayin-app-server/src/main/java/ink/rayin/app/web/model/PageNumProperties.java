@@ -1,7 +1,9 @@
 package ink.rayin.app.web.model;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -11,22 +13,13 @@ import java.util.List;
  * @date 2019-08-25
  * @author Eric Wang
  */
+@Data
+@Accessors(chain = true)
 public class PageNumProperties {
 
-    @Getter
-    @Setter
     private boolean pageNumIsFirstPage;
-
-    @Getter
-    @Setter
     private boolean pageNumIsCalculate;
-
-    @Getter
-    @Setter
     private boolean pageNumIsDisplay;
-
-    @Getter
-    @Setter
     private List<PageNumDisplayPos> pageNumDisplayPoss;
 
 }

@@ -2,6 +2,7 @@ package ink.rayin.app.web.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @create: 2020-11-10 16:48
  **/
 @Data
+@Accessors(chain = true)
 public class ElementShare implements Serializable {
     private String elementId;
     private String organizationId;

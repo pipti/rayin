@@ -1,6 +1,7 @@
 package ink.rayin.app.web.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @create: 2020-06-24 15:12
  **/
 @Data
+@Accessors(chain = true)
 public class UserIndexes implements Serializable{
     private String indexId;
     private String organizationId;

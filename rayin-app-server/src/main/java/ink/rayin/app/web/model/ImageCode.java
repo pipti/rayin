@@ -1,6 +1,7 @@
 package ink.rayin.app.web.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * @create: 2020-01-16 13:33
  **/
 @Data
+@Accessors(chain = true)
 public class ImageCode implements Serializable{
     /**
      * 图片

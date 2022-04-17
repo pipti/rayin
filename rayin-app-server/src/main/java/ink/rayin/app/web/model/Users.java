@@ -1,6 +1,7 @@
 package ink.rayin.app.web.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * [users Model].
@@ -13,6 +14,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
+@Accessors(chain = true)
 public class Users {
     private String id;
     private String username;

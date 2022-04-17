@@ -29,7 +29,7 @@ public class OrganizationController {
         organizationModel.setOrganizationName(jsonObject.getString("organizationName"));
         organizationModel.setOrgNumber(jsonObject.getInteger("orgNumber"));
 
-        organizationService.createOrganization(UserModel.builder().id(jsonObject.getString("userId")).build(),organizationModel);
+        organizationService.createOrganization(new UserModel().setId(jsonObject.getString("userId")),organizationModel);
         System.err.println(organizationModel);
         return "";
     }

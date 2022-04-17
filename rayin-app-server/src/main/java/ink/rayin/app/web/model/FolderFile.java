@@ -1,6 +1,7 @@
 package ink.rayin.app.web.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @create: 2020-07-07 22:10
  **/
 @Data
+@Accessors(chain = true)
 public class FolderFile implements Serializable{
     private String objectId;
     private String folderId;

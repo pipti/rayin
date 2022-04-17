@@ -35,7 +35,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         String orgId = UUID.randomUUID().toString().replaceAll("-","");
         organizationModel.setOrganizationId(orgId);
 
-        userOrganizationMapper.insert(UserOrganization.builder().userId(userModel.getId()).organizationId(organizationModel.getOrganizationId()).build());
+        userOrganizationMapper.insert(new UserOrganization().setUserId(userModel.getId()).setOrganizationId(organizationModel.getOrganizationId()));
         organizationMapper.insert(organizationModel);
     }
 

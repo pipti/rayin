@@ -1,6 +1,7 @@
 package ink.rayin.app.web.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 单模板页码显示属性
@@ -9,6 +10,7 @@ import lombok.Data;
  * @author Eric Wang
  */
 @Data
+@Accessors(chain = true)
 public class PageNumDisplayPos {
     private int x;
     private int y;

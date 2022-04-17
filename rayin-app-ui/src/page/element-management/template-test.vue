@@ -90,7 +90,15 @@
             </el-row>
           </el-tab-pane>
           <el-tab-pane label="构件">
-
+            <el-table
+              :data="elConfig"
+              style="width: 100%"
+              row-key="elementId"
+            >
+              <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+              <el-table-column prop="name" label="构件名" min-width="150" align="left"></el-table-column>
+              <el-table-column prop="elementVersion" label="版本号" min-width="150" align="left"></el-table-column>
+            </el-table>
           </el-tab-pane>
 
         </el-tabs>
@@ -166,7 +174,8 @@ export default {
       searchKey: '',
       scroll: 'scroll',
       jsonRoot: '',
-      pdfMetadata: {}
+      pdfMetadata: {},
+      elConfig: []
     }
   },
   methods: {
@@ -236,7 +245,7 @@ export default {
     testClick () {
       let pdfViewerFrame = document.getElementById('pdfViewer')
       this.tplRow.testData = JSON.stringify(this.jsonData)
-      axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateTest.url,
+      axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateView.url,
         this.tplRow,
         {})
         .then(res => {
@@ -288,7 +297,7 @@ export default {
     if (this.$route.params.tplRow.testData !== '' && this.$route.params.tplRow.testData !== null) {
       this.jsonData = JSON.parse(this.$route.params.tplRow.testData)
     }
-
+    this.elConfig = JSON.parse(this.$route.params.tplRow.elConfig)
     this.searchKey = this.$route.params.searchKey
     let pdfViewerFrame = document.getElementById('pdfViewer')
     pdfViewerFrame.srcdoc = "<span style='font-size:14px;color: #606266;'>选择左侧[数据]标签，加载本地数据，并点击测试</span>"

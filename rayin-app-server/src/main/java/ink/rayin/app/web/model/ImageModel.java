@@ -1,6 +1,7 @@
 package ink.rayin.app.web.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  * @create: 2020-01-16 15:15
  **/
 @Data
+@Accessors(chain = true)
 public class ImageModel implements Serializable{
     /**
      * 随机数

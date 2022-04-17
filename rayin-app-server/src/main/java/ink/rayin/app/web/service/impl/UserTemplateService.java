@@ -392,7 +392,7 @@ public class UserTemplateService implements IUserTemplateService {
 		RayinMeta pdfMeta = pdfCreateService.generateEncryptPdfStreamByConfigStr(utr.getTplConfig(),JSON.parseObject(ut.getTestData()),baos,null);
 
 		UserOrganization userOrg = userOrganizationMapper.userOrganizationQueryOne(
-				UserOrganization.builder().organizationId(ut.getOrganizationId()).userId(ut.getUserId()).build());
+				new UserOrganization().setOrganizationId(ut.getOrganizationId()).setUserId(ut.getUserId()));
 		if(StringUtils.isBlank(userOrg.getThirdStorageBucket())){
 			throw new RayinBusinessException("请在项目中设置存储桶名称！");
 		}

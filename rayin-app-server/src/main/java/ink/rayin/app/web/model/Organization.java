@@ -2,7 +2,11 @@ package ink.rayin.app.web.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +23,10 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
+//@SuperBuilder
+//@AllArgsConstructor
+//@NoArgsConstructor
+@Accessors(chain = true)
 public class Organization implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String organizationId;

@@ -93,8 +93,8 @@ const webappApiConfig = {
       url: "/api/template/del",
       method: "post"
     },
-    UserTemplateTest:{
-      url: "/api/template/test",
+    UserTemplateView:{
+      url: "/api/template/view",
       method: "post"
     },
     UserTemplateTestDataSave:{

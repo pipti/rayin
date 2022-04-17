@@ -15,9 +15,11 @@ import ink.rayin.app.web.dao.*;
 import ink.rayin.app.web.oss.builder.OssBuilder;
 import ink.rayin.app.web.service.IUserOrganizationService;
 
+import ink.rayin.tools.utils.BeanConvert;
 import ink.rayin.tools.utils.ResourceUtil;
 import ink.rayin.tools.utils.StringUtil;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -187,10 +189,11 @@ public class UserOrganizationService implements IUserOrganizationService {
 	@Transactional(rollbackFor = Exception.class)
 	public int userOrganizationRightTrans(UserOrganization uo, String userId, String orgId) {
 
-		QueryWrapper<UserOrganization> qw1 = new QueryWrapper<UserOrganization>();
+		QueryWrapper<UserOrganization> qw1 = new QueryWrapper<>();
 		qw1.eq("user_id", userId);
 		qw1.eq("organization_id", orgId);
 		qw1.eq("owner", true);
+
 		if (userOrganizationMapper.selectOne(qw1) == null) {
 			throw new RayinBusinessException("您无权操作该项目的成员设置，请联系该项目创建人！");
 		}
@@ -211,7 +214,7 @@ public class UserOrganizationService implements IUserOrganizationService {
 		message.setInfo("您成为'" + organization.getOrganizationName() + "'项目所有者");
 		message.setUrl("test");
 		message.setChecked(false);
-		return userOrganizationMapper.update(UserOrganization.builder().owner(false).build(), qw3);
+		return userOrganizationMapper.update(new UserOrganization().setOwner(false), qw3);
 	}
 
 	/**
@@ -221,24 +224,40 @@ public class UserOrganizationService implements IUserOrganizationService {
 	 */
 	@Override
 	@Transactional(rollbackFor=Exception.class)
+	@SneakyThrows
 	public int userOrganizationSave(UserOrganization uo, String userId, String organizationId) {
-		Organization o = new Organization();
-		o.setIcon(uo.getIcon());
-		o.setIconColor(uo.getIconColor());
-		o.setOrganizationName(uo.getOrganizationName());
-		o.setThirdStorageAccessKey(uo.getThirdStorageAccessKey());
-		o.setThirdStorageSecretKey(uo.getThirdStorageSecretKey());
-		o.setThirdStorageUrl(uo.getThirdStorageUrl());
-		o.setThirdStorageBucket(uo.getThirdStorageBucket());
-		o.setThirdStorageResourceBucket(uo.getThirdStorageBucket());
-		o.setOssType(uo.getOssType());
-		o.setDeposit(uo.isDeposit());
+//		Organization o = Organization.builder().icon(uo.getIcon())
+//				.iconColor(uo.getIconColor())
+//				.organizationName(uo.getOrganizationName())
+//				.thirdStorageAccessKey(uo.getThirdStorageAccessKey())
+//				.thirdStorageSecretKey(uo.getThirdStorageSecretKey())
+//				.thirdStorageUrl(uo.getThirdStorageUrl())
+//				.thirdStorageBucket(uo.getThirdStorageBucket())
+//				.thirdStorageResourceBucket(uo.getThirdStorageResourceBucket())
+//				.ossType(uo.getOssType()).deposit(uo.isDeposit()).build();
+		Organization o = BeanConvert.convert(uo,Organization.class);
+//		o.setIcon(uo.getIcon());
+//		o.setIconColor(uo.getIconColor());
+//		o.setOrganizationName(uo.getOrganizationName());
+//		o.setThirdStorageAccessKey(uo.getThirdStorageAccessKey());
+//		o.setThirdStorageSecretKey(uo.getThirdStorageSecretKey());
+//		o.setThirdStorageUrl(uo.getThirdStorageUrl());
+//		o.setThirdStorageBucket(uo.getThirdStorageBucket());
+//		o.setThirdStorageResourceBucket(uo.getThirdStorageBucket());
+//		o.setOssType(uo.getOssType());
+//		o.setDeposit(uo.isDeposit());
 
 		if (StringUtils.isBlank(uo.getOrganizationId())) {
 			// 新增项目
-			o.setCreateTime(new Date());
-			o.setAccessKey(StringUtil.randomUUID());
-			o.setSecretKey(StringUtil.randomUUID());
+			o.setCreateTime(new Date())
+					.setAccessKey(StringUtil.randomUUID())
+					.setSecretKey(StringUtil.randomUUID());
+//			o.setAccessKey(StringUtil.randomUUID());
+//			o.setSecretKey(StringUtil.randomUUID());
+
+
+
+
 			organizationMapper.insert(o);
 			uo.setOrganizationId(o.getOrganizationId());
 			uo.setOwner(true);

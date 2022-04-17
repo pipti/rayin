@@ -75,7 +75,7 @@ public class PDFManagementController {
                                              @RequestParam Integer pageSize,
                                              @RequestParam String prefix) {
 
-        UserOrganization uo = userOrganizationService.userOrganizationQueryOne(UserOrganization.builder().userId(userId).organizationId(orgId).build());
+        UserOrganization uo = userOrganizationService.userOrganizationQueryOne(new UserOrganization().setUserId(userId).setOrganizationId(orgId));
         if(uo == null){
             throw new RayinBusinessException("您无权访问该项目的文件内容！");
         }
@@ -219,7 +219,7 @@ public class PDFManagementController {
                                             @UserId String userId,
                                            @RequestBody(required = true) RayinFile rayinFile,
                                            HttpServletResponse httpServletResponse) throws IOException {
-        UserOrganization uo = userOrganizationService.userOrganizationQueryOne(UserOrganization.builder().userId(userId).organizationId(orgId).build());
+        UserOrganization uo = userOrganizationService.userOrganizationQueryOne(new UserOrganization().setUserId(userId).setOrganizationId(orgId));
 
         if(uo == null){
             throw new RayinBusinessException("您无权访问该项目的文件内容！");

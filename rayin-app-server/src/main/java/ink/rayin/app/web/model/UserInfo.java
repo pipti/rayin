@@ -3,6 +3,7 @@ package ink.rayin.app.web.model;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * [user_info Model].
@@ -15,6 +16,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
+@Accessors(chain = true)
 public class UserInfo {
     @TableId(type = IdType.ASSIGN_UUID)
     private String userId;

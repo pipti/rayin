@@ -437,26 +437,26 @@ export default {
       elFavourites: [
       ],
       elSysFavourites:[
-        {
-          url: '/static/testresource/elements/电子保单.html',
-          data:'/static/testresource/elements/电子保单.json'
-        },
-        {
-          url: '/static/testresource/elements/009_familyproof.html',
-          data: '/static/testresource/elements/009_familyproof.json'
-        }
-        ,
-        {
-          url: '/static/testresource/elements/封面.html',
-          data:'/static/testresource/elements/电子保单.json'
-        },
-        {
-          url: '/static/testresource/elements/八版保单页.html',
-          data:'/static/testresource/data/八版保单页.json'
-        },
-        {
-          url: '/static/testresource/elements/带水印.html'
-        }
+        // {
+        //   url: '/static/testresource/elements/电子保单.html',
+        //   data:'/static/testresource/elements/电子保单.json'
+        // },
+        // {
+        //   url: '/static/testresource/elements/009_familyproof.html',
+        //   data: '/static/testresource/elements/009_familyproof.json'
+        // }
+        // ,
+        // {
+        //   url: '/static/testresource/elements/封面.html',
+        //   data:'/static/testresource/elements/电子保单.json'
+        // },
+        // {
+        //   url: '/static/testresource/elements/八版保单页.html',
+        //   data:'/static/testresource/data/八版保单页.json'
+        // },
+        // {
+        //   url: '/static/testresource/elements/带水印.html'
+        // }
       ],
       elHtmlCode: '',
       disabled: false,
@@ -761,12 +761,12 @@ export default {
       var editorHtmlParser = new DOMParser();
       var htmlDoc = editorHtmlParser.parseFromString(this.elHtmlCode, 'text/html');
 
-      if(htmlDoc.getElementById('eprint_page_style') != null) {
-        htmlDoc.getElementById('eprint_page_style').remove()
+      if(htmlDoc.getElementById('rayin_page_style') != null) {
+        htmlDoc.getElementById('rayin_page_style').remove()
       }
 
       var hstyle = document.createElement("style");
-      hstyle.id = 'eprint_page_style'
+      hstyle.id = 'rayin_page_style'
       hstyle.innerText = styles
       htmlDoc.getElementsByTagName('head')[0].appendChild(hstyle)
 
