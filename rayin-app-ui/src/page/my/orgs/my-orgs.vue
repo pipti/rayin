@@ -315,8 +315,8 @@ export default {
           this.selectOrg,
           {})
           .then(res => {
-                this.orgQuery(1)
-                this.drawerOrgSetViewer = false
+            this.orgQuery(1)
+            this.drawerOrgSetViewer = false
           }).catch(function (error) {
             console.log(error)
           })
@@ -336,7 +336,7 @@ export default {
             localStorage.setItem('orgs', JSON.stringify(this.orgs))
           }
         })
-    },
+    }
     // storageTestClick () {
     //   if (this.selectOrg.thirdStorageAccessKey === null || this.selectOrg.thirdStorageAccessKey === undefined) {
     //     this.$message({
