@@ -637,14 +637,15 @@ export default {
       } else {
         this.templateForm.elConfig = JSON.stringify(this.elConfig)
         // this.elementForm.testData = JSON.stringify(this.this.elConfig)
-        console.log(this.elConfig)
+        // console.log(this.elConfig)
         axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateSave.url,
           this.templateForm,
           {})
           .then(res => {
-            if (res.status === 200) {
-              this.$router.push({name: 'TemplateManagement', params: {}})
-            }
+            // console.log(res)
+            // if (res.data.code === 0) {
+            this.$router.push({name: 'TemplateManagement', params: {}})
+            // }
           })
           .catch(function (error) {
             console.log(error)
