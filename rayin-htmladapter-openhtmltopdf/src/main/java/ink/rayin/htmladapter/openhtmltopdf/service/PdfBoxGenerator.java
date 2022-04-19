@@ -35,10 +35,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentInformation;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.encryption.*;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.jsoup.Jsoup;
@@ -296,7 +293,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                         }
 
                                         PDPageContentStream contentStreamEl
-                                                = new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.PREPEND, false);
+                                                = new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.APPEND, false);
 
                                         contentStreamEl.beginText();
                                         contentStreamEl.newLineAtOffset(pos.getX()==0f?content.getMediaBox().getWidth()/2 - 30:pos.getX(), pos.getY() != 0f?overContentHeight - pos.getY():20);
@@ -315,7 +312,7 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                                             if(fl.size() > 0){
 
-                                                PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.PREPEND, false);
+                                                PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.APPEND, false);
                                                 contentStream.beginText();
                                                 for(float[] f:fl){
                                                 contentStream.newLineAtOffset(f[0], f[1]);
@@ -331,7 +328,7 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                                     }
                                 }else {
-                                    PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.PREPEND, false);
+                                    PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.APPEND, false);
                                     contentStream.beginText();
                                     contentStream.newLineAtOffset(content.getMediaBox().getWidth()/2 - 30, 20);
                                     contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
