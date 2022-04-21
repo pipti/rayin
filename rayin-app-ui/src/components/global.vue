@@ -85,6 +85,10 @@ const webappApiConfig = {
       url: "/api/template/logicalDel",
       method: "post"
     },
+    UserTemplateOfflineExport:{
+      url: "/api/template/offline/export",
+      method: "post"
+    },
     UserTemplateGenerate:{
       url: "/api/template/tplGenerate",
       method: "post"

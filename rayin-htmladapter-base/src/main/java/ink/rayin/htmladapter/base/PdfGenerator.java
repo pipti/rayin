@@ -75,11 +75,11 @@ public interface PdfGenerator {
     /**
      * 根据模板配置字符串生成PDF流
      * @param tplConfigStr  模板配置json
-     * @param data   数据json
+     * @param jsonData   数据json
      * @param os         输出流
      * @return RayinMeta 元数据类
      */
-     RayinMeta generatePdfStreamByTplConfigStr(String tplConfigStr, JSONObject data,
+     RayinMeta generatePdfStreamByTplConfigStr(String tplConfigStr, JSONObject jsonData,
                                                ByteArrayOutputStream os);
 
     /**
@@ -95,33 +95,34 @@ public interface PdfGenerator {
     /**
      * 将html文件与数据匹配生成转换后的字符串
      * @param htmlLocation
-     * @param variables
+     * @param jsonData
      * @return html字符串
      */
-     String htmlFileDataFilling(String htmlLocation, JSONObject variables);
+     String htmlFileDataFilling(String htmlLocation, JSONObject jsonData);
 
     /**
      * 将html字符串与数据匹配生成转换后的字符串
      * @param htmlStr html字符串
-     * @param variables 数据
+     * @param jsonData 数据
      * @return html字符串
      */
-     String htmlStrDataFilling(String htmlStr, JSONObject variables);
+     String htmlStrDataFilling(String htmlStr, JSONObject jsonData);
 
 
     /**
      * html转换为pdf
-     * @param htmlStr
-     * @param outputFile
+     * @param htmlStr html字符串
+     * @param outputFile 输出文件路径
      */
      void generatePdfFileByHtmlStr(String htmlStr, String outputFile);
 
     /**
      * html转换为pdf
-     * @param htmlStr
-     * @param outputFile
+     * @param htmlStr html字符串
+     * @param v
+     * @param outputFile 输出文件路径
      */
-    void generatePdfFileByHtmlStr(String htmlStr, JSONObject variables, String outputFile);
+    void generatePdfFileByHtmlStr(String htmlStr, JSONObject jsonData, String outputFile);
 
     /**
      * html字符串转换为pdf字节流
@@ -133,18 +134,18 @@ public interface PdfGenerator {
     /**
      * 根据html文件流（html）生成pdf字节流
      * @param htmlStr html输入流
-     * @param data     json数据
+     * @param jsonData     json数据
      * @return PDF ByteArrayOutputStream
      */
-    ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject data);
+    ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject jsonData);
 
     /**
      * 根据html文件路径生成pdf字节流
      * @param htmlLocation  构件路径
-     * @param data     json数据
+     * @param jsonData     json数据
      * @return PDF ByteArrayOutputStream
      */
-    ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject data);
+    ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject jsonData);
 
     /**
      * PDF 元数据读取

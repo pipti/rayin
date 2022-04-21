@@ -143,11 +143,18 @@
               <el-button type="text" size="small" @click="tplGenerate(scope.row)">生成</el-button>
               <el-popover
                 placement="bottom"
-                width="200"
+                width="250"
                 trigger="hover">
                 <div>
                   <el-button type="text" size="small" disabled @click="tplPublishToOtherOrg(scope.index, scope.row)">发布至其他项目</el-button>
                   <el-button type="text" size="small" @click="tplLogicalDel(scope.index, scope.row)">删除</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="tplOfflineExport(scope.index, scope.row)"
+                  >
+                    线下模板导出
+                  </el-button>
                 </div>
                 <el-button type="text" size="medium" slot="reference" class="el-icon-more"></el-button>
               </el-popover>
@@ -184,6 +191,7 @@
 
 <script>
 import axios from 'axios'
+import FileSaver from 'file-saver'
 export default {
   data () {
     return {
@@ -233,6 +241,24 @@ export default {
               console.log(e)
             })
           })
+        })
+    },
+    tplOfflineExport (index, row) {
+      // 导出模板
+      axios
+        .post(
+          this.GLOBAL.webappApiConfig.TemplateManagement
+            .UserTemplateOfflineExport.url,
+          row,
+          {}
+        )
+        .then(res => {
+          let exportData = res.data.content
+          const blob = new Blob([exportData], {type: ''})
+          FileSaver.saveAs(blob, row.name + '.tplf')
+        })
+        .catch(function (error) {
+          console.log(error)
         })
     },
     tplLogicalDel (index, row) {

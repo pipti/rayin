@@ -17,8 +17,6 @@ import ink.rayin.tools.utils.DigestUtil;
 import ink.rayin.tools.utils.GZipUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -81,7 +79,6 @@ public class TemplateManagementController {
         if(StringUtils.isBlank(parameter.getName())){
             throw new RayinException("请设置模板名称！");
         }
-
         // parameter.setUserId(userId);
         parameter.setOrganizationId(orgId);
         // 更新操作，更新原有记录
@@ -178,7 +175,6 @@ public class TemplateManagementController {
     public RestResponse templateImport(@UserId String userId,@OrgId String orgId,@RequestBody HashMap parameter){
         String importData = (String)parameter.get("importData");
         boolean newTemplateFlag = (boolean)parameter.get("overwriteFlag");
-//        boolean newElementFlag = (boolean)parameter.get("newElement");
 
         String md5Str = importData.substring(0,32);
         String base64Str = importData.substring(32);
