@@ -19,7 +19,7 @@
         <module>rayin-springboot-server</module>
         <module>rayin-test</module>
         <module>rayin-template-samples</module>
-        <module>rayin-app-server</module>
+        <module>rayin-design-server</module>
     </modules>
 
     <properties>

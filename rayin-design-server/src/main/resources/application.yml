@@ -1,7 +1,7 @@
 server:
   port: 8961
   servlet:
-    application-display-name: rayin-app-server
+    application-display-name: rayin-design-server
     context-path: /api
 #spring:
 #  messages:

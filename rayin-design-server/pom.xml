@@ -8,19 +8,19 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ink.rayin</groupId>
-	<artifactId>rayin-app-server</artifactId>
+	<artifactId>rayin-design-server</artifactId>
 	<version>1.0.4</version>
-	<name>rayin-app-server</name>
+	<name>rayin-design-server</name>
 <!--	<packaging>war</packaging>-->
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
 
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
@@ -277,7 +277,7 @@
 <!--		</profile>-->
 <!--	</profiles>-->
 	<build>
-		<finalName>rayin-app-server</finalName>
+		<finalName>rayin-design-server</finalName>
 		<resources>
 			<resource>
 				<directory>${basedir}/src/main/resources</directory>
@@ -286,6 +286,10 @@
 					<exclude>profile/*.*</exclude>
 				</excludes>
 			</resource>
+<!--			<resource>-->
+<!--				<directory>../rayin-app-ui/dist/</directory>-->
+<!--				<targetPath>static/</targetPath>-->
+<!--			</resource>-->
 		</resources>
 <!--		<filters>-->
 <!--			<filter>${basedir}/src/main/resources/profile/${env}.properties</filter>-->
@@ -296,7 +300,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>2.2.6.RELEASE</version>
 				<configuration>
-					<mainClass>ink.rayin.app.RayinAppServerApplication</mainClass>
+					<mainClass>ink.rayin.app.web.RayinAppServerApplication</mainClass>
 					<layout>ZIP</layout>
 				</configuration>
 				<executions>

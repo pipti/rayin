@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/users/websocket/*").permitAll()
 				.antMatchers("/users/mobile/*").permitAll()
 				.antMatchers("/users/login").permitAll()
+				.antMatchers("/rayin/**").permitAll()
 				//.antMatchers("/**").permitAll()
 				.antMatchers("/test1/**").hasAnyRole("ADMIN")
 				.antMatchers("/test2/**").hasAnyRole("USER")
