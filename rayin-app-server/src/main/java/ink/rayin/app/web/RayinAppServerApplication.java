@@ -9,12 +9,8 @@ import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfigurati
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
@@ -35,9 +31,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @MapperScan(basePackages = "ink.rayin.app.web.dao")
 @EnableRayinyPdfAdpter
-public class RayinRestWebApplication extends SpringBootServletInitializer {
+public class RayinAppServerApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) throws Exception {
-		ApplicationContext applicationContext = SpringApplication.run(RayinRestWebApplication.class, args);
+		ApplicationContext applicationContext = SpringApplication.run(RayinAppServerApplication.class, args);
 	}
 
 	/**
@@ -48,7 +44,7 @@ public class RayinRestWebApplication extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		// 注意这里要指向原先用main方法执行的Application启动类
-		return builder.sources(RayinRestWebApplication.class);
+		return builder.sources(RayinAppServerApplication.class);
 	}
 
 //	private CorsConfiguration buildConfig() {

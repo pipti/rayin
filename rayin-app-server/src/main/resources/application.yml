@@ -2,7 +2,7 @@ server:
   port: 8961
   servlet:
     application-display-name: rayin-app-server
-#    context-path: /users-rest
+    context-path: /api
 #spring:
 #  messages:
 #    basename: i18n/Messages,i18n/PagesConfig
