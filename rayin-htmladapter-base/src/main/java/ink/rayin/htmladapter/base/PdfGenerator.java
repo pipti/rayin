@@ -119,7 +119,7 @@ public interface PdfGenerator {
     /**
      * html转换为pdf
      * @param htmlStr html字符串
-     * @param v
+     * @param jsonData json数据
      * @param outputFile 输出文件路径
      */
     void generatePdfFileByHtmlStr(String htmlStr, JSONObject jsonData, String outputFile);
