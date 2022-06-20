@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ink.rayin.app.web.dao.UserMapper" >
+    <resultMap id="BaseResultMap" type="ink.rayin.app.web.model.UserModel" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <id column="username" property="username" jdbcType="VARCHAR" />
+        <id column="password" property="password" jdbcType="VARCHAR" />
+        <id column="real_name" property="realName" jdbcType="VARCHAR" />
+        <id column="third_id" property="thirdId" jdbcType="VARCHAR" />
+        <id column="third_type" property="thirdType" jdbcType="VARCHAR" />
+        <id column="role_id" property="roleId" jdbcType="INTEGER" />
+        <id column="organization_id" property="organizationId" jdbcType="INTEGER" />
+        <id column="mobile" property="mobile" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="sql_allColumn">
+        id,
+        username,
+        password,
+        real_name,
+        role_id,
+        organization_id,
+        mobile
+    </sql>
+    <select id="getUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="sql_allColumn"/>
+        from USERS  where username = #{username,jdbcType=VARCHAR} or mobile = #{username,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserByMobile" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="sql_allColumn"/>
+        from USERS  where mobile = #{username,jdbcType=VARCHAR}
+    </select>
+    <insert id="insert" parameterType="ink.rayin.app.web.model.UserModel">
+        insert into USERS (
+            id,
+            username,
+            password,
+            real_name,
+            role_id,
+            organization_id,
+            third_id,
+            third_type,
+            mobile
+        ) VALUES (
+            #{id,jdbcType=VARCHAR},
+            #{username,jdbcType=VARCHAR},
+            #{password,jdbcType=VARCHAR},
+            #{realName,jdbcType=VARCHAR},
+            #{roleId,jdbcType=VARCHAR},
+            #{organizationId,jdbcType=VARCHAR},
+            #{thirdId,jdbcType=VARCHAR},
+            #{thirdType,jdbcType=VARCHAR},
+            #{mobile,jdbcType=VARCHAR}
+        )
+    </insert>
+    <select id="getUserByThirdId"  resultMap="BaseResultMap">
+        select * from users where third_id = #{thirdId} and third_type = #{thirdType}
+    </select>
+    <select id="getUserByUserId"  resultMap="BaseResultMap">
+        select * from users where id = #{userId}
+    </select>
+
+    <update id="updateUserByUserId" parameterType="ink.rayin.app.web.model.UserModel">
+        UPDATE USERS
+        <trim prefix="set" suffixOverrides=",">
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>
