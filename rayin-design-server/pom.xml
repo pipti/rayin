@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>rayin-parent</artifactId>
+		<groupId>ink.rayin</groupId>
+		<version>1.0.4</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ink.rayin</groupId>
+	<artifactId>rayin-design-server</artifactId>
+	<version>1.0.4</version>
+	<name>rayin-design-server</name>
+<!--	<packaging>war</packaging>-->
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-test</artifactId>-->
+<!--			<scope>test</scope>-->
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<groupId>org.junit.vintage</groupId>-->
+<!--					<artifactId>junit-vintage-engine</artifactId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
+<!--		</dependency>-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>3.3.1.tmp</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector}</version>
+		</dependency>
+
+
+		<!-- 阿里云短信服务 javasdk -->
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-core</artifactId>
+			<version>4.5.1</version>
+		</dependency>
+        <dependency>
+            <groupId>ink.rayin</groupId>
+            <artifactId>rayin-tools</artifactId>
+            <version>1.0.4</version>
+            <scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-pool2</artifactId>
+					<groupId>org.apache.commons</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.github.whvcse</groupId>
+			<artifactId>easy-captcha</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.18.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.9.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+		<!--AliOss-->
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>3.11.3</version>
+		</dependency>
+		<!--MinIO-->
+		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>8.3.7</version>
+		</dependency>
+		<!--QiNiu-->
+		<dependency>
+			<groupId>com.qiniu</groupId>
+			<artifactId>qiniu-java-sdk</artifactId>
+			<version>7.9.5</version>
+		</dependency>
+		<!--腾讯COS-->
+		<dependency>
+			<groupId>com.qcloud</groupId>
+			<artifactId>cos_api</artifactId>
+			<version>5.6.8</version>
+		</dependency>
+		<!--华为云Obs-->
+		<dependency>
+			<groupId>com.huaweicloud</groupId>
+			<artifactId>esdk-obs-java</artifactId>
+			<version>3.19.7</version>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>com.aliyun</groupId>-->
+<!--			<artifactId>aliyun-java-sdk-core</artifactId>-->
+<!--			<version>4.1.0</version>-->
+<!--		</dependency>-->
+
+		<dependency>
+			<groupId>ink.rayin</groupId>
+			<artifactId>rayin-htmladapter-spring-boot-starter</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>gui.ava</groupId>
+			<artifactId>html2image</artifactId>
+			<version>2.2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/lib/html2image-2.2.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.reflections</groupId>-->
+<!--			<artifactId>reflections</artifactId>-->
+<!--			<version>0.9.9-RC1</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.w3c.dom</groupId>-->
+<!--			<artifactId>svg</artifactId>-->
+<!--			<version>1.1.0-v201011041433</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>xml-apis</groupId>-->
+<!--			<artifactId>xml-apis</artifactId>-->
+<!--			<version>1.4.01</version>-->
+<!--		</dependency>-->
+
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>flying-saucer-core</artifactId>
+			<version>9.1.22</version>
+		</dependency>
+    </dependencies>
+<!--	<profiles>-->
+<!--		&lt;!&ndash;开发配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>local</id>-->
+<!--			<properties>-->
+<!--				<env>local</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+<!--			<activation>-->
+<!--				<activeByDefault>true</activeByDefault>-->
+<!--			</activation>-->
+<!--		</profile>-->
+<!--		&lt;!&ndash;开发配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>develop</id>-->
+<!--			<properties>-->
+<!--				<env>develop</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+
+<!--		</profile>-->
+<!--		&lt;!&ndash;系统测试配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>test</id>-->
+<!--			<properties>-->
+<!--				<env>test</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+<!--		</profile>-->
+<!--		&lt;!&ndash;性能测试配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>performtest</id>-->
+<!--			<properties>-->
+<!--				<env>performtest</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+
+<!--		</profile>-->
+<!--		&lt;!&ndash;验收测试配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>acceptable</id>-->
+<!--			<properties>-->
+<!--				<env>acceptable</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+
+<!--		</profile>-->
+<!--		&lt;!&ndash;生产配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>product</id>-->
+<!--			<properties>-->
+<!--				<env>product</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+
+<!--		</profile>-->
+<!--		&lt;!&ndash;生产灰度配置&ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>productgray</id>-->
+<!--			<properties>-->
+<!--				<env>productgray</env>-->
+<!--				<dict_except>none</dict_except>-->
+<!--			</properties>-->
+
+<!--		</profile>-->
+<!--	</profiles>-->
+	<build>
+		<finalName>rayin-design-server</finalName>
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>profile/*.*</exclude>
+				</excludes>
+			</resource>
+<!--			<resource>-->
+<!--				<directory>../rayin-app-ui/dist/</directory>-->
+<!--				<targetPath>static/</targetPath>-->
+<!--			</resource>-->
+		</resources>
+<!--		<filters>-->
+<!--			<filter>${basedir}/src/main/resources/profile/${env}.properties</filter>-->
+<!--		</filters>-->
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.2.6.RELEASE</version>
+				<configuration>
+					<mainClass>ink.rayin.app.web.RayinAppServerApplication</mainClass>
+					<layout>ZIP</layout>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

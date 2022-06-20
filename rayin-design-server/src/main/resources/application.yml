@@ -1,0 +1,36 @@
+server:
+  port: 8961
+  servlet:
+    application-display-name: rayin-design-server
+    context-path: /api
+#spring:
+#  messages:
+#    basename: i18n/Messages,i18n/PagesConfig
+
+spring:
+#      thymeleaf:
+#        cache: false
+#        encoding: UTF-8
+#        mode: LEGACYHTML5
+  application:
+    #应用名称
+    name: rayin-app-server
+  profiles:
+    active: local
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  jmx:
+    default-domain: rayin-users
+#logging:
+#  file:   rayin-app-server.log # 日志文件,绝对路径或相对路径
+#  path:   ${maven.logging.rootPath} # 保存日志文件目录路径
+#  config: classpath:logback-custom.xml # 日志配置文件,Spring Boot默认使用classpath路径下的日志配置文件,如:logback.xml
+#  level:  # 日志级别
+#    org.springframework.web: DEBUG # 配置spring web日志级别
+
+mybatis:
+  mapper-Locations: classpath*:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
