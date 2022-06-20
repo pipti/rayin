@@ -123,15 +123,6 @@ public class PdfBoxSignature implements Signature {
      * @param inputFileIs 输入pdf文件流
      * @param signedFileOs 签章后文件流
      * @param signatureProperty 签章属性
-     * @throws IOException
-     * @throws CertificateException
-     * @throws KeyStoreException
-     * @throws NoSuchAlgorithmException
-     * @throws UnrecoverableKeyException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public void singleSign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
@@ -158,20 +149,11 @@ public class PdfBoxSignature implements Signature {
 
     /**
      * 单个签章类型
-     * @param password
-     * @param keyStorePath
-     * @param inputFilePath
-     * @param signedFilePath
-     * @param signatureProperty
-     * @throws IOException
-     * @throws CertificateException
-     * @throws KeyStoreException
-     * @throws NoSuchAlgorithmException
-     * @throws UnrecoverableKeyException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     * @param password 密码
+     * @param keyStorePath 秘钥路径
+     * @param inputFilePath 待签文件路径
+     * @param signedFilePath 签名后保存路径
+     * @param signatureProperty 签章属性
      */
     @Override
     public void singleSign(String password, String keyStorePath, String inputFilePath, String signedFilePath,

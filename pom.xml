@@ -16,9 +16,10 @@
         <module>rayin-htmladapter-base</module>
         <module>rayin-htmladapter-openhtmltopdf</module>
         <module>rayin-htmladapter-spring-boot-starter</module>
-                <module>rayin-springboot-server</module>
-                <module>rayin-test</module>
-                <module>rayin-template-samples</module>
+        <module>rayin-springboot-sample</module>
+        <module>rayin-test</module>
+        <module>rayin-template-samples</module>
+        <module>rayin-design-server</module>
     </modules>
 
     <properties>
@@ -37,7 +38,7 @@
         <spring.boot.mybatis>1.3.2</spring.boot.mybatis>
         <oracle.driver.version>11.2.0.4.0</oracle.driver.version>
         <alibaba.druid.version>1.1.21</alibaba.druid.version>
-        <alibaba.fastjson.version>1.2.79</alibaba.fastjson.version>
+        <alibaba.fastjson.version>1.2.83</alibaba.fastjson.version>
         <cxf.version>3.1.4</cxf.version>
         <mysql-connector>5.1.46</mysql-connector>
         <skipTests>true</skipTests>

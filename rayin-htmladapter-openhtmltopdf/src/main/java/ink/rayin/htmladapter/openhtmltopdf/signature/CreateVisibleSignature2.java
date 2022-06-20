@@ -113,7 +113,7 @@ public class CreateVisibleSignature2 extends CreateSignatureBase
      * signature is kept and added in an extra step without using PDFBox methods. This is disabled
      * by default.
      *
-     * @param lateExternalSigning
+     * @param lateExternalSigning lateExternalSigning
      */
     public void setLateExternalSigning(boolean lateExternalSigning)
     {
@@ -127,7 +127,7 @@ public class CreateVisibleSignature2 extends CreateSignatureBase
      * @param signedFile The file to be signed.
      * @param humanRect rectangle from a human viewpoint (coordinates start at top left)
      * @param tsaUrl optional TSA url
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void signPDF(File inputFile, File signedFile, Rectangle2D humanRect, String tsaUrl) throws IOException
     {
@@ -142,7 +142,7 @@ public class CreateVisibleSignature2 extends CreateSignatureBase
      * @param humanRect rectangle from a human viewpoint (coordinates start at top left)
      * @param tsaUrl optional TSA url
      * @param signatureFieldName optional name of an existing (unsigned) signature field
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void signPDF(File inputFile, File signedFile, Rectangle2D humanRect, String tsaUrl, String signatureFieldName) throws IOException
     {
@@ -489,12 +489,12 @@ public class CreateVisibleSignature2 extends CreateSignatureBase
      * [2] document that will be signed
      * [3] image of visible signature
      *
-     * @param args
-     * @throws KeyStoreException
-     * @throws CertificateException
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws UnrecoverableKeyException
+     * @param args args
+     * @throws KeyStoreException KeyStoreException
+     * @throws CertificateException CertificateException
+     * @throws IOException IOException
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws UnrecoverableKeyException UnrecoverableKeyException
      */
     public static void main(String[] args) throws KeyStoreException, CertificateException,
             IOException, NoSuchAlgorithmException, UnrecoverableKeyException

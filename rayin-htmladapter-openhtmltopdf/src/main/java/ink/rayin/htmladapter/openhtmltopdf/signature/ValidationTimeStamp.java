@@ -49,8 +49,8 @@ public class ValidationTimeStamp
 
     /**
      * @param tsaUrl The url where TS-Request will be done.
-     * @throws NoSuchAlgorithmException
-     * @throws MalformedURLException
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws MalformedURLException MalformedURLException
      */
     public ValidationTimeStamp(String tsaUrl) throws NoSuchAlgorithmException, MalformedURLException
     {
@@ -66,7 +66,7 @@ public class ValidationTimeStamp
      * 
      * @param content InputStream of the content to sign
      * @return the byte[] of the timestamp token
-     * @throws IOException
+     * @throws IOException IOException
      */
     public byte[] getTimeStampToken(InputStream content) throws IOException
     {
@@ -78,7 +78,7 @@ public class ValidationTimeStamp
      *
      * @param signedData Generated CMS signed data
      * @return CMSSignedData Extended CMS signed data
-     * @throws IOException
+     * @throws IOException IOException
      */
     public CMSSignedData addSignedTimeStamp(CMSSignedData signedData)
             throws IOException

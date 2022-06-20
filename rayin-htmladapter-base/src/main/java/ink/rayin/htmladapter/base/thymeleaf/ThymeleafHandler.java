@@ -52,14 +52,15 @@ public class ThymeleafHandler {
     }
 
     /**
-     * 模板字符串
-     * @param htmlStr
-     * @return
+     * 构件字符串
+     * @param htmlStr html字符串
+     * @param jsonData json数据
+     * @return html字符串
      */
-    public String templateEngineProcessByString(String htmlStr, JSONObject var){
-        if(var != null){
+    public String templateEngineProcessByString(String htmlStr, JSONObject jsonData){
+        if(jsonData != null){
            // String jsonStr = var.toJSONString().replace("<","&lt;").replace(">","&gt;");
-            context.setVariables(gson.fromJson(var.toJSONString(), Map.class));
+            context.setVariables(gson.fromJson(jsonData.toJSONString(), Map.class));
         }
         String r = null;
         try{
@@ -80,11 +81,13 @@ public class ThymeleafHandler {
      * 	 4. http: and https:
      * 	 5. classpath*:
      * 	 6. C:/dir1/ and /Users/lcm
-     * @return
+     * @param jsonData json数据
+     * @return 解析后的字符串
+     * @throws IOException
      */
-    public String templateEngineProcessByPath(String filePath, JSONObject var) throws IOException {
-        if(var != null){
-            context.setVariables(JSON.parseObject(var.toJSONString(),Map.class));
+    public String templateEngineProcessByPath(String filePath, JSONObject jsonData) throws IOException {
+        if(jsonData != null){
+            context.setVariables(JSON.parseObject(jsonData.toJSONString(),Map.class));
         }
 
         String r = null;

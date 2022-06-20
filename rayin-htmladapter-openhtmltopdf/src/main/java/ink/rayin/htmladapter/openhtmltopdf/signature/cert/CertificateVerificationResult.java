@@ -24,7 +24,8 @@ import java.security.cert.PKIXCertPathBuilderResult;
 /**
  * Copied from Apache CXF 2.4.9, initial version:
  * https://svn.apache.org/repos/asf/cxf/tags/cxf-2.4.9/distribution/src/main/release/samples/sts_issue_operation/src/main/java/demo/sts/provider/cert/
- * 
+ *
+ * @author eric
  */
 public class CertificateVerificationResult
 {
@@ -35,9 +36,9 @@ public class CertificateVerificationResult
     /**
      * Constructs a certificate verification result for valid certificate by
      * given certification path.
+     * @param result result
      */
-    public CertificateVerificationResult(PKIXCertPathBuilderResult result)
-    {
+    public CertificateVerificationResult(PKIXCertPathBuilderResult result) {
         this.valid = true;
         this.result = result;
     }
