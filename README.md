@@ -91,7 +91,8 @@ https://github.com/googlefonts/noto-cjk
 5. rayin-test                            测试样例
 6. rayin-springboot-serer                springboot-server 样例
 7. rayin-template-samples                模板样例
-
+8. rayin-design-server                   设计界面后台
+9. rayin-design-vue                      设计界面前端
 
 ## 列举一些实现功能与特性
 
