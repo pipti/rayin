@@ -72,13 +72,13 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   name: 'MyInfo',
   components: {
   },
-  data () {
+  data() {
     return {
       userForm: {
         phone: '',
@@ -91,40 +91,47 @@ export default {
         profession: '',
         address: '',
         company: '',
-        job: ''
-      }
-    }
+        job: '',
+      },
+    };
   },
   methods: {
-    saveInfo () {
-      let userId = localStorage.getItem('userId')
-      axios.post('/api/users/saveInfo',
-        {'userId': userId, 'phone': this.userForm.phone, 'realName': this.userForm.realName, 'sex': this.userForm.sex, 'birthday': this.userForm.birthday, 'mail': this.userForm.mail, 'weChat': this.userForm.weChat, 'profession': this.userForm.profession, 'address': this.userForm.address, 'company': this.userForm.company, 'job': this.userForm.job})
-        .then(function (response) {
+    saveInfo() {
+      const userId = localStorage.getItem('userId');
+      axios.post(
+        '/api/users/saveInfo',
+        { userId, phone: this.userForm.phone, realName: this.userForm.realName,
+          sex: this.userForm.sex, birthday: this.userForm.birthday, mail: this.userForm.mail,
+          weChat: this.userForm.weChat, profession: this.userForm.profession, address: this.userForm.address,
+          company: this.userForm.company, job: this.userForm.job },
+      )
+        .then(() => {
         })
-        .catch(function (error) {
-          alert(error)
-        })
-    }
+        .catch((error) => {
+          alert(error);
+        });
+    },
   },
-  mounted () {
-    let userId = localStorage.getItem('userId')
-    axios.post('/api/users/userDetails',
-      {'userId': userId})
+  mounted() {
+    const userId = localStorage.getItem('userId');
+    axios.post(
+      '/api/users/userDetails',
+      { userId },
+    )
       .then((response) => {
-        console.log(response.data)
-        this.userForm = response.data
+        console.log(response.data);
+        this.userForm = response.data;
         if (response.data.sex != null && response.data.sex !== '') {
-          this.userForm.sex = Number.parseInt(response.data.sex)
+          this.userForm.sex = Number.parseInt(response.data.sex);
         }
       })
-      .catch(function (error) {
-        alert(error)
-      })
+      .catch((error) => {
+        alert(error);
+      });
   },
-  created () {
-  }
-}
+  created() {
+  },
+};
 </script>
 <style scoped>
   .info-title {

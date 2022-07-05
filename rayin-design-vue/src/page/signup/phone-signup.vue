@@ -4,7 +4,7 @@
     <el-row style="height: 20px">
       <el-col :span="12" >
         <div>
-          <el-image src="/static/images/logo5.png" style="width:210px"/>
+          <el-image :src="require('@/assets/images/logo5.png')" style="width:210px"/>
         </div>
       </el-col>
       <el-col :span="12" >
@@ -17,7 +17,7 @@
     <el-main>
       <el-row>
         <el-col :span="15">
-          <el-image src="/static/images/login_left.png" style="width:80%;margin-top:60px"></el-image>
+          <el-image :src="require('@/assets/images/login_left.png')" style="width:80%;margin-top:60px"></el-image>
         </el-col>
         <el-col :span="9">
           <el-card style="width:450px;margin-top:110px;height:400px;border-radius: 0px;text-align: center">

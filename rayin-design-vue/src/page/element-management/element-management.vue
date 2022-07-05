@@ -2,12 +2,15 @@
   <div >
     <el-row>
       <el-col :span="4">
-        <el-button type="primary" plain size="medium" style="border-radius: 0px" @click="elAdd"><i class="el-icon-document-add"></i>构件新增</el-button>
-        <!--<el-button type="primary" plain size="medium" style="border-radius: 0px"><i class="el-icon-upload2"></i>构件上载</el-button>-->
-        <!--<el-button plain size="medium" style="border-radius: 0px"><i class="el-icon-delete"></i>构件删除</el-button>-->
+        <el-button type="primary" plain size="medium" style="border-radius: 0px" @click="elAdd">
+          <i class="el-icon-document-add"></i>{{$i18n.t('elementDesign.new')}}</el-button>
+        <!--<el-button type="primary" plain size="medium" style="border-radius: 0px">
+        <i class="el-icon-upload2"></i>构件上载</el-button>-->
+        <!--<el-button plain size="medium" style="border-radius: 0px">
+        <i class="el-icon-delete"></i>构件删除</el-button>-->
         <el-tooltip class="item" effect="dark" placement="right-start" style="border-radius: 0px">
           <div slot="content">用于管理构件，构件是模板的基础组成部分，通过html进行样式的设计和数据绑定</div>
-          <el-button size="medium"><i class="el-icon-help"></i>提示</el-button>
+          <el-button size="medium"><i class="el-icon-help"></i>{{$i18n.t('tips')}}</el-button>
         </el-tooltip>
 
       </el-col>
@@ -20,11 +23,13 @@
       <el-col :span="4">
         <el-radio-group v-model="modelSwitch" size="mini">
           <el-radio-button label="normalData"><i class="el-icon-set-up"></i></el-radio-button>
-          <el-radio-button label="recycleData"><i class="el-icon-delete"></i>回收站</el-radio-button>
+          <el-radio-button label="recycleData"><i class="el-icon-delete"></i>{{ $i18n.t('recycle') }}</el-radio-button>
         </el-radio-group>
       </el-col>
       <el-col :span="12">
-        <el-input placeholder="请输入搜索内容" v-model="searchKey" class="input-with-select" @keyup.enter.native="elSearchClick">
+        <el-input :placeholder="$i18n.t('elementDesign.placeholder.search')"
+                  v-model="searchKey" class="input-with-select"
+                  @keyup.enter.native="elSearchClick">
           <el-button slot="append" icon="el-icon-search" @click="elSearchClick"></el-button>
         </el-input>
       </el-col>
@@ -32,9 +37,11 @@
     <el-row>
 
       <el-row style="margin-top:30px" v-if="viewSwitch==='thumViewData'">
-        <el-col :xs="11" :sm="5" :md="5" :lg="3" :xl="2" v-for="(o,index) in elData" :key="o.elementId" :offset="2" style="margin-top: 10px">
+        <el-col :xs="11" :sm="5" :md="5" :lg="3" :xl="2" v-for="(o,index) in elData"
+                :key="o.elementId" :offset="2" style="margin-top: 10px">
           <el-card :body-style="{ padding: '0px' }" shadow="hover" style="width:230px;height:280px">
-            <div style="width:100%;text-align: center;cursor:pointer;margin-top: 10px;height:200px;overflow-y: auto" @click="elViewerClick(o)">
+            <div style="width:100%;text-align: center;cursor:pointer;margin-top: 10px;height:200px;overflow-y: auto"
+                 @click="elViewerClick(o)">
               <!--<html-capture :htmlCode="o.content" style="width:100%"></html-capture>-->
               <img style="width:100%" :src="o.elementThum" />
             </div>
@@ -43,7 +50,8 @@
                 <div v-if="o.name !== null">{{ o.name.substring(0,13) }}
                   <span v-if="o.name.length > 13">...</span>
                 </div>
-                <!--<div @click="orgSetViewClick(o)" style="float:right"><i class="el-icon-setting" style="font-size: 22px;color: white"></i></div>-->
+                <!--<div @click="orgSetViewClick(o)" style="float:right">
+                <i class="el-icon-setting" style="font-size: 22px;color: white"></i></div>-->
                 <div style="float:right">
                   <template v-if="dataModelSwitch==='normalData'">
                     <el-popover
@@ -51,15 +59,23 @@
                       width="30"
                       trigger="hover">
                       <div>
-                        <el-button @click="elEditorClick(o)" type="text" size="small">编辑</el-button><br>
-                        <el-button @click="elVersionClick(o)" type="text" size="small">版本记录</el-button><br>
-                        <el-button @click="elTlRelsViewerClick(o,1)" type="text" size="small">关联的模板</el-button><br>
-                        <el-button @click="elTlSyncLogViewerClick(o,1)" type="text" size="small">同步记录</el-button><br>
-                        <el-button @click="elCollClick(index, o)" type="text" size="small">收藏</el-button><br>
-                        <el-button @click="elVersionClick(o)" type="text" size="small" disabled>共享至其他项目</el-button><br>
-                        <el-button @click="elLogicalDelClick(index, o)" type="text" size="small">删除</el-button>
+                        <el-button @click="elEditorClick(o)" type="text" size="small">
+                          {{$i18n.t('edit')}}</el-button><br>
+                        <el-button @click="elVersionClick(o)" type="text" size="small">
+                          {{$i18n.t('versionHistory')}}</el-button><br>
+                        <el-button @click="elTlRelsViewerClick(o,1)" type="text" size="small">
+                          {{ $i18n.t('elementDesign.TemplateRelationship') }}</el-button><br>
+                        <el-button @click="elTlSyncLogViewerClick(o,1)" type="text" size="small">
+                          {{ $i18n.t('elementDesign.simultaneousRecording') }}</el-button><br>
+                        <el-button @click="elCollClick(index, o)" type="text" size="small">
+                          {{ $i18n.t('elementDesign.collect') }}</el-button><br>
+<!--                        <el-button @click="elVersionClick(o)" type="text" size="small" disabled>-->
+<!--                          共享至其他项目</el-button><br>-->
+                        <el-button @click="elLogicalDelClick(index, o)" type="text" size="small">
+                          {{$i18n.t('del')}}</el-button>
                       </div>
-                      <el-button type="text" slot="reference" class="el-icon-setting" style="color: #ffffff;font-size:20px"></el-button>
+                      <el-button type="text" slot="reference" class="el-icon-setting"
+                                 style="color: #ffffff;font-size:20px"></el-button>
                       </el-popover>
                     </template>
 
@@ -73,7 +89,8 @@
                       <el-button @click="elResumeClick(index, o)" type="text" size="small">恢复</el-button><br>
                       <el-button @click="elDelClick(index, o)" type="text" size="small">彻底删除</el-button>
                       </div>
-                      <el-button type="text" slot="reference" class="el-icon-setting" style="color: #ffffff;font-size:20px"></el-button>
+                      <el-button type="text" slot="reference" class="el-icon-setting"
+                                 style="color: #ffffff;font-size:20px"></el-button>
                     </el-popover>
 
                   </template>
@@ -92,8 +109,10 @@
                   <!--</div>-->
                 <!--</el-col>-->
                 <!--<el-col :span="1" >-->
-                  <!--&lt;!&ndash;<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right"><i class="el-icon-setting" style="font-size: 25px;color: #909399"></i></div>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right"><i class="el-icon-setting" style="font-size: 25px;color: #909399"></i></div>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right">
+                  <i class="el-icon-setting" style="font-size: 25px;color: #909399"></i></div>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right">
+                  <i class="el-icon-setting" style="font-size: 25px;color: #909399"></i></div>&ndash;&gt;-->
                 <!--</el-col>-->
               <!--</el-row>-->
               <!--<el-row>-->
@@ -104,7 +123,8 @@
                   <!--<div @click="orgMemberSetClick(o)" v-if="o.owner===true" style="float:right;margin-left:5px">-->
                     <!--<i class="el-icon-user" style="font-size: 22px;color: #909399"></i>-->
                   <!--</div>-->
-                  <!--<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right"><i class="el-icon-setting" style="font-size: 22px;color: #909399"></i></div>-->
+                  <!--<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right">
+                  <i class="el-icon-setting" style="font-size: 22px;color: #909399"></i></div>-->
                 <!--</el-col>-->
               <!--</el-row>-->
             <!--</div>-->
@@ -121,8 +141,10 @@
               <!--</el-card>-->
               <!--&lt;!&ndash;<div style="margin-top: 0px;text-align: right">&ndash;&gt;-->
                 <!--&lt;!&ndash;<div class="bottom clearfix">&ndash;&gt;-->
-                  <!--&lt;!&ndash;<el-button type="text" class="button" size="small" @click="elFavoritesDel(index,el)">删除</el-button>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<el-button type="text" class="button" size="small" @click="elLoad(el)">载入构件</el-button>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<el-button type="text" class="button" size="small"
+                  @click="elFavoritesDel(index,el)">删除</el-button>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<el-button type="text" class="button" size="small"
+                  @click="elLoad(el)">载入构件</el-button>&ndash;&gt;-->
                 <!--&lt;!&ndash;</div>&ndash;&gt;-->
               <!--&lt;!&ndash;</div>&ndash;&gt;-->
             <!--</el-col>-->
@@ -223,8 +245,8 @@
             <template slot-scope="scope">
               <el-button @click="elViewerClick(scope.row)" type="text" size="small" >查看</el-button>
               <el-button @click="elEditorClick(scope.row)" type="text" size="small">编辑</el-button>
-
-              <!--<el-button @click="elSyncQueryClick(scope.$index, scope.row)" type="text" size="small" disabled>更多</el-button>-->
+              <!--<el-button @click="elSyncQueryClick(scope.$index, scope.row)" type="text" size="small" disabled>
+              更多</el-button>-->
               <el-popover
                 placement="bottom"
                 width="430"
@@ -505,15 +527,13 @@
 <script>
 // eslint-disable-next-line
 import HtmlPanel from '@/components/html-panel'
-import axios from 'axios'
-import HtmlCapture from '@/components/html-capture'
+import axios from 'axios';
 export default {
   name: 'ElementManagement',
   components: {
     HtmlPanel,
-    HtmlCapture
   },
-  data () {
+  data() {
     return {
       modelSwitch: 'normalData',
       viewSwitch: 'thumViewData',
@@ -527,7 +547,7 @@ export default {
         name: '无',
         memo: '无版本历史记录',
         elementVersion: '无',
-        createTimeStr: ''
+        createTimeStr: '',
       }],
       drawerVersion: false,
       drawerElViewer: false,
@@ -543,218 +563,238 @@ export default {
       elTlRelsCurrentPage: 1,
       drawerElTlRelsViewer: false,
       elTlSyncLogDataTotal: 1,
-      elTlSyncLogDataCurrentPage: 1
+      elTlSyncLogDataCurrentPage: 1,
 
-    }
+    };
   },
   methods: {
-    elTemplateRelationQuery (row, val) {
-      axios.post(this.GLOBAL.webappApiConfig.ELementManagement.UserElementTemplateRelations.url + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize,
+    elTemplateRelationQuery(row, val) {
+      axios.post(
+        `${this.GLOBAL.webappApiConfig.ELementManagement.UserElementTemplateRelations.url}?pageCurrent=${val}&pageSize=${this.$store.state.pageSize}`,
         row,
-        {})
-        .then(res => {
-          this.elTlRelsData = res.data.content.records
-          this.elTlRelsDataTotal = res.data.content.total
-          this.elTlRelsCurrentPage = res.data.content.current
-        })
-        .catch(function (error) {
-          console.log(error)
-          // alert(error)
-        })
-    },
-    elElTlSyncLogQuery (row, val) {
-      axios.get(this.GLOBAL.webappApiConfig.ELementManagement.UserElementSyncElTlLogQuery.url + '/' + row.elementId + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize,
         {},
-        {})
-        .then(res => {
-          this.elTlSyncLogData = res.data.content.records
-          this.elTlSyncLogDataTotal = res.data.content.total
-          this.elTlSyncLogDataCurrentPage = res.data.content.current
+      )
+        .then((res) => {
+          this.elTlRelsData = res.data.content.records;
+          this.elTlRelsDataTotal = res.data.content.total;
+          this.elTlRelsCurrentPage = res.data.content.current;
         })
-        .catch(function (error) {
-          console.log(error)
+        .catch((error) => {
+          console.log(error);
           // alert(error)
-        })
+        });
     },
-    elAdd (key, keyPath) {
-      this.$router.push({name: 'ElementDesign', params: {}})
-    },
-    elVersionClick (row) {
-      this.currentSelectRow = row
-      axios.get(this.GLOBAL.webappApiConfig.ELementManagement.UserElementVersions.url + '/' + row.elementId + '?pageCurrent=1' + '&pageSize=' + this.$store.state.pageSize,
+    elElTlSyncLogQuery(row, val) {
+      axios.get(
+        `${this.GLOBAL.webappApiConfig.ELementManagement.UserElementSyncElTlLogQuery.url}/${row.elementId}?pageCurrent=${val}&pageSize=${this.$store.state.pageSize}`,
         {},
-        {})
-        .then(res => {
+        {},
+      )
+        .then((res) => {
+          this.elTlSyncLogData = res.data.content.records;
+          this.elTlSyncLogDataTotal = res.data.content.total;
+          this.elTlSyncLogDataCurrentPage = res.data.content.current;
+        })
+        .catch((error) => {
+          console.log(error);
+          // alert(error)
+        });
+    },
+    elAdd() {
+      this.$router.push({ name: 'ElementDesign', params: {} });
+    },
+    elVersionClick(row) {
+      this.currentSelectRow = row;
+      axios.get(
+        `${this.GLOBAL.webappApiConfig.ELementManagement.UserElementVersions.url}/${row.elementId}?pageCurrent=1` + `&pageSize=${this.$store.state.pageSize}`,
+        {},
+        {},
+      )
+        .then((res) => {
           this.activities = [{
             name: row.name,
             memo: '无版本历史记录',
             elementVersion: '无',
-            createTimeStr: ''
-          }]
+            createTimeStr: '',
+          }];
           if (res.data.content.records.length !== 0) {
-            this.activities = res.data.content.records
-            this.elVersionDataTotal = res.data.content.total
-            this.elVersionCurrentPage = res.data.content.current
+            this.activities = res.data.content.records;
+            this.elVersionDataTotal = res.data.content.total;
+            this.elVersionCurrentPage = res.data.content.current;
           }
           // console.log(res)
         })
-        .catch(function (error) {
-          console.log(error)
+        .catch((error) => {
+          console.log(error);
           // alert(error)
-        })
+        });
 
-      this.drawerVersion = true
+      this.drawerVersion = true;
     },
-    elEditorClick (row, keyPath) {
-      console.log(row)
-      this.$router.push({name: 'ElementDesign', params: {element: row}})
+    elEditorClick(row) {
+      console.log(row);
+      this.$router.push({ name: 'ElementDesign', params: { element: row } });
     },
-    elViewerClick (row) {
+    elViewerClick(row) {
       // console.log(row.content)
-      this.elCode = row.content
-      this.drawerElViewer = true
+      this.elCode = row.content;
+      this.drawerElViewer = true;
     },
-    elTlRelsViewerClick (row, val) {
-      this.currentSelectRow = row
-      this.elTemplateRelationQuery(row, val)
-      this.drawerElTlRelsViewer = true
+    elTlRelsViewerClick(row, val) {
+      this.currentSelectRow = row;
+      this.elTemplateRelationQuery(row, val);
+      this.drawerElTlRelsViewer = true;
     },
-    elTlSyncLogViewerClick (row, val) {
-      this.currentSelectRow = row
-      this.elElTlSyncLogQuery(row, val)
-      this.drawerElTlSyncLogViewer = true
+    elTlSyncLogViewerClick(row, val) {
+      this.currentSelectRow = row;
+      this.elElTlSyncLogQuery(row, val);
+      this.drawerElTlSyncLogViewer = true;
     },
-    elLogicalDelClick (index, row) {
+    elLogicalDelClick(index, row) {
       // 删除构件
       this.$confirm('是否确定删除该构件至回收站, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         // 删除构件
-        axios.post(this.GLOBAL.webappApiConfig.ELementManagement.UserElementLogicalDel.url,
+        axios.post(
+          this.GLOBAL.webappApiConfig.ELementManagement.UserElementLogicalDel.url,
           row,
-          {})
-          .then(res => {
-            this.elData.splice(index, 1)
+          {},
+        )
+          .then(() => {
+            this.elData.splice(index, 1);
           })
-          .catch(function (error) {
-            console.log(error)
-          })
-      })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
     },
-    elDelClick (index, row) {
+    elDelClick(index, row) {
     // 删除构件
       this.$confirm('此操作将永久删除该构件, 有关该构件的所有版本都将被删除，是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
-        axios.post(this.GLOBAL.webappApiConfig.ELementManagement.UserElementDel.url,
+        axios.post(
+          this.GLOBAL.webappApiConfig.ELementManagement.UserElementDel.url,
           row,
-          {})
-          .then(res => {
-            this.elData.splice(index, 1)
+          {},
+        )
+          .then(() => {
+            this.elData.splice(index, 1);
           })
-          .catch(function (error) {
-            console.log(error)
-          })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+          .catch((error) => {
+            console.log(error);
+          });
       })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          });
+        });
     },
-    elResumeClick (index, row) {
+    elResumeClick(index, row) {
     // 删除构件
-      axios.post(this.GLOBAL.webappApiConfig.ELementManagement.UserElementResume.url,
+      axios.post(
+        this.GLOBAL.webappApiConfig.ELementManagement.UserElementResume.url,
         row,
-        {})
-        .then(res => {
-          this.elData.splice(index, 1)
+        {},
+      )
+        .then(() => {
+          this.elData.splice(index, 1);
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    htmlLoadCompleted (val) {
+    htmlLoadCompleted() {
       // console.log('load complete:' + val)
     },
-    handleCurrentChange (val) {
-      axios.get(this.GLOBAL.webappApiConfig.ELementManagement.UserElementQuery.url + (this.searchKey === '' ? '' : '/' + this.searchKey) + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize + '&delFlag=' + this.delFlag,
+    handleCurrentChange(val) {
+      axios.get(
+        `${this.GLOBAL.webappApiConfig.ELementManagement.UserElementQuery.url
+        + (this.searchKey === '' ? '' : `/${this.searchKey}`)}?pageCurrent=${val}&pageSize=${this.$store.state.pageSize}&delFlag=${this.delFlag}`,
         {},
-        {})
-        .then(res => {
-          this.elData = res.data.content.records
-          this.elDataTotal = res.data.content.total
-          this.elCurrentPage = res.data.content.current
+        {},
+      )
+        .then((res) => {
+          this.elData = res.data.content.records;
+          this.elDataTotal = res.data.content.total;
+          this.elCurrentPage = res.data.content.current;
           // console.log(res)
           // 数据渲染完成后再渲染组件样式，否则样式会错乱
-          this.dataModelSwitch = this.modelSwitch
+          this.dataModelSwitch = this.modelSwitch;
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    elTlRelsHandleCurrentChange (val) {
-      this.elTemplateRelationQuery(this.currentSelectRow, val)
+    elTlRelsHandleCurrentChange(val) {
+      this.elTemplateRelationQuery(this.currentSelectRow, val);
     },
-    elTlSyncLogDataHandleCurrentChange (val) {
-      this.elElTlSyncLogQuery(this.currentSelectRow, val)
+    elTlSyncLogDataHandleCurrentChange(val) {
+      this.elElTlSyncLogQuery(this.currentSelectRow, val);
     },
-    elSearchClick () {
-      this.handleCurrentChange(1)
+    elSearchClick() {
+      this.handleCurrentChange(1);
     },
-    handleVersionCurrentChange () {
-      this.elVersionClick(this.currentSelectRow)
+    handleVersionCurrentChange() {
+      this.elVersionClick(this.currentSelectRow);
     },
-    syncElTl (index, row) {
+    syncElTl(index, row) {
       // 同步构件至模板
-      let tplElPar = this.currentSelectRow
-      tplElPar.templateId = row.templateId
-      tplElPar.templateVersion = row.templateVersion
-      axios.post(this.GLOBAL.webappApiConfig.ELementManagement.UserElementSyncElTl.url,
+      const tplElPar = this.currentSelectRow;
+      tplElPar.templateId = row.templateId;
+      tplElPar.templateVersion = row.templateVersion;
+      axios.post(
+        this.GLOBAL.webappApiConfig.ELementManagement.UserElementSyncElTl.url,
         tplElPar,
-        {})
-        .then(res => {
+        {},
+      )
+        .then(() => {
 
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    elSyncQueryClick () {
+    elSyncQueryClick() {
     // 同步构件日志查询
 
     },
-    elCollClick (index, row) {
+    elCollClick(index, row) {
       // 收藏构件
-      axios.post(this.GLOBAL.webappApiConfig.ELementManagement.UserElementColle.url,
+      axios.post(
+        this.GLOBAL.webappApiConfig.ELementManagement.UserElementColle.url,
         row,
-        {})
-        .then(res => {
+        {},
+      )
+        .then(() => {
 
         })
-        .catch(function (error) {
-          console.log(error)
-        })
-    }
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
-  mounted () {
-    this.elSearchClick()
+  mounted() {
+    this.elSearchClick();
   },
   watch: {
-    modelSwitch (val) {
+    modelSwitch(val) {
       if (val === 'normalData') {
-        this.delFlag = false
+        this.delFlag = false;
       } else {
-        this.delFlag = true
+        this.delFlag = true;
       }
-      this.handleCurrentChange(1)
-    }
-  }
-}
+      this.handleCurrentChange(1);
+    },
+  },
+};
 </script>
 <style>
   .elViewerBox{

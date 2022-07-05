@@ -5,48 +5,48 @@
 </template>
 
 <script>
-import axios from 'axios'
-import VueMarkdown from 'vue-markdown'
+import axios from 'axios';
+import VueMarkdown from 'vue-markdown';
 // import Highlight from 'vue-markdown-highlight'
 // import 'highlight.js/styles/default.css'
-import hljs from 'highlight.js'
-import 'highlight.js/styles/atom-one-dark.css'
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css';
 
 const highlightCode = () => {
-  const preEl = document.querySelectorAll('pre')
+  const preEl = document.querySelectorAll('pre');
   //  console.log('获取')
   //  console.log(preEl)
   preEl.forEach((el) => {
-    hljs.initHighlightingOnLoad(el)
-  })
-}
+    hljs.initHighlightingOnLoad(el);
+  });
+};
 
 export default {
   name: 'MarkdownView',
   components: {
-    VueMarkdown
+    VueMarkdown,
   },
-  data () {
+  data() {
     return {
-      htmlMD: ''
-    }
+      htmlMD: '',
+    };
   },
   methods: {
   },
-  created () {
+  created() {
 
   },
-  mounted () {
-    const url = `/static/help/README.md`
+  mounted() {
+    const url = './help/README.md';
     axios.get(url).then((response) => {
-      this.htmlMD = response.data
-      highlightCode()
-    })
+      this.htmlMD = response.data;
+      highlightCode();
+    });
   },
-  update () {
-    highlightCode()
-  }
-}
+  update() {
+    highlightCode();
+  },
+};
 </script>
 <style>
   .main {
@@ -194,7 +194,8 @@ export default {
     background-color: #333;
     color: rgb(144, 144, 144);
     width: 300px;
-    font-family: 'Open Sans', 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    font-family: 'Open Sans', 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode',
+    'Lucida Sans', Geneva, Verdana, sans-serif;
   }
 
   .lateral-menu label {

@@ -4,68 +4,69 @@
 </template>
 
 <script>
-export default{
+export default {
   name: 'HtmlPanel',
   // 使用时请使用 :url.sync=""传值
   props: {
     htmlUrl: {
-      required: false
+      required: false,
     },
     htmlCode: {
-      required: false
-    }
+      required: false,
+    },
   },
-  data () {
+  data() {
     return {
       loading: false,
       html: '',
-      loadCompletedFlag: false
-    }
+      loadCompletedFlag: false,
+    };
   },
-  mounted () {
+  mounted() {
     // this.load(this.url,this.code)
   },
   methods: {
-    loadUrl (url) {
+    loadUrl(url) {
       if (url && url.length > 0) {
         // 加载中
-        this.loading = true
-        let param = {
-          accept: 'text/html, text/plain'
-        }
+        this.loading = true;
+        const param = {
+          accept: 'text/html, text/plain',
+        };
         this.$http.get(url, param).then((response) => {
-          this.loading = false
+          this.loading = false;
           // 处理HTML显示
-          this.htmlUrl = response.data
-          this.loadCompletedFlag = true
-          console.log('模板加载成功')
-        }).catch(() => {
-          this.loading = false
-          this.html = '加载失败'
+          this.htmlUrl = response.data;
+          this.loadCompletedFlag = true;
+          console.log('模板加载成功');
         })
+          .catch(() => {
+            this.loading = false;
+            this.html = '加载失败';
+          });
       }
     },
-    loadCode (code) {
-      this.html = code
-    }
+    loadCode(code) {
+      this.html = code;
+    },
   },
   watch: {
-    htmlUrl (value) {
-      this.$ref.htmlView.removeAttribute('srcdoc')
-      this.loadUrl(value)
+    htmlUrl(value) {
+      this.$ref.htmlView.removeAttribute('srcdoc');
+      this.loadUrl(value);
     },
-    htmlCode (value) {
+    htmlCode() {
       // console.log('code' + value)
       // this.loadCode(value)
-      this.loadCompletedFlag = true
+      this.loadCompletedFlag = true;
     },
-    loadCompletedFlag (val) {
+    loadCompletedFlag(val) {
       if (val === true) {
-        this.$emit('loadCompleted', this.loadCompletedFlag)
+        this.$emit('loadCompleted', this.loadCompletedFlag);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

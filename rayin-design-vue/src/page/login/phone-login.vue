@@ -4,12 +4,13 @@
     <el-row style="height: 20px">
       <el-col :span="12" >
         <div>
-          <el-image src="/static/images/logo5.png" style="width:210px"/>
+          <el-image :src="require('@/assets/images/logo5.png')" style="width:210px"/>
         </div>
       </el-col>
       <el-col :span="12" >
       <div style="width:100%;text-align: right;">
-        <el-link href="/" style="margin-top: 10px;margin-right: 10px;font-size: 15px;" route="/main/paramter-uncommchars">首页</el-link>
+        <el-link href="/" style="margin-top: 10px;margin-right: 10px;font-size: 15px;"
+                 route="/main/paramter-uncommchars">首页</el-link>
         </div>
         </el-col>
     </el-row>
@@ -17,7 +18,7 @@
     <el-main>
       <el-row>
         <el-col :span="15">
-          <el-image src="/static/images/login_left.png" style="width:80%;margin-top:60px"></el-image>
+          <el-image :src="require('@/assets/images/login_left.png')" style="width:80%;margin-top:60px"></el-image>
         </el-col>
         <el-col :span="9">
           <el-card style="width:450px;margin-top:110px;height:400px;border-radius: 0px;text-align: left">
@@ -32,7 +33,9 @@
                 <span v-show="!sendAuthCode" style="width:200px"> {{auth_time}} 秒之后重新发送验证码</span>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" icon="el-icon-user-solid" @click="login" style="width:80%" :loading="logining">登录</el-button>
+                <el-button type="primary" icon="el-icon-user-solid" @click="login" style="width:80%"
+                           :loading="logining">
+                  登录</el-button>
                 <hr>
                 <p>还没有账号？<span class="to" @click="tosignup">免费注册</span></p>
               </el-form-item>
@@ -51,7 +54,7 @@
 /* eslint-disable */
   import Cookies from 'js-cookie'
   import router from '../../router'
-  import {setToken, removeToken} from '@/util/auth'
+  import {setToken, removeToken} from '@/utils/auth'
   import axios from 'axios'
   export default {
     name: 'login',

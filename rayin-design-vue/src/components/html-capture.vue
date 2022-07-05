@@ -4,54 +4,52 @@
   <el-image
     :src="imgUrl"
     fit="scale-down" :preview-src-list="srcList"></el-image>
-    <!--<html-panel :url.sync="htmlUrl" id="htmlSrc" style="display:none" @loadCompleted="htmlLoadCompleted"></html-panel>-->
+    <!--<html-panel :url.sync="htmlUrl" id="htmlSrc" style="display:none"
+    @loadCompleted="htmlLoadCompleted"></html-panel>-->
 
 </template>
 
 <script>
-import html2canvas from 'html2canvas'
-import HtmlPanel from '@/components/html-panel'
+import html2canvas from 'html2canvas';
 
 export default {
   name: 'HtmlCapture',
   components: {
-    html2canvas,
-    HtmlPanel
   },
   props: {
     htmlUrl: String,
     htmlCode: String,
     width: String,
     height: String,
-    src: String
+    src: String,
   },
-  data () {
+  data() {
     return {
       imgUrl: '',
       srcList: [
 
-      ]
-    }
+      ],
+    };
   },
   methods: {
     // v 将Vue对象传递进方法
-    htmlToImg (v) {
+    htmlToImg(v) {
       // 通过url获取dom
       // 通过创建临时的iframe动态加载页面
-      var iframe = document.createElement('iframe')
-      iframe.ref = 'htmlLoadFrame'
+      const iframe = document.createElement('iframe');
+      iframe.ref = 'htmlLoadFrame';
       if (this.htmlUrl === '' || this.htmlUrl === null || this.htmlUrl === undefined) {
-        iframe.srcdoc = this.htmlCode
+        iframe.srcdoc = this.htmlCode;
       } else {
-        iframe.src = this.htmlUrl
+        iframe.src = this.htmlUrl;
       }
 
       // 隐藏
-      document.body.appendChild(iframe)
-      iframe.style.cssText = 'position: absolute; opacity:0; z-index: -9999'
+      document.body.appendChild(iframe);
+      iframe.style.cssText = 'position: absolute; opacity:0; z-index: -9999';
 
       // iframe加载完成后触发
-      iframe.onload = function (e) {
+      iframe.onload = function () {
         //        console.log(iframe.contentWindow.document.body.clientLeft)
         //        console.log(iframe.contentDocument.documentElement.clientWidth * 2)
         //        console.log(iframe.contentWindow.innerWidth * 2)
@@ -65,20 +63,20 @@ export default {
           taintTest: true, // 是否在渲染前测试图片
           scale: 4, // 放大倍数,4倍相对文字比较清晰
           windowWidth: iframe.contentDocument.documentElement.clientWidth * 2,
-          width: iframe.contentDocument.documentElement.clientWidth * 2
+          width: iframe.contentDocument.documentElement.clientWidth * 2,
         }).then((canvas) => {
-          v.imgUrl = canvas.toDataURL('image/png') // 转换为Base64
-          v.srcList.push(v.imgUrl) // 通过参数传递的Vue对象设置变量值，此处无法直接操作Vue this对象
+          v.imgUrl = canvas.toDataURL('image/png'); // 转换为Base64
+          v.srcList.push(v.imgUrl); // 通过参数传递的Vue对象设置变量值，此处无法直接操作Vue this对象
           // 截图完成后销毁
-          iframe.remove()
-        })
-      }
-    }
+          iframe.remove();
+        });
+      };
+    },
   },
-  mounted () {
-    this.htmlToImg(this)
-  }
-}
+  mounted() {
+    this.htmlToImg(this);
+  },
+};
 </script>
 
 <style>

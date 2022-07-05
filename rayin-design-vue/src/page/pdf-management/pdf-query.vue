@@ -23,8 +23,9 @@
 <!--      </el-col>-->
 <!--    </el-row>-->
     <el-row>
-      <el-col :span="4" v-for="(orgIndex, $index) in orgIndexes" :key="orgIndex.indexId" v-if="orgIndex.status && orgIndex.indexValue !== null">
-        <el-card  class="fork" size="small">
+      <el-col :span="4" v-for="(orgIndex, $index) in orgIndexes" :key="orgIndex.indexId"
+              >
+        <el-card  class="fork" size="small" v-if="orgIndex.status && orgIndex.indexValue !== null">
           <span>{{orgIndex.indexNameChn}}:{{orgIndex.indexValue}}</span>
           <i @click="selectIndex(orgIndex,$index)"></i>
         </el-card>
@@ -48,8 +49,10 @@
 <!--    </el-row>-->
     <el-row>
       <div>
-        <el-link type="primary" :underline="false" @click="fileBack(prefix.substring(0,prefix.length - 1).lastIndexOf('/') === -1?'':
-        prefix.substring(0, prefix.substring(0,prefix.length - 1).lastIndexOf('/') + 1))" v-if="prefix !== ''">返回</el-link>
+        <el-link type="primary" :underline="false"
+                 @click="fileBack(prefix.substring(0,prefix.length - 1).lastIndexOf('/') === -1?'':
+        prefix.substring(0, prefix.substring(0,prefix.length - 1).lastIndexOf('/') + 1))"
+                 v-if="prefix !== ''">返回</el-link>
         &nbsp;&nbsp;
         <span style="font-size: 10px">{{prefix}}</span>
       </div>
@@ -66,7 +69,9 @@
               label="文件名"
             >
               <template slot-scope="scope">
-                <el-link type="primary" :underline="false" @click="fileEnter(scope.row.name)" v-if="scope.row.fileType === 'doc'">{{scope.row.name}}</el-link>
+                <el-link type="primary" :underline="false"
+                         @click="fileEnter(scope.row.name)" v-if="scope.row.fileType === 'doc'">
+                  {{scope.row.name}}</el-link>
                 <span v-if="scope.row.fileType !== 'doc'">{{scope.row.name}}</span>
               </template>
             </el-table-column>
@@ -85,13 +90,20 @@
               label="操作"
               width="300">
               <template slot-scope="scope">
-                <el-button @click="fileViewClick(scope.row)" type="text" size="small" v-if="scope.row.fileType === 'doc'" disabled>查看</el-button>
-                <el-button @click="fileViewClick(scope.row)" type="text" size="small" v-if="scope.row.fileType !== 'doc'">查看</el-button>
-<!--                <el-button @click="handleClick(scope.row)" type="text" size="small" disabled>浏览记录</el-button>-->
-<!--                <el-button @click="downloadPdf(scope.row)" type="text" size="small" v-if="scope.row.fileType === 'doc'" disabled>下载</el-button>-->
-<!--                <el-button @click="downloadPdf(scope.row)" type="text" size="small" v-if="scope.row.fileType !== 'doc'">下载</el-button>-->
-                <el-button @click="copy(scope.row)" type="text" size="small" v-if="scope.row.fileType === 'doc'" disabled>分享</el-button>
-                <el-button @click="copy(scope.row)" type="text" size="small" v-if="scope.row.fileType !== 'doc'">分享</el-button>
+                <el-button @click="fileViewClick(scope.row)" type="text" size="small"
+                           v-if="scope.row.fileType === 'doc'" disabled>查看</el-button>
+                <el-button @click="fileViewClick(scope.row)" type="text" size="small"
+                           v-if="scope.row.fileType !== 'doc'">查看</el-button>
+<!--                <el-button @click="handleClick(scope.row)" type="text" size="small"
+disabled>浏览记录</el-button>-->
+<!--                <el-button @click="downloadPdf(scope.row)" type="text" size="small"
+v-if="scope.row.fileType === 'doc'" disabled>下载</el-button>-->
+<!--                <el-button @click="downloadPdf(scope.row)" type="text" size="small"
+v-if="scope.row.fileType !== 'doc'">下载</el-button>-->
+                <el-button @click="copy(scope.row)" type="text" size="small"
+                           v-if="scope.row.fileType === 'doc'" disabled>分享</el-button>
+                <el-button @click="copy(scope.row)" type="text" size="small"
+                           v-if="scope.row.fileType !== 'doc'">分享</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -123,7 +135,8 @@
           &nbsp;
         </el-col>
         <el-col :span="22">
-            <iframe id="pdfViewer" src="" width="100%" height="100%" :style="{width: '100%',height:'480%'}" frameborder="0" ></iframe>
+            <iframe id="pdfViewer" src="" width="100%" height="100%"
+                    :style="{width: '100%',height:'480%'}" frameborder="0" ></iframe>
         </el-col>
         <el-col :span="1">
           &nbsp;
@@ -147,10 +160,13 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="24" v-for="(orgIndex, $index) in orgIndexes" :key="orgIndex.indexId" :offset="1" v-if="orgIndex.value === null">
-          <el-card @click.native="selectIndex(orgIndex,$index)" :class="{tick:orgIndex.status}">
+        <el-col :span="24" v-for="(orgIndex, $index) in orgIndexes"
+                :key="orgIndex.indexId" :offset="1" >
+          <el-card v-if="orgIndex.value === null"
+                   @click.native="selectIndex(orgIndex,$index)" :class="{tick:orgIndex.status}">
               <span class="info-title">{{orgIndex.indexNameChn}}</span>
-              <el-input type="text" v-model="orgIndex.indexValue" @click.native.stop="" v-show="orgIndex.status"></el-input>
+              <el-input type="text" v-model="orgIndex.indexValue"
+                        @click.native.stop="" v-show="orgIndex.status"></el-input>
               <i></i>
           </el-card>
         </el-col>
@@ -236,11 +252,11 @@
 </template>
 
 <script>
-import axios from 'axios'
-import FileSaver from 'file-saver'
+import axios from 'axios';
+import FileSaver from 'file-saver';
 export default {
   name: 'PDFQuery',
-  data () {
+  data() {
     return {
       activeIndex: '1',
       activeIndex2: '1',
@@ -259,73 +275,78 @@ export default {
       pdfUrl: '',
       dialogVisible: false,
       prefix: '',
-      prePrefix: ''
-    }
+      prePrefix: '',
+    };
   },
   methods: {
-    fileEnter (fileName) {
-      console.log(fileName)
-      this.handleCurrentChange(1, this.prefix + fileName)
+    fileEnter(fileName) {
+      console.log(fileName);
+      this.handleCurrentChange(1, this.prefix + fileName);
     },
-    fileBack (fileName) {
-      console.log(fileName)
-      this.handleCurrentChange(1, fileName)
+    fileBack(fileName) {
+      console.log(fileName);
+      this.handleCurrentChange(1, fileName);
     },
-    handleClick (key, keyPath) {
-      console.log(key, keyPath)
+    handleClick(key, keyPath) {
+      console.log(key, keyPath);
     },
-    handleCurrentChange (val, prefix) {
-      let queryParams = {}
-      this.orgIndexes.forEach(function (item, index) {
+    handleCurrentChange(val, prefix) {
+      const queryParams = {};
+      this.orgIndexes.forEach((item) => {
         if (item.indexValue !== null && item.status) {
-          queryParams[item.indexName] = item.indexValue
+          queryParams[item.indexName] = item.indexValue;
         }
-      })
+      });
       // let paramsss = JSON.parse(this.searchParams)
       if (this.searchKey !== null) {
-        queryParams.dimParam = this.searchKey
+        queryParams.dimParam = this.searchKey;
       }
-      axios.post(this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationPDFQuery.url + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize + '&prefix=' + prefix,
-        {queryParams},
-        {})
-        .then(res => {
-          this.prePrefix = this.prefix
-          this.prefix = res.data.content.prefix
-          this.pdfData = res.data.content.fileList
-          this.pdfCurrentPage = res.data.content.currentPage
-          this.pdfDataTotal = res.data.content.pdfDataTotal
-          this.pdfPageCount = res.data.content.pdfPageCount
+      axios.post(
+        `${this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationPDFQuery.url}?pageCurrent=${val}&pageSize=${this.$store.state.pageSize}&prefix=${prefix}`,
+        { queryParams },
+        {},
+      )
+        .then((res) => {
+          this.prePrefix = this.prefix;
+          this.prefix = res.data.content.prefix;
+          this.pdfData = res.data.content.fileList;
+          this.pdfCurrentPage = res.data.content.currentPage;
+          this.pdfDataTotal = res.data.content.pdfDataTotal;
+          this.pdfPageCount = res.data.content.pdfPageCount;
           //          this.pdfDataTotal = res.data.content.total
           //          this.elCurrentPage = res.data.content.current
           // console.log(res)
           // 数据渲染完成后再渲染组件样式，否则样式会错乱
           //          this.dataModelSwitch = this.modelSwitch
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
       // this.pdfData = [{Key: 'fdafdafda', Size: '321321M'}]
     },
-    fileViewClick (row) {
-      console.log(row.id)
-      axios.post(this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationPDFView.url,
-        {id: row.id, url: row.presignedLink})
-        .then(res => {
-          sessionStorage.setItem('pdfData', res.data.content.pdfFile)
-          this.drawerPdfViewer = true
+    fileViewClick(row) {
+      console.log(row.id);
+      axios.post(
+        this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationPDFView.url,
+        { id: row.id, url: row.presignedLink },
+      )
+        .then((res) => {
+          sessionStorage.setItem('pdfData', res.data.content.pdfFile);
+          this.drawerPdfViewer = true;
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    drawerPdfViewerOpen () {
-      let pdfViewerFrame = document.getElementById('pdfViewer')
-      pdfViewerFrame.focus()
-      pdfViewerFrame.src = '/static/pdfjs/web/pdfviewer.html'
+    drawerPdfViewerOpen() {
+      const pdfViewerFrame = document.getElementById('pdfViewer');
+      pdfViewerFrame.focus();
+      pdfViewerFrame.src = './pdfjs/web/pdfviewer.html';
       // pdfViewerFrame.src = this.pdfContent
     },
-    orgQueryIndex (val) {
-      // axios.get(this.GLOBAL.webappApiConfig.OrganizationIndex.OrganizationIndexQuery.url + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize)
+    orgQueryIndex(val) {
+      // axios.get(this.GLOBAL.webappApiConfig.OrganizationIndex.OrganizationIndexQuery.url +
+      // '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize)
       //   .then(res => {
       //     this.orgIndexes = res.data.content.records
       //     // this.indexTotal = res.data.content.total
@@ -334,66 +355,66 @@ export default {
       //   // eslint-disable-next-line handle-callback-err
       //   .catch(function (error) {
       //   })
-      axios.get(this.GLOBAL.webappApiConfig.UserIndex.UserIndexQuery.url + '/' + localStorage.getItem('userId') + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize)
-        .then(res => {
-          this.orgIndexes = res.data.content.records
-          this.orgIndexes.unshift({indexName: 'index_no', indexNameChn: '业务流水号', indexValue: null, value: null})
+      axios.get(`${this.GLOBAL.webappApiConfig.UserIndex.UserIndexQuery.url}/${localStorage.getItem('userId')}?pageCurrent=${val}&pageSize=${this.$store.state.pageSize}`)
+        .then((res) => {
+          this.orgIndexes = res.data.content.records;
+          this.orgIndexes.unshift({ indexName: 'index_no', indexNameChn: '业务流水号', indexValue: null, value: null });
         })
         // eslint-disable-next-line handle-callback-err
-        .catch(function (error) {
-        })
+        .catch(() => {
+        });
     },
-    orgIndexClick () {
-      this.orgIndexViewer = true
+    orgIndexClick() {
+      this.orgIndexViewer = true;
     },
-    orgIndexOpened () {
-      this.orgQueryIndex(this.pdfCurrentPage)
+    orgIndexOpened() {
+      this.orgQueryIndex(this.pdfCurrentPage);
     },
-    selectIndex (orgIndex, $index) {
+    selectIndex(orgIndex) {
       if (orgIndex.status === true) {
-        orgIndex.status = false
+        orgIndex.status = false;
       } else {
-        orgIndex.status = true
+        orgIndex.status = true;
       }
-      this.$forceUpdate()
+      this.$forceUpdate();
       // if (this.selectIndexes[$index] === orgIndex.indexId) {
       //   this.selectIndexes[$index] = false
       // } else {
       //   this.selectIndexes[$index] = orgIndex.indexId
       // }
     },
-    shareUrlClick (row) {
-      axios.get('/api/organization/pdf/url' + '/' + 'b-eprint-test' + '/' + row.id)
-        .then(res => {
+    shareUrlClick(row) {
+      axios.get(`${'/api/organization/pdf/url' + '/' + 'b-eprint-test' + '/'}${row.id}`)
+        .then((res) => {
           // console.log(res.data.content.pdfFile)
           // this.$confirm(res.data.content, '下载地址', {
           //   cancelButtonText: '关闭',
           //   type: 'confirm'
           // })
-          this.pdfUrl = res.data.content
-          this.dialogVisible = true
+          this.pdfUrl = res.data.content;
+          this.dialogVisible = true;
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    copy (row) {
-      let url = row.presignedLink
-      let oInput = document.createElement('input')
-      oInput.value = url
-      document.body.appendChild(oInput)
-      oInput.select()// 选择对象;
-      console.log(oInput.value)
-      document.execCommand('Copy') // 执行浏览器复制命令
-      oInput.remove()
-      this.$message.success('分享链接复制成功')
+    copy(row) {
+      const url = row.presignedLink;
+      const oInput = document.createElement('input');
+      oInput.value = url;
+      document.body.appendChild(oInput);
+      oInput.select();// 选择对象;
+      console.log(oInput.value);
+      document.execCommand('Copy'); // 执行浏览器复制命令
+      oInput.remove();
+      this.$message.success('分享链接复制成功');
     },
-    dialogClose () {
-      this.dialogVisible = false
+    dialogClose() {
+      this.dialogVisible = false;
     },
-    downloadPdf (row) {
+    downloadPdf(row) {
       axios.post(this.GLOBAL.webappApiConfig.OrganizationPDFManagement.OrganizationFileDownload.url, row)
-        .then(res => {
+        .then((res) => {
           // console.log(res.data.content.pdfFile)
           // this.$confirm(res.data.content, '下载地址', {
           //   cancelButtonText: '关闭',
@@ -401,12 +422,12 @@ export default {
           // })
           // window.location.href = res.data
           // console.log(res)
-          const blob = new Blob([res.data], {type: 'application/pdf'})
-          FileSaver.saveAs(blob, row.name.substring(0, row.name - 1))
+          const blob = new Blob([res.data], { type: 'application/pdf' });
+          FileSaver.saveAs(blob, row.name.substring(0, row.name - 1));
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
       // const blob = new Blob([res], {type: ''})
       // if(this.elementForm.name === null)
       // FileSaver.saveAs(blob, row.name)
@@ -415,23 +436,23 @@ export default {
       // a.click()
       // window.location.href = row.presignedLink
     },
-    clearParams () {
-      this.orgIndexes.forEach(function (item, index) {
-        item.indexValue = ''
-        item.status = false
-      })
-      this.$forceUpdate()
+    clearParams() {
+      this.orgIndexes.forEach((item) => {
+        item.indexValue = '';
+        item.status = false;
+      });
+      this.$forceUpdate();
     },
-    confirmParams () {
-      this.handleCurrentChange(1)
-      this.orgIndexViewer = false
-    }
+    confirmParams() {
+      this.handleCurrentChange(1);
+      this.orgIndexViewer = false;
+    },
   },
-  mounted () {
-    this.handleCurrentChange(1, this.prefix)
+  mounted() {
+    this.handleCurrentChange(1, this.prefix);
     // this.orgQueryIndex(1)
-  }
-}
+  },
+};
 </script>
 <style scoped>
   .el-select .el-input {

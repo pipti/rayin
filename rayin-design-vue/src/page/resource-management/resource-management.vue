@@ -235,7 +235,7 @@ export default {
             sessionStorage.setItem('pdfData', res.data.content.file)
             let pdfViewerFrame = document.getElementById('pdfViewer')
             pdfViewerFrame.focus()
-            pdfViewerFrame.src = '/static/pdfjs/web/pdfviewer.html'
+            pdfViewerFrame.src = './pdfjs/web/pdfviewer.html'
           } else {
             this.fileSrc = res.data.content.file
           }

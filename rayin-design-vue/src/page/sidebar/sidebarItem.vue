@@ -127,11 +127,11 @@
 export default {
   name: 'sidebarItem',
   methods: {
-    open (item) {
-      this.$router.push(item)
+    open(item) {
+      this.$router.push(item);
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -16,7 +16,8 @@
             </el-tooltip>
             </el-col>
           <el-col :span="12">
-            <el-input placeholder="请输入搜索内容" v-model="elSearchKey" class="input-with-select" @keyup.enter.native="elSearchClick">
+            <el-input placeholder="请输入搜索内容" v-model="elSearchKey" class="input-with-select"
+                      @keyup.enter.native="elSearchClick">
               <el-button slot="append" icon="el-icon-search" @click="elSearchClick"></el-button>
             </el-input>
           </el-col>
@@ -94,8 +95,10 @@
               </div>
               <el-button size="small"><i class="el-icon-help"></i>模板列表提示</el-button>
             </el-tooltip>
-            <el-button plain size="small" style="border-radius: 0px" @click="tplSetViewerClick"><i class="el-icon-set-up"></i>模板设置</el-button>
-            <el-button plain size="small" style="border-radius: 0px" @click="tplSaveClick"><i class="el-icon-check"></i>保存设置</el-button>
+            <el-button plain size="small" style="border-radius: 0px" @click="tplSetViewerClick">
+              <i class="el-icon-set-up"></i>模板设置</el-button>
+            <el-button plain size="small" style="border-radius: 0px" @click="tplSaveClick">
+              <i class="el-icon-check"></i>保存设置</el-button>
 
           </el-col>
 
@@ -232,7 +235,9 @@
                 label="页码属性"
                 width="100">
                 <template slot-scope="scope">
-                  <el-button icon="el-icon-tickets" size="mini" @click="elPageNumParamSetViewerClick(scope.index, scope.row)"></el-button>
+                  <el-button icon="el-icon-tickets" size="mini"
+                             @click="elPageNumParamSetViewerClick(scope.index, scope.row)">
+                  </el-button>
                 </template>
               </el-table-column>
               <el-table-column
@@ -389,7 +394,9 @@
           &nbsp;
         </el-col>
         <el-col :span="22">
-          <div style="100%;text-align: right"><el-button type="primary" icon="el-icon-plus" size="mini" @click="elPageNumParamAddClick()"></el-button></div>
+          <div style="width:100%;text-align: right"><el-button type="primary" icon="el-icon-plus"
+                    size="mini" @click="elPageNumParamAddClick()">
+          </el-button></div>
           <template>
             <el-table
               :data="pageNumDisplayPoss"
@@ -408,7 +415,9 @@
                 label="x坐标"
                 width="150">
                 <template slot-scope="scope">
-                  <el-input-number size="mini" v-model="scope.row.x"  :precision="1" :step="10" controls-position="right"></el-input-number>
+                  <el-input-number size="mini" v-model="scope.row.x"  :precision="1" :step="10"
+                                   controls-position="right">
+                  </el-input-number>
                   </template>
               </el-table-column>
               <el-table-column
@@ -416,7 +425,8 @@
                 label="y坐标"
                 width="150">
                 <template slot-scope="scope">
-                <el-input-number size="mini" v-model="scope.row.y" :precision="1" :step="10" controls-position="right"></el-input-number>
+                <el-input-number size="mini" v-model="scope.row.y" :precision="1" :step="10" controls-position="right">
+                </el-input-number>
                 </template>
               </el-table-column>
               <el-table-column
@@ -432,7 +442,8 @@
                 prop="address"
                 label="操作">
                 <template slot-scope="scope">
-                  <el-button @click="elPageNumParamDelClick(scope.$index, scope.row)" type="text" size="small">删除</el-button>
+                  <el-button @click="elPageNumParamDelClick(scope.$index, scope.row)"
+                             type="text" size="small">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -447,14 +458,14 @@
 </template>
 
 <script>
-import HtmlPanel from '@/components/html-panel'
-import axios from 'axios'
+import HtmlPanel from '@/components/html-panel';
+import axios from 'axios';
 export default {
   name: 'TemplateSet',
   components: {
-    HtmlPanel
+    HtmlPanel,
   },
-  data () {
+  data() {
     return {
       templateForm: {
         name: '',
@@ -463,7 +474,7 @@ export default {
         elConfig: '',
         testData: '',
         templateId: '',
-        newFlag: ''
+        newFlag: '',
       },
       elData: [],
       elConfig: [],
@@ -484,33 +495,33 @@ export default {
       pageSize: this.$store.state.pageSize,
       elementTypeOptions: [{
         value: '1',
-        label: '封皮'
+        label: '封皮',
       }, {
         value: '2',
-        label: '客户指南'
+        label: '客户指南',
       }, {
         value: '3',
-        label: '保单页'
+        label: '保单页',
       }, {
         value: '4',
-        label: '现金价值'
+        label: '现金价值',
       }, {
         value: '5',
-        label: '条款'
+        label: '条款',
       }, {
         value: '6',
-        label: '送达书'
-      }]
-    }
+        label: '送达书',
+      }],
+    };
   },
   methods: {
-    elPageNumParamAddClick () {
-      this.pageNumDisplayPoss.push({x: 0, y: 0})
+    elPageNumParamAddClick() {
+      this.pageNumDisplayPoss.push({ x: 0, y: 0 });
     },
-    elPageNumParamDelClick (index, row) {
-      this.pageNumDisplayPoss.splice(index, 1)
+    elPageNumParamDelClick(index) {
+      this.pageNumDisplayPoss.splice(index, 1);
     },
-    drawerElPageNumParamSetViewerHandleClose () {
+    drawerElPageNumParamSetViewerHandleClose() {
       //      this.pageNumDisplayPoss.forEach((item) => {
       //        console.log(item.x)
       //          if(item.x === '' || item.y === ''){
@@ -523,143 +534,151 @@ export default {
       //          }
       //        }
       //      )
-      this.elPageNumSetSel.pageNumDisplayPoss = this.pageNumDisplayPoss
+      this.elPageNumSetSel.pageNumDisplayPoss = this.pageNumDisplayPoss;
     },
-    goBack () {
-      this.$router.push({name: 'TemplateManagement', params: {}})
+    goBack() {
+      this.$router.push({ name: 'TemplateManagement', params: {} });
     },
-    tplElAddClick (index, row) {
-      let temp = this.elData[index]
+    tplElAddClick(index) {
+      const temp = this.elData[index];
       // temp.seq = index
       //      temp.content = ''
       //      temp.testData = ''
 
-      this.elConfig.push(temp)
-      let seq = 1
+      this.elConfig.push(temp);
+      let seq = 1;
       this.elConfig.forEach((item) => {
-        item.seq = seq++
-      })
+        // eslint-disable-next-line no-plusplus
+        item.seq = seq++;
+      });
     },
-    tplElDelClick (index, row) {
-      this.elConfig.splice(index, 1)
+    tplElDelClick(index) {
+      this.elConfig.splice(index, 1);
 
-      let seq = 1
+      let seq = 1;
       this.elConfig.forEach((item) => {
-        item.seq = seq++
-      })
+        // eslint-disable-next-line no-plusplus
+        item.seq = seq++;
+      });
     },
-    tplElDownClick (index, row) {
+    tplElDownClick(index) {
       if (index !== this.elConfig.length - 1) {
-        let tmp = this.elConfig[index]
-        this.elConfig.splice(index, 1, this.elConfig[index + 1])
-        this.elConfig.splice(index + 1, 1, tmp)
+        const tmp = this.elConfig[index];
+        this.elConfig.splice(index, 1, this.elConfig[index + 1]);
+        this.elConfig.splice(index + 1, 1, tmp);
       } else {
         this.$message({
           showClose: true,
           message: '已经是最后一行,无法下移',
-          type: 'warning'
-        })
+          type: 'warning',
+        });
       }
-      let seq = 1
+      let seq = 1;
       this.elConfig.forEach((item) => {
-        item.seq = seq++
-      })
+        // eslint-disable-next-line no-plusplus
+        item.seq = seq++;
+      });
     },
-    tplElUpClick (index, row) {
+    tplElUpClick(index) {
       if (index !== 0) {
-        let tmp = this.elConfig[index - 1]
-        this.elConfig.splice(index - 1, 1, this.elConfig[index])
-        this.elConfig.splice(index, 1, tmp)
+        const tmp = this.elConfig[index - 1];
+        this.elConfig.splice(index - 1, 1, this.elConfig[index]);
+        this.elConfig.splice(index, 1, tmp);
       } else {
         this.$message({
           showClose: true,
           message: '已经是第一行,无法上移',
-          type: 'warning'
-        })
+          type: 'warning',
+        });
       }
-      let seq = 1
+      let seq = 1;
       this.elConfig.forEach((item) => {
-        item.seq = seq++
-      })
+        // eslint-disable-next-line no-plusplus
+        item.seq = seq++;
+      });
     },
-    elViewerClick (row) {
+    elViewerClick(row) {
       // console.log(row.content)
-      this.elCode = row.content
+      this.elCode = row.content;
       // this.htmlLoadCompleted = true
-      this.drawerElViewer = true
+      this.drawerElViewer = true;
     },
-    elSetViewerClick (row) {
-      this.drawerElSetViewer = true
+    elSetViewerClick() {
+      this.drawerElSetViewer = true;
     },
-    tplSetViewerClick () {
-      this.drawerTplSetViewer = true
+    tplSetViewerClick() {
+      this.drawerTplSetViewer = true;
     },
-    elPageNumParamSetViewerClick (index, row) {
+    elPageNumParamSetViewerClick(index, row) {
       if (row.pageNumDisplayPoss === undefined) {
-        this.pageNumDisplayPoss = []
+        this.pageNumDisplayPoss = [];
       } else {
-        this.pageNumDisplayPoss = row.pageNumDisplayPoss
+        this.pageNumDisplayPoss = row.pageNumDisplayPoss;
       }
-      this.elPageNumSetSel = row
-      this.drawerElPageNumParamSetViewer = true
+      this.elPageNumSetSel = row;
+      this.drawerElPageNumParamSetViewer = true;
     },
-    elSearchClick () {
-      this.handleCurrentChange(1)
+    elSearchClick() {
+      this.handleCurrentChange(1);
     },
-    handleCurrentChange (val) {
-      axios.get(this.GLOBAL.webappApiConfig.ELementManagement.UserElementQuery.url + (this.elSearchKey === '' ? '' : '/' + this.elSearchKey) + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize,
+    handleCurrentChange(val) {
+      axios.get(
+        `${this.GLOBAL.webappApiConfig.ELementManagement.UserElementQuery.url + (this.elSearchKey === '' ? '' : `/${this.elSearchKey}`)}?pageCurrent=${val}&pageSize=${this.$store.state.pageSize}`,
         {},
-        {})
-        .then(res => {
-          this.elData = res.data.content.records
-          this.elDataTotal = res.data.content.total
-          this.elCurrentPage = res.data.content.current
+        {},
+      )
+        .then((res) => {
+          this.elData = res.data.content.records;
+          this.elDataTotal = res.data.content.total;
+          this.elCurrentPage = res.data.content.current;
         })
-        .catch(function (error) {
-          console.log(error)
+        .catch((error) => {
+          console.log(error);
           // alert(error)
-        })
+        });
     },
-    tplSaveClick () {
+    tplSaveClick() {
       if (this.templateForm.name === null || this.templateForm.name === '') {
         this.$message({
           showClose: true,
           message: '请添加模板名称',
-          type: 'error'
-        })
-        this.tplSetViewerClick()
+          type: 'error',
+        });
+        this.tplSetViewerClick();
       } else if (this.elConfig.length === 0) {
         this.$message({
           showClose: true,
           message: '请添加构件',
-          type: 'error'
-        })
+          type: 'error',
+        });
       } else {
-        this.templateForm.elConfig = JSON.stringify(this.elConfig)
+        this.templateForm.elConfig = JSON.stringify(this.elConfig);
         // this.elementForm.testData = JSON.stringify(this.this.elConfig)
         // console.log(this.elConfig)
-        axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateSave.url,
+        axios.post(
+          this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateSave.url,
           this.templateForm,
-          {})
-          .then(res => {
+          {},
+        )
+          .then(() => {
             // console.log(res)
             // if (res.data.code === 0) {
-            this.$router.push({name: 'TemplateManagement', params: {}})
+            this.$router.push({ name: 'TemplateManagement', params: {} });
             // }
           })
-          .catch(function (error) {
-            console.log(error)
-          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-    }
+    },
   },
   // data中的变量之间赋值
-  mounted () {
-    this.elSearchClick()
+  mounted() {
+    this.elSearchClick();
 
     if (this.$route.params.tplRow !== undefined) {
-      this.templateForm = this.$route.params.tplRow
-      this.elConfig = JSON.parse(this.$route.params.tplRow.elConfig)
+      this.templateForm = this.$route.params.tplRow;
+      this.elConfig = JSON.parse(this.$route.params.tplRow.elConfig);
 
       // this.elConfigTotal = this.elConfig.length
     }
@@ -671,8 +690,8 @@ export default {
     // this.elDataTotal = this.elData.length
     // }
 
-  }
-}
+  },
+};
 </script>
 <style scoped>
   .el-form >>> .el-input__inner{

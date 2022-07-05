@@ -3,7 +3,7 @@
   <div>
 <!--    <el-row :gutter="5">-->
     <el-row>
-      <el-page-header @back="goBack" content="构件设计">
+      <el-page-header @back="goBack" :content="$i18n.t('menu.elementDesign')">
       </el-page-header>
     </el-row>
       <el-row :gutter="5" :style="{marginTop:'20px',height: this.$store.state.boxHeight}">
@@ -30,11 +30,13 @@
                     <div slot="content">保存当前版本，保存修改并不会影响模板中配置此构件的内容，如果需要同步模板中的构件内容，需要在构件列表中选择"关联模板"，并选择相应的模板进行同步。</div>
                     <el-button type="primary" icon="el-icon-check" size="mini" @click="elementSaveClick">保存</el-button>
                   </el-tooltip>
-                  <el-button type="primary" @click="elModifyHistoryViewerClick(1)" size="mini" v-if="elementForm.updateTimeStr !== ''" icon="el-icon-notebook-1">修改历史</el-button>
+                  <el-button type="primary" @click="elModifyHistoryViewerClick(1)" size="mini"
+                             v-if="elementForm.updateTimeStr !== ''" icon="el-icon-notebook-1">修改历史</el-button>
 
                   <el-tooltip class="item" effect="dark" placement="right-start" style="border-radius: 0px">
                     <div slot="content">版本号自动增加0.01</div>
-                    <el-button type="primary"  size="mini" @click="elementNewVersionSaveClick" v-if="elementForm.elementId !== ''">
+                    <el-button type="primary"  size="mini" @click="elementNewVersionSaveClick"
+                               v-if="elementForm.elementId !== ''">
                     +v
                     </el-button>
                     </el-tooltip>
@@ -65,8 +67,10 @@
                     :value="item.value">
                   </el-option>
                 </el-select><br>
-                宽（cm）：<el-input-number size="mini" v-model="pageWidth" :precision="2" :step="0.1"  :disabled="pageSizeSetAva"></el-input-number><br>
-                高（cm）：<el-input-number size="mini" v-model="pageHeight" :precision="2" :step="0.1"  :disabled="pageSizeSetAva"></el-input-number>
+                宽（cm）：<el-input-number size="mini" v-model="pageWidth" :precision="2" :step="0.1"
+                                       :disabled="pageSizeSetAva"></el-input-number><br>
+                高（cm）：<el-input-number size="mini" v-model="pageHeight" :precision="2" :step="0.1"
+                                       :disabled="pageSizeSetAva"></el-input-number>
               </el-form-item>
 
               <el-form-item label="方向">
@@ -80,10 +84,17 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="页边距">
-                上（cm）： <el-input-number size="mini" v-model="marginTop" :precision="2" :step="0.1" :max="10"></el-input-number><br>
-                下（cm）： <el-input-number size="mini" v-model="marginBottom" :precision="2" :step="0.1" :max="10"></el-input-number><br>
-                左（cm）： <el-input-number size="mini" v-model="marginLeft" :precision="2" :step="0.1" :max="10"></el-input-number><br>
-                右（cm）： <el-input-number size="mini" v-model="marginRight" :precision="2" :step="0.1" :max="10"></el-input-number>
+                上（cm）： <el-input-number size="mini" v-model="marginTop" :precision="2" :step="0.1" :max="10">
+
+              </el-input-number><br>
+                下（cm）： <el-input-number size="mini" v-model="marginBottom" :precision="2" :step="0.1" :max="10">
+
+              </el-input-number><br>
+                左（cm）： <el-input-number size="mini" v-model="marginLeft" :precision="2" :step="0.1" :max="10">
+
+              </el-input-number><br>
+                右（cm）： <el-input-number size="mini" v-model="marginRight" :precision="2" :step="0.1" :max="10">
+              </el-input-number>
               </el-form-item>
             </el-form>
             </div>
@@ -105,11 +116,13 @@
                 >
                 <!--<el-button size="small" type="primary">数据加载</el-button>-->
                 <el-button icon="el-icon-coin" title="加载数据" size="mini" type="primary">加载</el-button>
-                <el-button icon="el-icon-download" size="mini" type="primary" @click="dataDownloadClick" title="下载数据"></el-button>
+                <el-button icon="el-icon-download" size="mini" type="primary" @click="dataDownloadClick"
+                           title="下载数据"></el-button>
               </el-upload>
               </el-col>
               <el-col :span="12">
-                <el-button icon="el-icon-connection" title="绑定数据" size="mini" @click="dataBindClick" type="primary">绑定</el-button>
+                <el-button icon="el-icon-connection" title="绑定数据" size="mini" @click="dataBindClick"
+                           type="primary">绑定</el-button>
                 <!--<el-button size="small" type="primary" @click="dataBindClick">绑定数据</el-button>-->
               </el-col>
               </el-row>
@@ -183,7 +196,7 @@
               <!--eslint-disable-next-line-->
               <div v-for="(el,index) in elSysFavourites" ref="elCaptures">
                 <el-card class="box-card"  shadow="hover">
-                  <html-capture :htmlCode="el.content" :htmlUrl="el.url" style="width:100%"></html-capture>
+                  <html-capture :htmlCode="el.content" :htmlUrl="require(el.url)" style="width:100%"></html-capture>
                 </el-card>
                 <div style="margin-top: 0px;text-align: right">
                   <div class="bottom clearfix">
@@ -211,7 +224,8 @@
 <!--      >-->
         <el-col :span="1"></el-col>
         <el-col :span="16">
-          <el-tabs type="border-card" @tab-click="tabHandleClick" :style="{height:(this.$store.state.windowHeight - 135)+ 'px'}" id="designTab">
+          <el-tabs type="border-card" @tab-click="tabHandleClick"
+                   :style="{height:(this.$store.state.windowHeight - 135)+ 'px'}" id="designTab">
             <el-tab-pane label="设计" style="padding:0px">
 
                 <tinymce-editor ref="editor"
@@ -220,7 +234,8 @@
                                 @objectSelected="objectSelected"
                                 :init="editorInit"
                                 @editorLoadComplete="editContentInit" style="overflow:visible"
-                                :style="{height:(this.$store.state.windowHeight - 220)+ 'px',width:this.pageWidth + 'cm',border:'1px solid #E4E7ED',margin:'auto'}">
+                                :style="{height:(this.$store.state.windowHeight - 220)+ 'px',
+                                width:this.pageWidth + 'cm',border:'1px solid #E4E7ED',margin:'auto'}">
                 </tinymce-editor>
                 <!--<button @click="clear">清空内容</button>-->
                 <!--{{elHtmlCode}}-->
@@ -232,14 +247,16 @@
 
             </el-tab-pane>
             <el-tab-pane label="专家模式" >
-              <!--<textarea style="width:100%" :style="{height:(this.$store.state.windowHeight - 150)+ 'px'}">{{elHtmlCode}}</textarea>-->
+              <!--<textarea style="width:100%" :style="{height:(this.$store.state.windowHeight - 150)+ 'px'}">
+              {{elHtmlCode}}</textarea>-->
               <div :style="{height:(this.$store.state.windowHeight - 190)+ 'px'}" style="overflow: scroll">
-                <codemirror  ref="elDesginCodeEditor" v-model="elHtmlCode"  :options="cmOptions" @change="codeEditorChanged"
-                             ></codemirror>
+                <codemirror  ref="elDesginCodeEditor" v-model="elHtmlCode"  :options="cmOptions"
+                             @change="codeEditorChanged"></codemirror>
               </div>
             </el-tab-pane>
             <el-tab-pane label="PDF预览" >
-              <iframe id="pdfViewer" src="" width="100%" height="100%" :style="{width: '100%',height:this.$store.state.iframeHeight}" frameborder="0" ></iframe>
+              <iframe id="pdfViewer" src="" width="100%" height="100%"
+                      :style="{width: '100%',height:this.$store.state.iframeHeight}" frameborder="0" ></iframe>
             </el-tab-pane>
             <el-tab-pane label="帮助" >
               <div :style="{height:(this.$store.state.windowHeight - 190)+ 'px'}" style="overflow: scroll">
@@ -367,8 +384,8 @@
 </template>
 
 <script>
-import VueJsonPretty from 'vue-json-pretty'
-import axios from 'axios'
+import VueJsonPretty from 'vue-json-pretty';
+import axios from 'axios';
 
 // import VueDragResize from 'vue-drag-resize'
 // import VueDraggableResizable from 'vue-draggable-resizable-gorkys'
@@ -438,12 +455,12 @@ export default {
       ],
       elSysFavourites:[
         // {
-        //   url: '/static/testresource/elements/电子保单.html',
-        //   data:'/static/testresource/elements/电子保单.json'
+        //   url: '@/assets/testresource/elements/电子保单.html',
+        //   data:'@/assets/testresource/elements/电子保单.json'
         // },
         // {
-        //   url: '/static/testresource/elements/009_familyproof.html',
-        //   data: '/static/testresource/elements/009_familyproof.json'
+        //   url: '@/assets/testresource/elements/009_familyproof.html',
+        //   data: '@/assets/testresource/elements/009_familyproof.json'
         // }
         // ,
         // {
@@ -520,7 +537,7 @@ export default {
       textarea: '',
       editorSelectElement: '',
       captureImgUrl: '',
-      htmlUrl: '/static/testresource/elements/009_familyproof.html',
+      htmlUrl: '@/assets/testresource/elements/009_familyproof.html',
       elTplBorder: '',
       scroll:'scroll',
       jsonInfo: '',
@@ -898,7 +915,7 @@ export default {
                 {})
                 .then(res => {
                     sessionStorage.setItem('pdfData', res.data.filedata)
-                    pdfViewerFrame.src = '/static/pdfjs/web/pdfviewer.html'
+                    pdfViewerFrame.src = './pdfjs/web/pdfviewer.html'
                   //console.log(res.status)
                 })
                 .catch(function (error) {

@@ -39,20 +39,20 @@
 <script>
 export default {
   name: 'guide',
-  data () {
+  data() {
     return {
       //      active1: 0,
       //      active2: 0,
       //      active3: 0,
       imgList: [
-        '/static/help/images/guide_2.png',
-        '/static/help/images/guide_3.png',
-        '/static/help/images/guide_4.png',
-        '/static/help/images/guide_5.png',
-        '/static/help/images/guide_6.png',
-        '/static/help/images/guide_7.png'
+        require('@/assets/images/guide_2.png'),
+        require('@/assets/images/guide_3.png'),
+        require('@/assets/images/guide_4.png'),
+        require('@/assets/images/guide_5.png'),
+        require('@/assets/images/guide_6.png'),
+        require('@/assets/images/guide_7.png')
       ]
-    }
+    };
   },
   methods: {
     //    next1 () {
@@ -65,7 +65,7 @@ export default {
     //      if (this.active3++ > 3) this.active3 = 0
     //    }
   }
-}
+};
 </script>
 
 <style>

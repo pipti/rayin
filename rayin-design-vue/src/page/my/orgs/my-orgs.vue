@@ -3,11 +3,12 @@
   <div >
     <el-row>
       <el-col style="margin-top: 10px" :xs="5" :sm="3" :md="2" :lg="2" :xl="1">
-        <el-tag style="font-size: 20px;">项目</el-tag>
+        <el-tag style="font-size: 20px;">{{$i18n.t('project')}}</el-tag>
       </el-col>
       <el-col :xs="10" :sm="8" :md="6" :lg="4" :xl="2">
         <div @click="orgSetViewClick()" style="cursor:pointer;text-align: left;width:50px" id="orgAddIcon">
-          <el-tooltip class="item" effect="dark" content="请先添加项目" placement="right" :manual="true" :value="orgtTipVisual" transition="el-fade-in-linear"
+          <el-tooltip class="item" effect="dark" :content="$i18n.t('projects.check.addProject')" placement="right"
+                      :manual="true" :value="orgtTipVisual" transition="el-fade-in-linear"
                       :hide-after="5000" :open-delay="1000">
             <i class="el-icon-circle-plus-outline" ></i>
           </el-tooltip>
@@ -15,7 +16,8 @@
       </el-col>
     </el-row>
     <el-row style="margin-top:30px">
-      <el-col :xs="11" :sm="5" :md="5" :lg="3" :xl="2" v-for="(o) in orgs" :key="o.organizationId" :offset="2" style="margin-top: 10px">
+      <el-col :xs="11" :sm="5" :md="5" :lg="3" :xl="2" v-for="(o) in orgs"
+              :key="o.organizationId" :offset="2" style="margin-top: 10px">
         <el-card :body-style="{ padding: '0px' }" shadow="hover" style="width:230px">
           <div style="width:100%;text-align: center;cursor:pointer;margin-top: 10px" @click="changeOrgClick(o)">
             <!--<i class="el-icon-s-promotion" style="font-size: 180px;color: #F56C6C"></i>-->
@@ -33,8 +35,10 @@
                 </div>
               </el-col>
               <el-col :span="1" >
-                <!--<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right"><i class="el-icon-setting" style="font-size: 25px;color: #909399"></i></div>-->
-                <!--<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right"><i class="el-icon-setting" style="font-size: 25px;color: #909399"></i></div>-->
+                <!--<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right">
+                <i class="el-icon-setting" style="font-size: 25px;color: #909399"></i></div>-->
+                <!--<div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right">
+                <i class="el-icon-setting" style="font-size: 25px;color: #909399"></i></div>-->
               </el-col>
             </el-row>
             <el-row>
@@ -46,8 +50,10 @@
 <!--                <div @click="orgMemberSetClick(o)" v-if="o.owner===true" style="float:right;margin-left:5px">-->
 <!--                  <i class="el-icon-user" style="font-size: 22px;color: #909399"></i>-->
 <!--                </div>-->
-                <div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right;margin-left:5px"><i class="el-icon-setting" style="font-size: 22px;color: #909399"></i></div>
-<!--                <div @click="orgIndexSetClick(o)" v-if="o.owner===true" style="float:right"><i class="el-icon-s-claim" style="font-size: 22px;color: #909399"></i></div>-->
+                <div @click="orgSetViewClick(o)" v-if="o.owner===true" style="float:right;margin-left:5px">
+                  <i class="el-icon-setting" style="font-size: 22px;color: #909399"></i></div>
+<!--                <div @click="orgIndexSetClick(o)" v-if="o.owner===true" style="float:right">
+<i class="el-icon-s-claim" style="font-size: 22px;color: #909399"></i></div>-->
               </el-col>
             </el-row>
           </div>
@@ -57,7 +63,7 @@
 
     <!--模板参数设置视图-->
     <el-drawer
-      title="项目设置"
+      :title="$i18n.t('projects.setting')"
       :visible.sync="drawerOrgSetViewer"
       :with-header="true"
       @opened="drawerOrgSetViewerOpened"
@@ -68,36 +74,46 @@
         </el-col>
         <el-col :span="22">
           <el-row>
-          <el-form label-width="140px" :model="selectOrg">
-            <el-form-item label="项目名称">
-              <el-input v-model="selectOrg.organizationName" placeholder="请输入项目名称" style="width:285px" tabindex="0" ref="orgName"></el-input>
+          <el-form label-width="150px" :model="selectOrg">
+            <el-form-item :label="$i18n.t('projectName')">
+              <el-input v-model="selectOrg.organizationName"
+                        :placeholder="$i18n.t('projects.placeholder.inputProjectName')"
+                        style="width:285px" tabindex="0" ref="orgName"></el-input>
             </el-form-item>
-            <el-form-item label="ACCESS_KEY">
-              <el-input v-model="selectOrg.accessKey" placeholder="用于接口调用认证，新建保存后自动生成" style="width:285px"  readonly></el-input>
+            <el-form-item label="access key">
+              <el-input v-model="selectOrg.accessKey" :placeholder="$i18n.t('projects.placeholder.acccessKey')"
+                        style="width:285px"  readonly></el-input>
             </el-form-item>
-            <el-form-item label="SECRET_KEY">
-              <el-input v-model="selectOrg.secretKey" placeholder="用于接口调用认证，新建保存后自动生成" style="width:285px" readonly></el-input>
+            <el-form-item label="secret key">
+              <el-input v-model="selectOrg.secretKey" :placeholder="$i18n.t('projects.placeholder.secretKey')"
+                        style="width:285px" readonly></el-input>
             </el-form-item>
 <!--            <el-form-item label="上链存证" v-if="selectOrg.owner===true">-->
-<!--              <el-tooltip class="item" effect="dark" placement="top-start" style="border-radius: 0px;font-size: 20px">-->
+<!--              <el-tooltip class="item" effect="dark" placement="top-start"
+style="border-radius: 0px;font-size: 20px">-->
 <!--                <div slot="content">当前项目区块链上链开关，开启后该项目生成的凭证可以在开放联盟链上链存证</div>-->
 <!--                <el-checkbox v-model="selectOrg.deposit" :checked="selectOrg.deposit === true"></el-checkbox>-->
 <!--              </el-tooltip>-->
 <!--            </el-form-item>-->
 <!--            <el-form-item label="第三方存储URL">-->
-<!--              <el-input v-model="selectOrg.thirdStorageUrl" placeholder="" style="width:285px" tabindex="1"></el-input>-->
+<!--              <el-input v-model="selectOrg.thirdStorageUrl" placeholder=""
+style="width:285px" tabindex="1"></el-input>-->
 <!--            </el-form-item>-->
 <!--            <el-form-item label="第三方存储AK">-->
-<!--              <el-input v-model="selectOrg.thirdStorageAccessKey" placeholder="" style="width:285px" tabindex="2"></el-input>-->
+<!--              <el-input v-model="selectOrg.thirdStorageAccessKey" placeholder=""
+style="width:285px" tabindex="2"></el-input>-->
 <!--            </el-form-item>-->
 <!--            <el-form-item label="第三方存储SK">-->
-<!--              <el-input v-model="selectOrg.thirdStorageSecretKey" placeholder="" style="width:285px" tabindex="3"></el-input>-->
+<!--              <el-input v-model="selectOrg.thirdStorageSecretKey" placeholder=""
+style="width:285px" tabindex="3"></el-input>-->
 <!--            </el-form-item>-->
-            <el-form-item label="存储PDF桶名">
-              <el-input v-model="selectOrg.thirdStorageBucket" placeholder="请设置对象存储桶名称" style="width:285px" tabindex="4"></el-input>
+            <el-form-item :label="$i18n.t('projects.storageBucketName')">
+              <el-input v-model="selectOrg.thirdStorageBucket" :placeholder="$i18n.t('projects.placeholder.pdfBucket')"
+                        style="width:285px" tabindex="4"></el-input>
             </el-form-item>
 <!--            <el-form-item label="存储资源桶名">-->
-<!--              <el-input v-model="selectOrg.thirdStorageResourceBucket" placeholder="" style="width:285px" tabindex="4"></el-input>-->
+<!--              <el-input v-model="selectOrg.thirdStorageResourceBucket" placeholder=""
+style="width:285px" tabindex="4"></el-input>-->
 <!--            </el-form-item>-->
 <!--            <el-form-item label="存储类型">-->
 <!--              <template>-->
@@ -111,10 +127,11 @@
 <!--                </el-select>-->
 <!--              </template>-->
 <!--            </el-form-item>-->
-            <el-form-item label="ICON">
+            <el-form-item label="icon">
               <el-row>
                 <el-col :span="10">
-                  <el-card style="width:100px;height:100px"><i :class="[selectOrg.icon]" :style="{color:selectOrg.iconColor,'font-size':'60px'}"></i></el-card>
+                  <el-card style="width:100px;height:100px"><i :class="[selectOrg.icon]"
+                        :style="{color:selectOrg.iconColor,'font-size':'60px'}"></i></el-card>
                 </el-col>
                 <el-col :span="14">
                   <el-color-picker
@@ -165,15 +182,19 @@
           </el-row>
           <el-row style="margin-top: 30px">
             <el-col :span="24" style="text-align: center">
-              <el-button type="primary" icon="el-icon-setting" @click="orgSetSaveClick" size="small" style="width:260px">保存</el-button>
-<!--              <el-button type="primary" icon="el-icon-coin" @click="storageTestClick" size="small" style="width:100px">存储测试</el-button>-->
+              <el-button type="primary" icon="el-icon-setting"
+                         @click="orgSetSaveClick" size="small" style="width:260px">{{$i18n.t('save')}}</el-button>
+<!--              <el-button type="primary" icon="el-icon-coin" @click="storageTestClick"
+size="small" style="width:100px">存储测试</el-button>-->
             </el-col>
           </el-row>
           <el-row :span="24" style="text-align: center;margin-top: 20px">
-            <el-button type="danger" icon="el-icon-setting" @click="orgDelClick" size="small" style="width:155px" :disabled="!orgDelSwitch">项目删除</el-button>
+            <el-button type="danger" icon="el-icon-setting"
+                       @click="orgDelClick" size="small" style="width:155px" :disabled="!orgDelSwitch">
+              {{$i18n.t('projects.del')}}</el-button>
             <el-switch
               v-model="orgDelSwitch"
-              active-text="删除确认"
+              :active-text="$i18n.t('projects.check.delConfirm')"
               inactive-text=""
               active-color="#F56C6C">
             </el-switch>
@@ -188,19 +209,19 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   name: 'MyOrgs',
 
   components: {
   },
-  data () {
+  data() {
     return {
       orgtTipVisual: false,
       orgDelSwitch: false,
       drawerOrgSetViewer: false,
-      selectOrg: {icon: '', iconColor: '', organizationName: '', ossType: ''},
+      selectOrg: { icon: '', iconColor: '', organizationName: '', ossType: '' },
       orgs: [
       ],
       color: '#409EFF',
@@ -217,126 +238,133 @@ export default {
         'hsv(51, 100, 98)',
         'hsva(120, 40, 94, 0.5)',
         'hsl(181, 100%, 37%)',
-        'hsla(209, 100%, 56%, 0.73)'
+        'hsla(209, 100%, 56%, 0.73)',
       ],
       ossTypeOptions: [{
         value: 'minio',
-        label: 'minio'
+        label: 'minio',
       }, {
         value: 'aliyun-oss',
-        label: 'aliyun-oss'
+        label: 'aliyun-oss',
       },
       {
         value: 'tencent-cos',
-        label: 'tencent-cos'
+        label: 'tencent-cos',
       },
       {
         value: 'huawei-oss',
-        label: 'huawei-oss'
-      }]
-    }
+        label: 'huawei-oss',
+      }],
+    };
   },
   methods: {
-    changeOrgClick (org) {
-      console.log('changeOrgClick' + org.organizationId)
-      this.$store.state.organizationName = org.organizationName
-      this.$store.state.organizationId = org.organizationId
-      localStorage.setItem(localStorage.getItem('userId') + '-organizationName', org.organizationName)
-      localStorage.setItem(localStorage.getItem('userId') + '-organizationId', org.organizationId)
-      localStorage.setItem(localStorage.getItem('userId') + '-organizationOwner', org.owner)
-      this.$router.push({name: 'Guide', params: {}})
+    changeOrgClick(org) {
+      console.log(`changeOrgClick${org.organizationId}`);
+      this.$store.state.organizationName = org.organizationName;
+      this.$store.state.organizationId = org.organizationId;
+      localStorage.setItem(`${localStorage.getItem('userId')}-organizationName`, org.organizationName);
+      localStorage.setItem(`${localStorage.getItem('userId')}-organizationId`, org.organizationId);
+      localStorage.setItem(`${localStorage.getItem('userId')}-organizationOwner`, org.owner);
+      this.$router.push({ name: 'Guide', params: {} });
     },
-    orgSetViewClick (o) {
-      this.orgDelSwitch = false
+    orgSetViewClick(o) {
+      this.orgDelSwitch = false;
       if (o === undefined) {
-        this.selectOrg = {icon: '', iconColor: '', organizationName: ''}
+        this.selectOrg = { icon: '', iconColor: '', organizationName: '' };
       } else {
-        this.selectOrg = o
+        this.selectOrg = o;
       }
-      console.log('项目设置')
-      this.drawerOrgSetViewer = true
+      console.log('项目设置');
+      this.drawerOrgSetViewer = true;
     },
-    drawerOrgSetViewerOpened () {
-      this.$refs.orgName.focus()
+    drawerOrgSetViewerOpened() {
+      this.$refs.orgName.focus();
     },
-    orgIconClick (event) {
-      this.selectOrg.icon = event.currentTarget.getAttribute('class')
-      this.selectOrg.iconColor = '#409EFF'
-      console.log(this.selectOrg.icon)
+    orgIconClick(event) {
+      this.selectOrg.icon = event.currentTarget.getAttribute('class');
+      this.selectOrg.iconColor = '#409EFF';
+      console.log(this.selectOrg.icon);
     },
-    orgMemberSetClick (o) {
-      localStorage.setItem(localStorage.getItem('userId') + '-organizationName', o.organizationName)
-      localStorage.setItem(localStorage.getItem('userId') + '-organizationId', o.organizationId)
-      this.$router.push({name: 'OrgMember', params: {org: o}})
+    orgMemberSetClick(o) {
+      localStorage.setItem(`${localStorage.getItem('userId')}-organizationName`, o.organizationName);
+      localStorage.setItem(`${localStorage.getItem('userId')}-organizationId`, o.organizationId);
+      this.$router.push({ name: 'OrgMember', params: { org: o } });
     },
-    orgIndexSetClick (o) {
-      localStorage.setItem(localStorage.getItem('userId') + '-organizationName', o.organizationName)
-      localStorage.setItem(localStorage.getItem('userId') + '-organizationId', o.organizationId)
-      this.$router.push({name: 'OrgIndex', params: {org: o}})
+    orgIndexSetClick(o) {
+      localStorage.setItem(`${localStorage.getItem('userId')}-organizationName`, o.organizationName);
+      localStorage.setItem(`${localStorage.getItem('userId')}-organizationId`, o.organizationId);
+      this.$router.push({ name: 'OrgIndex', params: { org: o } });
     },
-    orgSetSaveClick () {
+    orgSetSaveClick() {
       if (this.selectOrg.organizationName === undefined || this.selectOrg.organizationName === '') {
         this.$message({
           showClose: true,
           message: '请输入项目名称',
-          type: 'error'
-        })
-        return
+          type: 'error',
+        });
+        return;
       }
       if (this.selectOrg.icon === undefined || this.selectOrg.icon === '') {
         this.$message({
           showClose: true,
           message: '请选择一个图标',
-          type: 'error'
-        })
-        return
+          type: 'error',
+        });
+        return;
       }
       // 机构保存
-      axios.post(this.GLOBAL.webappApiConfig.OrganizationManager.OrganizationSave.url,
+      axios.post(
+        this.GLOBAL.webappApiConfig.OrganizationManager.OrganizationSave.url,
         this.selectOrg,
-        {})
-        .then(res => {
-          this.orgQuery(1)
-          this.drawerOrgSetViewer = false
+        {},
+      )
+        .then(() => {
+          this.orgQuery(1);
+          this.drawerOrgSetViewer = false;
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    orgDelClick () {
+    orgDelClick() {
       // 删除项目
       this.$confirm('是否确定删除该项目，有关该项目的所有数据将被删除，无法恢复, 是否确认?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         // 删除模板
-        axios.post(this.GLOBAL.webappApiConfig.OrganizationManager.OrganizationDel.url,
+        axios.post(
+          this.GLOBAL.webappApiConfig.OrganizationManager.OrganizationDel.url,
           this.selectOrg,
-          {})
-          .then(res => {
-            this.orgQuery(1)
-            this.drawerOrgSetViewer = false
-          }).catch(function (error) {
-            console.log(error)
+          {},
+        )
+          .then(() => {
+            this.orgQuery(1);
+            this.drawerOrgSetViewer = false;
           })
-      })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
     },
-    orgQuery (val) {
-      axios.get(this.GLOBAL.webappApiConfig.OrganizationManager.OrganizationQuery.url + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize,
+    orgQuery(val) {
+      axios.get(
+        `${this.GLOBAL.webappApiConfig.OrganizationManager.OrganizationQuery.url}?pageCurrent=${val}&pageSize=${this.$store.state.pageSize}`,
         {},
-        {})
+        {},
+      )
         .then((response) => {
-          this.orgs = response.data.content.records
-          console.log(this.orgs)
+          this.orgs = response.data.content.records;
+          console.log(this.orgs);
           if (this.orgs.length === 0) {
-            this.orgtTipVisual = true
+            this.orgtTipVisual = true;
           } else {
-            this.orgtTipVisual = false
-            localStorage.setItem('orgs', JSON.stringify(this.orgs))
+            this.orgtTipVisual = false;
+            localStorage.setItem('orgs', JSON.stringify(this.orgs));
           }
-        })
-    }
+        });
+    },
     // storageTestClick () {
     //   if (this.selectOrg.thirdStorageAccessKey === null || this.selectOrg.thirdStorageAccessKey === undefined) {
     //     this.$message({
@@ -374,7 +402,8 @@ export default {
     //     return
     //   }
     //
-    //   if (this.selectOrg.thirdStorageResourceBucket === null || this.selectOrg.thirdStorageResourceBucket === undefined) {
+    //   if (this.selectOrg.thirdStorageResourceBucket === null
+    //   || this.selectOrg.thirdStorageResourceBucket === undefined) {
     //     this.$message({
     //       showClose: true,
     //       message: '请添加第三方存储服务资源bucket',
@@ -403,10 +432,10 @@ export default {
     //     })
     // }
   },
-  mounted () {
-    this.orgQuery(1)
+  mounted() {
+    this.orgQuery(1);
   },
-  created () {
+  created() {
     //    let userId = localStorage.getItem('userId')
     //    axios.post('/api/users/getMyOrganization',
     //      userId)
@@ -420,8 +449,8 @@ export default {
     //    let username = localStorage.getItem('username')
   },
   watch: {
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

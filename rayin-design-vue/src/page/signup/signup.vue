@@ -1,8 +1,8 @@
 <template>
   <el-container>
-    <el-row style="height: 30px">
+    <el-row style="padding:10px 5px 5px 5px;height:30px;">
       <el-col :span="12" >
-        <el-image src="/static/images/logo5.png" style="width:210px"/>
+        <el-image :src="require('@/assets/images/logo5.png')" style="width:210px"/>
       </el-col>
       <el-col :span="12" style="text-align: right">
         <!--        <div style="text-align: right;width:100%;margin-top:5px;height: 50px;border: 1px solid black">-->
@@ -14,7 +14,7 @@
     <el-main>
       <el-row>
         <el-col :span="15">
-          <el-image src="/static/images/login_left.png" style="width:80%;margin-top:60px"></el-image>
+          <el-image :src="require('@/assets/images/login_left.png')" style="width:80%;margin-top:60px"></el-image>
         </el-col>
         <el-col :span="9">
           <el-card style="width:450px;margin-top:110px;height:400px;border-radius: 0px;text-align: center">
@@ -67,7 +67,7 @@
 /* eslint-disable */
 import Cookies from 'js-cookie'
 import router from '../../router'
-import {setToken, removeToken} from '@/util/auth'
+import {setToken, removeToken} from '@/utils/auth'
 import axios from 'axios'
 export default {
   name: 'signup',

@@ -17,7 +17,8 @@
         </el-radio-group>
       </el-col>
       <el-col :span="12">
-        <el-input placeholder="请输入搜索内容" v-model="searchKey" class="input-with-select" @keyup.enter.native="tlSearchClick">
+        <el-input placeholder="请输入搜索内容" v-model="searchKey"
+                  class="input-with-select" @keyup.enter.native="tlSearchClick">
           <el-button slot="append" icon="el-icon-search" @click="tlSearchClick"></el-button>
         </el-input>
       </el-col>
@@ -100,7 +101,8 @@
               <el-popover trigger="hover" placement="top">
                 {{ scope.row.startTimeStr }}&nbsp;~&nbsp;{{ scope.row.endTimeStr }}
                 <div slot="reference" class="name-wrapper">
-                  <span v-if="scope.row.startTimeStr !== null">{{ scope.row.startTimeStr.substring(0,10) }}</span>&nbsp;~&nbsp;
+                  <span v-if="scope.row.startTimeStr !== null">
+                    {{ scope.row.startTimeStr.substring(0,10) }}</span>&nbsp;~&nbsp;
                   <span v-if="scope.row.endTimeStr !== null">{{ scope.row.endTimeStr.substring(0,10) }}</span>
                 </div>
               </el-popover>
@@ -146,7 +148,8 @@
                 width="250"
                 trigger="hover">
                 <div>
-                  <el-button type="text" size="small" disabled @click="tplPublishToOtherOrg(scope.index, scope.row)">发布至其他项目</el-button>
+                  <el-button type="text" size="small" disabled @click="tplPublishToOtherOrg(scope.index, scope.row)">
+                    发布至其他项目</el-button>
                   <el-button type="text" size="small" @click="tplLogicalDel(scope.index, scope.row)">删除</el-button>
                   <el-button
                     type="text"
@@ -190,10 +193,10 @@
 </template>
 
 <script>
-import axios from 'axios'
-import FileSaver from 'file-saver'
+import axios from 'axios';
+import FileSaver from 'file-saver';
 export default {
-  data () {
+  data() {
     return {
       modelSwitch: 'normalData',
       dataModelSwitch: 'normalData',
@@ -204,145 +207,157 @@ export default {
       tlDataTotal: 1,
       tlCurrentPage: 1,
       searchKey: '',
-      loading: false
-    }
+      loading: false,
+    };
   },
   methods: {
-    handleSelect (key, keyPath) {
+    handleSelect() {
       // console.log(key, keyPath)
     },
-    tplAdd (key, keyPath) {
-      this.$router.push({name: 'TemplateSet', params: {}})
+    tplAdd() {
+      this.$router.push({ name: 'TemplateSet', params: {} });
     },
-    tplEdit (index, row) {
-      this.$router.push({name: 'TemplateSet', params: {tplRow: row}})
+    tplEdit(index, row) {
+      this.$router.push({ name: 'TemplateSet', params: { tplRow: row } });
     },
-    tplTest (row) {
-      this.$router.push({name: 'TemplateTest', params: {tplRow: row, searchKey: this.searchKey}})
+    tplTest(row) {
+      this.$router.push({ name: 'TemplateTest', params: { tplRow: row, searchKey: this.searchKey } });
     },
-    tplGenerate (row) {
+    tplGenerate(row) {
       // 生成存储测试
-      axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateGenerate.url,
+      axios.post(
+        this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateGenerate.url,
         row,
-        {})
-        .then(res => {
-          this.$confirm('<textarea rows="6" style="width:100%">' + res.data.content.presignedLink + '</textarea>', '访问链接', {
+        {},
+      )
+        .then((res) => {
+          this.$confirm(`<textarea rows="6" style="width:100%">${res.data.content.presignedLink}</textarea>`, '访问链接', {
             confirmButtonText: '拷贝',
             cancelButtonText: '关闭',
-            dangerouslyUseHTMLString: true
+            dangerouslyUseHTMLString: true,
           }).then(() => {
             this.$copyText(res.data.content.presignedLink).then(() => {
               this.$message({
                 type: 'info',
-                message: `链接已拷贝至剪切板`
-              })
-            }, function (e) {
-              alert('无法拷贝至剪切板！')
-              console.log(e)
-            })
-          })
-        })
+                message: '链接已拷贝至剪切板',
+              });
+            }, (e) => {
+              alert('无法拷贝至剪切板！');
+              console.log(e);
+            });
+          });
+        });
     },
-    tplOfflineExport (index, row) {
+    tplOfflineExport(index, row) {
       // 导出模板
       axios
         .post(
           this.GLOBAL.webappApiConfig.TemplateManagement
             .UserTemplateOfflineExport.url,
           row,
-          {}
+          {},
         )
-        .then(res => {
-          let exportData = res.data.content
-          const blob = new Blob([exportData], {type: ''})
-          FileSaver.saveAs(blob, row.name + '.tplf')
+        .then((res) => {
+          const exportData = res.data.content;
+          const blob = new Blob([exportData], { type: '' });
+          FileSaver.saveAs(blob, `${row.name}.tplf`);
         })
-        .catch(function (error) {
-          console.log(error)
-        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    tplLogicalDel (index, row) {
-      console.log(row)
+    tplLogicalDel(index, row) {
+      console.log(row);
       // 删除构件
       this.$confirm('是否确定删除该构件至回收站, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         // 删除模板
-        axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateLogicalDel.url,
+        axios.post(
+          this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateLogicalDel.url,
           row,
-          {})
-          .then(res => {
-            this.tlData.splice(index, 1)
-          }).catch(function (error) {
-            console.log(error)
+          {},
+        )
+          .then(() => {
+            this.tlData.splice(index, 1);
           })
-      })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
     },
-    tplDel (index, row) {
+    tplDel(index, row) {
       // 删除模板
       this.$confirm('是否确定彻底删除该模板，有关该模板的所有版本都将被删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         // 删除模板
-        axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateDel.url,
+        axios.post(
+          this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateDel.url,
           row,
-          {})
-          .then(res => {
-            this.tlData.splice(index, 1)
-          }).catch(function (error) {
-            console.log(error)
+          {},
+        )
+          .then(() => {
+            this.tlData.splice(index, 1);
           })
-      })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
     },
-    tplResumeClick (index, row) {
+    tplResumeClick(index, row) {
     // 恢复模板
-      axios.post(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateResume.url,
+      axios.post(
+        this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateResume.url,
         row,
-        {})
-        .then(res => {
-          this.tlData.splice(index, 1)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    },
-    tlSearchClick () {
-      this.handleCurrentChange(1)
-    },
-    handleCurrentChange (val) {
-      this.loading = true
-      axios.get(this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateQuery.url + (this.searchKey === '' ? '' : '/' + this.searchKey) + '?pageCurrent=' + val + '&pageSize=' + this.$store.state.pageSize + '&delFlag=' + this.delFlag,
         {},
-        {})
-        .then(res => {
-          this.tlData = res.data.content.records
-          this.tlDataTotal = res.data.content.total
-          this.tlCurrentPage = res.data.content.current
-          this.dataModelSwitch = this.modelSwitch
-          this.loading = false
+      )
+        .then(() => {
+          this.tlData.splice(index, 1);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    tlSearchClick() {
+      this.handleCurrentChange(1);
+    },
+    handleCurrentChange(val) {
+      this.loading = true;
+      axios.get(
+        `${this.GLOBAL.webappApiConfig.TemplateManagement.UserTemplateQuery.url + (this.searchKey === '' ? '' : `/${this.searchKey}`)}?pageCurrent=${val}&pageSize=${this.$store.state.pageSize}&delFlag=${this.delFlag}`,
+        {},
+        {},
+      )
+        .then((res) => {
+          this.tlData = res.data.content.records;
+          this.tlDataTotal = res.data.content.total;
+          this.tlCurrentPage = res.data.content.current;
+          this.dataModelSwitch = this.modelSwitch;
+          this.loading = false;
           // console.log(res)
         })
-        .catch(function (error) {
-          console.log(error)
-        })
-    }
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
-  mounted () {
-    this.tlSearchClick()
+  mounted() {
+    this.tlSearchClick();
   },
   watch: {
-    modelSwitch (val) {
+    modelSwitch(val) {
       if (val === 'normalData') {
-        this.delFlag = false
+        this.delFlag = false;
       } else {
-        this.delFlag = true
+        this.delFlag = true;
       }
-      this.handleCurrentChange(1)
-    }
-  }
-}
+      this.handleCurrentChange(1);
+    },
+  },
+};
 </script>
