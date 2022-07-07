@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import ink.rayin.app.web.annotation.TaskDispense;
 import ink.rayin.app.web.cache.KeyUtil;
 import ink.rayin.app.web.cache.RedisTemplateUtil;
 import ink.rayin.app.web.dao.OrganizationIndexesMapper;
@@ -68,10 +69,11 @@ public class RestPdfCreateService implements IRestPdfCreateService {
 
     @Resource
     RedisTemplateUtil redisTemplateUtil;
-    @Value("${mychain.rest.bizid}")
-    String bizid;
 
-    @Value("${eprint.storage.url}")
+    @Resource
+    UserTemplateService userTemplateService;
+
+    @Value("${rayin.storage.url}")
     String cmsUrl;
 
     @Override
@@ -80,7 +82,7 @@ public class RestPdfCreateService implements IRestPdfCreateService {
     }
     private static int i = 1;
     @Override
-    public Map<String,String> createPdfByTemplateId(String accessKey, Rayin rayin, String body, BaseParam baseParam) throws Exception {
+    public Map<String,String> createPdfByTemplateId(String accessKey, Rayin rayin, String body) throws Exception {
         Organization org = organizationMapper.selectOne(new QueryWrapper<Organization>().eq("access_key",accessKey));
                 //.eq("organization_id",ep.getOrganizationId()));
         if(org == null){
@@ -129,6 +131,10 @@ public class RestPdfCreateService implements IRestPdfCreateService {
         if(userTemplate.getEndTime() != null && today.compareTo(userTemplate.getEndTime()) > 0){
             throw RayinBusinessException.buildBizException(BusinessCodeMessage.TEMPLATE_TIME_OUT);
         }
+        userTemplate.setTestData(data.toJSONString());
+        userTemplateService.templateGenerate(userTemplate);
+
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         String secretKey = DecryptUtil.encrypt( org.getOrganizationId() + "||" + rayin.getTransactionNo());
         pdfCreateService.generateEncryptPdfStreamByConfigStr(userTemplate.getTplConfig(), data, baos,secretKey);
@@ -137,6 +143,8 @@ public class RestPdfCreateService implements IRestPdfCreateService {
         if (!iMemoryCapacityService.checkAndAdd(org.getOrganizationId(),size)) {
             throw RayinBusinessException.buildBizException(BusinessCodeMessage.OUT_OF_MEMORY);
         }
+
+
 //        String filename = "D:/2020118242SG1015005327_15B113E15E42416AB4FB00036225EEC5_unlock.pdf";
 //        i++;
 //        ByteArrayInputStream in = new ByteArrayInputStream(baos.toByteArray());
@@ -240,12 +248,12 @@ public class RestPdfCreateService implements IRestPdfCreateService {
         return null;
     }
 //
-//    @TaskDispense(name = "createPdf",taskId = "1")
-//    @Async
-//    @Override
-//    public void createPdfByTemplateIdAsync(String accessKey, Rayin ep, String data, BaseParam baseParam) throws Exception {
-//        createPdfByTemplateId(accessKey,ep,data, baseParam);
-//    }
+    @TaskDispense(name = "createPdf",taskId = "1")
+    @Async
+    @Override
+    public void createPdfByTemplateIdAsync(String accessKey, Rayin rayin, String data) throws Exception {
+        createPdfByTemplateId(accessKey, rayin, data);
+    }
 
 
     /**

@@ -31,9 +31,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @MapperScan(basePackages = "ink.rayin.app.web.dao")
 @EnableRayinyPdfAdpter
-public class RayinAppServerApplication extends SpringBootServletInitializer {
+public class RayinDesignServerApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) throws Exception {
-		ApplicationContext applicationContext = SpringApplication.run(RayinAppServerApplication.class, args);
+		ApplicationContext applicationContext = SpringApplication.run(RayinDesignServerApplication.class, args);
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class RayinAppServerApplication extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		// 注意这里要指向原先用main方法执行的Application启动类
-		return builder.sources(RayinAppServerApplication.class);
+		return builder.sources(RayinDesignServerApplication.class);
 	}
 
 //	private CorsConfiguration buildConfig() {

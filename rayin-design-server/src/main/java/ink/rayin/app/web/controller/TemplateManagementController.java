@@ -198,7 +198,12 @@ public class TemplateManagementController {
         }
     }
 
-
+    /**
+     * 模板生成预览
+     * @param userId
+     * @param parameter
+     * @return
+     */
     @PostMapping(value = "/template/view")
     public RestResponse templateView(@UserId String userId,
                                      @RequestBody UserTemplate parameter) {
@@ -212,6 +217,12 @@ public class TemplateManagementController {
 //        return RestResponse.success(userTemplateService.userTemplateTest(parameter));
 //    }
 
+    /**
+     * 模板PDF生成
+     * @param userId
+     * @param parameter
+     * @return
+     */
     @PostMapping(value = "/template/tplGenerate")
     public RestResponse templateGenerate(@UserId String userId,
                                      @RequestBody UserTemplate parameter) {

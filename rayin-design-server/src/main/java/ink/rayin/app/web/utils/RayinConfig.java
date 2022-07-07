@@ -1,7 +1,7 @@
 package ink.rayin.app.web.utils;
 
 
-import ink.rayin.cloud.base.util.YamlProp;
+import ink.rayin.tools.utils.YamlProp;
 
 import java.util.Properties;
 

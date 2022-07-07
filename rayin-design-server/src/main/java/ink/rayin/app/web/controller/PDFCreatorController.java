@@ -128,7 +128,7 @@ public class PDFCreatorController {
          "sysId":""
          }*/
         String transactionNo = rayin.getTransactionNo();
-        Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey, rayin, data,null);
+        Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey, rayin, data);
 
         map.put("transactionNo",transactionNo);
         return RestResponse.success(map);
@@ -152,8 +152,8 @@ public class PDFCreatorController {
         if(eprintJ == null){
             throw new RayinException("参数错误，请确认是否有rayin节点");
         }
-        Rayin eprint = eprintJ.toJavaObject(Rayin.class);
-        String validateStr = beanValidate(eprint);
+        Rayin rayin = eprintJ.toJavaObject(Rayin.class);
+        String validateStr = beanValidate(rayin);
         if(StringUtils.isNotBlank(validateStr)){
              return RestResponse.failed(BusinessCodeMessage.HTTP_BAD_REQUEST.getCode(),validateStr);
            // throw new RayinException(validateStr);
@@ -169,8 +169,8 @@ public class PDFCreatorController {
          "callbackUrl":"",
          "sysId":""
          }*/
-        String transactionNo = eprint.getTransactionNo();
-        Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey,eprint,data,null);
+        String transactionNo = rayin.getTransactionNo();
+        Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey, rayin, data);
         map.put("transactionNo",transactionNo);
         return RestResponse.success(map);
     }
@@ -188,13 +188,13 @@ public class PDFCreatorController {
             return RestResponse.failed(BusinessCodeMessage.ACC_KEY_ERROR);
         }
 
-        JSONObject eprintJ = parameter;
+        JSONObject rayinJson = parameter;
         String data = parameter.getString("body");
-        if(eprintJ == null){
+        if(rayinJson == null){
             throw new RayinException("参数错误，请确认是否有rayin节点");
         }
-        Rayin eprint = eprintJ.toJavaObject(Rayin.class);
-        String validateStr = beanValidate(eprint);
+        Rayin rayin = rayinJson.toJavaObject(Rayin.class);
+        String validateStr = beanValidate(rayin);
         if(StringUtils.isNotBlank(validateStr)){
              return RestResponse.failed(BusinessCodeMessage.HTTP_BAD_REQUEST.getCode(),validateStr);
           //  throw new RayinException(validateStr);
@@ -218,8 +218,8 @@ public class PDFCreatorController {
 //            }
 //        });
 //        executor.execute(thread);
-        iRestPdfCreateService.createPdfByTemplateIdAsync(accessKey,eprint,data,null);
-        String transactionNo = eprint.getTransactionNo();
+        iRestPdfCreateService.createPdfByTemplateIdAsync(accessKey, rayin, data);
+        String transactionNo = rayin.getTransactionNo();
         Map<String,String> map = new HashMap<>();
         map.put("transactionNo",transactionNo);
         return RestResponse.success(map);
@@ -264,31 +264,6 @@ public class PDFCreatorController {
 //        return RestResponse.success(restPdfCreateService.createPdfByTemplateId(accessKey,eprint,parameter));
 //    }
 
-    /**
-     * 文件核验
-     * @param file
-     * @return
-     */
-    @PostMapping("/pdf/check")
-    @ResponseBody
-    public RestResponse upload(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return RestResponse.failed(BusinessCodeMessage.FAILED);
-        }
-        JSONObject result;
-        try {
-            InputStream inputStream = file.getInputStream();
-            result = iRestPdfCreateService.fileCheck(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-           return RestResponse.failed(BusinessCodeMessage.FAILED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return RestResponse.failed(BusinessCodeMessage.FAILED);
-        }
-        int resCode = result.getInteger("code");
-        return RestResponse.success(result);
-    }
 
     /**
      * 验证某个bean的参数
