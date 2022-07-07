@@ -38,3 +38,4 @@ build/
 /deploy/*.war
 
 
+/rayin-design-server/src/main/resources/application-local.yml
