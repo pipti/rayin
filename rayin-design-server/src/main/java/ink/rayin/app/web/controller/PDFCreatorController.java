@@ -5,27 +5,24 @@ import ink.rayin.app.web.cache.RedisTemplateUtil;
 import ink.rayin.app.web.exception.BusinessCodeMessage;
 import ink.rayin.app.web.model.Rayin;
 import ink.rayin.app.web.model.RestResponse;
+import ink.rayin.app.web.model.UserModel;
 import ink.rayin.app.web.service.IRestPdfCreateService;
+import ink.rayin.app.web.service.ITokenService;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import org.hibernate.validator.HibernateValidator;
-import org.hibernate.validator.HibernateValidatorConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -48,7 +45,8 @@ public class PDFCreatorController {
     IRestPdfCreateService iRestPdfCreateService;
     @Resource
     AsyncConfigurer asyncConfigurer;
-
+    @Resource
+    private ITokenService iTokenService;
     @Resource
     RedisTemplateUtil redisTemplateUtil;
 //    /**
@@ -91,6 +89,16 @@ public class PDFCreatorController {
 //        return RestResponse.success(restPdfCreateService.createPdfByTemplateId(accessKey,eprint,parameter));
 //    }
 
+    @PostMapping(value = "/rayin/token/getToken")
+    public RestResponse<String> getToken(@RequestBody Map<String,String> map) {
+        String accKey = map.get("accessKey");
+        String secretKey = map.get("secretKey");
+        String token = iTokenService.getToken(accKey,secretKey);
+        if (token == null) {
+            return RestResponse.failed(-1,"授权失败");
+        }
+        return RestResponse.success(token);
+    }
 
     /**
      * 项目模板生成接口
@@ -98,11 +106,16 @@ public class PDFCreatorController {
      * @param parameter
      * @return
      */
-    @PostMapping(value = "/org/template/pdf/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RestResponse orgTemplatePdfCreator(@RequestHeader("accessKey") String accessKey,
+    @PostMapping(value = "/rayin/org/template/pdf/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RestResponse orgTemplatePdfCreator(@RequestHeader("rayin-token") String token,
                                               @RequestBody JSONObject parameter) throws Exception {
+
+       UserModel userModel = iTokenService.decodeToken(token);
+
+        String accessKey = userModel.getUsername();
+
         if(StringUtils.isBlank(accessKey)){
-            return RestResponse.failed(BusinessCodeMessage.ACC_KEY_ERROR);
+            return RestResponse.failed(BusinessCodeMessage.TOKEN_FAILED);
         }
 
         JSONObject rayinJson = parameter;
@@ -140,7 +153,7 @@ public class PDFCreatorController {
      * @param parameter
      * @return
      */
-    @PostMapping(value = "/org/template/pdf/air/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/rayin/org/template/pdf/air/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestResponse orgTemplatePdfaAirCreator(@RequestHeader("accessKey") String accessKey,
                                               @RequestBody JSONObject parameter) throws Exception {
         if(StringUtils.isBlank(accessKey)){
@@ -181,7 +194,7 @@ public class PDFCreatorController {
      * @param parameter
      * @return
      */
-    @PostMapping(value = "/org/template/pdf/createAsync", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/rayin/org/template/pdf/createAsync", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestResponse orgTemplatePdfCreatorAsync(@RequestHeader("accessKey") String accessKey,
                                               @RequestBody JSONObject parameter) throws Exception {
         if(StringUtils.isBlank(accessKey)){
