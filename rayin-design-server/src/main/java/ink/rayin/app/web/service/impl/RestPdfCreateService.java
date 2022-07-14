@@ -82,20 +82,26 @@ public class RestPdfCreateService implements IRestPdfCreateService {
     }
     private static int i = 1;
     @Override
-    public Map<String,String> createPdfByTemplateId(String accessKey, Rayin rayin, String body) throws Exception {
+    public Map<String,String> createPdfByTemplateId(String accessKey, Rayin rayin) throws Exception {
         Organization org = organizationMapper.selectOne(new QueryWrapper<Organization>().eq("access_key",accessKey));
                 //.eq("organization_id",ep.getOrganizationId()));
         if(org == null){
             throw RayinBusinessException.buildBizException(BusinessCodeMessage.ACC_KEY_ERROR);
         }
-        if (!iMemoryCapacityService.check(org.getOrganizationId())) {
-            throw RayinBusinessException.buildBizException(BusinessCodeMessage.OUT_OF_MEMORY);
-        }
+//        if (!iMemoryCapacityService.check(org.getOrganizationId())) {
+//            throw RayinBusinessException.buildBizException(BusinessCodeMessage.OUT_OF_MEMORY);
+//        }
         Date today = new Date();
 //        if(uk.getEndTime() != null && uk.getEndTime().compareTo(today) < 0 ){
 //            throw new EPrintException("accessKey已过期！");
 //        }
-        String desStr = DesUtil.decrypt(body,org.getSecretKey());
+        String desStr;
+        if(StringUtils.isBlank(rayin.getData())){
+            desStr = "{}";
+        }else{
+            desStr = DesUtil.decrypt(rayin.getData(), org.getSecretKey());
+        }
+
         JSONObject data = JSONObject.parseObject(desStr);
         UserTemplate userTemplate = null;
 
@@ -251,8 +257,8 @@ public class RestPdfCreateService implements IRestPdfCreateService {
     @TaskDispense(name = "createPdf",taskId = "1")
     @Async
     @Override
-    public void createPdfByTemplateIdAsync(String accessKey, Rayin rayin, String data) throws Exception {
-        createPdfByTemplateId(accessKey, rayin, data);
+    public void createPdfByTemplateIdAsync(String accessKey, Rayin rayin) throws Exception {
+        createPdfByTemplateId(accessKey, rayin);
     }
 
 

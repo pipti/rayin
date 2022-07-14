@@ -119,7 +119,7 @@ public class PDFCreatorController {
         }
 
         JSONObject rayinJson = parameter;
-        String data = parameter.getString("body");
+        //String data = parameter.getString("body");
         if(rayinJson == null){
             //throw new RayinException("参数错误，请确认是否有rayin节点");
             return RestResponse.failed(BusinessCodeMessage.HTTP_BAD_REQUEST.getCode(),"参数错误，请确认是否有rayin节点");
@@ -141,7 +141,7 @@ public class PDFCreatorController {
          "sysId":""
          }*/
         String transactionNo = rayin.getTransactionNo();
-        Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey, rayin, data);
+        Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey, rayin);
 
         map.put("transactionNo",transactionNo);
         return RestResponse.success(map);
@@ -183,7 +183,7 @@ public class PDFCreatorController {
          "sysId":""
          }*/
         String transactionNo = rayin.getTransactionNo();
-        Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey, rayin, data);
+        Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey, rayin);
         map.put("transactionNo",transactionNo);
         return RestResponse.success(map);
     }
@@ -202,7 +202,7 @@ public class PDFCreatorController {
         }
 
         JSONObject rayinJson = parameter;
-        String data = parameter.getString("body");
+        //String data = parameter.getString("data");
         if(rayinJson == null){
             throw new RayinException("参数错误，请确认是否有rayin节点");
         }
@@ -231,7 +231,7 @@ public class PDFCreatorController {
 //            }
 //        });
 //        executor.execute(thread);
-        iRestPdfCreateService.createPdfByTemplateIdAsync(accessKey, rayin, data);
+        iRestPdfCreateService.createPdfByTemplateIdAsync(accessKey, rayin);
         String transactionNo = rayin.getTransactionNo();
         Map<String,String> map = new HashMap<>();
         map.put("transactionNo",transactionNo);
@@ -288,7 +288,7 @@ public class PDFCreatorController {
         Set<ConstraintViolation<T>> set = validator.validate(object);
         StringBuffer s = new StringBuffer(200);
         for (ConstraintViolation<T> constraintViolation : set) {
-            s.append(constraintViolation.getMessage());
+            s.append(constraintViolation.getMessage() + ",");
             // System.out.println(constraintViolation.getMessage());
         }
         return s.toString();

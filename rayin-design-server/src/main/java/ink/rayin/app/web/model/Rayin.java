@@ -1,5 +1,6 @@
 package ink.rayin.app.web.model;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 import javax.validation.constraints.DecimalMax;
@@ -59,4 +60,5 @@ public class Rayin {
     private String email;
     private String contactName;
     private String mediaSwitch;
+    private String data;
 }

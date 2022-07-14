@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -14,6 +15,7 @@ import ink.rayin.app.web.dao.OrganizationMapper;
 import ink.rayin.app.web.model.Organization;
 import ink.rayin.app.web.model.UserModel;
 import ink.rayin.app.web.service.ITokenService;
+import ink.rayin.htmladapter.base.utils.RayinException;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -26,7 +28,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @program: rayin-app-parent
+ * TokenService
  * @description:
  * @author: 作者名字
  * @create: 2020-09-27 11:10
@@ -52,7 +54,7 @@ public class TokenService implements ITokenService {
                 String privateSecretKey = organization.getSecretKey();
 
                 if (accKey.equals(privateAccKey) && secretKey.equals(privateSecretKey)) {
-                    String key = KeyUtil.makeKey("RAYIN-CREATE","-",accKey);
+                    String key = KeyUtil.makeKey("RAYIN-PDFCREATE","-",accKey);
                     String salt = BCrypt.gensalt();
                     UserModel userModelOld = redisTemplateUtil.get(key,UserModel.class);
                     if (userModelOld == null) {
@@ -60,8 +62,8 @@ public class TokenService implements ITokenService {
                         userModel.setId(accKey);
                         userModel.setUsername(accKey);
                         userModel.setPassword(secretKey);
-                        userModel.setSalt(secretKey + salt);
-                        Algorithm algorithm = Algorithm.HMAC256(userModel.getSalt());
+                        userModel.setSalt(salt);
+                        Algorithm algorithm = Algorithm.HMAC256(secretKey + userModel.getSalt());
                         Date date = new Date(System.currentTimeMillis()+3600 * 1000 * 24 * 7);  //设置token过期时间为1小时
                         String token = JWT.create()
                                 .withSubject(userModel.getUsername())
@@ -99,7 +101,7 @@ public class TokenService implements ITokenService {
     public UserModel decodeToken(String token) {
         DecodedJWT decodedJWT =  JWT.decode(token);
         String accessKey = decodedJWT.getClaim("userId").asString();
-        String key = KeyUtil.makeKey("RAYIN-CREATE","-",accessKey);
+        String key = KeyUtil.makeKey("RAYIN-PDFCREATE","-",accessKey);
         UserModel userModelOld = redisTemplateUtil.get(key,UserModel.class);
 
        // String secrtyKey = userModelOld.getPassword();
@@ -108,10 +110,14 @@ public class TokenService implements ITokenService {
        // }
 
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(userModelOld.getPassword() + userModelOld.getSalt())).build();
-        DecodedJWT decodedsJWT = jwtVerifier.verify(token);
 
+        try{
+            DecodedJWT decodedsJWT = jwtVerifier.verify(token);
+            log.debug(JSON.toJSONString(decodedsJWT));
+        }catch(SignatureVerificationException s){
+            throw new RayinException("token认证失败！");
+        }
 
-        log.debug(JSON.toJSONString(decodedsJWT));
         return userModelOld;
        // log.debug(new String(Base64.decode(decodedJWT.getPayload()),"UTF-8"));
         //JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256("!34ADAS")).build();
