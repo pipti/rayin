@@ -15,6 +15,7 @@ import ink.rayin.app.web.dao.OrganizationMapper;
 import ink.rayin.app.web.model.Organization;
 import ink.rayin.app.web.model.UserModel;
 import ink.rayin.app.web.service.ITokenService;
+import ink.rayin.app.web.utils.BaseConstant;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -54,7 +55,7 @@ public class TokenService implements ITokenService {
                 String privateSecretKey = organization.getSecretKey();
 
                 if (accKey.equals(privateAccKey) && secretKey.equals(privateSecretKey)) {
-                    String key = KeyUtil.makeKey("RAYIN-PDFCREATE","-",accKey);
+                    String key = KeyUtil.makeKey(BaseConstant.PDFGEN_TOKEN_KEY,"-",accKey);
                     String salt = BCrypt.gensalt();
                     UserModel userModelOld = redisTemplateUtil.get(key,UserModel.class);
                     if (userModelOld == null) {
@@ -101,7 +102,7 @@ public class TokenService implements ITokenService {
     public UserModel decodeToken(String token) {
         DecodedJWT decodedJWT =  JWT.decode(token);
         String accessKey = decodedJWT.getClaim("userId").asString();
-        String key = KeyUtil.makeKey("RAYIN-PDFCREATE","-",accessKey);
+        String key = KeyUtil.makeKey(BaseConstant.PDFGEN_TOKEN_KEY,"-",accessKey);
         UserModel userModelOld = redisTemplateUtil.get(key,UserModel.class);
 
        // String secrtyKey = userModelOld.getPassword();

@@ -24,5 +24,5 @@ public class BaseConstant {
 
     public static String ENVIRONMENT_CURRENT = "product";
     public static String ENVIRONMENT_KEY = "environment";
-
+    public static String PDFGEN_TOKEN_KEY = "RAYIN-PDFCREATE";
 }
