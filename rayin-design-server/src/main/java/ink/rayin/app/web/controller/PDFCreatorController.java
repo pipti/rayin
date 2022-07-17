@@ -140,10 +140,10 @@ public class PDFCreatorController {
          "callbackUrl":"",
          "sysId":""
          }*/
-        String transactionNo = rayin.getTransactionNo();
+       //String transactionNo = rayin.getTransactionNo();
         Map<String,String> map = iRestPdfCreateService.createPdfByTemplateId(accessKey, rayin);
 
-        map.put("transactionNo",transactionNo);
+        map.put("transactionNo", rayin.getTransactionNo());
         return RestResponse.success(map);
     }
 

@@ -1,6 +1,9 @@
 
 package ink.rayin.app.web.service.impl;
 
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
+import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -16,6 +19,8 @@ import ink.rayin.app.web.dao.UserTemplateMapper;
 import ink.rayin.app.web.exception.BusinessCodeMessage;
 import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.model.*;
+import ink.rayin.app.web.oss.builder.OssBuilder;
+import ink.rayin.app.web.oss.model.RayinFile;
 import ink.rayin.app.web.service.IMemoryCapacityService;
 import ink.rayin.app.web.service.IRestPdfCreateService;
 import ink.rayin.app.web.utils.DecryptUtil;
@@ -25,6 +30,8 @@ import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
 
 import ink.rayin.tools.utils.FileUtil;
+import ink.rayin.tools.utils.StringPool;
+import ink.rayin.tools.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,6 +82,8 @@ public class RestPdfCreateService implements IRestPdfCreateService {
 
     @Value("${rayin.storage.url}")
     String cmsUrl;
+    @Resource
+    private OssBuilder ossBuilder;
 
     @Override
     public void init() throws Exception {
@@ -96,10 +105,13 @@ public class RestPdfCreateService implements IRestPdfCreateService {
 //            throw new EPrintException("accessKey已过期！");
 //        }
         String desStr;
+        byte[] desKey = SecureUtil.generateKey(org.getSecretKey()).getEncoded();
+        SymmetricCrypto des = new SymmetricCrypto(SymmetricAlgorithm.AES, desKey);
         if(StringUtils.isBlank(rayin.getData())){
             desStr = "{}";
         }else{
-            desStr = DesUtil.decrypt(rayin.getData(), org.getSecretKey());
+            desStr = des.decryptStr(rayin.getData());
+                    //DesUtil.decrypt(rayin.getData(), org.getSecretKey());
         }
 
         JSONObject data = JSONObject.parseObject(desStr);
@@ -146,9 +158,9 @@ public class RestPdfCreateService implements IRestPdfCreateService {
         pdfCreateService.generateEncryptPdfStreamByConfigStr(userTemplate.getTplConfig(), data, baos,secretKey);
         Long size = Long.valueOf(baos.toByteArray().length);
 
-        if (!iMemoryCapacityService.checkAndAdd(org.getOrganizationId(),size)) {
-            throw RayinBusinessException.buildBizException(BusinessCodeMessage.OUT_OF_MEMORY);
-        }
+//        if (!iMemoryCapacityService.checkAndAdd(org.getOrganizationId(),size)) {
+//            throw RayinBusinessException.buildBizException(BusinessCodeMessage.OUT_OF_MEMORY);
+//        }
 
 
 //        String filename = "D:/2020118242SG1015005327_15B113E15E42416AB4FB00036225EEC5_unlock.pdf";
@@ -208,6 +220,13 @@ public class RestPdfCreateService implements IRestPdfCreateService {
 
         Map indexMap = createIndexMap(outerIndexMap);
         ByteArrayInputStream inStream = new ByteArrayInputStream(baos.toByteArray());
+
+
+        RayinFile rayinFile = ossBuilder.template().putFile(org.getThirdStorageBucket(),
+                userTemplate.getOrganizationId() + StringPool.SLASH + userTemplate.getTemplateId() + StringPool.SLASH +
+                        StringUtil.randomUUID() + ".pdf",new ByteArrayInputStream(baos.toByteArray()));
+
+
         //报文中的标记
 //        String isDeposit = (String) JSONPath.eval(data,"$.eprint.isDeposit");
 //        String hash = "";
@@ -220,14 +239,16 @@ public class RestPdfCreateService implements IRestPdfCreateService {
 //        }
         //TODO 索引中添加区块链信息
 
-        String transactionNo = rayin.getTransactionNo();
+       // String transactionNo = rayin.getTransactionNo();
         indexMap.put("sys_id", rayin.getSysId());//系统编号
-        indexMap.put("transaction_no", transactionNo); //流水号
+        indexMap.put("transaction_no", rayin.getTransactionNo()); //流水号
         indexMap.put("organization_id",org.getOrganizationId());//项目ID
         indexMap.put("template_id",StringUtils.isBlank(rayin.getTemplateId())?"":rayin.getTemplateId());//模板编号
         indexMap.put("template_alias",StringUtils.isBlank(rayin.getTemplateAlias())?"":rayin.getTemplateAlias());//模板编号
         indexMap.put("template_version",rayin.getTemplateVersion());//模板版本
-        indexMap.put("file_type","pdf");//文件类型
+        //indexMap.put("file_type","pdf");//文件类型
+        indexMap.put("file_attr",rayinFile);
+
         //TODO 异步流程支持质检
         //indexMap.put("quality","true");//是否质检完成
         //indexMap.put("quality_info","");//检质检详情
@@ -251,7 +272,7 @@ public class RestPdfCreateService implements IRestPdfCreateService {
 //        }catch(CmsException e){
 //            throw new RayinBusinessException(e.getMessage());
 //        }
-        return null;
+        return indexMap;
     }
 //
     @TaskDispense(name = "createPdf",taskId = "1")

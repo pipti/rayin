@@ -19,6 +19,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import com.google.gson.Gson;
+import ink.rayin.htmladapter.base.utils.CodeMessage;
+import ink.rayin.htmladapter.base.utils.RayinException;
 import ink.rayin.tools.utils.Charsets;
 import ink.rayin.tools.utils.ResourceUtil;
 import org.slf4j.Logger;
@@ -68,6 +70,7 @@ public class ThymeleafHandler {
         }catch(Exception e){
             r = e.getCause().toString().replace("org.attoparser.ParseException: Exception evaluating OGNL expression:","The Data paraeter error:");
             logger.debug(r);
+            throw new RayinException(CodeMessage.DATA_RESOLVE_FAIL, r, e);
         }
         return r;
     }

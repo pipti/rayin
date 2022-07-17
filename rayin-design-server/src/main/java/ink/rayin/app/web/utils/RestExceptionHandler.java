@@ -3,6 +3,7 @@ package ink.rayin.app.web.utils;
 import ink.rayin.app.web.exception.BusinessCodeMessage;
 import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.model.RestResponse;
+import ink.rayin.htmladapter.base.utils.RayinException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,13 @@ public class RestExceptionHandler
     @ExceptionHandler({RayinBusinessException.class})
     @ResponseBody
     public ResponseEntity<RestResponse> handleException(RayinBusinessException e) {
+        log.error(e.getMessage(),e);
+        return new ResponseEntity(RestResponse.failed(e.getCode(), e.getMessage()), HttpStatus.PRECONDITION_REQUIRED);
+    }
+
+    @ExceptionHandler({RayinException.class})
+    @ResponseBody
+    public ResponseEntity<RestResponse> handleException(RayinException e) {
         log.error(e.getMessage(),e);
         return new ResponseEntity(RestResponse.failed(e.getCode(), e.getMessage()), HttpStatus.PRECONDITION_REQUIRED);
     }

@@ -35,6 +35,7 @@ public enum CodeMessage {
     DATA_FORMAT_ERROR(1000, "数据格式错误"),
     //Error code for ecs business
     BIZ_UNKNOWN_ERROR(600, "非预期错误"),
+    DATA_RESOLVE_FAIL(1001, "数据解析错误"),
     OTHERS(99999, "others error");
     //system code
 

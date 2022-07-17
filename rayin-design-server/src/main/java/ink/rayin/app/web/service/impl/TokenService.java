@@ -5,27 +5,23 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qcloud.cos.utils.Base64;
 import ink.rayin.app.web.cache.KeyUtil;
 import ink.rayin.app.web.cache.RedisTemplateUtil;
 import ink.rayin.app.web.dao.OrganizationMapper;
+import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.model.Organization;
 import ink.rayin.app.web.model.UserModel;
 import ink.rayin.app.web.service.ITokenService;
 import ink.rayin.app.web.utils.BaseConstant;
-import ink.rayin.htmladapter.base.utils.RayinException;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -116,7 +112,7 @@ public class TokenService implements ITokenService {
             DecodedJWT decodedsJWT = jwtVerifier.verify(token);
             log.debug(JSON.toJSONString(decodedsJWT));
         }catch(SignatureVerificationException s){
-            throw new RayinException("token认证失败！");
+            throw new RayinBusinessException("token认证失败！");
         }
 
         return userModelOld;
