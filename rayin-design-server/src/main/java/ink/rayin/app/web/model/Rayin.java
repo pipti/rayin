@@ -61,4 +61,5 @@ public class Rayin {
     private String contactName;
     private String mediaSwitch;
     private String data;
+    private String encryption;
 }

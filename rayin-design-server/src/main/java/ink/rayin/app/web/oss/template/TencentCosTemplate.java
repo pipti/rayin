@@ -28,7 +28,7 @@ import ink.rayin.app.web.oss.model.RayinFile;
 import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.oss.props.OssProperties;
 import ink.rayin.app.web.oss.rule.StoreRule;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -55,7 +55,7 @@ public class TencentCosTemplate implements OssTemplate {
 		if (!bucketExists(bucketName)) {
 			cosClient.createBucket(getBucketName(bucketName));
 			// TODO: 权限是否需要修改为私有，当前为 公有读、私有写
-			cosClient.setBucketAcl(getBucketName(bucketName), CannedAccessControlList.PublicRead);
+			cosClient.setBucketAcl(getBucketName(bucketName), CannedAccessControlList.Private);
 		}
 	}
 
@@ -124,13 +124,13 @@ public class TencentCosTemplate implements OssTemplate {
 	@Override
 	@SneakyThrows
 	public String fileLink(String bucketName, String fileName) {
-		return getOssHost(bucketName).concat(StringPool.SLASH).concat(fileName);
+		return getOssHost(bucketName + "-" + ossProperties.getAppId()).concat(StringPool.SLASH).concat(fileName);
 	}
 
 	@Override
 	public String filePresignedLink(String bucketName, String fileName) {
 		Date expiration = new Date(System.currentTimeMillis() + 3600 * 1000);
-		return cosClient.generatePresignedUrl(bucketName,fileName,expiration).toString();
+		return cosClient.generatePresignedUrl(bucketName + "-" + ossProperties.getAppId(),fileName,expiration).toString();
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class TencentCosTemplate implements OssTemplate {
 	@Override
 	@SneakyThrows
 	public RayinFile putFile(MultipartFile file) {
-		return putFile(ossProperties.getBucketName(), file.getOriginalFilename(), file);
+		return putFile(ossProperties.getBucketName()  + "-" + ossProperties.getAppId(), file.getOriginalFilename(), file);
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class TencentCosTemplate implements OssTemplate {
 			PutObjectResult response = cosClient.putObject(getBucketName(bucketName), key, stream, null);
 			int retry = 0;
 			int retryCount = 5;
-			while (StringUtils.isEmpty(response.getETag()) && retry < retryCount) {
+			while (StringUtils.isBlank(response.getETag()) && retry < retryCount) {
 				response = cosClient.putObject(getBucketName(bucketName), key, stream, null);
 				retry++;
 			}

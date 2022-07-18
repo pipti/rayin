@@ -104,15 +104,21 @@ public class RestPdfCreateService implements IRestPdfCreateService {
 //        if(uk.getEndTime() != null && uk.getEndTime().compareTo(today) < 0 ){
 //            throw new EPrintException("accessKey已过期！");
 //        }
+
         String desStr;
-        byte[] desKey = SecureUtil.generateKey(org.getSecretKey()).getEncoded();
-        SymmetricCrypto des = new SymmetricCrypto(SymmetricAlgorithm.AES, desKey);
-        if(StringUtils.isBlank(rayin.getData())){
-            desStr = "{}";
+        if(StringUtils.isNotBlank(rayin.getEncryption())){
+            byte[] desKey = SecureUtil.generateKey(org.getSecretKey()).getEncoded();
+            SymmetricCrypto des = new SymmetricCrypto(SymmetricAlgorithm.AES, desKey);
+            if(StringUtils.isBlank(rayin.getData())){
+                desStr = "{}";
+            }else{
+                desStr = des.decryptStr(rayin.getData());
+                //DesUtil.decrypt(rayin.getData(), org.getSecretKey());
+            }
         }else{
-            desStr = des.decryptStr(rayin.getData());
-                    //DesUtil.decrypt(rayin.getData(), org.getSecretKey());
+            desStr = rayin.getData();
         }
+
 
         JSONObject data = JSONObject.parseObject(desStr);
         UserTemplate userTemplate = null;
@@ -150,8 +156,6 @@ public class RestPdfCreateService implements IRestPdfCreateService {
             throw RayinBusinessException.buildBizException(BusinessCodeMessage.TEMPLATE_TIME_OUT);
         }
         userTemplate.setTestData(data.toJSONString());
-        userTemplateService.templateGenerate(userTemplate);
-
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         String secretKey = DecryptUtil.encrypt( org.getOrganizationId() + "||" + rayin.getTransactionNo());
