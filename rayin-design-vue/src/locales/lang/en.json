@@ -1,0 +1,62 @@
+{
+    "title": "RAYIN",
+    "confirm": "confirm",
+    "project": "Project",
+    "projectName": "Project Name",
+    "save": "Save",
+    "mainPage": "Main",
+    "help": "Help",
+    "logout": "Logout",
+    "edit": "Edit",
+    "del": "Del",
+    "versionHistory": "Version History",
+    "tips":"Tips",
+    "recycle": "Recycle",
+    "view":"View",
+    "menu": {
+      "guide": "Guide",
+      "elementDesign": "Element Design",
+      "templateSetting": "Template Setting",
+      "fileQueryDownload": "File Query Download",
+      "proofManage": "Proof Manage",
+      "design": "Design"
+    },
+  "elementDesign": {
+    "new": "New Element",
+    "collect": "Collect",
+    "TemplateRelationship": "Template Relationship",
+    "simultaneousRecording": "Simultaneous Recording",
+    "placeholder": {
+      "search": "Search Key"
+    }
+  },
+    "projects": {
+      "del": "Project Del",
+      "storageBucketName":"Storage Bucket Name",
+      "setting": "Setting",
+      "check": {
+        "addProject": "please add project first!",
+        "delConfirm": "Del Confirm"
+      },
+      "placeholder": {
+        "inputProjectName": "please insert project name",
+        "acccessKey": "automatically generated after saving",
+        "secretKey": "automatically generated after saving",
+        "pdfBucket": "please set pdf bucket name"
+      }
+    },
+    "login":{
+      "signUp": "Sign Up",
+      "signIn": "Sign In",
+      "placeholder": {
+        "inputUserName": "user name",
+        "inputPass": "password",
+        "inputCode": "verify code"
+      },
+      "check": {
+        "inputUserName": "please input user name",
+        "inputPass": "please input password",
+        "inputCode": "please input verify code"
+      }
+    }
+  }
