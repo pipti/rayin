@@ -65,6 +65,7 @@ public class HuaweiObsTemplate implements OssTemplate {
 		StoreFile ossFile = new StoreFile();
 		ossFile.setName(fileName);
 		ossFile.setLink(fileLink(ossFile.getName()));
+		ossFile.setPresignedLin(filePresignedLink(bucketName, fileName));
 		ossFile.setHash(stat.getContentMd5());
 		ossFile.setLength(stat.getContentLength());
 		ossFile.setPutTime(stat.getLastModified());
@@ -99,28 +100,28 @@ public class HuaweiObsTemplate implements OssTemplate {
 	}
 
 	@Override
-	public RayinFile putFile(MultipartFile file) {
+	public StoreFile putFile(MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), file.getOriginalFilename(), file);
 	}
 
 	@Override
-	public RayinFile putFile(String fileName, MultipartFile file) {
+	public StoreFile putFile(String fileName, MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), fileName, file);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String bucketName, String fileName, MultipartFile file) {
+	public StoreFile putFile(String bucketName, String fileName, MultipartFile file) {
 		return putFile(bucketName, fileName, file.getInputStream());
 	}
 
 	@Override
-	public RayinFile putFile(String fileName, InputStream stream) {
+	public StoreFile putFile(String fileName, InputStream stream) {
 		return putFile(ossProperties.getBucketName(), fileName, stream);
 	}
 
 	@Override
-	public RayinFile putFile(String bucketName, String fileName, InputStream stream) {
+	public StoreFile putFile(String bucketName, String fileName, InputStream stream) {
 		return put(bucketName, stream, fileName, false);
 	}
 
@@ -159,7 +160,7 @@ public class HuaweiObsTemplate implements OssTemplate {
 	 * @return
 	 */
 	@SneakyThrows
-	public RayinFile put(String bucketName, InputStream stream, String key, boolean cover) {
+	public StoreFile put(String bucketName, InputStream stream, String key, boolean cover) {
 		makeBucket(bucketName);
 
 		String originalName = key;
@@ -179,11 +180,7 @@ public class HuaweiObsTemplate implements OssTemplate {
 			}
 		}
 
-		RayinFile file = new RayinFile();
-		file.setOriginalName(originalName);
-		file.setName(key);
-		file.setLink(fileLink(bucketName, key));
-		file.setPresignedLink(filePresignedLink(bucketName, key));
+		StoreFile file = statFile(bucketName, key);
 		return file;
 	}
 

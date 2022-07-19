@@ -56,6 +56,7 @@ public class QiniuTemplate implements OssTemplate {
 	@SneakyThrows
 	public void makeBucket(String bucketName) {
 		if (!CollectionUtil.contains(bucketManager.buckets(), getBucketName(bucketName))) {
+			//TODO 默认为公开
 			bucketManager.createBucket(getBucketName(bucketName), Zone.autoZone().getRegion());
 		}
 	}
@@ -96,7 +97,8 @@ public class QiniuTemplate implements OssTemplate {
 		FileInfo stat = bucketManager.stat(getBucketName(bucketName), fileName);
 		StoreFile ossFile = new StoreFile();
 		ossFile.setName(Func.isEmpty(stat.key) ? fileName : stat.key);
-		ossFile.setLink(fileLink(ossFile.getName()));
+		ossFile.setLink(fileLink(bucketName, fileName));
+		ossFile.setPresignedLin(filePresignedLink(bucketName, fileName));
 		ossFile.setHash(stat.hash);
 		ossFile.setLength(stat.fsize);
 		ossFile.setPutTime(new Date(stat.putTime / 10000));
@@ -125,14 +127,14 @@ public class QiniuTemplate implements OssTemplate {
 	@Override
 	@SneakyThrows
 	public String fileLink(String bucketName, String fileName) {
-		return ossProperties.getEndpoint().concat(StringPool.SLASH).concat(fileName);
+		return bucketManager.domainList(bucketName)[0].concat(StringPool.SLASH).concat(fileName);
 	}
 
 	@Override
 	@SneakyThrows
 	public String filePresignedLink(String bucketName, String fileName) {
 		String encodedFileName = URLEncoder.encode(fileName, "utf-8").replace("+", "%20");
-		String publicUrl = String.format("%s/%s", ossProperties.getEndpoint(), encodedFileName);
+		String publicUrl = String.format("%s/%s", bucketManager.domainList(bucketName)[0], encodedFileName);
 		//1小时，可以自定义链接过期时间
 		long expireInSeconds = 3600;
 		return auth.privateDownloadUrl(publicUrl, expireInSeconds);
@@ -140,36 +142,36 @@ public class QiniuTemplate implements OssTemplate {
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(MultipartFile file) {
+	public StoreFile putFile(MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), file.getOriginalFilename(), file);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String fileName, MultipartFile file) {
+	public StoreFile putFile(String fileName, MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), fileName, file);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String bucketName, String fileName, MultipartFile file) {
+	public StoreFile putFile(String bucketName, String fileName, MultipartFile file) {
 		return putFile(bucketName, fileName, file.getInputStream());
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String fileName, InputStream stream) {
+	public StoreFile putFile(String fileName, InputStream stream) {
 		return putFile(ossProperties.getBucketName(), fileName, stream);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String bucketName, String fileName, InputStream stream) {
+	public StoreFile putFile(String bucketName, String fileName, InputStream stream) {
 		return put(bucketName, stream, fileName, false);
 	}
 
 	@SneakyThrows
-	public RayinFile put(String bucketName, InputStream stream, String key, boolean cover) {
+	public StoreFile put(String bucketName, InputStream stream, String key, boolean cover) {
 		makeBucket(bucketName);
 		String originalName = key;
 		key = getFileName(key);
@@ -185,12 +187,7 @@ public class QiniuTemplate implements OssTemplate {
 				retry++;
 			}
 		}
-		RayinFile file = new RayinFile();
-		file.setOriginalName(originalName);
-		file.setName(key);
-		file.setDomain(getOssHost());
-		file.setLink(fileLink(bucketName, key));
-		file.setPresignedLink(filePresignedLink(bucketName, key));
+		StoreFile file = statFile(bucketName, key);
 		return file;
 	}
 

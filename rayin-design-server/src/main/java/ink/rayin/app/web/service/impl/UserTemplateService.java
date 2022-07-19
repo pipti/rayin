@@ -12,7 +12,7 @@ import ink.rayin.app.web.dao.*;
 import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.model.*;
 import ink.rayin.app.web.oss.builder.OssBuilder;
-import ink.rayin.app.web.oss.model.RayinFile;
+import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.service.IUserTemplateService;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.model.tplconfig.Element;
@@ -396,7 +396,7 @@ public class UserTemplateService implements IUserTemplateService {
 		if(StringUtils.isBlank(userOrg.getThirdStorageBucket())){
 			throw new RayinBusinessException("请在项目中设置存储桶名称！");
 		}
-		RayinFile rayinFile = ossBuilder.template().putFile(userOrg.getThirdStorageBucket(),
+		StoreFile rayinFile = ossBuilder.template().putFile(userOrg.getThirdStorageBucket(),
 				ut.getOrganizationId() + StringPool.SLASH + ut.getTemplateId() + StringPool.SLASH +
 						StringUtil.randomUUID() + ".pdf",new ByteArrayInputStream(baos.toByteArray()));
 		return JSON.parseObject(JSON.toJSONString(rayinFile));

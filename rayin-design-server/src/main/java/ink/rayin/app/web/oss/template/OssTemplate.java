@@ -139,7 +139,7 @@ public interface OssTemplate {
 	 * @param file 上传文件类
 	 * @return BladeFile
 	 */
-	RayinFile putFile(MultipartFile file);
+	StoreFile putFile(MultipartFile file);
 
 	/**
 	 * 上传文件
@@ -148,7 +148,7 @@ public interface OssTemplate {
 	 * @param fileName 上传文件名
 	 * @return BladeFile
 	 */
-	RayinFile putFile(String fileName, MultipartFile file);
+	StoreFile putFile(String fileName, MultipartFile file);
 
 	/**
 	 * 上传文件
@@ -158,7 +158,7 @@ public interface OssTemplate {
 	 * @param file       上传文件类
 	 * @return BladeFile
 	 */
-	RayinFile putFile(String bucketName, String fileName, MultipartFile file);
+	StoreFile putFile(String bucketName, String fileName, MultipartFile file);
 
 	/**
 	 * 上传文件
@@ -167,7 +167,7 @@ public interface OssTemplate {
 	 * @param stream   文件流
 	 * @return BladeFile
 	 */
-	RayinFile putFile(String fileName, InputStream stream);
+	StoreFile putFile(String fileName, InputStream stream);
 
 	/**
 	 * 上传文件
@@ -177,7 +177,7 @@ public interface OssTemplate {
 	 * @param stream     文件流
 	 * @return BladeFile
 	 */
-	RayinFile putFile(String bucketName, String fileName, InputStream stream);
+	StoreFile putFile(String bucketName, String fileName, InputStream stream);
 
 	/**
 	 * 删除文件

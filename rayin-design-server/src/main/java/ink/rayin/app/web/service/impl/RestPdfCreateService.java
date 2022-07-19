@@ -20,7 +20,7 @@ import ink.rayin.app.web.exception.BusinessCodeMessage;
 import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.model.*;
 import ink.rayin.app.web.oss.builder.OssBuilder;
-import ink.rayin.app.web.oss.model.RayinFile;
+import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.service.IMemoryCapacityService;
 import ink.rayin.app.web.service.IRestPdfCreateService;
 import ink.rayin.app.web.utils.DecryptUtil;
@@ -225,8 +225,7 @@ public class RestPdfCreateService implements IRestPdfCreateService {
         Map indexMap = createIndexMap(outerIndexMap);
         ByteArrayInputStream inStream = new ByteArrayInputStream(baos.toByteArray());
 
-
-        RayinFile rayinFile = ossBuilder.template().putFile(org.getThirdStorageBucket(),
+        StoreFile rayinFile = ossBuilder.template().putFile(org.getThirdStorageBucket(),
                 userTemplate.getOrganizationId() + StringPool.SLASH + userTemplate.getTemplateId() + StringPool.SLASH +
                         StringUtil.randomUUID() + ".pdf",new ByteArrayInputStream(baos.toByteArray()));
 

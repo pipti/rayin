@@ -74,11 +74,24 @@ rayin:
         #宽度
         width: 100
   font-path: /Users/eric/Library/Fonts
+
 oss:
-  name: aliyunoss
-  endpoint: oss-cn-beijing.aliyuncs.com
-  accessKey: xx
-  secretKey: xx
-  # 腾讯需要
-  # appId:
-  # region:
+  # 阿里云
+  #  name: aliyunoss
+  #  endpoint: oss-cn-beijing.aliyuncs.com
+  #  accessKey: xxx
+  #  secretKey: xxx
+
+  # 腾讯云需要
+  #  name: tencentcos
+  #  appId: xxx
+  #  region: ap-beijing
+  #  endpoint: xxx.cos.ap-beijing.myqcloud.com
+  #  accessKey: xxx
+  #  secretKey: xxx
+
+  # minio 注意端口是api端口默认9000，不是控制台端口
+  name: minio
+  endpoint: http://ip:9000
+  accessKey: xxx
+  secretKey: xxx

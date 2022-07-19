@@ -96,6 +96,7 @@ public class TencentCosTemplate implements OssTemplate {
 		StoreFile ossFile = new StoreFile();
 		ossFile.setName(fileName);
 		ossFile.setLink(fileLink(ossFile.getName()));
+		ossFile.setPresignedLin(filePresignedLink(bucketName, fileName));
 		ossFile.setHash(stat.getContentMD5());
 		ossFile.setLength(stat.getContentLength());
 		ossFile.setPutTime(stat.getLastModified());
@@ -141,7 +142,7 @@ public class TencentCosTemplate implements OssTemplate {
 	 */
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(MultipartFile file) {
+	public StoreFile putFile(MultipartFile file) {
 		return putFile(ossProperties.getBucketName()  + "-" + ossProperties.getAppId(), file.getOriginalFilename(), file);
 	}
 
@@ -152,30 +153,30 @@ public class TencentCosTemplate implements OssTemplate {
 	 */
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String fileName, MultipartFile file) {
+	public StoreFile putFile(String fileName, MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), fileName, file);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String bucketName, String fileName, MultipartFile file) {
+	public StoreFile putFile(String bucketName, String fileName, MultipartFile file) {
 		return putFile(bucketName, fileName, file.getInputStream());
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String fileName, InputStream stream) {
+	public StoreFile putFile(String fileName, InputStream stream) {
 		return putFile(ossProperties.getBucketName(), fileName, stream);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String bucketName, String fileName, InputStream stream) {
+	public StoreFile putFile(String bucketName, String fileName, InputStream stream) {
 		return put(bucketName, stream, fileName, false);
 	}
 
 	@SneakyThrows
-	public RayinFile put(String bucketName, InputStream stream, String key, boolean cover) {
+	public StoreFile put(String bucketName, InputStream stream, String key, boolean cover) {
 		makeBucket(bucketName);
 		String originalName = key;
 		key = getFileName(key);
@@ -191,12 +192,7 @@ public class TencentCosTemplate implements OssTemplate {
 				retry++;
 			}
 		}
-		RayinFile file = new RayinFile();
-		file.setOriginalName(originalName);
-		file.setName(key);
-		file.setDomain(getOssHost(bucketName));
-		file.setLink(fileLink(bucketName, key));
-		file.setPresignedLink(filePresignedLink(bucketName, key));
+		StoreFile file = statFile(bucketName, key);
 		return file;
 	}
 

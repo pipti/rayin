@@ -144,6 +144,7 @@ public class MinioTemplate implements OssTemplate {
 		StoreFile ossFile = new StoreFile();
 		ossFile.setName(Func.isEmpty(stat.object()) ? fileName : stat.object());
 		ossFile.setLink(fileLink(ossFile.getName()));
+		ossFile.setPresignedLin(filePresignedLink(bucketName, fileName));
 		ossFile.setHash(String.valueOf(stat.hashCode()));
 		ossFile.setLength(stat.size());
 		ossFile.setPutTime(DateUtil.toDate(stat.lastModified().toLocalDateTime()));
@@ -177,42 +178,42 @@ public class MinioTemplate implements OssTemplate {
 	@SneakyThrows
 	public String filePresignedLink(String bucketName, String fileName) {
 		GetPresignedObjectUrlArgs getPresignedObjectUrlArgs =
-		GetPresignedObjectUrlArgs.builder().expiry(3600 * 1000).object(fileName).bucket(bucketName).build();
+		GetPresignedObjectUrlArgs.builder().expiry(60 * 60 * 24).object(fileName).bucket(bucketName).method(Method.GET).build();
 		return client.getPresignedObjectUrl(getPresignedObjectUrlArgs);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(MultipartFile file) {
+	public StoreFile putFile(MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), file.getOriginalFilename(), file);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String fileName, MultipartFile file) {
+	public StoreFile putFile(String fileName, MultipartFile file) {
 		return putFile(ossProperties.getBucketName(), fileName, file);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String bucketName, String fileName, MultipartFile file) {
+	public StoreFile putFile(String bucketName, String fileName, MultipartFile file) {
 		return putFile(bucketName, file.getOriginalFilename(), file.getInputStream());
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String fileName, InputStream stream) {
+	public StoreFile putFile(String fileName, InputStream stream) {
 		return putFile(ossProperties.getBucketName(), fileName, stream);
 	}
 
 	@Override
 	@SneakyThrows
-	public RayinFile putFile(String bucketName, String fileName, InputStream stream) {
+	public StoreFile putFile(String bucketName, String fileName, InputStream stream) {
 		return putFile(bucketName, fileName, stream, "application/octet-stream");
 	}
 
 	@SneakyThrows
-	public RayinFile putFile(String bucketName, String fileName, InputStream stream, String contentType) {
+	public StoreFile putFile(String bucketName, String fileName, InputStream stream, String contentType) {
 		makeBucket(bucketName);
 		String originalName = fileName;
 		fileName = getFileName(fileName);
@@ -224,11 +225,7 @@ public class MinioTemplate implements OssTemplate {
 				.contentType(contentType)
 				.build()
 		);
-		RayinFile file = new RayinFile();
-		file.setOriginalName(originalName);
-		file.setName(fileName);
-		file.setDomain(getOssHost(bucketName));
-		file.setLink(fileLink(bucketName, fileName));
+		StoreFile file = statFile(bucketName, fileName);
 		return file;
 	}
 
