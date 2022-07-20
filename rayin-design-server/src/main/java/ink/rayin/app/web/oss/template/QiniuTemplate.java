@@ -127,14 +127,14 @@ public class QiniuTemplate implements OssTemplate {
 	@Override
 	@SneakyThrows
 	public String fileLink(String bucketName, String fileName) {
-		return bucketManager.domainList(bucketName)[0].concat(StringPool.SLASH).concat(fileName);
+		return "http://" + bucketManager.domainList(bucketName)[0].concat(StringPool.SLASH).concat(fileName);
 	}
 
 	@Override
 	@SneakyThrows
 	public String filePresignedLink(String bucketName, String fileName) {
 		String encodedFileName = URLEncoder.encode(fileName, "utf-8").replace("+", "%20");
-		String publicUrl = String.format("%s/%s", bucketManager.domainList(bucketName)[0], encodedFileName);
+		String publicUrl = String.format("%s/%s", "http://" + bucketManager.domainList(bucketName)[0], encodedFileName);
 		//1小时，可以自定义链接过期时间
 		long expireInSeconds = 3600;
 		return auth.privateDownloadUrl(publicUrl, expireInSeconds);
