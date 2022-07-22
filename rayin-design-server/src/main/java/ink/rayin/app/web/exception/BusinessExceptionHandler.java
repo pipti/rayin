@@ -24,4 +24,14 @@ public class BusinessExceptionHandler {
         return RestResponse.failed(code, ex.getMessage());
     }
 
+    @ExceptionHandler({Exception.class})
+    @ResponseBody
+    public RestResponse<?> handlerException(Exception ex) {
+        log.info("[全局业务异常]\r\n业务编码：{}\r\n异常记录：{}","", ex.getMessage());
+        //int code = ex.getCode();
+//        if(ex.getCode() == 0){
+//            code = -1;
+//        }
+        return RestResponse.failed(BusinessCodeMessage.OTHERS.getCode(), ex.getMessage());
+    }
 }

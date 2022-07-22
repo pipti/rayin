@@ -54,6 +54,7 @@ public class TokenService implements ITokenService {
                     String key = KeyUtil.makeKey(BaseConstant.PDFGEN_TOKEN_KEY,"-",accKey);
                     String salt = BCrypt.gensalt();
                     UserModel userModelOld = redisTemplateUtil.get(key,UserModel.class);
+
                     if (userModelOld == null) {
                         UserModel userModel = new UserModel();
                         userModel.setId(accKey);
@@ -69,7 +70,7 @@ public class TokenService implements ITokenService {
                                 .withIssuedAt(new Date())
                                 .sign(algorithm);
                         userModel.setToken(token);
-                        boolean success = redisTemplateUtil.set(key,userModel);
+                        boolean success = redisTemplateUtil.set(key, userModel, new Long(3600 * 1000 * 24 * 7));
                         if (success) {
                             return token;
                         }

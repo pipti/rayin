@@ -2,6 +2,7 @@ package ink.rayin.app.web.oss.template;
 
 import com.obs.services.ObsClient;
 import com.obs.services.model.ObjectMetadata;
+import com.obs.services.model.ObsBucket;
 import com.obs.services.model.PutObjectResult;
 import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.utils.StringPool;
@@ -30,7 +31,11 @@ public class HuaweiObsTemplate implements OssTemplate {
 	@Override
 	public void makeBucket(String bucketName) {
 		if (!bucketExists(bucketName)) {
-			obsClient.createBucket(getBucketName(bucketName));
+			//ObsBucket obsBucket = new ObsBucket();
+			//obsBucket.setBucketName(getBucketName(bucketName));
+			//obsClient.createBucket(obsBucket);
+			ObsBucket response = obsClient.createBucket(bucketName);
+
 		}
 	}
 
