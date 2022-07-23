@@ -95,3 +95,11 @@ oss:
   endpoint: http://ip:9000
   accessKey: xxx
   secretKey: xxx
+
+
+  # 华为obs region默认为cn-north-1
+#  name: huaweiobs
+#  region: cn-north-4
+#  endpoint: https://obs.cn-north-4.myhuaweicloud.com
+#  accessKey: xxx
+#  secretKey: xxx
