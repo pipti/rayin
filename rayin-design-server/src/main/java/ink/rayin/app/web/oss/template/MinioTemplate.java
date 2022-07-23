@@ -24,6 +24,7 @@ import io.minio.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.DeleteObject;
+import io.minio.messages.Item;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ink.rayin.app.web.oss.enums.PolicyType;
@@ -257,7 +258,20 @@ public class MinioTemplate implements OssTemplate {
 	}
 
 	@Override
+	@SneakyThrows
 	public RayinFiles getFileList(String bucketName, String keyPrefix) {
+		Iterable<Result<Item>> results =
+				client.listObjects(
+						ListObjectsArgs.builder()
+								.bucket(bucketName)
+								.startAfter("/")
+								.prefix(keyPrefix)
+								.maxKeys(100)
+								.build());
+		for (Result<Item> result : results) {
+			Item item = result.get();
+			System.out.println(item.lastModified() + "\t" + item.size() + "\t" + item.objectName());
+		}
 		return null;
 	}
 

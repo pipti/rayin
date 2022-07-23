@@ -16,10 +16,11 @@
  */
 package ink.rayin.app.web.oss.template;
 
+import com.obs.services.model.ObsObject;
 import com.qcloud.cos.COSClient;
-import com.qcloud.cos.model.CannedAccessControlList;
-import com.qcloud.cos.model.ObjectMetadata;
-import com.qcloud.cos.model.PutObjectResult;
+import com.qcloud.cos.exception.CosClientException;
+import com.qcloud.cos.exception.CosServiceException;
+import com.qcloud.cos.model.*;
 import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.utils.StringPool;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -222,7 +224,67 @@ public class TencentCosTemplate implements OssTemplate {
 
 	@Override
 	public RayinFiles getFileList(String bucketName, String keyPrefix) {
-		return null;
+		// Bucket的命名格式为 BucketName-APPID ，此处填写的存储桶名称必须为此格式
+		//String bucketName = "examplebucket-1250000000";
+		ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
+		// 设置bucket名称
+		listObjectsRequest.setBucketName(bucketName);
+		// prefix表示列出的object的key以prefix开始
+		listObjectsRequest.setPrefix(keyPrefix);
+		// deliter表示分隔符, 设置为/表示列出当前目录下的object, 设置为空表示列出所有的object
+		listObjectsRequest.setDelimiter("/");
+		// 设置最大遍历出多少个对象, 一次listobject最大支持1000
+		listObjectsRequest.setMaxKeys(1000);
+		ObjectListing objectListing = null;
+	//	do {
+
+			objectListing = cosClient.listObjects(listObjectsRequest);
+
+			// common prefix表示表示被delimiter截断的路径, 如delimter设置为/, common prefix则表示所有子目录的路径
+			List<String> commonPrefixs = objectListing.getCommonPrefixes();
+
+			// object summary表示所有列出的object列表
+			List<COSObjectSummary> cosObjectSummaries = objectListing.getObjectSummaries();
+//			for (COSObjectSummary cosObjectSummary : cosObjectSummaries) {
+//				// 文件的路径key
+//				String key = cosObjectSummary.getKey();
+//				// 文件的etag
+//				String etag = cosObjectSummary.getETag();
+//				// 文件的长度
+//				long fileSize = cosObjectSummary.getSize();
+//				// 文件的存储类型
+//				String storageClasses = cosObjectSummary.getStorageClass();
+//			}
+
+		//	String nextMarker = objectListing.getNextMarker();
+		//	listObjectsRequest.setMarker(nextMarker);
+		//} while (objectListing.isTruncated());
+
+
+
+		List<RayinFile> files = new ArrayList<>();
+		RayinFiles rayinFiles =  new RayinFiles();
+		RayinFile rayinFile;
+		for (COSObjectSummary cosObjectSummary : cosObjectSummaries) {
+			rayinFile = new RayinFile();
+			rayinFile.setName(cosObjectSummary.getKey().substring(cosObjectSummary.getKey().lastIndexOf(StringPool.SLASH)));
+			rayinFile.setPutTime(cosObjectSummary.getLastModified());
+			rayinFile.setLength(cosObjectSummary.getSize());
+			rayinFile.setPresignedLink(filePresignedLink(bucketName,cosObjectSummary.getKey()));
+			rayinFile.setFileType(cosObjectSummary.getStorageClass());
+			files.add(rayinFile);
+		}
+		for (String commonPrefix : objectListing.getCommonPrefixes()) {
+			rayinFile = new RayinFile();
+			rayinFile.setName(commonPrefix.substring(keyPrefix.length()));
+			rayinFile.setFileType("doc");
+			rayinFile.setPrefix(keyPrefix);
+			files.add(rayinFile);
+		}
+
+		rayinFiles.setPrefix(keyPrefix);
+		rayinFiles.setFileList(files);
+		return rayinFiles;
 	}
 
 	/**

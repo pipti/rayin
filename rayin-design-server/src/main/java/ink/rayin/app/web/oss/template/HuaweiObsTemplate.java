@@ -1,5 +1,6 @@
 package ink.rayin.app.web.oss.template;
 
+import com.aliyun.oss.model.OSSObjectSummary;
 import com.obs.services.ObsClient;
 import com.obs.services.model.*;
 import ink.rayin.app.web.oss.model.RayinFiles;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -168,7 +170,36 @@ public class HuaweiObsTemplate implements OssTemplate {
 
 	@Override
 	public RayinFiles getFileList(String bucketName, String keyPrefix) {
-		return null;
+		ListObjectsRequest listObjectsRequest = new ListObjectsRequest(bucketName);
+		listObjectsRequest.setPrefix(keyPrefix);
+		listObjectsRequest.setDelimiter("/");
+		ObjectListing objectListing  ;
+
+		objectListing = obsClient.listObjects(listObjectsRequest);
+
+		List<RayinFile> files = new ArrayList<>();
+		RayinFiles rayinFiles =  new RayinFiles();
+		RayinFile rayinFile;
+		for (ObsObject object : objectListing.getObjects()) {
+			rayinFile = new RayinFile();
+			rayinFile.setName(object.getObjectKey().substring(object.getObjectKey().lastIndexOf(StringPool.SLASH)));
+			rayinFile.setPutTime(object.getMetadata().getLastModified());
+			rayinFile.setLength(object.getMetadata().getContentLength());
+			rayinFile.setPresignedLink(filePresignedLink(bucketName,object.getObjectKey()));
+			rayinFile.setFileType(object.getMetadata().getContentType());
+			files.add(rayinFile);
+		}
+		for (String commonPrefix : objectListing.getCommonPrefixes()) {
+			rayinFile = new RayinFile();
+			rayinFile.setName(commonPrefix.substring(keyPrefix.length()));
+			rayinFile.setFileType("doc");
+			rayinFile.setPrefix(keyPrefix);
+			files.add(rayinFile);
+		}
+
+		rayinFiles.setPrefix(keyPrefix);
+		rayinFiles.setFileList(files);
+		return rayinFiles;
 	}
 
 	/**
