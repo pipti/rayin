@@ -98,7 +98,7 @@ public class QiniuTemplate implements OssTemplate {
 		StoreFile ossFile = new StoreFile();
 		ossFile.setName(Func.isEmpty(stat.key) ? fileName : stat.key);
 		ossFile.setLink(fileLink(bucketName, fileName));
-		ossFile.setPresignedLin(filePresignedLink(bucketName, fileName));
+		ossFile.setPresignedLink(filePresignedLink(bucketName, fileName));
 		ossFile.setHash(stat.hash);
 		ossFile.setLength(stat.fsize);
 		ossFile.setPutTime(new Date(stat.putTime / 10000));

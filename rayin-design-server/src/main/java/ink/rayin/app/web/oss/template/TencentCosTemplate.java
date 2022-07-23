@@ -96,7 +96,7 @@ public class TencentCosTemplate implements OssTemplate {
 		StoreFile ossFile = new StoreFile();
 		ossFile.setName(fileName);
 		ossFile.setLink(fileLink(ossFile.getName()));
-		ossFile.setPresignedLin(filePresignedLink(bucketName, fileName));
+		ossFile.setPresignedLink(filePresignedLink(bucketName, fileName));
 		ossFile.setHash(stat.getContentMD5());
 		ossFile.setLength(stat.getContentLength());
 		ossFile.setPutTime(stat.getLastModified());

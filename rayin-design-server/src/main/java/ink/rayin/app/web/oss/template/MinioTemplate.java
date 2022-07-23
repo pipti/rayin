@@ -144,7 +144,7 @@ public class MinioTemplate implements OssTemplate {
 		StoreFile ossFile = new StoreFile();
 		ossFile.setName(Func.isEmpty(stat.object()) ? fileName : stat.object());
 		ossFile.setLink(fileLink(ossFile.getName()));
-		ossFile.setPresignedLin(filePresignedLink(bucketName, fileName));
+		ossFile.setPresignedLink(filePresignedLink(bucketName, fileName));
 		ossFile.setHash(String.valueOf(stat.hashCode()));
 		ossFile.setLength(stat.size());
 		ossFile.setPutTime(DateUtil.toDate(stat.lastModified().toLocalDateTime()));

@@ -1,9 +1,7 @@
 package ink.rayin.app.web.oss.template;
 
 import com.obs.services.ObsClient;
-import com.obs.services.model.ObjectMetadata;
-import com.obs.services.model.ObsBucket;
-import com.obs.services.model.PutObjectResult;
+import com.obs.services.model.*;
 import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.utils.StringPool;
 import lombok.AllArgsConstructor;
@@ -12,11 +10,13 @@ import ink.rayin.app.web.oss.model.RayinFile;
 import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.oss.props.OssProperties;
 import ink.rayin.app.web.oss.rule.StoreRule;
+import okhttp3.Request;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Tonny
@@ -31,11 +31,18 @@ public class HuaweiObsTemplate implements OssTemplate {
 	@Override
 	public void makeBucket(String bucketName) {
 		if (!bucketExists(bucketName)) {
-			//ObsBucket obsBucket = new ObsBucket();
-			//obsBucket.setBucketName(getBucketName(bucketName));
-			//obsClient.createBucket(obsBucket);
-			ObsBucket response = obsClient.createBucket(bucketName);
+			CreateBucketRequest request = new CreateBucketRequest();
+			request.setBucketName(bucketName);
+			// 设置桶访问权限为公共读，默认是私有读写
+			request.setAcl(AccessControlList.REST_CANNED_PRIVATE);
+			// 设置桶的存储类型为归档存储
+			request.setBucketStorageClass(StorageClassEnum.STANDARD);
+			// 设置桶区域位置
+			request.setLocation(ossProperties.getRegion());
+			// 指定创建多AZ桶，如果不设置，默认创建单AZ桶
+			request.setAvailableZone(AvailableZoneEnum.MULTI_AZ);
 
+			obsClient.createBucket(request);
 		}
 	}
 
@@ -70,7 +77,7 @@ public class HuaweiObsTemplate implements OssTemplate {
 		StoreFile ossFile = new StoreFile();
 		ossFile.setName(fileName);
 		ossFile.setLink(fileLink(ossFile.getName()));
-		ossFile.setPresignedLin(filePresignedLink(bucketName, fileName));
+		ossFile.setPresignedLink(filePresignedLink(bucketName, fileName));
 		ossFile.setHash(stat.getContentMd5());
 		ossFile.setLength(stat.getContentLength());
 		ossFile.setPutTime(stat.getLastModified());
@@ -101,7 +108,16 @@ public class HuaweiObsTemplate implements OssTemplate {
 	@Override
 	@SneakyThrows
 	public String filePresignedLink(String bucketName, String fileName) {
-		return null;
+		long expireSeconds = 3600L;
+		TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
+		request.setBucketName(bucketName);
+		request.setObjectKey(fileName);
+		TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
+//		Request.Builder builder = new Request.Builder();
+//		for (Map.Entry<String, String> entry : response.getActualSignedRequestHeaders().entrySet()) {
+//			builder.header(entry.getKey(), entry.getValue());
+//		}
+		return response.getSignedUrl();
 	}
 
 	@Override

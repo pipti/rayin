@@ -19,6 +19,7 @@ public enum BusinessCodeMessage {
     HTTP_READ_RESP_ERROR(501, "HTTP读取response失败"),
     HTTP_INIT_CLIENT_ERROR(502, "PoolingHttpClientConnectionManager初始化失败"),
     HTTP_FORWARD_SERVER_ERROR(503, "微服务转发错误"),
+    HTTP_SERVER_INIT_ERROR(504, "服务器对象存储初始化参数错误！"),
     //Error code for ecs business
     BIZ_UNKNOWN_ERROR(600, "非预期错误"),
     AUTH_EXPIRE(601, "登录过期，请重新登录"),

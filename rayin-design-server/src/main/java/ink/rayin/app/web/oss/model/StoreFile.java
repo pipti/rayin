@@ -35,7 +35,7 @@ public class StoreFile {
 	/**
 	 * 文件签名地址
 	 */
-	private String presignedLin;
+	private String presignedLink;
 
 	/**
 	 * 文件名

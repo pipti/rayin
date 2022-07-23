@@ -31,8 +31,10 @@ public class HuaweiObsBuilder {
 		// 设置失败请求重试次数，默认为3次。
 		conf.setMaxErrorRetry(5);
 		conf.setEndPoint(ossProperties.getEndpoint());
+
 		// 创建客户端
 		ObsClient obsClient = new ObsClient(ossProperties.getAccessKey(),ossProperties.getSecretKey(), conf);
+
 		return new HuaweiObsTemplate(obsClient, ossProperties, ossRule);
 	}
 
