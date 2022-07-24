@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2030, Janah Wang 王柱 (carefreefly@163.com).
+ * Copyright (c) 2022-2030, Janah Wang 王柱 (wangzhu@cityape.tech).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -517,12 +517,9 @@ public class PdfBoxGenerator implements PdfGenerator {
     @Override
     public String htmlFileDataFilling(String htmlLocation, JSONObject data) {
         String htmlContent = "";
-        try{
-            htmlContent = thymeleafHandler.templateEngineProcessByPath(htmlLocation, data);
 
-        }finally{
+        htmlContent = thymeleafHandler.templateEngineProcessByPath(htmlLocation, data);
 
-        }
         return htmlContent;
     }
 
@@ -540,12 +537,8 @@ public class PdfBoxGenerator implements PdfGenerator {
             return "";
         };
 
-        try{
-            htmlContent = thymeleafHandler.templateEngineProcessByString(htmlStr, data);
+        htmlContent = thymeleafHandler.templateEngineProcessByString(htmlStr, data);
 
-        }finally{
-
-        }
         return htmlContent;
     }
 

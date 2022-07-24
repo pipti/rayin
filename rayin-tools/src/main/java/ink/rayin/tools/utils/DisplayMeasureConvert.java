@@ -3,7 +3,7 @@ package ink.rayin.tools.utils;
 /**
  * px pt in单位转换
  *
- * @author Jonah wz 2022-03-14
+ * @author Janah Wang / 王柱 2022-03-14
  */
 public class DisplayMeasureConvert {
 

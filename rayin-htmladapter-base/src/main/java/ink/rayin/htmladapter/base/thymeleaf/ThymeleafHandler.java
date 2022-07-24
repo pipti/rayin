@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2030, Janah wz 王柱 (carefreefly@163.com).
+ * Copyright (c) 2022-2030, Janah Wang / 王柱 (wangzhu@cityape.tech).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import java.util.Map;
 
 /**
  * Thymeleaf 处理类
- * @author Jonah wz 2019-08-25
+ * @author Janah Wang / 王柱 2019-08-25
  */
 
 public class ThymeleafHandler {
@@ -61,7 +61,6 @@ public class ThymeleafHandler {
      */
     public String templateEngineProcessByString(String htmlStr, JSONObject jsonData){
         if(jsonData != null){
-           // String jsonStr = var.toJSONString().replace("<","&lt;").replace(">","&gt;");
             context.setVariables(gson.fromJson(jsonData.toJSONString(), Map.class));
         }
         String r = null;
@@ -69,7 +68,7 @@ public class ThymeleafHandler {
             r = templateEngine.process(htmlStr, context);
         }catch(Exception e){
             r = e.getCause().toString().replace("org.attoparser.ParseException: Exception evaluating OGNL expression:","The Data paraeter error:");
-            logger.debug(r);
+            logger.debug(r, e);
             throw new RayinException(CodeMessage.DATA_RESOLVE_FAIL, r, e);
         }
         return r;

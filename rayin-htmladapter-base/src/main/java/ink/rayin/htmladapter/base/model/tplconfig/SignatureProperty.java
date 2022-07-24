@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2030, Janah wz 王柱 (carefreefly@163.com).
+ * Copyright (c) 2022-2030, Janah Wang / 王柱 (wangzhu@cityape.tech).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import lombok.Setter;
 /**
  * 签章签名信息
  *
- * @author Jonah wz 2019-09-08
+ * @author Janah Wang / 王柱 2019-09-08
  */
 
 @Data

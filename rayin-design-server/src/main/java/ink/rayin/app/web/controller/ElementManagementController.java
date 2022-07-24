@@ -95,18 +95,14 @@ public class ElementManagementController {
      * @return
      */
     @PostMapping(value = "/element/pdfView", produces = MediaType.APPLICATION_JSON_VALUE)
-    public JSONObject elementPdfView(@OrgId String orgId,@RequestBody JSONObject parameter) throws Exception {
+    public RestResponse elementPdfView(@OrgId String orgId,@RequestBody JSONObject parameter) throws Exception {
         parameter.getJSONObject("data");
         JSONObject r = new JSONObject();
         String html = null;
 
-        try {
-            String thtml = parameter.getString("thtml");
-            thtml = generateFileUrl(orgId,thtml);
-            html = PdfGenerator.htmlStrDataFilling(thtml, parameter.getJSONObject("data"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String thtml = parameter.getString("thtml");
+        thtml = generateFileUrl(orgId,thtml);
+        html = PdfGenerator.htmlStrDataFilling(thtml, parameter.getJSONObject("data"));
 
         if (StringUtils.isBlank(html)) {
             html = "<span>无可预览内容</span>";
@@ -116,7 +112,7 @@ public class ElementManagementController {
         long start = System.currentTimeMillis();
         r.put("filedata", encoder.encodeToString(PdfGenerator.generatePdfStreamByHtmlStr(html).toByteArray()));
         log.debug("生成时间：" + (System.currentTimeMillis() - start)/1000 + "s");
-        return r;
+        return RestResponse.success(r);
     }
 
     private String generateFileUrl(String orgId, String str) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2030, Janah wz 王柱 (carefreefly@163.com).
+ * Copyright (c) 2022-2030, Janah Wang / 王柱 (wangzhu@cityape.tech).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * 单模板页码配置
  *
- * @author Jonah wz 2019-08-25
+ * @author Janah Wang / 王柱 2019-08-25
  */
 public class PageNumProperties {
 

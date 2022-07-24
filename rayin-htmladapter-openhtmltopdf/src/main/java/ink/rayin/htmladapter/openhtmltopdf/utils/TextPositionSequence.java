@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2030, Janah wz 王柱 (carefreefly@163.com).
+ * Copyright (c) 2022-2030, Janah Wang / 王柱 (wangzhu@cityape.tech).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * TextPositionSequence
- * @author Jonah wz
+ * @author Janah Wang / 王柱
  */
 public class TextPositionSequence implements CharSequence{
     public TextPositionSequence(List<TextPosition> textPositions) {
