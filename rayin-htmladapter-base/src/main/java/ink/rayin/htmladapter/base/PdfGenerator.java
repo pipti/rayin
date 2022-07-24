@@ -190,7 +190,7 @@ public interface PdfGenerator {
      LinkedHashSet<String> getFontNames();
 
     /**
-     * excel数据导入生成pdf，并生成至对应的目录中
+     * excel数据格式，通过模板生成pdf，每条数据一个PDF，并生成至对应的目录中
      * 文件名为fileNamePrefix + "_" + 序号
      * @param tplConfigStr 模板配置串
      * @param excelIs excel文件流
@@ -201,7 +201,7 @@ public interface PdfGenerator {
                                  String outputDirPath,String fileNamePrefix);
 
     /**
-     * excel数据导入生成pdf，并生成单个文件
+     * excel数据格式，通过模板生成pdf，并合并生成单个文件
      *
      * @param tplConfigStr 模板配置串
      * @param excelIs excel文件流
@@ -211,7 +211,7 @@ public interface PdfGenerator {
                                       String outputFilePath);
 
     /**
-     * excel数据导入生成pdf，并生成至对应的目录中
+     * excel数据格式，通过构件生成pdf，每条数据一个PDF，并生成至对应的目录中
      * 文件名为fileNamePrefix + "_" + 序号
      * @param elementStr 构件字符串
      * @param excelIs excel文件流
@@ -222,7 +222,7 @@ public interface PdfGenerator {
                                       String outputDirPath,String fileNamePrefix);
 
     /**
-     * excel数据导入生成pdf，并生成单个文件
+     * eexcel数据格式，通过构件生成pdf，并生成单个文件
      *
      * @param elementStr 构件字符串
      * @param excelIs excel文件流

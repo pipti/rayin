@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import ink.rayin.app.web.cache.KeyUtil;
 import ink.rayin.app.web.cache.RedisTemplateUtil;
 import ink.rayin.app.web.dao.OrganizationMapper;
+import ink.rayin.app.web.exception.BusinessCodeMessage;
 import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.model.Organization;
 import ink.rayin.app.web.model.UserModel;
@@ -101,7 +102,9 @@ public class TokenService implements ITokenService {
         String accessKey = decodedJWT.getClaim("userId").asString();
         String key = KeyUtil.makeKey(BaseConstant.PDFGEN_TOKEN_KEY,"-",accessKey);
         UserModel userModelOld = redisTemplateUtil.get(key,UserModel.class);
-
+        if(userModelOld == null){
+            throw RayinBusinessException.buildBizException(BusinessCodeMessage.HTTP_UNAUTHORIZED);
+        }
        // String secrtyKey = userModelOld.getPassword();
        // if(userModelOld == null){
        // String  secrtyKey = "5400637a1083b0b43289ce84d7041112";

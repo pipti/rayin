@@ -36,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -222,10 +223,20 @@ public class QiniuTemplate implements OssTemplate {
 		//指定目录分隔符，列出所有公共前缀（模拟列出目录效果）。缺省值为空字符串
 		String delimiter = "/";
 		//列举空间文件列表
+		List<RayinFile> files = new ArrayList<>();
+		RayinFiles rayinFiles =  new RayinFiles();
+		RayinFile rayinFile;
 		BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(bucketName, keyPrefix, limit, delimiter);
 		while (fileListIterator.hasNext()) {
 			//处理获取的file list结果
 			FileInfo[] items = fileListIterator.next();
+			if(items.length == 0){
+				rayinFile = new RayinFile();
+				rayinFile.setName(keyPrefix.substring(keyPrefix.length() - 1));
+				rayinFile.setFileType("doc");
+				rayinFile.setPrefix(keyPrefix);
+				files.add(rayinFile);
+			}
 			for (FileInfo item : items) {
 				System.out.println(item.key);
 				System.out.println(item.hash);
@@ -233,9 +244,20 @@ public class QiniuTemplate implements OssTemplate {
 				System.out.println(item.mimeType);
 				System.out.println(item.putTime);
 				System.out.println(item.endUser);
+
+				rayinFile = new RayinFile();
+				rayinFile.setName(item.key.substring(item.key.lastIndexOf(StringPool.SLASH)));
+				rayinFile.setPutTime(new Date(item.putTime));
+				rayinFile.setLength(item.fsize);
+				rayinFile.setPresignedLink(filePresignedLink(bucketName,item.key));
+				rayinFile.setFileType(item.mimeType);
+				files.add(rayinFile);
 			}
+
 		}
-		return null;
+		rayinFiles.setPrefix(keyPrefix);
+		rayinFiles.setFileList(files);
+		return rayinFiles;
 	}
 
 	/**

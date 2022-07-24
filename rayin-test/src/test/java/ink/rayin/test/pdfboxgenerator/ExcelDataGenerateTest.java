@@ -12,6 +12,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 
+/**
+ * 该类用于测试通过excel文件作为数据源生成pdf，即代替json数据
+ * This class is used to test the generation of PDF through Excel files as data sources, that is, to replace JSON data
+ *
+ * @author Jonah Wang
+ * @date 2022-07-24
+ */
 @Slf4j
 public class ExcelDataGenerateTest {
     static PdfGenerator pdfGenerator;
