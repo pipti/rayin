@@ -46,9 +46,9 @@
             <version>1.0.5</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -70,8 +70,9 @@
         <dependency>
             <groupId>com.github.houbb</groupId>
             <artifactId>junitperf</artifactId>
-            <version>1.0.2</version>
-            <scope>test</scope>
+            <version>2.0.7</version>
+            <systemPath>${basedir}/src/test/lib/junitperf-2.0.7-patch.jar</systemPath>
+            <scope>System</scope>
         </dependency>
 
 
