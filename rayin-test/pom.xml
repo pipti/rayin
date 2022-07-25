@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>ink.rayin</groupId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <artifactId>rayin-test</artifactId>
     <properties>
         <!-- 统一版本号 -->
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.5</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

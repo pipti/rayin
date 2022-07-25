@@ -475,7 +475,8 @@ public class AddValidationInformation
             {
                 COSStream certStream = writeDataToStream(cert.getEncoded());
                 correspondingCerts.add(certStream);
-                certs.add(certStream); // may lead to duplicate certificates. Important?
+                // may lead to duplicate certificates. Important?
+                certs.add(certStream);
             }
             catch (CertificateEncodingException ex)
             {

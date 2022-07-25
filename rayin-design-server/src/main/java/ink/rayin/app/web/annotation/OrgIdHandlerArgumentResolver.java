@@ -23,7 +23,7 @@ public class OrgIdHandlerArgumentResolver implements HandlerMethodArgumentResolv
 
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer,
-                                  NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+                                  NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) {
         String organizationId = nativeWebRequest.getHeader("organizationId");
 
 //        if (StringUtils.isBlank(organizationId)) {

@@ -33,6 +33,8 @@ public class Rayin {
      }*/
 //    @NotEmpty(message = "organizationId is not blank")
 //    private String organizationId;
+
+
     private String templateId;
     @NotEmpty(message = "templateVersion is not blank")
     @DecimalMin(value = "0.01") // 版本号最小值0.01

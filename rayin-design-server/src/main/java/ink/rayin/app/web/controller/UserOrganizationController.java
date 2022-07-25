@@ -46,7 +46,7 @@ public class UserOrganizationController implements UserOrganizationApi {
      */
     @GetMapping(value = {"/organization/query"})
     public RestResponse userOrganizationQuery(@UserId String userId,
-                                              @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
+                                              @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) {
 
         Page page = new Page(pageCurrent, pageSize);
         IPage<UserOrganization> pages = userOrganizationService.userOrganizationQuery(page, new UserOrganization().setUserId(userId));

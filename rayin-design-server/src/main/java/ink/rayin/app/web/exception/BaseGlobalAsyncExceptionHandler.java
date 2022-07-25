@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 
 /**
  * 统一异步异常处理handler
- * Created by tangyongmao on 2019-6-21.
+ * @author  tangyongmao on 2019-6-21.
  */
 @Component
 public class BaseGlobalAsyncExceptionHandler implements AsyncUncaughtExceptionHandler,InitializingBean {
@@ -33,7 +33,7 @@ public class BaseGlobalAsyncExceptionHandler implements AsyncUncaughtExceptionHa
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
     }
 }

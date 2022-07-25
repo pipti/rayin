@@ -19,7 +19,6 @@ import static org.springframework.data.redis.connection.ReturnType.INTEGER;
  */
 @Component("redisTemplateUtil")
 public class RedisTemplateUtil{
-    //注入StringRedisTemplate
     @Resource
     StringRedisTemplate stringRedisTemplate;
 
@@ -197,7 +196,7 @@ public class RedisTemplateUtil{
             }
         });
         RedisConnectionUtils.unbindConnection(stringRedisTemplate.getConnectionFactory());
-        return res;
+        return res.longValue();
     }
 
     /**

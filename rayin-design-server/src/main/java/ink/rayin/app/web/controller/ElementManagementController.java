@@ -51,7 +51,7 @@ public class ElementManagementController {
      */
     @GetMapping(value = "/element/versions/{elementId}")
     public RestResponse elementVersions(@UserId String userId,
-                                        @RequestParam Integer pageCurrent, @RequestParam Integer pageSize, @PathVariable(required = true) String elementId) throws Exception {
+                                        @RequestParam Integer pageCurrent, @RequestParam Integer pageSize, @PathVariable(required = true) String elementId) {
         UserElementVersionHistory uem = new UserElementVersionHistory();
         uem.setElementId(elementId);
         uem.setUserId(userId);
@@ -74,7 +74,7 @@ public class ElementManagementController {
                                      @UserId String userId,
                                      @RequestParam Integer pageCurrent, @RequestParam Integer pageSize,
                                      @PathVariable(required = false) String key,
-                                     @RequestParam(required = false) Boolean delFlag) throws Exception {
+                                     @RequestParam(required = false) Boolean delFlag) {
 
         UserElement uem = new UserElement();
         uem.setName(key);
@@ -95,7 +95,7 @@ public class ElementManagementController {
      * @return
      */
     @PostMapping(value = "/element/pdfView", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RestResponse elementPdfView(@OrgId String orgId,@RequestBody JSONObject parameter) throws Exception {
+    public RestResponse elementPdfView(@OrgId String orgId,@RequestBody JSONObject parameter) {
         parameter.getJSONObject("data");
         JSONObject r = new JSONObject();
         String html = null;
@@ -227,7 +227,7 @@ public class ElementManagementController {
         // 更新操作，但是不覆盖原有记录，生成新的记录，并生成新的版本号
         if (StringUtils.isNotBlank(parameter.getElementId()) &&
                 StringUtils.isNotBlank(parameter.getNewFlag()) &&
-                parameter.getNewFlag().equals("1")) {
+                "1".equals(parameter.getNewFlag())) {
 //            if(!userId.equals(parameter.getUserId())){
 //                throw new EPrintException("操作的资源与用户不一致，请重新登录！");
 //            }
@@ -278,7 +278,7 @@ public class ElementManagementController {
     public RestResponse elementTemplateRelations(@UserId String userId,
                                                  @OrgId String orgId,
                                                  @RequestBody UserElement parameter,
-                                                 @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) throws Exception {
+                                                 @RequestParam Integer pageCurrent, @RequestParam Integer pageSize) {
 
         UserTemplateElement utl = new UserTemplateElement();
         utl.setElementId(parameter.getElementId());
@@ -300,7 +300,7 @@ public class ElementManagementController {
     @RequestMapping(value = "/element/colle")
     public RestResponse elementColle(@UserId String userId,
                                      @UserId String orgId,
-                                     @RequestBody UserElementFavorites parameter) throws Exception {
+                                     @RequestBody UserElementFavorites parameter) {
 
         if (StringUtils.isBlank(parameter.getElementId())) {
             throw new RayinBusinessException("您收藏的构件存在错误！");
@@ -324,7 +324,7 @@ public class ElementManagementController {
      */
     @GetMapping(value = {"/element/favorites/query/{key}", "/element/favorites/query"})
     public RestResponse elementFavoritesQuery(@UserId String userId,
-                                              @RequestParam Integer pageCurrent, @RequestParam Integer pageSize, @PathVariable(required = false) String key) throws Exception {
+                                              @RequestParam Integer pageCurrent, @RequestParam Integer pageSize, @PathVariable(required = false) String key) {
 
         UserElementFavorites uef = new UserElementFavorites();
         uef.setName(key);

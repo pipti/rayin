@@ -32,7 +32,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan(basePackages = "ink.rayin.app.web.dao")
 @EnableRayinyPdfAdpter
 public class RayinDesignServerApplication extends SpringBootServletInitializer {
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		ApplicationContext applicationContext = SpringApplication.run(RayinDesignServerApplication.class, args);
 	}
 

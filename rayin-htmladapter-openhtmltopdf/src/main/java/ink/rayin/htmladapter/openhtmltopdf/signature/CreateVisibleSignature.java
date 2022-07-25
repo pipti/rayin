@@ -523,8 +523,12 @@ public class CreateVisibleSignature extends CreateSignatureBase
         //return signedFile;
     }
 
-
-    // Find an existing signature (assumed to be empty). You will usually not need this.
+    /**
+     * Find an existing signature (assumed to be empty). You will usually not need this.
+     * @param doc
+     * @param sigFieldName
+     * @return
+     */
     private PDSignature findExistingSignature(PDDocument doc, String sigFieldName)
     {
         PDSignature signature = null;

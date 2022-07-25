@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserServiceImpl userService;
 
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(WebSecurity web) {
 		web.ignoring().antMatchers("/code/image")
 		.antMatchers("/users/code/image");
 //		web.ignoring().antMatchers("/index.html", "/static/**", "/login_p", "/favicon.ico");
@@ -85,7 +85,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //				.apply(new JsonLoginConfigurer<>()).loginSuccessHandler(jsonLoginSuccessHandler())
 //				.and()
 				.logout()
-		        .logoutUrl("/users/logout").addLogoutHandler(new RayinLogoutHandler(redisTemplateUtil))   //默认就是"/logout"
+				//默认就是"/logout"
+		        .logoutUrl("/users/logout").addLogoutHandler(new RayinLogoutHandler(redisTemplateUtil))
 				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
 				.and()
 //				.apply(new ValidateConfigurer<>(loginProperties,redisTemplate)).and()

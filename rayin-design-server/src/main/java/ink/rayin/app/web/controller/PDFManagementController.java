@@ -40,7 +40,6 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Slf4j
-@Api(value = "PDFManagementController", description = "PDF管理API")
 @RestController
 public class PDFManagementController {
     private static Logger logger = LoggerFactory.getLogger(PDFManagementController.class);

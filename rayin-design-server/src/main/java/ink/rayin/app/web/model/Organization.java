@@ -23,9 +23,6 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
-//@SuperBuilder
-//@AllArgsConstructor
-//@NoArgsConstructor
 @Accessors(chain = true)
 public class Organization implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)

@@ -52,7 +52,7 @@ public class SynchronizedRedisLockSupport implements RedisLock {
         try {
             do {
                 if (redisTemplate.opsForValue().setIfAbsent(key,threadLocal.get())) {
-                    redisTemplate.expire(key,10l,TimeUnit.SECONDS);
+                    redisTemplate.expire(key,10L,TimeUnit.SECONDS);
                     return;
                 }else {
                     System.err.println(Thread.currentThread().getName() + " wait");

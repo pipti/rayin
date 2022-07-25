@@ -33,6 +33,7 @@ import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
 import com.openhtmltopdf.util.XRLog;
 import ink.rayin.tools.utils.ResourceUtil;
 import ink.rayin.tools.utils.StringUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.pool2.PoolUtils;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
@@ -94,25 +95,21 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      */
     private static long SoftMinEvictableIdleTimeMillis = 30000L;
 
-    private String readFontPSName(File font) throws IOException, FontFormatException {
+    @SneakyThrows
+    private String readFontPSName(File font) {
         Font f = Font.createFont(Font.TRUETYPE_FONT, font);
         return f.getPSName();
     }
-
-    private String readFontName(File font) throws IOException, FontFormatException {
+    @SneakyThrows
+    private String readFontName(File font) {
         Font f = Font.createFont(Font.TRUETYPE_FONT, font);
         return f.getFontName();
     }
 
-    public static void init() throws Exception {
+    public static void init() {
         synchronized(OpenhttptopdfRendererObjectFactory.class) {
-            try {
-                factory.FontCache();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (FontFormatException e) {
-                e.printStackTrace();
-            }
+
+            factory.FontCache();
 
             //设置对象池的相关参数
             GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
@@ -136,7 +133,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
     }
 
-    public static void init(String customizeFontPathDirectory) throws Exception {
+    public static void init(String customizeFontPathDirectory) {
         cFontPathDirectory = customizeFontPathDirectory;
         init();
     }
@@ -161,9 +158,8 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      * @param maxIdle 最大空闲
      * @param maxTotal 最大线程总数
      * @param customizeFontPathDirectory 自定义字体目录，可空
-     * @throws Exception exception
      */
-    public static void init(int minIdle,int maxIdle,int maxTotal, String customizeFontPathDirectory) throws Exception {
+    public static void init(int minIdle,int maxIdle,int maxTotal, String customizeFontPathDirectory) {
         cFontPathDirectory = customizeFontPathDirectory;
         MinIdle = minIdle;
         MaxIdle = maxIdle;
@@ -175,9 +171,9 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      * 获取OpenhttptopdfRenderBuilder实例
      *
      * @return OpenhttptopdfRenderBuilder
-     * @throws Exception exception
      */
-    public static OpenhttptopdfRenderBuilder getPdfRendererBuilderInstance() throws Exception {
+    @SneakyThrows
+    public static OpenhttptopdfRenderBuilder getPdfRendererBuilderInstance() {
         logger.debug("pollActiveNum:" + objectPool.getNumActive());
         return objectPool.borrowObject();
     }
@@ -186,16 +182,15 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         return factory.fontFileCache;
     }
 
-    public static HashMap<String, FSSupplier<InputStream>> getFSSupplierCache() throws Exception {
+    public static HashMap<String, FSSupplier<InputStream>> getFSSupplierCache() {
         return fontFSSupplierCache;
     }
 
     /**
      * 归还openhtpdfRenderObject对象
      * @param openhtpdfRenderObject  openhtpdfRenderObject
-     * @throws Exception exception
      */
-    public static void returnPdfBoxRenderer(OpenhttptopdfRenderBuilder openhtpdfRenderObject) throws Exception {
+    public static void returnPdfBoxRenderer(OpenhttptopdfRenderBuilder openhtpdfRenderObject) {
         if(openhtpdfRenderObject != null && openhtpdfRenderObject.isActive() == true) {
             objectPool.returnObject(openhtpdfRenderObject);
         }
@@ -203,10 +198,9 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
     /**
      * 字体缓存
-     * @throws IOException
-     * @throws FontFormatException
      */
-    private void FontCache() throws IOException, FontFormatException {
+    @SneakyThrows
+    private void FontCache(){
         File fontsLocalDir = null;
         Resource fontsResource = ResourceUtil.getResource("fonts");
 
@@ -474,7 +468,9 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         });
 
     }
-    public static File inputStreamToFile(InputStream inputStream,String prefix,String suffix) throws IOException{
+
+    @SneakyThrows
+    public static File inputStreamToFile(InputStream inputStream,String prefix,String suffix){
         File tmp = File.createTempFile(prefix, suffix);
         OutputStream os = new FileOutputStream(tmp);
         int bytesRead = 0;
@@ -510,7 +506,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
 
     @Override
-    public PooledObject<OpenhttptopdfRenderBuilder> makeObject() throws IOException {
+    public PooledObject<OpenhttptopdfRenderBuilder> makeObject() {
         String i = UUID.randomUUID().toString();
         logger.debug("make OpenhttptopdfRender object：" + i);
 
@@ -548,7 +544,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
     }
 
     @Override
-    public void destroyObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) throws Exception {
+    public void destroyObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) {
         //logger.debug("destroyObject" );
         pooledObject.getObject().setActive(false);
     }
@@ -561,13 +557,13 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
     }
 
     @Override
-    public void activateObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) throws Exception {
+    public void activateObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) {
         //logger.debug("activateObject");
         pooledObject.getObject().setActive(true);
     }
 
     @Override
-    public void passivateObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject) throws Exception {
+    public void passivateObject(PooledObject<OpenhttptopdfRenderBuilder> pooledObject){
         //logger.debug("passivateObject");
         //pooledObject.getObject().setActive(false);
     }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DaoJsonConfig implements CommandLineRunner {
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         JacksonTypeHandler.setObjectMapper(new ObjectMapper());
     }
 }

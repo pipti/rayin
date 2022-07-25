@@ -45,7 +45,7 @@ public class UsersController {
     }
 
     @PostMapping(value = "/users/signup")
-    public RestResponse<String> signUp(@RequestBody UserModel userModel) throws Exception {
+    public RestResponse<String> signUp(@RequestBody UserModel userModel) {
 
         userService.createUser(userModel);
         return RestResponse.success();

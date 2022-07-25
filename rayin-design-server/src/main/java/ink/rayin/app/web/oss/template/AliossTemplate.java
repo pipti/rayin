@@ -28,7 +28,7 @@ import ink.rayin.app.web.oss.model.RayinFile;
 import ink.rayin.app.web.oss.model.StoreFile;
 import ink.rayin.app.web.oss.props.OssProperties;
 import ink.rayin.app.web.oss.rule.StoreRule;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;

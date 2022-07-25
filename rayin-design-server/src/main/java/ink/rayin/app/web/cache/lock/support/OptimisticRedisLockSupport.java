@@ -70,7 +70,7 @@ public class OptimisticRedisLockSupport implements RedisLock {
             } else {
                 System.err.println(Thread.currentThread().getName() + " wait for " + i);
                 try {
-                    Thread.currentThread().sleep(100);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

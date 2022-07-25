@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 
 /**
  * ApplicationContext工具类
- * Created by tangyongmao on 2019/7/8.
+ * @author tangyongmao on 2019/7/8.
  */
 @Slf4j
 @Component

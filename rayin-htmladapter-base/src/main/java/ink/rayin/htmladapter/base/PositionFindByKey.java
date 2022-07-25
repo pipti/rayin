@@ -23,6 +23,6 @@ import java.util.List;
  * @author Janah Wang / 王柱
  */
 public interface PositionFindByKey {
-    public List<float[]> findKeywordPagesPostions(byte[] pdfData, String keyword) throws IOException;
-    public List<float[]> findKeywordPagePostions(byte[] pdfData, String keyword,int pageNum) throws IOException;
+    List<float[]> findKeywordPagesPostions(byte[] pdfData, String keyword) throws IOException;
+    List<float[]> findKeywordPagePostions(byte[] pdfData, String keyword,int pageNum) throws IOException;
 }

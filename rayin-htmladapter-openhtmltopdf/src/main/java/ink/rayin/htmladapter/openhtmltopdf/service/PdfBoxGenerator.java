@@ -750,7 +750,8 @@ public class PdfBoxGenerator implements PdfGenerator {
                 javax.xml.transform.Transformer t = tfac.newTransformer();
                 t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
                 t.setOutputProperty(OutputKeys.INDENT, "yes");
-                t.setOutputProperty(OutputKeys.METHOD, "xml"); // xml, html,
+                // xml, html,
+                t.setOutputProperty(OutputKeys.METHOD, "xml");
                 // text
                 t.setOutputProperty(
                         "{http://xml.apache.org/xslt}indent-amount", "4");
@@ -1111,7 +1112,11 @@ public class PdfBoxGenerator implements PdfGenerator {
 
     Pattern pattern = Pattern.compile("\\d+");
 
-    //截取数字
+    /**
+     * 截取数字
+     * @param content
+     * @return 被截取后的字符串
+     */
     public String getNumbers(String content) {
         Matcher matcher = pattern.matcher(content);
         while (matcher.find()) {

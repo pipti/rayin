@@ -73,8 +73,10 @@ public class OcspHelper
     private DEROctetString encodedNonce;
     private X509Certificate ocspResponderCertificate;
     private final JcaX509CertificateConverter certificateConverter = new JcaX509CertificateConverter();
-    
-    // SecureRandom.getInstanceStrong() would be better, but sometimes blocks on Linux
+
+    /**
+     * SecureRandom.getInstanceStrong() would be better, but sometimes blocks on Linux
+     */
     private static final Random RANDOM = new SecureRandom();
 
     /**

@@ -108,7 +108,7 @@ public class PDFCreatorController {
      */
     @PostMapping(value = "/rayin/org/template/pdf/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestResponse orgTemplatePdfCreator(@RequestHeader("rayin-token") String token,
-                                              @RequestBody JSONObject parameter) throws Exception {
+                                              @RequestBody JSONObject parameter) {
 
        UserModel userModel = iTokenService.decodeToken(token);
 
@@ -155,7 +155,7 @@ public class PDFCreatorController {
      */
     @PostMapping(value = "/rayin/org/template/pdf/air/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestResponse orgTemplatePdfaAirCreator(@RequestHeader("accessKey") String accessKey,
-                                              @RequestBody JSONObject parameter) throws Exception {
+                                              @RequestBody JSONObject parameter) {
         if(StringUtils.isBlank(accessKey)){
             return RestResponse.failed(BusinessCodeMessage.ACC_KEY_ERROR);
         }
@@ -196,7 +196,7 @@ public class PDFCreatorController {
      */
     @PostMapping(value = "/rayin/org/template/pdf/createAsync", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestResponse orgTemplatePdfCreatorAsync(@RequestHeader("accessKey") String accessKey,
-                                              @RequestBody JSONObject parameter) throws Exception {
+                                              @RequestBody JSONObject parameter) {
         if(StringUtils.isBlank(accessKey)){
             return RestResponse.failed(BusinessCodeMessage.ACC_KEY_ERROR);
         }

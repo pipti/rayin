@@ -217,7 +217,8 @@ public class HttpURLConnHelper {
         // 设置三个常用字符串常量：换行、前缀、分界线（NEWLINE、PREFIX、BOUNDARY）；
         final String NEWLINE = "\r\n";
         final String PREFIX = "--";
-        final String BOUNDARY = "#";// 取代---------------------------7df3a01e37070c
+        // 取代---------------------------7df3a01e37070c
+        final String BOUNDARY = "#";
         HttpURLConnection httpConn = null;
         BufferedInputStream bis = null;
         DataOutputStream dos = null;

@@ -63,7 +63,8 @@ public class TokenService implements ITokenService {
                         userModel.setPassword(secretKey);
                         userModel.setSalt(salt);
                         Algorithm algorithm = Algorithm.HMAC256(secretKey + userModel.getSalt());
-                        Date date = new Date(System.currentTimeMillis()+3600 * 1000 * 24 * 7);  //设置token过期时间为1小时
+                        //设置token过期时间为1小时
+                        Date date = new Date(System.currentTimeMillis()+3600 * 1000 * 24 * 7);
                         String token = JWT.create()
                                 .withSubject(userModel.getUsername())
                                 .withClaim("userId",userModel.getId())
@@ -124,7 +125,7 @@ public class TokenService implements ITokenService {
         //JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256("!34ADAS")).build();
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
+    public static void main(String[] args)  {
         new TokenService().decodeToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmODQ4NmRmNzMwNzYxYzE3YWI4OTdlYjYzYjRkODhjNyIsImV4cCI6MTY1Nzk2MDU4MywidXNlcklkIjoiZjg0ODZkZjczMDc2MWMxN2FiODk3ZWI2M2I0ZDg4YzciLCJpYXQiOjE2NTczNTU3ODN9.jmnNSOVy9hHaz6ub5G9f4VJJood-gjpEC7-JeZWn0sc");
     }
 }

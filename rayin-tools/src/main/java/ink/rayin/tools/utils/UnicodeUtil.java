@@ -1,9 +1,10 @@
 package ink.rayin.tools.utils;
 
 public class UnicodeUtil {
-
-    /*
+    /**
      * unicode编码
+     * @param gbString
+     * @return
      */
     public static String encoding(final String gbString) {
         char[] utfBytes = gbString.toCharArray();
@@ -18,8 +19,11 @@ public class UnicodeUtil {
         return unicodeBytes;
     }
 
-    /*
+    /**
      * unicode解码
+     *
+     * @param dataStr
+     * @return
      */
     public static String decode(final String dataStr) {
         int start = 0;
@@ -33,7 +37,8 @@ public class UnicodeUtil {
             } else {
                 charStr = dataStr.substring(start + 2, end);
             }
-            char letter = (char) Integer.parseInt(charStr, 16); // 16进制parse整形字符串。
+            // 16进制parse整形字符串。
+            char letter = (char) Integer.parseInt(charStr, 16);
             buffer.append(new Character(letter).toString());
             start = end;
         }

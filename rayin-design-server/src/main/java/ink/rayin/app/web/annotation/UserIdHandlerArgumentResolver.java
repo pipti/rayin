@@ -24,7 +24,7 @@ public class UserIdHandlerArgumentResolver implements HandlerMethodArgumentResol
 
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer,
-                                  NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+                                  NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) {
         String authInfo = nativeWebRequest.getHeader("Authorization");
         String token ;
         DecodedJWT authToken;

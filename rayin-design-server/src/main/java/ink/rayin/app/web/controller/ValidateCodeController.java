@@ -29,7 +29,7 @@ public class ValidateCodeController {
     private RedisTemplateUtil redisTemplateUtil;
 
     @GetMapping("/users/code/image")
-    public RestResponse createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public RestResponse createCode(HttpServletRequest request, HttpServletResponse response) {
         String sessionId = request.getSession().getId();
         String refreshType = request.getParameter("refreshType");
 

@@ -334,7 +334,15 @@ public class CreateVisibleSignature2 extends CreateSignatureBase
         return rect;
     }
 
-    // create a template PDF document with empty signature and return it as a stream.
+    /**
+     * create a template PDF document with empty signature and return it as a stream.
+     * @param srcDoc
+     * @param pageNum
+     * @param rect
+     * @param signature
+     * @return
+     * @throws IOException
+     */
     private InputStream createVisualSignatureTemplate(PDDocument srcDoc, int pageNum,
                                                       PDRectangle rect, PDSignature signature) throws IOException
     {
@@ -453,7 +461,12 @@ public class CreateVisibleSignature2 extends CreateSignatureBase
         }
     }
 
-    // Find an existing signature (assumed to be empty). You will usually not need this.
+    /**
+     * Find an existing signature (assumed to be empty). You will usually not need this.
+     * @param acroForm
+     * @param sigFieldName
+     * @return
+     */
     private PDSignature findExistingSignature(PDAcroForm acroForm, String sigFieldName)
     {
         PDSignature signature = null;

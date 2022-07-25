@@ -291,8 +291,8 @@ public class JsonUtil {
 			//序列化时，日期的统一格式
 			super.setDateFormat(new SimpleDateFormat(DateUtil.PATTERN_DATETIME, Locale.CHINA));
 			//序列化处理
-			super.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-			super.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
+			// super.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+			// super.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
 			super.findAndRegisterModules();
 			//失败处理
 			super.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);

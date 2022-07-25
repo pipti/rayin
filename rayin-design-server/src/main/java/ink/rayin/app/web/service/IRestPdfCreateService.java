@@ -21,9 +21,9 @@ import java.util.Map;
 public interface IRestPdfCreateService {
 
 
-    Map<String,String> createPdfByTemplateId(String accessKey, Rayin rayin) throws Exception;
+    Map<String,String> createPdfByTemplateId(String accessKey, Rayin rayin);
 
-    void createPdfByTemplateIdAsync(String accessKey, Rayin rayin) throws Exception;
+    void createPdfByTemplateIdAsync(String accessKey, Rayin rayin);
     void init() throws Exception;
 //    JSONObject fileCheck (InputStream inputStream) throws Exception;
 }

@@ -19,6 +19,7 @@ import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.model.tplconfig.SignatureProperty;
 import ink.rayin.htmladapter.openhtmltopdf.signature.CreateVisibleSignature;
 import ink.rayin.tools.utils.ResourceUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -52,9 +53,10 @@ public class PdfBoxSignature implements Signature {
      * @param signatureProperties
      *            签名坐标、页码、章信息
      */
+    @SneakyThrows
     @Override
     public void multipleSign(String password, String keyStorePath, String inputFile, String signedFile,
-                             List<SignatureProperty> signatureProperties) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
+                             List<SignatureProperty> signatureProperties) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         multipleSign(password, ResourceUtil.getResourceAsStream(keyStorePath),ResourceUtil.getResourceAsStream(inputFile),
                 bos, signatureProperties);
@@ -74,9 +76,10 @@ public class PdfBoxSignature implements Signature {
      * @param signatureProperties
      *            签名坐标、页码、章信息
      */
+    @SneakyThrows
     @Override
     public void multipleSign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
-                             List<SignatureProperty> signatureProperties) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
+                             List<SignatureProperty> signatureProperties) {
         boolean externallySign = false;
         Security.addProvider(SecurityProvider.getProvider());
 
@@ -124,9 +127,10 @@ public class PdfBoxSignature implements Signature {
      * @param signedFileOs 签章后文件流
      * @param signatureProperty 签章属性
      */
+    @SneakyThrows
     @Override
     public void singleSign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
-                           SignatureProperty signatureProperty) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                           SignatureProperty signatureProperty) {
         ByteArrayOutputStream tos = new ByteArrayOutputStream();
         IOUtils.copy(inputFileIs,tos);
         InputStream inputFileIs1 = new ByteArrayInputStream(tos.toByteArray());
@@ -155,9 +159,10 @@ public class PdfBoxSignature implements Signature {
      * @param signedFilePath 签名后保存路径
      * @param signatureProperty 签章属性
      */
+    @SneakyThrows
     @Override
     public void singleSign(String password, String keyStorePath, String inputFilePath, String signedFilePath,
-                           SignatureProperty signatureProperty) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+                           SignatureProperty signatureProperty) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         singleSign(password, ResourceUtil.getResourceAsStream(keyStorePath), ResourceUtil.getResourceAsStream(inputFilePath),
                 bos, signatureProperty);

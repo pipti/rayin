@@ -182,7 +182,9 @@ public class CreateSignature extends CreateSignatureBase
 
         // load the keystore
         KeyStore keystore = KeyStore.getInstance("PKCS12");
-        char[] password = args[1].toCharArray(); // TODO use Java 6 java.io.Console.readPassword
+
+        // TODO use Java 6 java.io.Console.readPassword
+        char[] password = args[1].toCharArray();
         keystore.load(new FileInputStream(args[0]), password);
         // TODO alias command line argument
 

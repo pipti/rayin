@@ -59,7 +59,6 @@ public class UserTemplate implements Serializable {
     Date pdfStartTime;
     Date pdfEndTime;
     Boolean templateReleaseStatus;
-    //@TableField(typeHandler = FastjsonTypeHandler.class)
     String pageNumDisplayPoss;
 
     @TableField(exist = false)
@@ -76,7 +75,6 @@ public class UserTemplate implements Serializable {
     String pdfEndTimeStr;
     @TableField(exist = false)
     String newFlag;
-    //查询构件模板关系时使用
     @TableField(exist = false)
     String elementVersion;
 

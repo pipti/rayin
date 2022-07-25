@@ -4,13 +4,14 @@ import java.security.MessageDigest;
 import java.util.UUID;
 
 /**
- * @program: rayin-app-parent
- * @description:
- * @author: 作者名字
+ * 短连接生成
+ * @author: tangyongmao
  * @create: 2020-09-08 15:21
  **/
 public class ShortUrlUtil {
-    // 生成几位短连接地址的签名
+    /**
+     * 生成几位短连接地址的签名
+     */
     public final static int LENGTH = 6;
 
     /**
@@ -82,9 +83,9 @@ public class ShortUrlUtil {
             String stmp = "";
             for (int i = 0; i < hash.length; i++) {
                 stmp = Integer.toHexString(hash[i] & 0xFF);
-                if (stmp.length() == 1)
+                if (stmp.length() == 1) {
                     hs = hs + "0" + stmp;
-                else {
+                } else {
                     hs = hs + stmp;
                 }
             }

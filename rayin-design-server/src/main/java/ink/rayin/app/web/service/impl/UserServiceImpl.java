@@ -74,9 +74,11 @@ public class UserServiceImpl implements UserDetailsService {
         String key = KeyUtil.makeKey("RAYIN","-",username);
         UserModel userModel = getUserInfoFromCache(username);
         userModel.setSalt(salt);
-        redisTemplateUtil.save(key,userModel,Long.valueOf(1800));//用户状态设置半小时后过期
+        //用户状态设置半小时后过期
+        redisTemplateUtil.save(key,userModel,Long.valueOf(1800));
         Algorithm algorithm = Algorithm.HMAC256(userModel.getSalt());
-        Date date = new Date(System.currentTimeMillis()+ 3600 * 1000);  //设置token过期时间为1天
+        //设置token过期时间为1天
+        Date date = new Date(System.currentTimeMillis()+ 3600 * 1000);
         return new String[] {JWT.create()
                 .withSubject(user.getUsername())
                 .withClaim("userId",userModel.getId())

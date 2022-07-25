@@ -59,9 +59,9 @@ public class JwtService implements UserDetailsService {
      * 保存用户状态
      * @param user
      * @return
-     * @throws UnsupportedEncodingException
+     *
      */
-    public String saveUserLoginInfo(UserDetails user) throws UnsupportedEncodingException {
+    public String saveUserLoginInfo(UserDetails user) {
         //状态标志
         String salt = BCrypt.gensalt();
         String username = user.getUsername();
@@ -72,7 +72,8 @@ public class JwtService implements UserDetailsService {
         redisTemplateUtil.save(key,userModel,Long.valueOf(3600*1000));
 
         Algorithm algorithm = Algorithm.HMAC256(salt);
-        Date date = new Date(System.currentTimeMillis()+3600*1000);  //设置1小时后过期
+        //设置1小时后过期
+        Date date = new Date(System.currentTimeMillis()+3600*1000);
         return JWT.create()
                 .withSubject(user.getUsername())
                 .withClaim("userId",userModel.getId())

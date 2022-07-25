@@ -2,10 +2,10 @@ package ink.rayin.app.web.utils;
 
 /**
  * BaseConstant
- * Create by tangyongmao  2019//6/24.
+ * @author tangyongmao  2019//6/24.
  */
 public class BaseConstant {
-    /**/
+
     public static final String JAVA = "java";
     public static final String MESSAGE = "message";
     public static final String GATEWAY = "gateway";

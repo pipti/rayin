@@ -113,8 +113,12 @@ public class TSAClient
         return token.getEncoded();
     }
 
-    // gets response data for the given encoded TimeStampRequest data
-    // throws IOException if a connection to the TSA cannot be established
+    /**
+     * gets response data for the given encoded TimeStampRequest data
+     * @param request
+     * @return
+     * @throws IOException
+     */
     private byte[] getTSAResponse(byte[] request) throws IOException
     {
         LOG.debug("Opening connection to TSA server");

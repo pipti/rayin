@@ -74,7 +74,7 @@ public class MemoryCapacityService implements IMemoryCapacityService {
         Long current = redisLock.get(key,Long.class);
         //TODO 容量告警
         if (current == null) {
-            current=0l;
+            current=0L;
             redisTemplateUtil.save(key,current);
         }
         if (current >= max) {

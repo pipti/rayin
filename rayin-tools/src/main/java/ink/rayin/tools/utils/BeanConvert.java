@@ -6,6 +6,9 @@ import org.springframework.beans.BeanUtils;
 
 import java.io.IOException;
 
+/**
+ * @author Jonah Wang/ 王柱
+ */
 public class BeanConvert {
     private static Logger logger = LoggerFactory.getLogger(BeanConvert.class);
     /**

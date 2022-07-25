@@ -16,10 +16,12 @@ public class CustomObjectInputStream extends ObjectInputStream {
         customLoader= loader;
     }
 
-    protected Class resolveClass( ObjectStreamClass v ) throws IOException, ClassNotFoundException {
-        if ( customLoader == null )
-            return super.resolveClass( v );
-        else
-            return Class.forName( v.getName(), true, customLoader);
+    @Override
+    protected Class resolveClass(ObjectStreamClass v ) throws IOException, ClassNotFoundException {
+        if ( customLoader == null ) {
+            return super.resolveClass(v);
+        } else {
+            return Class.forName(v.getName(), true, customLoader);
+        }
     }
 }

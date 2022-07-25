@@ -22,8 +22,9 @@ import java.util.Date;
  * @create: 2020-1-14 15:54:35
  **/
 public class JwtRefreshSuccessHandler implements AuthenticationSuccessHandler{
-	
-	private static final int tokenRefreshInterval = 300;  //刷新间隔5分钟
+
+	//刷新间隔5分钟
+	private static final int tokenRefreshInterval = 300;
 	
 	private JwtService jwtService;
 	
@@ -33,7 +34,7 @@ public class JwtRefreshSuccessHandler implements AuthenticationSuccessHandler{
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+			Authentication authentication) throws IOException {
 		DecodedJWT jwt = ((JwtAuthenticationToken)authentication).getToken();
 		boolean shouldRefresh = shouldTokenRefresh(jwt.getIssuedAt());
 		if(shouldRefresh) {

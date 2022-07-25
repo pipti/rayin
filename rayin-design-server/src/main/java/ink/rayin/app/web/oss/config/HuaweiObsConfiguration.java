@@ -48,8 +48,6 @@ public class HuaweiObsConfiguration {
 		conf.setSocketTimeout(50000);
 		// 设置建立连接的超时时间，默认为50000毫秒。
 		conf.setConnectionTimeout(50000);
-		// 设置从连接池中获取连接的超时时间（单位：毫秒），默认不超时。
-		conf.setConnectionRequestTimeout(1000);
 		// 设置连接空闲超时时间。超时则关闭连接，默认为60000毫秒。
 		conf.setIdleConnectionTime(60000);
 		// 设置失败请求重试次数，默认为3次。

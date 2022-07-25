@@ -80,7 +80,6 @@ public class UserTemplateApprove implements Serializable {
     String pdfEndTimeStr;
     @TableField(exist = false)
     String newFlag;
-    //查询构件模板关系时使用
     @TableField(exist = false)
     String elementVersion;
 

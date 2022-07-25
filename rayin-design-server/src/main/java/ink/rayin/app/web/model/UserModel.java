@@ -16,9 +16,6 @@ import java.io.Serializable;
  * @create: 2020-01-21 17:58
  **/
 @Data
-//@SuperBuilder
-//@AllArgsConstructor
-//@NoArgsConstructor
 @Accessors(chain = true)
 public class UserModel implements Serializable {
     private static final long serialVersionUID = 1L;

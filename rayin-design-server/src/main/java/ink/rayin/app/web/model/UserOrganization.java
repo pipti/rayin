@@ -23,9 +23,6 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
-//@SuperBuilder
-//@AllArgsConstructor
-//@NoArgsConstructor
 @Accessors(chain = true)
 public class UserOrganization implements Serializable{
     private String userId;

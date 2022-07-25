@@ -69,7 +69,7 @@ public final class CRLVerifier
      * @throws CertificateVerificationException if the certificate could not be verified
      * @throws RevokedCertificateException if the certificate is revoked
      */
-    @SuppressWarnings({"squid:S1141"}) // nested exception needed to try several distribution points
+    @SuppressWarnings({"squid:S1141"})
     public static void verifyCertificateCRLs(X509Certificate cert, Date signDate,
             Set<X509Certificate> additionalCerts)
             throws CertificateVerificationException, RevokedCertificateException

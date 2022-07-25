@@ -234,7 +234,7 @@ public class UserTemplateService implements IUserTemplateService {
 				.eq(UserTemplate::getOrganizationId,ut.getOrganizationId())
 				.eq(UserTemplate::getTemplateId,ut.getTemplateId())
 				.eq(UserTemplate::getTemplateVersion,ut.getTemplateVersion())
-				.select(UserTemplate.class,i->i.getProperty().equals("tplConfig"))
+				.select(UserTemplate.class,i-> "tplConfig".equals(i.getProperty()))
 		);
 		return userTemplate.getTplConfig();
 	}
@@ -545,10 +545,10 @@ public class UserTemplateService implements IUserTemplateService {
 		uua.setApproveStatus(parameter.getApproveStatus());
 		uua.setId(parameter.getId());
 		int updateCount =  userTemplateApproveMapper.updateById(uua);
-		if(!parameter.getApproveStatus().equals("accept") && !parameter.getApproveStatus().equals("reject")){
+		if(!"accept".equals(parameter.getApproveStatus()) && !"reject".equals(parameter.getApproveStatus())){
 			throw new RayinBusinessException("请选择审批意见！");
 		}
-		if(!parameter.getApproveStatus().equals("accept")){
+		if(!"accept".equals(parameter.getApproveStatus())){
 			Message message = new Message();
 			message.setUserId(parameter.getSubmitUserId());
 			message.setInfo("您的模板同步申请被拒绝");

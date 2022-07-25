@@ -55,7 +55,7 @@ public class TemplateManagementController {
                                       @OrgId String orgId,
                                       @RequestParam Integer pageCurrent, @RequestParam Integer pageSize,
                                       @PathVariable(required = false) String key,
-                                      @RequestParam(required = false) Boolean delFlag) throws Exception {
+                                      @RequestParam(required = false) Boolean delFlag) {
 
         UserTemplate ut = new UserTemplate();
         ut.setName(key);
@@ -75,7 +75,7 @@ public class TemplateManagementController {
      * @return
      */
     @RequestMapping(value = "/template/save")
-    public RestResponse templateSave(@UserId String userId, @OrgId String orgId,@RequestBody UserTemplate parameter) throws Exception {
+    public RestResponse templateSave(@UserId String userId, @OrgId String orgId,@RequestBody UserTemplate parameter) {
         if(StringUtils.isBlank(parameter.getName())){
             throw new RayinException("请设置模板名称！");
         }
@@ -182,7 +182,7 @@ public class TemplateManagementController {
             throw new RayinException("导入的模板文件错误，该文件可能不是导出的模板文件");
         }
         String commpressStr = Base64Util.decode(base64Str);
-        if(!commpressStr.substring(0,6).equals("online")){
+        if(!"online".equals(commpressStr.substring(0,6))){
             throw new RayinException("导入的模板非线上模板，该文件不能用于线上导入！");
         }else{
             commpressStr = commpressStr.substring(6);
@@ -294,7 +294,7 @@ public class TemplateManagementController {
     public RestResponse templateApproveWaitQuery(@UserId String userId,
                                       @OrgId String orgId,
                                       @RequestParam Integer pageCurrent,@RequestParam Integer pageSize,@RequestParam boolean waitFlag,
-                                      @PathVariable(required = false) String key) throws Exception {
+                                      @PathVariable(required = false) String key) {
 
         UserTemplateApprove uta = new UserTemplateApprove();
         uta.setName(key);

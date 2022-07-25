@@ -32,6 +32,7 @@ import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
 import ink.rayin.tools.utils.FileUtil;
 import ink.rayin.tools.utils.StringPool;
 import ink.rayin.tools.utils.StringUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,12 +87,14 @@ public class RestPdfCreateService implements IRestPdfCreateService {
     private OssBuilder ossBuilder;
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         pdfCreateService.init();
     }
     private static int i = 1;
+
+    @SneakyThrows
     @Override
-    public Map<String,String> createPdfByTemplateId(String accessKey, Rayin rayin) throws Exception {
+    public Map<String,String> createPdfByTemplateId(String accessKey, Rayin rayin) {
         Organization org = organizationMapper.selectOne(new QueryWrapper<Organization>().eq("access_key",accessKey));
                 //.eq("organization_id",ep.getOrganizationId()));
         if(org == null){
@@ -243,12 +246,18 @@ public class RestPdfCreateService implements IRestPdfCreateService {
         //TODO 索引中添加区块链信息
 
        // String transactionNo = rayin.getTransactionNo();
-        indexMap.put("sys_id", rayin.getSysId());//系统编号
-        indexMap.put("transaction_no", rayin.getTransactionNo()); //流水号
-        indexMap.put("organization_id",org.getOrganizationId());//项目ID
-        indexMap.put("template_id",StringUtils.isBlank(rayin.getTemplateId())?"":rayin.getTemplateId());//模板编号
-        indexMap.put("template_alias",StringUtils.isBlank(rayin.getTemplateAlias())?"":rayin.getTemplateAlias());//模板编号
-        indexMap.put("template_version",rayin.getTemplateVersion());//模板版本
+        //系统编号
+        indexMap.put("sys_id", rayin.getSysId());
+        //流水号
+        indexMap.put("transaction_no", rayin.getTransactionNo());
+        //项目ID
+        indexMap.put("organization_id",org.getOrganizationId());
+        //模板编号
+        indexMap.put("template_id",StringUtils.isBlank(rayin.getTemplateId())?"":rayin.getTemplateId());
+        //模板编号
+        indexMap.put("template_alias",StringUtils.isBlank(rayin.getTemplateAlias())?"":rayin.getTemplateAlias());
+        //模板版本
+        indexMap.put("template_version",rayin.getTemplateVersion());
         //indexMap.put("file_type","pdf");//文件类型
         indexMap.put("file_attr",rayinFile);
 
@@ -277,11 +286,12 @@ public class RestPdfCreateService implements IRestPdfCreateService {
 //        }
         return indexMap;
     }
-//
+
     @TaskDispense(name = "createPdf",taskId = "1")
     @Async
+    @SneakyThrows
     @Override
-    public void createPdfByTemplateIdAsync(String accessKey, Rayin rayin) throws Exception {
+    public void createPdfByTemplateIdAsync(String accessKey, Rayin rayin) {
         createPdfByTemplateId(accessKey, rayin);
     }
 
