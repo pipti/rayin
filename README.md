@@ -18,6 +18,13 @@
 5. 隐藏标记，元数据信息为后续处理提供便利。
 6. 使用简便，可单独引用jar包，也可与服务集成。
 
+## 字体演示
+<img title="字体演示" src="https://gitee.com/liuercode/images/raw/master/rayin/font_dems.png" width="500px">
+
+## 版式样图
+<img title="版式样图" src="https://gitee.com/liuercode/images/raw/master/rayin/piaoju_sample.png" width="500px">
+
+
 ## 项目起源
 某大型公司的内部项目的启发而来。  
 项目过程中发现的问题：  
@@ -44,7 +51,7 @@
 
 ## 模板模块化
 模板模块化通过拆分子模板来实现模板的复用和复杂业务场景的组合。即"构件"->"模板"。
-
+<img title="构件模板" src="https://gitee.com/liuercode/images/raw/master/rayin/dems_1.png" width="500px">
 ### 构件定义
 构件是PDF模板设计中的子模板，即将一个PDF拆分成多个块进行设计，最终的模板配置是由多个构件组成。  
 构件作用
