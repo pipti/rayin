@@ -3,12 +3,12 @@
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
 ![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
 ![Hex.pm](https://img.shields.io/badge/thymeleaf-3.0.11.RELEASE-green.svg)
-![Hex.pm](https://img.shields.io/badge/Release-V1.0.4-green.svg)
+![Hex.pm](https://img.shields.io/badge/Release-V1.0.5-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg)
 
 ## 睿印是什么
 数据+模板=动态生成PDF工具
-[html + json_config] + json_data => pdf
+[html + json_ocnfig] + json_data => pdf
 
 ## 优势
 1. 通过json_config更加灵活复用底板，解决业务多变，通过底板灵活组合进行复用，降低底板数量，提升效率。
@@ -18,63 +18,65 @@
 5. 隐藏标记，元数据信息为后续处理提供便利。
 6. 使用简便，可单独引用jar包，也可与服务集成。
 
-## 字体演示
+### 字体演示
 <img title="字体演示" src="https://gitee.com/liuercode/images/raw/master/rayin/font_dems.png" width="500px">
 
-## 版式样图
+### 版式样图
 <img title="版式样图" src="https://gitee.com/liuercode/images/raw/master/rayin/piaoju_sample.png" width="500px">
-
 
 ## 项目起源
 某大型公司的内部项目的启发而来。  
-项目过程中发现的问题：  
+项目过程中发现的问题：
 1. 原有针对PDF的模板制作方式复杂，依赖某A的工具，而从系统层面通过该模板实现的生成逻辑复杂。
 2. 系统虽然实现模板配置，但是由于依赖大量固定坐标，对模板上面的元素调整是一件十分痛苦的事情，而绑定数据项也是比较繁琐。模板制作的时间成本以及需要对系统的熟悉的成本很高。
 3. 原有模板制作以及后续生成方式使用了大量固定坐标，扩展性很差，进而在模板组合的过程中需要大量的硬代码去处理，维护性很差。
 4. 业务场景的个性化多，进而带来衍生大量的模板，一旦发生业务变动，所牵涉的模板变动工作量巨大。
-以上问题要想让普通的业务人员通过自服务方式去实现模板的制作就不太现实。
-因此基于以上问题，去解决如何更方便快捷的进行PDF模板的配置，如果能够更好支持扩展性以及多变的业务场景。
+   以上问题要想让普通的业务人员通过自服务方式去实现模板的制作就不太现实。
+   因此基于以上问题，去解决如何更方便快捷的进行PDF模板的配置，如果能够更好支持扩展性以及多变的业务场景。
 
 ## 达到目标
-扩展性、灵活性、自服务。
+扩展性、灵活性、低代码。
 基于上面的目标选择合适的技术和合适的设计。
 1. 通过html-css完成复杂样式的设计；
 2. 模板模块化，复用；
 3. 通过富文本可以实现在线设计；
 4. 通过"数据规则"-"模板组合"-"视图合成"三层结构尽量通过配置来解决业务场景，而非硬代码来处理。
-    数据规则：处理数据业务逻辑，规则的实现目前不在项目当中，具体应用过程应该尽量在数据处理过程中将业务逻辑消化完成，例如数据的附加转换，模板的指定等。
-    模板组合：解决设计过程中的子模板复用，灵活组合，子模板的显示与否，子模板类型（用于与打印机纸盒映射）。
-    视图合成：解决样式的展现，样式的扩展，动态数据与模板的结合；
+    * 数据规则：处理数据业务逻辑，可通过数据相关的规则引擎去完成，包括数据的延展，数据的转换，对元数据的再加工计算，以及通过规则进行指定模板，后续会考虑数据的转换引擎工具。
+    * 模板组合：解决设计过程中的子模板复用，灵活组合，子模板的显示与否，子模板类型（用于与打印机纸盒映射）。
+    * 视图合成：解决数据与样式的结合，样式的展现，样式的扩展；
 
 ## 关于html转PDF技术成熟度
-网上有一些文章针对网页转PDF进行了一些开源组件的转换测试，其实在大部分场景下文档类并不需要类似网页那么复杂的样式需求（而且有些网页的html并不一定规范），即使有也可以通过其他的支持标签去实现。
+网上有一些文章针对网页转PDF进行了一些开源组件的转换测试，其实在大部分场景下文档类并不需要类似网页那么复杂的样式需求，并且网页会存在很多动态的js（而且有些网页的html并不一定规范），即使有也可以通过其他的支持标签去实现，并且文档类并不需要类似js的处理逻辑和动态效果。
 
 ## 模板模块化
 模板模块化通过拆分子模板来实现模板的复用和复杂业务场景的组合。即"构件"->"模板"。
-<img title="构件模板" src="https://gitee.com/liuercode/images/raw/master/rayin/dems_1.png" width="500px">
+
 ### 构件定义
 构件是PDF模板设计中的子模板，即将一个PDF拆分成多个块进行设计，最终的模板配置是由多个构件组成。  
 构件作用
-    1. 增强复用性,降低重复的模板制作，当以个业务场景中的某一块内容出现不同时，不需要重新取制作模板，只需要将不同的模块替换重新组合即可。对于一些传统行业地域需求尤其突出，如果无法很好复用将出现模板灾难。 
-    2. 可根据后续实际需求对其进行处理，例如针对某一个子模块页面需要增加处理。还有就是方便将子模块映射至不同的打印机纸盒，应对大型打印机的打印需求.  
-    3. 可灵活控制其空白页填充以及页码的设置需求。
+1. 增强复用性,降低重复的模板制作，当以个业务场景中的某一块内容出现不同时，不需要重新取制作模板，只需要将不同的模块替换重新组合即可。对于一些传统行业地域需求尤其突出，如果无法很好复用将出现模板灾难。
+2. 可根据后续实际需求对其进行处理，例如针对某一个子模块页面需要增加处理。还有就是方便将子模块映射至不同的打印机纸盒，应对大型打印机的打印需求.
+3. 可灵活控制其空白页填充以及页码的设置需求。
 
 ### 模板定义
-上面说到，模板就是一个或多个构件的组合拼接，模板配置是自定义的一套JSON Schema，主要是构件的组合列表以及相关的页码、空白页、构件类型相关设置。  
+上面说到，模板就是一个或多个构件的组合拼接，模板配置是自定义的一套JSON Schema，主要是构件的组合列表以及相关的页码、空白页、构件类型相关设置。  \
 模板可以是配置文件，也可以是动态拼接的JSON数据。可以依据实际的业务逻辑进行动态的JSON数据拼接，来实现模板中灵活的构件组合。
 
 
 ## 项目过程
-从2019年项目至于开始构思设计，断断续续。也是做了一些尝试，反复测试，反复修改。
-例如：
-从freemaker 换成 thymeleaf；
-从itext2版本到itext5版本，再到后来的pdfbox；
-从flyingsaucer切换到openhtmltopdf，也感谢openhtmltopdf为html生成pdf提供了一个很好的技术方案。
-也是通过项目需求过程中，不断测试尝试能够覆盖的需求点，通过配置的方式尽可能简化的方式满足需求。
+从2019年项目至于开始构思设计，断断续续。也是做了一些尝试，反复测试，反复修改。 \
+例如：\
+从freemaker 换成 thymeleaf； \
+从itext2版本到itext5版本，再到后来的pdfbox； \
+从flyingsaucer切换到openhtmltopdf，也感谢openhtmltopdf为html生成pdf提供了一个很好的技术方案。\
+项目需求中遇到很多新的需求，尤其是不同的省份可能会有不同的个性化样式需求，以及不同的个性穿插内容，如果产品类型多，又存在个性化，那应对的模板将是指数级别的增长。 \
+项目中变更的需求，如果模板过多，对于一个变更的需求是一件很痛苦的过程，并且很容易遗漏。 \
+因此不断测试尝试能够覆盖的需求点，通过配置的方式尽可能简化的方式满足需求。
+
 
 ## 使用的开源框架一览
 ### thymeleaf 官网
-https://www.thymeleaf.org/index.html  
+https://www.thymeleaf.org/index.html  \
 类似freemaker的动态脚本，好处是直接打开html，浏览器可以正常解析，不破坏html结构，在设计预览比较重要。
 
 ### openhtmltopdf
@@ -85,9 +87,9 @@ https://github.com/danfickle/openhtmltopdf
 ### w3c css
 https://www.w3.org/TR/css-page-3/  
 主要针对@page 样式的设置，通用样式flyingsaucer基本支持，css2基本支持，css3部分支持。
-### Adobe Fonts 开源思源字体
+### Adobe Fonts 思源字体
 https://github.com/adobe-fonts
-### google Fonts 开源noto-cjk
+### google Fonts noto-cjk
 https://github.com/googlefonts/noto-cjk
 
 ## 项目结构
@@ -96,10 +98,10 @@ https://github.com/googlefonts/noto-cjk
 3. rayin-htmladapter-openhtmltopdf       openhtmltopdf生成pdf核心包
 4. rayin-htmladapter-spring-boot-starter springboot启动适配
 5. rayin-test                            测试样例
-6. rayin-springboot-serer                springboot-server 样例
-7. rayin-template-samples                模板样例
-8. rayin-design-server                   设计界面后台
-9. rayin-design-vue                      设计界面前端
+6. rayin-springboot-sample               springboot 样例
+7. rayin-template-samples                行业模板样例
+8. rayin-design-server                   设计管理端服务后台
+
 
 ## 列举一些实现功能与特性
 
@@ -124,32 +126,32 @@ https://github.com/googlefonts/noto-cjk
 6. 实现构件空白页填充（奇数页构件补空白页）.
 7. 实现页码灵活计数，页码灵活显示，支持构件重计数,单页显示多页码.
 8. 支持多字体联动显示，生僻字显示.
-9. 实现pdf元数据设置.
+9. 实现pdf元数据的保存与获取，通过模板生成的PDF，元数据中包括页码信息，隐藏标签页码坐标，可用于后续加工使用。
 10. 实现pdf嵌入.
 11. 实现字体自动加载.
 12. 实现pdf文件信息的源数据设置和读取.
-13. 实现隐藏标记，并可通过元数据进行获取起页码，坐标（可用于后续再加工的定位，例如签章位置）。
+13. 实现隐藏标记，并可通过元数据进行获取对应页码，坐标（可用于后续再加工的定位，例如签章位置）。
 14. 实现线程池。
 
 ### 项目地址
-Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin) <br>
+Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin)
 GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ### 开始使用
-新建项目，引入依赖包
-依赖包还在上传中，如果不能自动下载可先下载源码包打包引入。
+新建项目，引入依赖包 \
+如果使用阿里云可能会存在同步滞后，如果不能自动下载可使用原始的maven源。
 ```xml
 <dependency>
     <groupId>com.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.4</version>
 </dependency>
 
 ```
 
 ### 创建构件或模板
-构件就是单个html
-模板是json配置文件
+构件就是单个html \
+模板是json配置文件 \
 具体参见帮助手册 [https://www.yuque.com/liuer_doc/rayin](https://www.yuque.com/liuer_doc/rayin)
 
 ### 生成代码
@@ -165,7 +167,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ```
 
-## 帮助文档
+## 详细使用说明请参见帮助文档
 [https://www.yuque.com/liuer_doc/rayin](https://www.yuque.com/liuer_doc/rayin)
 
 ## 交流群

@@ -9,5 +9,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import({RayinPDFAdapterAutoConfiguration.class})
-public @interface EnableRayinyPdfAdpter {
+public @interface EnableRayinPdfAdpter {
 }

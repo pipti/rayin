@@ -1,7 +1,7 @@
 package ink.rayin.app.web;
 
 
-import ink.rayin.springboot.EnableRayinyPdfAdpter;
+import ink.rayin.springboot.EnableRayinPdfAdpter;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,7 +30,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages= {"ink.rayin.app.web.**"})
 @EnableSwagger2
 @MapperScan(basePackages = "ink.rayin.app.web.dao")
-@EnableRayinyPdfAdpter
+@EnableRayinPdfAdpter
 public class RayinDesignServerApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = SpringApplication.run(RayinDesignServerApplication.class, args);
