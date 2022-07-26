@@ -13,6 +13,7 @@ import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -50,8 +51,6 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(1)
     public void exp01ElementGenerateTest() throws Exception {
-        log.info("exp01ElementGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
@@ -61,10 +60,11 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example01_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         //数据参数可以为空
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example1/element1.html"),null,outputFile);
-
-        log.info("exp01ElementGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+        log.info("exp01ElementGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
     /**
@@ -75,9 +75,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(2)
     public void exp02SimpleTemplateGenerateTest() throws Exception {
-        log.info("exp02SimpleTemplateGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+       String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
         // 生成pdf路径
         // generate pdf path
@@ -86,9 +84,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example02_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example2/tpl.json"),null,outputFile);
-
-        log.info("exp02SimpleTemplateGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+        log.info("exp02SimpleTemplateGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
     /**
@@ -99,8 +98,6 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(3)
     public void exp03ElementBindDataGenerateTest() throws Exception {
-        log.info("exp03ElementBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example3/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
@@ -117,9 +114,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example03_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example3/element1.html"),jsonData,outputFile);
-
-        log.info("exp03ElementBindDataGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+        log.info("exp03ElementBindDataGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
     /**
@@ -129,9 +127,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(4)
     public void exp04TemplateBindDataGenerateTest() throws Exception {
-        log.info("exp04TemplateBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        //String jsonFileName = "card.json";
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example4/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
@@ -146,9 +142,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example04_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example4/tpl.json"),jsonData,outputFile);
-
-        log.info("exp04TemplateBindDataGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+        log.info("exp04TemplateBindDataGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
     /**
@@ -159,8 +156,6 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(5)
     public void exp05ComplexElementBindDataGenerateTest() throws Exception {
-        log.info("exp5ComplexElementBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example5/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
@@ -177,9 +172,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example05_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example5/element1.html"),jsonData,outputFile);
-
-        log.info("exp05ComplexElementBindDataGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+        log.info("exp05ComplexElementBindDataGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
     /**
@@ -190,8 +186,6 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(6)
     public void exp06ComplexTemplateGenerateTest() throws Exception {
-        log.info("exp06ComplexTemplateGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
@@ -206,9 +200,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example06_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/tpl.json"),jsonData,outputFile);
-
-        log.info("exp06ComplexTemplateGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+        log.info("exp06ComplexTemplateGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
     /**
@@ -237,9 +232,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example07_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example7/tpl.json"),jsonData,outputFile);
-
-        log.info("exp07SpecialTagGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+        log.info("exp07SpecialTagGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
 
@@ -266,6 +262,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example08_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/tpl.json"),jsonData,outputFile);
 
         String pageInfoJsonStr = pdfGenerator.pdfPageInfoRead(ResourceUtil.getResourceAsStream(outputFile));
@@ -286,15 +283,12 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 spl.add(s);
             }
         }
-        // 生成pdf路径
-        // generate pdf path
-//        outputFile =  new File(outputFileClass)
-//                .getParentFile().getParent()
-//                + "/tmp/"
-//                + "example9_pdfbox_sign_"+System.currentTimeMillis() + ".pdf";
+
         pdfSign.multipleSign("123456", "examples/example8/p12sign.p12", "examples/example8/example6.pdf",
                 outputFile,spl);
-        log.info("exp08SignTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+
+        log.info("exp08SignTest duration：" +  watch.getTime() + "ms");
     }
 
 
@@ -317,9 +311,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
                 + "/tmp/"
                 + "example09_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 
+        StopWatch watch = StopWatch.createStarted();
         //数据参数可以为空
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example9/element1.html"),null,outputFile);
-
-        log.info("exp09FontsGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        watch.stop();
+        log.info("exp09FontsGenerateTest duration：" +  watch.getTime() + "ms");
     }
 }

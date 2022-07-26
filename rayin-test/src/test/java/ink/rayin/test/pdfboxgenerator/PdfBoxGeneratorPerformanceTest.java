@@ -12,10 +12,10 @@ import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -48,9 +48,6 @@ public class PdfBoxGeneratorPerformanceTest {
     @JunitPerfConfig(duration = 30_000,threads = 5,warmUp = 1_000,
             reporter = {HtmlReporter.class, ConsoleReporter.class})
     public void exp4TemplateBindDataGenerateTest() throws Exception {
-        log.info("exp4TemplateBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-        StopWatch stopWatch = new StopWatch();
-        //String jsonFileName = "card.json";
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example4/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
@@ -67,9 +64,11 @@ public class PdfBoxGeneratorPerformanceTest {
                 + "/tmp/"
                 + "example4_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
 
+        StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example4/tpl.json"),jsonData,outputFile);
+        watch.stop();
 
-        log.info("exp4TemplateBindDataGenerateTest end time：" + new Timestamp(System.currentTimeMillis()));
+        log.info("exp4TemplateBindDataGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
 }
