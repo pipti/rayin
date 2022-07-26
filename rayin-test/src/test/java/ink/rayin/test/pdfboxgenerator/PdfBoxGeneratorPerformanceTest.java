@@ -40,12 +40,12 @@ public class PdfBoxGeneratorPerformanceTest {
     }
 
     /**
-     * 20线程，执行 60000ms，延迟1s执行，默认以 html 输出测试结果
+     * 5线程，执行 30000ms，延迟1s执行，默认以 html 输出测试结果
      *
      * 备注：原始包模板数据显示格式存在问题，不显示图表，lib下为修改后的包
      */
     @Test
-    @JunitPerfConfig(duration = 60_000,threads = 20,warmUp = 1_000,
+    @JunitPerfConfig(duration = 30_000,threads = 5,warmUp = 1_000,
             reporter = {HtmlReporter.class, ConsoleReporter.class})
     public void exp4TemplateBindDataGenerateTest() throws Exception {
         log.info("exp4TemplateBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
