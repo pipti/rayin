@@ -1,7 +1,7 @@
 
 package ink.rayin.app.web.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -467,7 +467,7 @@ public class UserElementService implements IUserElementService{
 		UserTemplate userTemplate = userTemplateMapper.selectOne(utqw);
 
 		// 重新组装elconfig
-		List<UserTemplateElement> ule = JSONObject.parseArray(userTemplate.getElConfig(), UserTemplateElement.class);
+		List<UserTemplateElement> ule = JSONObject.parseObject(userTemplate.getElConfig(), List.class);
 		for(int i = 0;i < ule.size(); i++){
 			UserTemplateElement utlei = ule.get(i);
 			if(utlei.getElementId().equals(userElement.getElementId())

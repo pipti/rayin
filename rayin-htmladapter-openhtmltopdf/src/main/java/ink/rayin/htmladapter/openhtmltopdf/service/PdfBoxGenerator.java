@@ -15,8 +15,8 @@
  */
 package ink.rayin.htmladapter.openhtmltopdf.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -1133,7 +1133,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     @SneakyThrows
     @Override
     public void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
-        JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
+        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
         for(int i = 0; i < ja.size(); i++){
             generatePdfFileByTplConfigStr(tplConfigStr,ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1) + ".pdf");
         }
@@ -1142,7 +1142,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     @SneakyThrows
     @Override
     public void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) {
-        JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
+        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
 
         List<ByteArrayOutputStream> bosl = new ArrayList();
 
@@ -1158,7 +1158,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     @SneakyThrows
     @Override
     public void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
-        JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
+        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
 
         for(int i = 0; i < ja.size(); i++){
             generatePdfFileByHtmlStr(elementStr, ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1)  + ".pdf");
@@ -1168,7 +1168,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     @SneakyThrows
     @Override
     public void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) {
-        JSONArray ja = JSONObject.parseArray(EasyExcelUtils.readWithoutHead(excelIs));
+        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
 
         List<ByteArrayOutputStream> bosl = new ArrayList();
 

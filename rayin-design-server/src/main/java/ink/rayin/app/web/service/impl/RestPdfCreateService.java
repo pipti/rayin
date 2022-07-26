@@ -4,8 +4,8 @@ package ink.rayin.app.web.service.impl;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONPath;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 

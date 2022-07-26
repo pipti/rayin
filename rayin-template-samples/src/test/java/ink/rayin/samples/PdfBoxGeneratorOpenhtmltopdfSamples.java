@@ -1,6 +1,6 @@
 package ink.rayin.samples;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
@@ -24,6 +24,8 @@ import java.util.List;
 @Slf4j
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PdfBoxGeneratorOpenhtmltopdfSamples {
+    static String DATA_FILE_NAME = "data.json";
+    static String TPL_FILE_NAME = "tpl.json";
     static PdfGenerator pdfGenerator;
     static  {
         try {
@@ -41,15 +43,15 @@ public class PdfBoxGeneratorOpenhtmltopdfSamples {
     public void samplesGenerate() throws Exception {
         List<File> fileList = FileUtil.list(ResourceUtil.getResourceAbsolutePathByClassPath("samples"));
         fileList.forEach(f->{
-            if(f.getName().equals("tpl.json")) {
+            if(f.getName().equals(TPL_FILE_NAME)) {
                 log.info("samplesGenerate [" + f.getParentFile().getName() + "] start time：" + new Timestamp(System.currentTimeMillis()));
                 String jsonDataFilePath = null;
                 try {
-                    jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath(f.getParent() + "/data.json");
+                    jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath(f.getParent() + "/" + DATA_FILE_NAME);
                     JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
                     //依据单个构建配置生成PDF
                     //generate pdf by element
-                    JSONObject jsonData = (JSONObject) JSONObject.parse(jsonDataNode.toString());
+                    JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
                     String outputFile = "";
                     String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");

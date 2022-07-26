@@ -2,7 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+    <parent>
+        <artifactId>rayin-parent</artifactId>
+        <groupId>ink.rayin</groupId>
+        <version>1.0.5</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>ink.rayin</groupId>
     <version>1.0.5</version>
@@ -15,14 +19,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-
-        <slf4j.version>1.7.26</slf4j.version>
-        <logback.version>1.2.3</logback.version>
-
-        <commons-io.version>2.11.0</commons-io.version>
-        <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <commons-compress.version>1.21</commons-compress.version>
-        <commons-pool2.version>2.6.1</commons-pool2.version>
     </properties>
     <repositories>
         <repository>
@@ -43,39 +39,32 @@
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-            <version>1.0.5</version>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
-        </dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.60</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba</groupId>-->
+<!--            <artifactId>fastjson</artifactId>-->
+<!--            <version>1.2.60</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.github.houbb</groupId>
             <artifactId>junitperf</artifactId>
             <version>2.0.7</version>
-            <systemPath>${basedir}/src/test/lib/junitperf-2.0.7-patch.jar</systemPath>
-            <scope>System</scope>
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${basedir}/src/test/lib/junitperf-2.0.7-patch.jar</systemPath>-->
         </dependency>
 
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

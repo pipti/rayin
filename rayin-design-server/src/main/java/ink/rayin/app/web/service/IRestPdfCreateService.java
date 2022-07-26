@@ -1,7 +1,7 @@
 
 package ink.rayin.app.web.service;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ink.rayin.app.web.model.BaseParam;
 import ink.rayin.app.web.model.Rayin;
 

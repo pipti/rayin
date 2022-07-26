@@ -1,9 +1,9 @@
 
 package ink.rayin.app.web.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -123,7 +123,7 @@ public class UserTemplateService implements IUserTemplateService {
 		tc.setEndTime(ut.getPdfEndTimeStr());
 		tc.setEditable(ut.isEditable());
 		tc.setTemplateName(ut.getName());
-		tc.setPageNumDisplayPoss(JSONObject.parseArray(ut.getPageNumDisplayPoss(), PageNumDisplayPos.class));
+		tc.setPageNumDisplayPoss(JSONObject.parseObject(ut.getPageNumDisplayPoss(), List.class));
 //		if(ut.getPageNumDisplayPoss() != null && ut.getPageNumDisplayPoss().size() > 0){
 //			List<ink.rayin.htmladapter.base.model.tplconfig.PageNumDisplayPos> pdl =
 //					new ArrayList<ink.rayin.htmladapter.base.model.tplconfig.PageNumDisplayPos>();
@@ -285,7 +285,7 @@ public class UserTemplateService implements IUserTemplateService {
 
 
 		String elConfig = ut.getElConfig();
-		List<UserTemplateElement> els = JSONArray.parseArray(elConfig,UserTemplateElement.class);
+		List<UserTemplateElement> els = JSONObject.parseObject(elConfig, List.class);
 		UserElement uel;
 		QueryWrapper<UserElement> qw ;
 		UpdateWrapper<UserElement> qu ;
@@ -567,7 +567,7 @@ public class UserTemplateService implements IUserTemplateService {
 			ut.setUpdateTime(null);
 
 			// 重新组装elconfig
-			List<UserTemplateElement> ule = JSONObject.parseArray(ut.getElConfig(), UserTemplateElement.class);
+			List<UserTemplateElement> ule = JSONObject.parseObject(ut.getElConfig(), List.class);
 			for(int i = 0;i < ule.size(); i++){
 				UserTemplateElement utlei = ule.get(i);
 					utlei.setOrganizationId(uta.getToOrganizationId());
@@ -596,7 +596,7 @@ public class UserTemplateService implements IUserTemplateService {
 				ut.setUserName(uta.getSubmitUserName());
 				ut.setUpdateTime(null);
 				// 重新组装elconfig
-				List<UserTemplateElement> ule = JSONObject.parseArray(ut.getElConfig(), UserTemplateElement.class);
+				List<UserTemplateElement> ule = JSONObject.parseObject(ut.getElConfig(), List.class);
 				for(int i = 0;i < ule.size(); i++){
 					UserTemplateElement utlei = ule.get(i);
 					utlei.setOrganizationId(uta.getToOrganizationId());
@@ -615,7 +615,7 @@ public class UserTemplateService implements IUserTemplateService {
 				ut.setUpdateTime(new Date());
 
 				// 重新组装elconfig
-				List<UserTemplateElement> ule = JSONObject.parseArray(ut.getElConfig(), UserTemplateElement.class);
+				List<UserTemplateElement> ule = JSONObject.parseObject(ut.getElConfig(), List.class);
 				for(int i = 0;i < ule.size(); i++){
 					UserTemplateElement utlei = ule.get(i);
 					utlei.setOrganizationId(uta.getToOrganizationId());
@@ -635,7 +635,7 @@ public class UserTemplateService implements IUserTemplateService {
 		}
 		//无论是否为新增构件都进行更新操作
 		String elConfig = ut.getElConfig();
-		List<UserTemplateElement> els = JSONArray.parseArray(elConfig,UserTemplateElement.class);
+		List<UserTemplateElement> els = JSONObject.parseObject(elConfig, List.class);
 		UserElement uel;
 		UserTemplateElement ute;
 		QueryWrapper<UserElement> qw ;

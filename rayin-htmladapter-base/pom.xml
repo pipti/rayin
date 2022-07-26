@@ -29,7 +29,21 @@
             <artifactId>nekohtml</artifactId>
             <version>1.9.22</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!-- nekohtml 间接引用 版本为2.11.0 -->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.12.2</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>com.github.fge</groupId>
             <artifactId>jackson-coreutils</artifactId>
@@ -52,12 +66,21 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-databind</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.mozilla</groupId>
+                    <artifactId>rhino</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.13.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mozilla</groupId>
+            <artifactId>rhino</artifactId>
+            <version>1.7.14</version>
         </dependency>
         <dependency>
             <groupId>com.github.fge</groupId>
@@ -87,13 +110,13 @@
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
-            <version>3.4.0</version>
+            <version>3.5.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
-            <version>3.4.0</version>
+            <version>3.5.0</version>
             <scope>compile</scope>
         </dependency>
 

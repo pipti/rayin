@@ -1,7 +1,7 @@
 
 package ink.rayin.app.web.service;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import ink.rayin.app.web.model.UserTemplate;
 import ink.rayin.app.web.model.UserTemplateApprove;

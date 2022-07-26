@@ -1,6 +1,6 @@
 package ink.rayin.app.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ink.rayin.app.web.model.OrganizationModel;
 import ink.rayin.app.web.model.RestResponse;
 import ink.rayin.app.web.model.UserModel;

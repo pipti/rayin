@@ -1,4 +1,8 @@
-
+server:
+  port: 8971
+  servlet:
+    application-display-name: rayin-springboot-sample
+    context-path: /
 spring:
   application:
     name: rayin-springboot-server

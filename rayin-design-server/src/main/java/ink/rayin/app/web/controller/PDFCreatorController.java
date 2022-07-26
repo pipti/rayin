@@ -1,6 +1,6 @@
 package ink.rayin.app.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ink.rayin.app.web.cache.RedisTemplateUtil;
 import ink.rayin.app.web.exception.BusinessCodeMessage;
 import ink.rayin.app.web.model.Rayin;

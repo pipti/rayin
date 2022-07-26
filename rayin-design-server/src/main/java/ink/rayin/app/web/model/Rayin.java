@@ -1,6 +1,6 @@
 package ink.rayin.app.web.model;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.Data;
 
 import javax.validation.constraints.DecimalMax;

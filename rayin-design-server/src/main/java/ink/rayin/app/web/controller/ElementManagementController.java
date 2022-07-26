@@ -1,6 +1,6 @@
 package ink.rayin.app.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ink.rayin.app.web.exception.BusinessCodeMessage;

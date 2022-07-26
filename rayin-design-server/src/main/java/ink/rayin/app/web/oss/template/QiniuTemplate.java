@@ -16,11 +16,13 @@
  */
 package ink.rayin.app.web.oss.template;
 
+import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.FileInfo;
+import com.qiniu.storage.model.FileListing;
 import com.qiniu.util.Auth;
 import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.tools.utils.CollectionUtil;
@@ -217,44 +219,37 @@ public class QiniuTemplate implements OssTemplate {
 	}
 
 	@Override
-	public RayinFiles getFileList(String bucketName, String keyPrefix) {
+	public RayinFiles getFileList(String bucketName, String keyPrefix) throws QiniuException {
 		//每次迭代的长度限制，最大1000，推荐值 1000
-		int limit = 1000;
+		int limit = 100;
 		//指定目录分隔符，列出所有公共前缀（模拟列出目录效果）。缺省值为空字符串
-		String delimiter = "/";
+		String delimiter = StringPool.SLASH;
 		//列举空间文件列表
 		List<RayinFile> files = new ArrayList<>();
 		RayinFiles rayinFiles =  new RayinFiles();
 		RayinFile rayinFile;
-		BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(bucketName, keyPrefix, limit, delimiter);
-		while (fileListIterator.hasNext()) {
-			//处理获取的file list结果
-			FileInfo[] items = fileListIterator.next();
-			if(items.length == 0){
+		FileListing fileListing = bucketManager.listFiles(bucketName, keyPrefix, null, limit, delimiter);
+		FileInfo[] items = fileListing.items;
+
+		for (FileInfo object : fileListing.items) {
+			rayinFile = new RayinFile();
+			rayinFile.setName(object.key.substring(object.key.lastIndexOf(StringPool.SLASH)));
+			rayinFile.setPutTime(new Date(object.putTime));
+			rayinFile.setLength(object.fsize);
+			rayinFile.setPresignedLink(filePresignedLink(bucketName,object.key));
+			rayinFile.setFileType(object.mimeType);
+			files.add(rayinFile);
+		}
+		if(fileListing.commonPrefixes != null){
+			for (String commonPrefix : fileListing.commonPrefixes) {
 				rayinFile = new RayinFile();
-				rayinFile.setName(keyPrefix.substring(keyPrefix.length() - 1));
+				rayinFile.setName(commonPrefix.substring(keyPrefix.length()));
 				rayinFile.setFileType("doc");
 				rayinFile.setPrefix(keyPrefix);
 				files.add(rayinFile);
 			}
-			for (FileInfo item : items) {
-				System.out.println(item.key);
-				System.out.println(item.hash);
-				System.out.println(item.fsize);
-				System.out.println(item.mimeType);
-				System.out.println(item.putTime);
-				System.out.println(item.endUser);
-
-				rayinFile = new RayinFile();
-				rayinFile.setName(item.key.substring(item.key.lastIndexOf(StringPool.SLASH)));
-				rayinFile.setPutTime(new Date(item.putTime));
-				rayinFile.setLength(item.fsize);
-				rayinFile.setPresignedLink(filePresignedLink(bucketName,item.key));
-				rayinFile.setFileType(item.mimeType);
-				files.add(rayinFile);
-			}
-
 		}
+
 		rayinFiles.setPrefix(keyPrefix);
 		rayinFiles.setFileList(files);
 		return rayinFiles;

@@ -1,6 +1,7 @@
 package ink.rayin.app.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
+import com.qiniu.common.QiniuException;
 import ink.rayin.app.web.exception.RayinBusinessException;
 import ink.rayin.app.web.model.RestResponse;
 
@@ -64,7 +65,7 @@ public class PDFManagementController {
                                              @RequestBody JSONObject params,
                                              @RequestParam Integer pageCurrent,
                                              @RequestParam Integer pageSize,
-                                             @RequestParam String prefix) {
+                                             @RequestParam String prefix) throws QiniuException {
 
         UserOrganization uo = userOrganizationService.userOrganizationQueryOne(new UserOrganization().setUserId(userId).setOrganizationId(orgId));
         if(uo == null){

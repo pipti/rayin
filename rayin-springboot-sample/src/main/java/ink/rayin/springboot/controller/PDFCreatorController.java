@@ -1,6 +1,6 @@
 package ink.rayin.springboot.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.tools.utils.Charsets;

@@ -63,8 +63,20 @@
             <artifactId>openhtmltopdf-rtl-support</artifactId>
             <version>${openhtml.version}</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.ibm.icu</groupId>
+                    <artifactId>icu4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
+        <!-- 修复漏洞 原包引用版本59.1 -->
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>71.1</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <!-- Optional, leave out if you do not need logging via slf4j. -->
             <groupId>com.openhtmltopdf</groupId>

@@ -15,7 +15,7 @@
  */
 package ink.rayin.htmladapter.base;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
 import com.google.zxing.WriterException;
 import org.xml.sax.SAXException;

@@ -17,6 +17,7 @@
 package ink.rayin.app.web.oss.template;
 
 
+import com.qiniu.common.QiniuException;
 import ink.rayin.app.web.oss.model.RayinFile;
 import ink.rayin.app.web.oss.model.RayinFiles;
 import ink.rayin.app.web.oss.model.StoreFile;
@@ -215,5 +216,5 @@ public interface OssTemplate {
 	 * @param keyPrefix
 	 * @return
 	 */
-	RayinFiles getFileList(String bucketName, String keyPrefix);
+	RayinFiles getFileList(String bucketName, String keyPrefix) throws QiniuException;
 }

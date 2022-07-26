@@ -1,6 +1,6 @@
 package ink.rayin.test.pdfboxgenerator;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.houbb.junitperf.core.annotation.JunitPerfConfig;
 import com.github.houbb.junitperf.core.report.impl.ConsoleReporter;
@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -48,13 +49,13 @@ public class PdfBoxGeneratorPerformanceTest {
             reporter = {HtmlReporter.class, ConsoleReporter.class})
     public void exp4TemplateBindDataGenerateTest() throws Exception {
         log.info("exp4TemplateBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
-
+        StopWatch stopWatch = new StopWatch();
         //String jsonFileName = "card.json";
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example4/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据构建配置生成PDF
-        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
 
         String outputFile ="";

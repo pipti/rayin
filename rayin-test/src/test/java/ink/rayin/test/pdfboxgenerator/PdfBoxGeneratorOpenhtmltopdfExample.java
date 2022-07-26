@@ -1,6 +1,6 @@
 package ink.rayin.test.pdfboxgenerator;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 import ink.rayin.htmladapter.base.PdfGenerator;
@@ -14,6 +14,7 @@ import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
@@ -47,6 +48,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * single element generate test
      */
     @Test
+    @Order(1)
     public void exp01ElementGenerateTest() throws Exception {
         log.info("exp01ElementGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
@@ -71,6 +73,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * simple template generate test
      */
     @Test
+    @Order(2)
     public void exp02SimpleTemplateGenerateTest() throws Exception {
         log.info("exp02SimpleTemplateGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
@@ -94,6 +97,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * single element bind data generate test
      */
     @Test
+    @Order(3)
     public void exp03ElementBindDataGenerateTest() throws Exception {
         log.info("exp03ElementBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
@@ -102,7 +106,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
 
         //依据单个构建配置生成PDF
         //generate pdf by element
-        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
@@ -123,6 +127,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * template bind data generate test
      */
     @Test
+    @Order(4)
     public void exp04TemplateBindDataGenerateTest() throws Exception {
         log.info("exp04TemplateBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
@@ -131,7 +136,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据构建配置生成PDF
-        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
@@ -152,6 +157,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * single element bind data generate test
      */
     @Test
+    @Order(5)
     public void exp05ComplexElementBindDataGenerateTest() throws Exception {
         log.info("exp5ComplexElementBindDataGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
@@ -160,7 +166,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
 
         //依据单个构建配置生成PDF
         //generate pdf by element
-        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
@@ -182,6 +188,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * complex template generate test
      */
     @Test
+    @Order(6)
     public void exp06ComplexTemplateGenerateTest() throws Exception {
         log.info("exp06ComplexTemplateGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
@@ -189,7 +196,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据构建配置生成PDF
-        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
@@ -210,6 +217,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * special tag generate test
      */
     @Test
+    @Order(7)
     public void exp07SpecialTagGenerateTest() throws Exception {
         log.info("exp07SpecialTagGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
@@ -218,7 +226,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
 
         //依据单个构建配置生成PDF
         //generate pdf by element
-        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 
@@ -241,6 +249,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * get page info test
      */
     @Test
+    @Order(8)
     public void exp08SignTest() throws Exception {
         log.info("exp08SignTest start time：" + new Timestamp(System.currentTimeMillis()));
 
@@ -249,7 +258,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
         //依据构建配置生成PDF
-        JSONObject jsonData = (JSONObject)JSONObject.parse(jsonDataNode.toString());
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
         // 生成pdf路径
         String outputFile = new File(outputFileClass)
@@ -295,6 +304,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
      * single element generate test
      */
     @Test
+    @Order(9)
     public void exp09FontsGenerateTest() throws Exception {
         log.info("exp09FontsGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
