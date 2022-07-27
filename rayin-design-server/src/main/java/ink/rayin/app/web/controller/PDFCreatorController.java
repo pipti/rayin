@@ -12,8 +12,6 @@ import ink.rayin.htmladapter.base.utils.RayinException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +38,6 @@ import java.util.Set;
 @Slf4j
 @RestController
 public class PDFCreatorController {
-    private static Logger logger = LoggerFactory.getLogger(PDFCreatorController.class);
     @Resource
     IRestPdfCreateService iRestPdfCreateService;
     @Resource

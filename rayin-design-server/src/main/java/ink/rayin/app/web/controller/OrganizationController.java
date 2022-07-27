@@ -30,7 +30,7 @@ public class OrganizationController {
         organizationModel.setOrgNumber(jsonObject.getInteger("orgNumber"));
 
         organizationService.createOrganization(new UserModel().setId(jsonObject.getString("userId")),organizationModel);
-        System.err.println(organizationModel);
+        //System.err.println(organizationModel);
         return "";
     }
 

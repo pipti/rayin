@@ -1,7 +1,6 @@
 
 package ink.rayin.app.web.service.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +15,7 @@ import ink.rayin.app.web.oss.builder.OssBuilder;
 import ink.rayin.app.web.service.IUserOrganizationService;
 
 import ink.rayin.tools.utils.BeanConvert;
+import ink.rayin.tools.utils.DigestUtil;
 import ink.rayin.tools.utils.ResourceUtil;
 import ink.rayin.tools.utils.StringUtil;
 
@@ -246,17 +246,13 @@ public class UserOrganizationService implements IUserOrganizationService {
 //		o.setThirdStorageResourceBucket(uo.getThirdStorageBucket());
 //		o.setOssType(uo.getOssType());
 //		o.setDeposit(uo.isDeposit());
-
+		String accessKey =  DigestUtil.sha256(userId + organizationId);
+		String secretKey =  DigestUtil.sha256(userId + organizationId + System.currentTimeMillis());
 		if (StringUtils.isBlank(uo.getOrganizationId())) {
 			// 新增项目
 			o.setCreateTime(new Date())
-					.setAccessKey(StringUtil.randomUUID())
-					.setSecretKey(StringUtil.randomUUID());
-//			o.setAccessKey(StringUtil.randomUUID());
-//			o.setSecretKey(StringUtil.randomUUID());
-
-
-
+					.setAccessKey(accessKey)
+					.setSecretKey(secretKey);
 
 			organizationMapper.insert(o);
 			uo.setOrganizationId(o.getOrganizationId());

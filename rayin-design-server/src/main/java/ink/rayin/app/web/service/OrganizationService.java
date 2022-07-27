@@ -6,7 +6,6 @@ import ink.rayin.app.web.model.UserModel;
 import java.util.List;
 
 /**
- * @program: rayin-app-parent
  * @description:
  * @author: 作者名字
  * @create: 2020-02-06 21:45

@@ -6,6 +6,7 @@ import ink.rayin.app.web.model.OrganizationModel;
 import ink.rayin.app.web.model.UserModel;
 import ink.rayin.app.web.model.UserOrganization;
 import ink.rayin.app.web.service.OrganizationService;
+import ink.rayin.tools.utils.DigestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
