@@ -1,17 +1,20 @@
 # 睿印
 ![Hex.pm](https://img.shields.io/hexpm/l/plug)
+![Hex.pm](https://img.shields.io/badge/Release-V1.0.5-green.svg)
+![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg) \
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
 ![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
+![Hex.pm](https://img.shields.io/badge/openhtmltopdf-1.0.10-green.svg)
 ![Hex.pm](https://img.shields.io/badge/thymeleaf-3.0.11.RELEASE-green.svg)
-![Hex.pm](https://img.shields.io/badge/Release-V1.0.5-green.svg)
-![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg)
+![Hex.pm](https://img.shields.io/badge/Lombok-1.8.24-green.svg)
+![Hex.pm](https://img.shields.io/badge/fastjson2-2.0.10-green.svg)
 
 ## 睿印是什么
 数据+模板=动态生成PDF工具
-[html + json_ocnfig] + json_data => pdf
+[html + template_config] + json_data => pdf
 
 ## 优势
-1. 通过json_config更加灵活复用底板，解决业务多变，通过底板灵活组合进行复用，降低底板数量，提升效率。
+1. 通过template_config更加灵活复用底板，解决业务多变，通过底板灵活组合进行复用，降低底板数量，提升效率。
 2. 可自动加载字体，无缝衔接中文字体显示，并支持生僻字显示。
 3. 通过线程池加载提升生成效率。
 4. 页码、空白页灵活定制。
@@ -74,7 +77,10 @@
 因此不断测试尝试能够覆盖的需求点，通过配置的方式尽可能简化的方式满足需求。
 
 
-## 使用的开源框架一览
+## 主要的开源框架一览
+### PDFBOX
+官网：https://pdfbox.apache.org/  \
+
 ### thymeleaf 官网
 https://www.thymeleaf.org/index.html  \
 类似freemaker的动态脚本，好处是直接打开html，浏览器可以正常解析，不破坏html结构，在设计预览比较重要。
@@ -82,15 +88,14 @@ https://www.thymeleaf.org/index.html  \
 ### openhtmltopdf
 https://github.com/danfickle/openhtmltopdf
 
-### jsoup
-
-### w3c css
-https://www.w3.org/TR/css-page-3/  
-主要针对@page 样式的设置，通用样式flyingsaucer基本支持，css2基本支持，css3部分支持。
 ### Adobe Fonts 思源字体
 https://github.com/adobe-fonts
 ### google Fonts noto-cjk
 https://github.com/googlefonts/noto-cjk
+
+### W3C CSS
+https://www.w3.org/TR/css-page-3/  
+主要针对@page 样式的设置，通用样式基本支持，css2基本支持，css3部分支持。
 
 ## 项目结构
 1. rayin-htmladapter-base                基础类包
@@ -144,7 +149,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 <dependency>
     <groupId>com.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 
 ```
