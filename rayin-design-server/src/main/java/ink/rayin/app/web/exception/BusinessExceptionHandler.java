@@ -18,10 +18,11 @@ public class BusinessExceptionHandler {
     @ResponseBody
     public RestResponse<?> handlerException(RayinBusinessException ex) {
         log.info("[全局业务异常]\r\n业务编码：{}\r\n异常记录：{}",ex.getCode(), ex.getMessage());
+        log.error("", ex);
         int code = ex.getCode();
-//        if(ex.getCode() == 0){
-//            code = -1;
-//        }
+        if(ex.getCode() == 0){
+            code = -1;
+        }
         return RestResponse.failed(code, ex.getMessage());
     }
 
@@ -29,10 +30,12 @@ public class BusinessExceptionHandler {
     @ResponseBody
     public RestResponse<?> handlerException(RayinException ex) {
         log.info("[全局业务异常]\r\n业务编码：{}\r\n异常记录：{}",ex.getCode(), ex.getMessage());
+        log.error("", ex);
         int code = ex.getCode();
-//        if(ex.getCode() == 0){
-//            code = -1;
-//        }
+        if(ex.getCode() == 0){
+            code = -1;
+        }
+
         return RestResponse.failed(code, ex.getMessage());
     }
 
@@ -41,10 +44,11 @@ public class BusinessExceptionHandler {
     @ResponseBody
     public RestResponse<?> handlerException(Exception ex) {
         log.info("[全局业务异常]\r\n业务编码：{}\r\n异常记录：{}","", ex.getMessage());
-        //int code = ex.getCode();
+//        int code = ex.getCode();
 //        if(ex.getCode() == 0){
 //            code = -1;
 //        }
+        log.error("", ex);
         return RestResponse.failed(BusinessCodeMessage.OTHERS.getCode(), ex.getMessage());
     }
 }
