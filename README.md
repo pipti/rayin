@@ -183,5 +183,8 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 程序问题或者使用问题可加群或提交issue！ \
 程序难免存在问题，欢迎提出问题以及宝贵的建议！
 
+# 欢迎共享行业样例模板
+[https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
+
 ## 交流群
 <img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
