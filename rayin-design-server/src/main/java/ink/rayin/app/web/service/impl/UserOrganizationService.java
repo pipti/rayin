@@ -1,6 +1,10 @@
 
 package ink.rayin.app.web.service.impl;
 
+import ch.qos.logback.core.pattern.util.AsIsEscapeUtil;
+import cn.hutool.crypto.Mode;
+import cn.hutool.crypto.Padding;
+import cn.hutool.crypto.symmetric.AES;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,10 +18,7 @@ import ink.rayin.app.web.dao.*;
 import ink.rayin.app.web.oss.builder.OssBuilder;
 import ink.rayin.app.web.service.IUserOrganizationService;
 
-import ink.rayin.tools.utils.BeanConvert;
-import ink.rayin.tools.utils.DigestUtil;
-import ink.rayin.tools.utils.ResourceUtil;
-import ink.rayin.tools.utils.StringUtil;
+import ink.rayin.tools.utils.*;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -246,8 +247,11 @@ public class UserOrganizationService implements IUserOrganizationService {
 //		o.setThirdStorageResourceBucket(uo.getThirdStorageBucket());
 //		o.setOssType(uo.getOssType());
 //		o.setDeposit(uo.isDeposit());
-		String accessKey =  DigestUtil.sha256(userId + organizationId);
-		String secretKey =  DigestUtil.sha256(userId + organizationId + System.currentTimeMillis());
+
+		AES aes = new AES(Mode.ECB, Padding.PKCS5Padding, AesUtil.genAesKey().getBytes());
+		String accessKey =  Base64Util.encode(aes.encryptHex(organizationId.substring(5)));
+		aes = new AES(Mode.ECB, Padding.PKCS5Padding, AesUtil.genAesKey().getBytes());
+		String secretKey =  Base64Util.encode(aes.encryptHex(organizationId + System.currentTimeMillis()));
 		if (StringUtils.isBlank(uo.getOrganizationId())) {
 			// 新增项目
 			o.setCreateTime(new Date())
@@ -475,4 +479,5 @@ public class UserOrganizationService implements IUserOrganizationService {
 //		File file = new File(ResourceUtil.getResourceAbsolutePathByClassPath("storage_test.pdf"));
 //		log.debug(JSON.toJSONString(ossBuilder.template().putFile(uo.getThirdStorageBucket(),file.getName(),new FileInputStream(file))));
 //	}
+
 }
