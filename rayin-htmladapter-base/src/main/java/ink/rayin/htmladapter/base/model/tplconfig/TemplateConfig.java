@@ -63,13 +63,6 @@ public class TemplateConfig {
     private String  author;
 
     /**
-     * 作者
-     */
-    @Getter
-    @Setter
-    private String  creator;
-
-    /**
      * 关键字
      */
     @Getter
