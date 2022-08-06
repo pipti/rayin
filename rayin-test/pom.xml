@@ -44,7 +44,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.0</version>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -63,12 +63,12 @@
         <dependency>
             <groupId>com.github.houbb</groupId>
             <artifactId>heaven</artifactId>
-            <version>0.1.163</version>
+            <version>0.1.106</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>9.3.0</version>
+            <version>8.11.2</version>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
