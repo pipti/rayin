@@ -17,12 +17,8 @@ package ink.rayin.htmladapter.base;
 
 import com.alibaba.fastjson2.JSONObject;
 import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
-import com.google.zxing.WriterException;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -85,8 +81,8 @@ public interface PdfGenerator {
     /**
      * 根据单个html文件路径（非配置文件，即html路径）生成pdf至指定路径
      * @param htmlLocation 参见类说明
-     * @param jsonData
-     * @param outputFilePath
+     * @param jsonData 数据
+     * @param outputFilePath 输出文件绝对路径
      * @return boolean true or false
      */
     boolean generatePdfFileByHtmlAndData(String htmlLocation, JSONObject jsonData,
@@ -94,8 +90,8 @@ public interface PdfGenerator {
 
     /**
      * 将html文件与数据匹配生成转换后的字符串
-     * @param htmlLocation
-     * @param jsonData
+     * @param htmlLocation 参见类说明
+     * @param jsonData  数据
      * @return html字符串
      */
      String htmlFileDataFilling(String htmlLocation, JSONObject jsonData);
@@ -157,7 +153,7 @@ public interface PdfGenerator {
 
     /**
      * PDF 模板元数据读取
-     * @param pdf
+     * @param pdf pdf流
      * @return json 字符串
      * 2020-01-07
      */

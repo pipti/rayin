@@ -85,9 +85,8 @@ public class ThymeleafHandler {
      * 	 6. C:/dir1/ and /Users/lcm
      * @param jsonData json数据
      * @return 解析后的字符串
-     * @throws IOException
      */
-    public String templateEngineProcessByPath(String filePath, JSONObject jsonData) throws IOException {
+    public String templateEngineProcessByPath(String filePath, JSONObject jsonData) {
         if(jsonData != null){
             context.setVariables(JSON.parseObject(jsonData.toJSONString(),Map.class));
         }

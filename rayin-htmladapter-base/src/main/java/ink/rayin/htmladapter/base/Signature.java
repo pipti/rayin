@@ -29,11 +29,12 @@ public interface Signature {
      *
      * @param password            秘钥密码
      * @param keyStorePath        秘钥文件路径
-     * @param inputFile           签名的PDF文件
+     * @param inputFilePath           签名的PDF文件路径
+     * @param signedFilePath          签名文件路径
      * @param signatureProperties 签名坐标、页码、章信息
      */
-    void multipleSign(String password, String keyStorePath, String inputFile, String signedFile,
-                             List<SignatureProperty> signatureProperties) throws Exception;
+    void multipleSign(String password, String keyStorePath, String inputFilePath, String signedFilePath,
+                             List<SignatureProperty> signatureProperties);
 
     /**
      * 多个签章类型
@@ -45,7 +46,7 @@ public interface Signature {
      * @param signatureProperties 签名坐标、页码、章信息
      */
     void multipleSign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
-                             List<SignatureProperty> signatureProperties) throws Exception;
+                             List<SignatureProperty> signatureProperties);
 
     /**
      * 单个签章类型
@@ -55,38 +56,20 @@ public interface Signature {
      * @param inputFileIs       输入pdf文件流
      * @param signedFileOs      签章后文件流
      * @param signatureProperty 签章属性
-     * @throws IOException
-     * @throws CertificateException
-     * @throws KeyStoreException
-     * @throws NoSuchAlgorithmException
-     * @throws UnrecoverableKeyException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     void singleSign(String password, InputStream keyStoreIn, InputStream inputFileIs, ByteArrayOutputStream signedFileOs,
-                           SignatureProperty signatureProperty) throws Exception;
+                           SignatureProperty signatureProperty);
 
     /**
      * 单个签章类型
      *
-     * @param password
-     * @param keyStorePath
-     * @param inputFilePath
-     * @param signedFilePath
-     * @param signatureProperty
-     * @throws IOException
-     * @throws CertificateException
-     * @throws KeyStoreException
-     * @throws NoSuchAlgorithmException
-     * @throws UnrecoverableKeyException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     * @param password          密码
+     * @param keyStorePath      秘钥
+     * @param inputFilePath     输入PDF文件路径
+     * @param signedFilePath    签名输出文件路径
+     * @param signatureProperty 签名设置属性
      */
     void singleSign(String password, String keyStorePath, String inputFilePath, String signedFilePath,
-                           SignatureProperty signatureProperty) throws Exception;
+                           SignatureProperty signatureProperty);
 
 }

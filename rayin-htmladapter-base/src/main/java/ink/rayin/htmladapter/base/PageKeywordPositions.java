@@ -15,50 +15,22 @@
  */
 package ink.rayin.htmladapter.base;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
  * 关键字位置bean
  * @author Janah Wang / 王柱
  */
+@Data
 public class PageKeywordPositions {
     private String content;
 
-    private List<float[]> positions;
-
     /**
-     * 获取内容
-     * @return
-     */
-    public String getContent() {
-        return content;
-    }
-
-    /**
-     * 设置内容
-     * @param content
-     */
-    public void setContent(String content) {
-        this.content = content;
-    }
-    /**
-     *
-     * 获取坐标信息
-     *
-     * @return
      * float[0]:页码
      * float[1]:x 坐标
      * float[2]:y 坐标
      */
-    public List<float[]> getPositions() {
-        return positions;
-    }
-
-    /**
-     * 设置坐标
-     * @param positions
-     */
-    public void setPostions(List<float[]> positions) {
-        this.positions = positions;
-    }
+    private List<float[]> positions;
 }

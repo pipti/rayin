@@ -39,9 +39,9 @@ public class CodeImageUtils {
 
     /**
      * 生成二维码
-     * @param text
-     * @return
-     * @throws IOException
+     * @param text 字符串
+     * @return 图片流
+     * @throws IOException 异常
      */
     public static ByteArrayOutputStream qrCodeImage(String text) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -65,9 +65,9 @@ public class CodeImageUtils {
 
     /**
      * 生成二维码base64
-     * @param text
-     * @return
-     * @throws IOException
+     * @param text 字符串
+     * @return base64图片
+     * @throws IOException 异常
      */
     public static String qrCodeImageBase64(String text) throws IOException {
         final Base64.Encoder encoder = Base64.getEncoder();
@@ -79,14 +79,16 @@ public class CodeImageUtils {
     /**
      * 生成条形码
      * @param text 待生成的内容
-     * @param width 宽度 height 高度
+     * @param width 宽度 width 宽度
+     * @param height 高度 height 高度
      * @param angel 角度
      * @param barcodeFormat 编码格式
-     * @return
-     * @throws IOException
-     * @throws WriterException
+     * @return 图片流
+     * @throws IOException  异常
+     * @throws WriterException 异常
      */
-    public static ByteArrayOutputStream barCodeImage(String text,int width,int height,int angel,BarcodeFormat barcodeFormat) throws IOException, WriterException {
+    public static ByteArrayOutputStream barCodeImage(String text, int width, int height, int angel, BarcodeFormat barcodeFormat)
+            throws IOException, WriterException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         //配置参数
         Map<EncodeHintType,Object> hints = new HashMap<>();
@@ -99,29 +101,8 @@ public class CodeImageUtils {
         // 将二维码输出到页面中
         MatrixToImageWriter.writeToStream(bitMatrix, "png", bos);
 
-        //if(angel == 0){
-            return bos;
-        //}
+        return bos;
 
-//        BufferedImage res = null;
-//        Rectangle rect_des = CalcRotatedSize(new Rectangle(new Dimension(
-//                width, height)), angel);
-//        res = new BufferedImage(rect_des.width, rect_des.height,
-//                BufferedImage.TYPE_INT_RGB);
-//        Graphics2D g2 = res.createGraphics();
-//        g2.translate((rect_des.width - width) / 2, (rect_des.height - height) / 2);
-//        g2.rotate(Math.toRadians(angel), width / 2, height / 2);
-//
-//        ByteArrayOutputStream bosImg = new ByteArrayOutputStream();
-//        Image barCodeImg = ImageIO.read(new ByteArrayInputStream(bos.toByteArray()));
-//        g2.drawImage(barCodeImg, null, null);
-//        ImageIO.write( res, "png", bosImg );
-//
-//        if(bos != null){
-//            bos.close();
-//        }
-
-       // return bosImg;
     }
 
     /**
@@ -156,12 +137,17 @@ public class CodeImageUtils {
         return new Rectangle(new Dimension(des_width, des_height));
     }
 
+
     /**
      * 生成条形码base64
-     * @param text
-     * @return
-     * @throws IOException
-     * @throws WriterException
+     * @param text              文本
+     * @param width             宽度
+     * @param height            高度
+     * @param angel             角度
+     * @param barcodeFormat     条形码类型
+     * @return  base64图片
+     * @throws IOException 异常
+     * @throws WriterException 异常
      */
     public static String barCodeImageBase64(String text,int width,int height,int angel,BarcodeFormat barcodeFormat) throws IOException, WriterException {
         final Base64.Encoder encoder = Base64.getEncoder();

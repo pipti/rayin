@@ -5,12 +5,12 @@
     <parent>
         <artifactId>rayin-parent</artifactId>
         <groupId>ink.rayin</groupId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -91,6 +91,24 @@
             <artifactId>openhtmltopdf-svg-support</artifactId>
             <version>${openhtml.version}</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-util</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-anim</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -100,6 +118,32 @@
             <artifactId>openhtmltopdf-mathml-support</artifactId>
             <version>${openhtml.version}</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>xmlgraphics-commons</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-util</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-svg-dom</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-ext</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <!-- Optional, leave out if you do not need MathML support. -->

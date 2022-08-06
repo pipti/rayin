@@ -1,6 +1,6 @@
 # 睿印
 ![Hex.pm](https://img.shields.io/hexpm/l/plug)
-![Hex.pm](https://img.shields.io/badge/Release-V1.0.5-green.svg)
+![Hex.pm](https://img.shields.io/badge/Release-V1.0.6-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg) \
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
 ![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
@@ -8,6 +8,7 @@
 ![Hex.pm](https://img.shields.io/badge/thymeleaf-3.0.11.RELEASE-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Lombok-1.8.24-green.svg)
 ![Hex.pm](https://img.shields.io/badge/fastjson2-2.0.10-green.svg)
+![Hex.pm](https://img.shields.io/badge/easyexcel-3.1.1-green.svg)
 
 ## 睿印是什么
 数据+模板=动态生成PDF工具，凭证电子化趋势下的批量生成工具
@@ -153,7 +154,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 <dependency>
     <groupId>com.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 </dependency>
 
 ```

@@ -79,12 +79,18 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#init()
+     */
     @SneakyThrows
     @Override
     public void init(){
         OpenhttptopdfRendererObjectFactory.init();
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#init(String customizeFontPathDirectory)
+     */
     @SneakyThrows
     @Override
     public void init(String customizeFontPathDirectory){
@@ -92,11 +98,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * 初始化-线程池参数
-     * @param minIdle 最小线程
-     * @param maxIdle 最大空闲
-     * @param maxTotal 最大线程总数
-     * @param customizeFontPathDirectory 自定义字体目录，可空
+     * @see ink.rayin.htmladapter.base.PdfGenerator#init(int minIdle, int maxIdle, int maxTotal, String customizeFontPathDirectory)
      */
     @SneakyThrows
     @Override
@@ -105,11 +107,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * 根据模板配置文件路径生成pdf
-     * @param templateLocation 模板配置json文件路径
-     * @param jsonData  数据json
-     * @param outputFilePath  输出文件路径
-     * @return 元数据对象
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByTplConfigFile
      */
     @SneakyThrows
     @Override
@@ -118,6 +116,9 @@ public class PdfBoxGenerator implements PdfGenerator {
         return generatePdfFileByTplConfigStr(ResourceUtil.getResourceAsString(templateLocation, StandardCharsets.UTF_8), jsonData, outputFilePath);
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByTplConfigStr
+     */
     @SneakyThrows
     @Override
     public RayinMeta generatePdfFileByTplConfigStr(String tplConfigStr, JSONObject jsonData,
@@ -170,6 +171,10 @@ public class PdfBoxGenerator implements PdfGenerator {
 
         return fileInfo;
     }
+
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generateEncryptPdfStreamByConfigStr
+     */
     @SneakyThrows
     @Override
     public RayinMeta generateEncryptPdfStreamByConfigStr(String tplConfigStr, JSONObject jsonData,
@@ -187,12 +192,9 @@ public class PdfBoxGenerator implements PdfGenerator {
         return fileInfo;
 
     }
+
     /**
-     * 根据模板配置文件生成PDF
-     * @param tplConfigStr  模板配置json
-     * @param dataJson   数据json
-     * @param os         输出流
-     * @return 元数据对象
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfStreamByTplConfigStr
      */
     @SneakyThrows
     @Override
@@ -408,11 +410,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * 根据单个tpl生成pdf
-     * @param htmlLocation 模板文件路径
-     * @param jsonObject 需要合成的json数据
-     * @param outputFilePath 输出pdf路径
-     * @return boolean
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByHtmlAndData
      */
     @SneakyThrows
     @Override
@@ -424,10 +422,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * 根据构件html字符串生成pdf
-     * @param htmlStr   构件html字符串
-     * @param jsonData  需要合成的json数据
-     * @return 输出流
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfSteamByHtmlStrAndData
      */
     @SneakyThrows
     @Override
@@ -439,12 +434,7 @@ public class PdfBoxGenerator implements PdfGenerator {
 
 
     /**
-     * 根据模板配置生成PDF流
-     * @param pagesConfig
-     * @param config
-     * @param data
-     * @param pp
-     * @return 输出流
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfSteamByHtmlFileAndData
      */
     @SneakyThrows
     private ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) {
@@ -508,10 +498,7 @@ public class PdfBoxGenerator implements PdfGenerator {
 
 
     /**
-     * 将构件html与数据匹配生成转换后的字符串
-     * @param htmlLocation html路径
-     * @param data json数据
-     * @return html字符串
+     * @see ink.rayin.htmladapter.base.PdfGenerator#htmlFileDataFilling
      */
     @SneakyThrows
     @Override
@@ -524,10 +511,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * 将构件html与数据匹配生成转换后的字符串
-     * @param htmlStr html字符串
-     * @param data json数据
-     * @return html字符串
+     * @see ink.rayin.htmladapter.base.PdfGenerator#htmlStrDataFilling
      */
     @SneakyThrows
     @Override
@@ -543,9 +527,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * html转换为pdf 文件
-     * @param htmlStr html字符串
-     * @param outputFile pdf文件路径
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByHtmlStr(String htmlStr, String outputFile)
      */
     @SneakyThrows
     @Override
@@ -559,9 +541,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * html转换为pdf 文件
-     * @param htmlStr html字符串
-     * @param outputFile pdf文件路径
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByHtmlStr(String htmlStr, JSONObject data, String outputFile)
      */
     @SneakyThrows
     @Override
@@ -569,6 +549,9 @@ public class PdfBoxGenerator implements PdfGenerator {
         generatePdfFileByHtmlStr(htmlStrDataFilling(htmlStr,data),outputFile);
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfStreamByHtmlStr
+     */
     @SneakyThrows
     @Override
     public ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlContent){
@@ -576,11 +559,8 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * html转换为pdf字节流
-     * @param htmlContent
-     * @return 输出流
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfStreamByHtmlStr
      */
-
     private ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlContent, Set<MarkInfo> markKeys)
             throws Exception {
         //解析是否存在embed标签，并对其进行解析
@@ -904,10 +884,7 @@ public class PdfBoxGenerator implements PdfGenerator {
 
 
     /**
-     * PDF 模板元数据读取
-     * @param fis 输入文件流
-     * @return 元数据
-     * 2020-01-07
+     * @see ink.rayin.htmladapter.base.PdfGenerator#pdfAttrsRead
      */
     @SneakyThrows
     @Override
@@ -948,10 +925,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * 根据tpl生成字节流
-     * @param templatePath  模板路径
-     * @param jsonData      json数据
-     * @return 输出流
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfSteamByHtmlFileAndData
      */
     @SneakyThrows
     @Override
@@ -1125,11 +1099,17 @@ public class PdfBoxGenerator implements PdfGenerator {
         return "";
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#getFontNames
+     */
     @Override
     public LinkedHashSet<String> getFontNames(){
         return OpenhttptopdfRendererObjectFactory.getFontNames();
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFilesByTplAndExcel
+     */
     @SneakyThrows
     @Override
     public void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
@@ -1139,6 +1119,9 @@ public class PdfBoxGenerator implements PdfGenerator {
         }
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByTplAndExcel
+     */
     @SneakyThrows
     @Override
     public void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) {
@@ -1155,6 +1138,9 @@ public class PdfBoxGenerator implements PdfGenerator {
         FileUtil.toFile(new ByteArrayInputStream(out.toByteArray()),new File(outputFilePath));
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFilesByEleAndExcel
+     */
     @SneakyThrows
     @Override
     public void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
@@ -1165,6 +1151,9 @@ public class PdfBoxGenerator implements PdfGenerator {
         }
     }
 
+    /**
+     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByEleAndExcel
+     */
     @SneakyThrows
     @Override
     public void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) {
@@ -1180,14 +1169,14 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
 
-    /**
-     * 在线导出模板生成方法
-     * @param tplDefStr  模板配置json
-     * @param dataJson   数据json
-     * @param os         输出流
-     * @return
-     * @throws Exception
-     */
+//    /**
+//     * 在线导出模板生成方法
+//     * @param tplDefStr  模板配置json
+//     * @param dataJson   数据json
+//     * @param os         输出流
+//     * @return
+//     * @throws Exception
+//     */
 
 //    public RayinMeta generateByTplConfigStrOnlineExport(String tplDefStr, JSONObject dataJson,
 //                                                        ByteArrayOutputStream os) throws Exception {

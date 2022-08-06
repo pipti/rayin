@@ -101,6 +101,7 @@ public class HttpURLConnHelper {
      *
      * @param url
      *            ：访问网络的url地址
+     * @param destFile 目标文件
      * @return byte[]
      */
     public static boolean saveFileFromURL(String url, File destFile) {
@@ -207,10 +208,13 @@ public class HttpURLConnHelper {
     }
 
     /**
-     * 网络访问，上传附件 五个参数： 1、String url：指定表单提交的url地址 2、Map&lt;String, String&gt;
-     * map：将上传控件之外的其他控件的数据信息存入map对象 3、String filePath：指定要上传到服务器的文件的客户端路径
-     * 4、byte[] body_data：获取到要上传的文件的输入流信息，通过ByteArrayOutputStream流转成byte[]
-     * 5、String charset：设置字符集
+     * 网络访问，上传附件
+     * @param url String url：指定表单提交的url地址
+     * @param map Map&lt;String, String&gt; 将上传控件之外的其他控件的数据信息存入map对象
+     * @param filePath   指定要上传到服务器的文件的客户端路径
+     * @param body_data 获取到要上传的文件的输入流信息，通过ByteArrayOutputStream流转成byte[]
+     * @param charset 设置字符集
+     * @return 无
      */
     public static String doPostSubmitBody(String url, Map<String, String> map,
                                           String filePath, byte[] body_data, String charset) {

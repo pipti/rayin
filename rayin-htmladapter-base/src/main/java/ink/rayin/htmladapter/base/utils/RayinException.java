@@ -81,7 +81,7 @@ public class RayinException extends RuntimeException {
 
     /**
      * buildBizException
-     * @param code
+     * @param code 错误码
      * @return RayinException
      */
     public static RayinException buildBizException(CodeMessage code) {
@@ -93,8 +93,8 @@ public class RayinException extends RuntimeException {
 
     /**
      * buildBizException
-     * @param code
-     * @param e
+     * @param code 错误码
+     * @param e 异常
      * @return RayinException
      */
     public static RayinException buildBizException(CodeMessage code, Exception e) {
