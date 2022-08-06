@@ -17,6 +17,13 @@
           {
             "x":280.33,
             "y":830.33
+          },
+          {
+            "x":380.33,
+            "y":830.33,
+            "content":"自定义页码：${pageNum}，${pageNumTotal}",
+            "fontSize":13,
+            "fontFamily":"FangSong"
           }
         ]
       }
