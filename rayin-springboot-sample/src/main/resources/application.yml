@@ -5,6 +5,6 @@ server:
     context-path: /
 spring:
   application:
-    name: rayin-springboot-server
+    name: rayin-springboot-sample
   profiles:
     active: dev

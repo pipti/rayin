@@ -51,7 +51,7 @@ public class PDFCreatorController {
      * @param jsonData
      * @return
      */
-    @PostMapping(value = "/pdf/create/tpl/{tplName}/os")
+    @GetMapping(value = "/pdf/create/tpl/{tplName}/os")
     public void pdfCreateByTplToOS(@PathVariable("tplName") String tplName, @RequestBody(required = false) JSONObject jsonData, HttpServletResponse response) throws Exception {
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         pdfGenerator.generatePdfStreamByTplConfigStr(ResourceUtil.getResourceAsString("tpl/"+tplName + "/tpl.json", Charsets.UTF_8) , jsonData, bao);
