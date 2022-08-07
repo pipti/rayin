@@ -15,9 +15,10 @@
  */
 package ink.rayin.springboot;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-
+@Data
 @ConfigurationProperties(prefix = "rayin")
 public class RayinProperties {
 
@@ -30,6 +31,12 @@ public class RayinProperties {
      * 字体路径
      */
     private String fontPath;
+
+    /**
+     * 规则脚本路径
+     */
+    private String ruleScriptPath;
+
     /**
      * 最小线程
      */
@@ -43,43 +50,5 @@ public class RayinProperties {
      */
     int maxTotal = 10;
 
-    public String getGeneratorClass() {
-        return generatorClass;
-    }
-    public void setGeneratorClass(String generatorClass) {
-        this.generatorClass = generatorClass;
-    }
-
-    public String getFontPath() {
-        return fontPath;
-    }
-
-    public void setFontPath(String fontPath) {
-        this.fontPath = fontPath;
-    }
-
-    public int getMinIdle() {
-        return minIdle;
-    }
-
-    public void setMinIdle(int minIdle) {
-        this.minIdle = minIdle;
-    }
-
-    public int getMaxIdle() {
-        return maxIdle;
-    }
-
-    public void setMaxIdle(int maxIdle) {
-        this.maxIdle = maxIdle;
-    }
-
-    public int getMaxTotal() {
-        return maxTotal;
-    }
-
-    public void setMaxTotal(int maxTotal) {
-        this.maxTotal = maxTotal;
-    }
 }
 

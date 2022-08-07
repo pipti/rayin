@@ -48,7 +48,6 @@ import java.awt.*;
 import java.io.*;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 import java.util.jar.JarEntry;
