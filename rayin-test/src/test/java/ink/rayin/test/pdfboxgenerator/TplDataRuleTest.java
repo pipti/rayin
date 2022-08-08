@@ -4,9 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONPath;
 import ink.rayin.datarule.RayinDataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
-import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
-import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -18,10 +16,12 @@ import java.util.HashMap;
 @Slf4j
 public class TplDataRuleTest {
     static PdfGenerator pdfGenerator;
+    static RayinDataRule rayinDataRule;
     static  {
         try {
             pdfGenerator = new PdfBoxGenerator();
             pdfGenerator.init();
+            rayinDataRule = new RayinDataRule();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,13 +114,13 @@ public class TplDataRuleTest {
 //        TplDataRuleTest.ruleParse(jsonData, otherData,"input", "",
 //                "_", "public.orgId", "public.prdCode");
 
-        Object result = RayinDataRule.executeGroovyFile(jsonData, otherData,"input", "other",
+        Object result = rayinDataRule.executeGroovyFile(jsonData, otherData,"input", "other",
         "_", "rules", "public.orgId", "public.prdCode");
         log.debug(result.toString());
     }
 
     @Test
-    public void ruleScriptDynamicJointTemplateTest() throws IOException {
+    public void ruleScriptDynamicJointTemplateTest() throws IOException, InstantiationException, IllegalAccessException {
         JSONObject jsonData = new JSONObject();
         // 可以更换value = 110 或 value = 120，对应生成pdf也不同
         JSONPath.set(jsonData, "public.orgId" ,"120");
@@ -133,7 +133,7 @@ public class TplDataRuleTest {
         JSONPath.set(otherData,"orgs", orgs);
         log.debug(otherData.toString());
 
-        Object result = RayinDataRule.executeGroovyFile(jsonData, otherData,"input", "other",
+        Object result = rayinDataRule.executeGroovyFile(jsonData, otherData,"input", "other",
                 "rules/DynamicJonitTpl.groovy");
         log.debug(JSONObject.toJSONString(result));
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");

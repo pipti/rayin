@@ -2,21 +2,19 @@ package ink.rayin.datarule;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONPath;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ImmutableMap;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
-import groovy.transform.ConditionalInterrupt;
+import groovy.lang.Script;
 import groovy.transform.ThreadInterrupt;
+import groovy.transform.TimedInterrupt;
 import ink.rayin.htmladapter.base.utils.RayinException;
+import ink.rayin.tools.utils.DigestUtil;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.groovy.ast.ClassHelper;
-import org.codehaus.groovy.ast.Parameter;
-import org.codehaus.groovy.ast.expr.ClassExpression;
-import org.codehaus.groovy.ast.expr.ClosureExpression;
-import org.codehaus.groovy.ast.expr.ConstantExpression;
-import org.codehaus.groovy.ast.expr.MethodCallExpression;
-import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 
@@ -24,8 +22,8 @@ import org.kohsuke.groovy.sandbox.SandboxTransformer;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * 数据规则转换引擎
@@ -45,8 +43,13 @@ import java.util.Map;
  */
 @Slf4j
 public class RayinDataRule {
-
-
+    private ThreadPoolExecutor threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
+            Runtime.getRuntime().availableProcessors(), 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1000));
+    private Cache<String, Script> innerLruCache = CacheBuilder.newBuilder()
+            .maximumSize(1000) //最大容量
+            .expireAfterAccess(6, TimeUnit.HOURS) //缓存过期时长
+            .concurrencyLevel(Runtime.getRuntime().availableProcessors())// 设置并发级别为cpu核心数
+            .build();
     /**
      * 执行groovy脚本
      * @param data 生成pdf数据
@@ -56,20 +59,51 @@ public class RayinDataRule {
      * @param scriptString 脚本字符串
      * @return
      */
-    public static Object executeGroovyScript(JSONObject data, JSONObject otherData, String dataName,
-                                           String otherDataName, String scriptString){
+    public Object executeGroovyScript(JSONObject data, JSONObject otherData, String dataName,
+                                           String otherDataName, String scriptString) throws InstantiationException, IllegalAccessException {
         Binding binding = new Binding();
         binding.setProperty(dataName, data);
         binding.setProperty(otherDataName, otherData);
-        GroovyShell groovyShell = createGroovyShell(binding);
+        GroovyShell groovyShell = createGroovyShell();
 
-        Object result = groovyShell.evaluate(scriptString);
-        return result;
+
+        String scriptKey = DigestUtil.md5Hex(scriptString);
+        Script groovyScript = innerLruCache.getIfPresent(scriptKey);
+        if (groovyScript == null) {
+            //缓存穿透，走2.1前3行的老逻辑
+            //同时在每次更新缓存Class<Script>对象时候，采用了不同的groovyClassLoader
+            groovyScript = groovyShell.parse(scriptString);
+            //groovyClass = (Class<Script>) groovyScript.getClass();
+            innerLruCache.put(scriptKey, groovyScript);
+        }
+
+        groovyScript.setBinding(binding);
+        // 重置调用时间
+//        ThreadLocalUtils.setStartTime();
+//        // 添加脚本名称
+//        ThreadLocalUtils.set("scriptName", DigestUtil.md5Hex(scriptString));
+        //Object result = groovyScript.run();
+        //Object result = groovyShell.evaluate(scriptString);
+        Future<Object> future = threadPool.submit((Callable<Object>) groovyScript::run);
+        try{
+            return future.get(10, TimeUnit.SECONDS);
+        }catch (TimeoutException exception) {
+            future.cancel(true);
+            log.error("TimeoutException,try cancel future task, is cancelled", future.isCancelled());
+            //do something else
+        }catch (InterruptedException  exception){
+            future.cancel(true);
+            log.error("InterruptedException,try cancel future task, is cancelled" , future.isCancelled());
+        }catch (ExecutionException exception){
+            future.cancel(true);
+            log.error("ExecutionException,try cancel future task, is cancelled" , future.isCancelled());
+        }
+        return null;
     }
 
 
-    public static Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
-                                           String otherDataName, String scriptFilePath) throws IOException {
+    public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
+                                           String otherDataName, String scriptFilePath) throws IOException, InstantiationException, IllegalAccessException {
         return executeGroovyScript(data, otherData, dataName, otherDataName,
                 ResourceUtil.getResourceAsString(scriptFilePath, StandardCharsets.UTF_8));
     }
@@ -91,9 +125,9 @@ public class RayinDataRule {
      * @return
      * @throws IOException
      */
-    public static Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
+    public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
                                        String otherDataName, String scriptFileNameSeparator,
-                                       String rulesRootPath, String... scriptFileNameDataPaths) throws IOException {
+                                       String rulesRootPath, String... scriptFileNameDataPaths) throws IOException, InstantiationException, IllegalAccessException {
 //        if(data == null){
 //            return null;
 //        }
@@ -127,31 +161,36 @@ public class RayinDataRule {
                 otherDataName, ResourceUtil.getResourceAsString(rulesRootPath + "/"  + groovyScriptName + ".groovy", StandardCharsets.UTF_8));
     }
 
-    private static GroovyShell createGroovyShell(Binding binding){
+    private static GroovyShell createGroovyShell(){
         CompilerConfiguration config = new CompilerConfiguration();
         config.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
-        Map<String, Object> timeoutArgs = new HashMap<>();
-        timeoutArgs.put("value", new ClosureExpression(
-                Parameter.EMPTY_ARRAY,
-                new ExpressionStatement(
-                        new MethodCallExpression(
-                                new ClassExpression(ClassHelper.make(ConditionInterceptor.class)),
-                                "checkTimeout",
-                                new ConstantExpression(10))
-                )
-        ));
-        config.addCompilationCustomizers(new ASTTransformationCustomizer(timeoutArgs, ConditionalInterrupt.class));
+
+//        Map<String, Object> timeoutArgs = new HashMap<>();
+//        timeoutArgs.put("value", new ClosureExpression(
+//                Parameter.EMPTY_ARRAY,
+//                new ExpressionStatement(
+//                        new MethodCallExpression(
+//                                new ClassExpression(ClassHelper.make(ConditionInterceptor.class)),
+//                                "checkTimeout",
+//                                new ConstantExpression(10))
+//                )
+//        ));
+//        config.addCompilationCustomizers(new ASTTransformationCustomizer(timeoutArgs, ConditionalInterrupt.class));
+
+        //30秒
+//        Map<String, Object> timeoutArgs = ImmutableMap.of("value", 30);
+//        config.addCompilationCustomizers(new ASTTransformationCustomizer(timeoutArgs, TimedInterrupt.class));
 
         // 沙盒环境
         config.addCompilationCustomizers(new SandboxTransformer());
 
-
 //        GroovyClassLoader groovyLoader = new GroovyClassLoader();
 //        Class<Script> groovyClass = (Class<Script>) groovyLoader.parseClass(parentScriptString);
 
-        GroovyShell shell = new GroovyShell(null, binding, config);
         // 注册方法拦截
         new GroovyNotSupportInterceptor().register();
+        GroovyShell shell = new GroovyShell(config);
+
 
         return shell;
     }

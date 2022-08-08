@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GroovyNotSupportInterceptor extends GroovyInterceptor {
-    public static final List<String> defaultMethodBlacklist = Arrays.asList("getClass", "class", "wait", "notify", "notifyAll", "invokeMethod", "finalize");
+    public static final List<String> defaultMethodBlacklist = Arrays.asList("getClass",   "class", "wait", "notify", "notifyAll", "invokeMethod", "finalize");
 
     /**
      * 静态方法拦截
@@ -26,7 +26,7 @@ public class GroovyNotSupportInterceptor extends GroovyInterceptor {
             // 通过Java的Runtime.getRuntime().exec()方法执行shell, 操作服务器…
             throw new SecurityException("No call on RunTime please");
         } else if (receiver == Class.class && "forName".equals(method)) {
-            // Class.forName
+            throw new SecurityException("No call  on forName please");
         }
         return super.onStaticCall(invoker, receiver, method, args);
     }

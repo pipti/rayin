@@ -21,4 +21,6 @@ println 'Groovy shell: public.orgId ' + JSONPath.eval(inputData,"public.orgId")
 JSONObject orgs = otherData.get("orgs");
 orgName = orgs.get(orgId);
 JSONPath.set(inputData, "public.orgName" , orgName);
+
+
 return inputData.toString();

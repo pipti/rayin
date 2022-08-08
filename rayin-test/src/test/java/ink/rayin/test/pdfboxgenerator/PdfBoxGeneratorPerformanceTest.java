@@ -1,10 +1,12 @@
 package ink.rayin.test.pdfboxgenerator;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONPath;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.houbb.junitperf.core.annotation.JunitPerfConfig;
 import com.github.houbb.junitperf.core.report.impl.ConsoleReporter;
 import com.github.houbb.junitperf.core.report.impl.HtmlReporter;
+import ink.rayin.datarule.RayinDataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
@@ -18,7 +20,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.HashMap;
 
 /**
  * 简单的性能测试类
@@ -28,12 +32,14 @@ import java.sql.Timestamp;
 public class PdfBoxGeneratorPerformanceTest {
 
     static PdfGenerator pdfGenerator;
+    static RayinDataRule rayinDataRule;
     Signature pdfSign = new PdfBoxSignature();
 
     static{
         try {
             pdfGenerator = new PdfBoxGenerator();
             pdfGenerator.init();
+            rayinDataRule = new RayinDataRule();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,4 +77,32 @@ public class PdfBoxGeneratorPerformanceTest {
         log.info("exp4TemplateBindDataGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
+
+
+    @Test
+    @JunitPerfConfig(duration = 300_000,threads = 3,warmUp = 1_000,
+            reporter = {HtmlReporter.class, ConsoleReporter.class})
+    public void ruleScriptDynamicJointTemplateTest() throws IOException, InstantiationException, IllegalAccessException {
+        JSONObject jsonData = new JSONObject();
+        // 可以更换value = 110 或 value = 120，对应生成pdf也不同
+        JSONPath.set(jsonData, "public.orgId" ,"120");
+        JSONPath.set(jsonData, "public.prdCode" ,"PDA01");
+
+        JSONObject otherData = new JSONObject();
+//        HashMap orgs = new HashMap();
+//        orgs.put("110", "北京分公司");
+//
+//        JSONPath.set(otherData,"orgs", orgs);
+//        log.debug(otherData.toString());
+
+        Object result = rayinDataRule.executeGroovyFile(jsonData, otherData,"input", "other",
+                "rules/DynamicJonitTpl.groovy");
+        log.debug(JSONObject.toJSONString(result));
+//        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+//        String outputFile = new File(outputFileClass)
+//                .getParentFile().getParent()
+//                + "/tmp/"
+//                + "ruleScriptDynamicJointTemplateTest_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+//        pdfGenerator.generatePdfFileByTplConfigStr(JSONObject.toJSONString(result), jsonData, outputFile);
+    }
 }
