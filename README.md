@@ -143,6 +143,17 @@ https://www.w3.org/TR/css-page-3/
 13. 实现隐藏标记，并可通过元数据进行获取对应页码，坐标（可用于后续再加工的定位，例如签章位置）。
 14. 实现线程池。
 
+## 基于工具包的设计管理端
+### 构件设计
+<img title="构件设计" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%9E%84%E4%BB%B6%E8%AE%BE%E8%AE%A1_.gif"/>
+
+### 模板编辑预览
+<img title="模板编辑预览" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%BE%91%E9%A2%84%E8%A7%88_.gif"/>
+
+### 模板文件生成
+<img title="模板文件生成" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%9D%BF%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90_.gif"/>
+
+
 ### 项目地址
 Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin)
 GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
