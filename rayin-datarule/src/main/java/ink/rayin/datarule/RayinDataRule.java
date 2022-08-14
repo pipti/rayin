@@ -78,11 +78,8 @@ public class RayinDataRule {
         String scriptKey = DigestUtil.md5Hex(scriptString);
         Script groovyScript = innerLruCache.getIfPresent(scriptKey);
         if (groovyScript == null) {
-            log.debug("重新加载缓存：-------");
-            //缓存穿透，走2.1前3行的老逻辑
-            //同时在每次更新缓存Class<Script>对象时候，采用了不同的groovyClassLoader
+            log.debug("重新加载缓存");
             groovyScript = groovyShell.parse(scriptString);
-            //groovyClass = (Class<Script>) groovyScript.getClass();
             innerLruCache.put(scriptKey, groovyScript);
         }
 
