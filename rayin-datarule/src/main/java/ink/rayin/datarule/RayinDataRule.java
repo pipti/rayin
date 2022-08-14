@@ -44,20 +44,28 @@ import java.util.concurrent.*;
 @Slf4j
 public class RayinDataRule {
     private ThreadPoolExecutor threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
-            Runtime.getRuntime().availableProcessors(), 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1000));
+            Runtime.getRuntime().availableProcessors(), 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(5));
     private Cache<String, Script> innerLruCache = CacheBuilder.newBuilder()
-            .maximumSize(1000) //最大容量
-            .expireAfterAccess(6, TimeUnit.HOURS) //缓存过期时长
-            .concurrencyLevel(Runtime.getRuntime().availableProcessors())// 设置并发级别为cpu核心数
+            //最大容量
+            .maximumSize(1000)
+            //当缓存项在指定的时间段内没有被读或写就会被回收
+            .expireAfterAccess(30, TimeUnit.SECONDS)
+            //当缓存项上一次更新操作之后的多久会被刷新
+            //.refreshAfterWrite(5, TimeUnit.SECONDS)
+            // 设置并发级别为cpu核心数
+            .concurrencyLevel(Runtime.getRuntime().availableProcessors())
             .build();
+
     /**
      * 执行groovy脚本
-     * @param data 生成pdf数据
-     * @param otherData 辅助数据
-     * @param dataName 数据在脚本中注入的变量名
-     * @param otherDataName 辅助数据在脚本中注入的变量名
+     * @param data 生成pdf所需要的数据
+     * @param otherData 辅助数据，主要是辅助判断，例如机构参数
+     * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
+     * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
      * @param scriptString 脚本字符串
      * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
      */
     public Object executeGroovyScript(JSONObject data, JSONObject otherData, String dataName,
                                            String otherDataName, String scriptString) throws InstantiationException, IllegalAccessException {
@@ -70,12 +78,14 @@ public class RayinDataRule {
         String scriptKey = DigestUtil.md5Hex(scriptString);
         Script groovyScript = innerLruCache.getIfPresent(scriptKey);
         if (groovyScript == null) {
+            log.debug("重新加载缓存：-------");
             //缓存穿透，走2.1前3行的老逻辑
             //同时在每次更新缓存Class<Script>对象时候，采用了不同的groovyClassLoader
             groovyScript = groovyShell.parse(scriptString);
             //groovyClass = (Class<Script>) groovyScript.getClass();
             innerLruCache.put(scriptKey, groovyScript);
         }
+
 
         groovyScript.setBinding(binding);
         // 重置调用时间
@@ -86,7 +96,7 @@ public class RayinDataRule {
         //Object result = groovyShell.evaluate(scriptString);
         Future<Object> future = threadPool.submit((Callable<Object>) groovyScript::run);
         try{
-            return future.get(10, TimeUnit.SECONDS);
+            return future.get(30, TimeUnit.SECONDS);
         }catch (TimeoutException exception) {
             future.cancel(true);
             log.error("TimeoutException,try cancel future task, is cancelled", future.isCancelled());
@@ -101,7 +111,18 @@ public class RayinDataRule {
         return null;
     }
 
-
+    /**
+     * 执行groovy 脚本文件-根据路径获取脚本文件
+     * @param data 生成pdf所需要的数据
+     * @param otherData 辅助数据，主要是辅助判断，例如机构参数
+     * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
+     * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
+     * @param scriptFilePath 脚本路径
+     * @return
+     * @throws IOException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
                                            String otherDataName, String scriptFilePath) throws IOException, InstantiationException, IllegalAccessException {
         return executeGroovyScript(data, otherData, dataName, otherDataName,
@@ -109,13 +130,13 @@ public class RayinDataRule {
     }
 
     /**
-     * 执行groovy 脚本文件
-     * @param data 生成pdf数据
-     * @param otherData 辅助数据
-     * @param dataName 数据在脚本中注入的变量名
-     * @param otherDataName 辅助数据在脚本中注入的变量名
-     * @param scriptFileNameSeparator 文件数据名称分隔符，可空，例如
-     * @param rulesRootPath 规则脚本所在根目录
+     * 执行groovy 脚本文件-依据数据动态拼接文件名获取脚本
+     * @param data 生成pdf所需要的数据
+     * @param otherData 辅助数据，主要是辅助判断，例如机构参数
+     * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
+     * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
+     * @param scriptFileNameSeparator 脚本文件数据名称分隔符，可空
+     * @param rulesRootPath 规则脚本所在根目录，（绝对路径，相对路径）
      * @see ink.rayin.tools.utils.ResourceUtil#getResourceAsString
      * @param scriptFileNameDataPaths 数据规则转换脚本文件名称对应的数据路径，可以指定多个，多个可使用scriptFileNameSeparator参数做拼接
      *                            例如：public.org = 110 public.prdCode = PDA01 ,则参数(data,otherData,"input","otherInput", "_", "/Users/xiaobai/rules","public.org","public.prdCode"),
@@ -190,7 +211,6 @@ public class RayinDataRule {
         // 注册方法拦截
         new GroovyNotSupportInterceptor().register();
         GroovyShell shell = new GroovyShell(config);
-
 
         return shell;
     }

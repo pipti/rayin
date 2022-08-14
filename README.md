@@ -11,8 +11,7 @@
 ![Hex.pm](https://img.shields.io/badge/easyexcel-3.1.1-green.svg)
 
 ## 睿印是什么
-数据+模板=动态生成PDF工具，凭证电子化趋势下的批量生成工具
-[html + template_config] + json_data => pdf
+数据+构件+模板=动态生成PDF工具，凭证电子化趋势下的批量生成工具
 
 ## 项目起源和痛点
 某大型公司的内部项目的启发而来。  
@@ -25,51 +24,51 @@
    以上问题要想让普通的业务人员通过自服务方式去实现模板的制作就不太现实。
    因此基于以上问题，去解决如何更方便快捷的进行PDF模板的配置，如果能够更好支持扩展性以及多变的业务场景。
 
-## 优势
-1. HTML+CSS流式布局，不再需要关心坐标，样式设计方便，扩展性强。
-2. 通过自定义的模板配置，灵活组合复用底板，解决业务多变，降低底板数量，提升效率。
-3. 通过自定义模板配置以及动态脚本，可以满足大部分的业务个性需求。
-4. 可自动加载字体，无缝衔接中文字体显示，支持生僻字显示，也满足多语言场景的显示。
-5. 支持页码灵活定制、空白页灵活添加。
-6. 支持隐藏标记，文件元数据信息嵌入，为后续处理提供便利。 
-7. 通过线程池加载提升生成效率。
-8. 集成简便，可单独引用jar包，也可与服务集成。
+## 项目过程
+从2019年项目至于开始构思设计，断断续续。也是做了一些尝试，反复测试，反复修改。 \
+从freemaker 换成 thymeleaf； \
+从itext2版本到itext5版本，再到后来的pdfbox； \
+从flyingsaucer切换到openhtmltopdf，也感谢openhtmltopdf为html生成pdf提供了一个很好的技术方案。\
+项目需求中遇到很多新的需求，尤其是不同的省份可能会有不同的个性化样式需求，以及不同的个性穿插内容，如果产品类型多，又存在个性化，那应对的模板将是指数级别的增长。 \
+项目中变更的需求，如果模板过多，对于一个变更的需求是一件很痛苦的过程，并且很容易遗漏。 \
+因此不断测试尝试能够覆盖的需求点，通过配置的方式尽可能简化的方式满足多样的需求。
 
 
+## 达到目标
+扩展性、灵活性、低代码。
+基于上面的目标实现分层设计，逐层消化多变的个性化需求，从而减少模板的数量。
+通过"数据规则"-"构件"-"模板"三层结构尽量通过配置来解决业务场景，而非硬代码来处理。
+   * 数据规则：处理数据业务逻辑，可通过数据相关的规则引擎去完成，包括数据的延展，数据的转换，以及通过规则进行指定模板或者动态拼接模板。
+   * 构件：解决数据与样式的结合，样式的展现，样式的扩展；
+   * 模板：解决设计过程中的构件的复用，页码，空白页，针对大型打印机的纸盒选择问题。
+
+综上：三位一体多个环节的动态配置，解决业务多变性场景。
+<img title="示意" src="https://gitee.com/liuercode/images/raw/master/rayin/demonstrate1.png" width="500px">
+
+## 样例展示
 ### 字体演示
 <img title="字体演示" src="https://gitee.com/liuercode/images/raw/master/rayin/font_dems.png" width="500px">
 
 ### 版式样图
 <img title="版式样图" src="https://gitee.com/liuercode/images/raw/master/rayin/piaoju_sample.png" width="500px">
 
+## 基于工具包实现的设计管理端展示
+### 构件设计
+<img title="构件设计" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%9E%84%E4%BB%B6%E8%AE%BE%E8%AE%A1_.gif"/>
 
-## 达到目标
-扩展性、灵活性、低代码。
-基于上面的目标选择合适的技术和合适的设计。
-1. 通过html-css完成复杂样式的设计；
-2. 模板模块化，复用；
-3. 通过富文本可以实现在线设计；
-4. 通过"数据规则"-"模板组合"-"视图合成"三层结构尽量通过配置来解决业务场景，而非硬代码来处理。
-    * 数据规则：处理数据业务逻辑，可通过数据相关的规则引擎去完成，包括数据的延展，数据的转换，以及通过规则进行指定模板或者动态拼接模板，后续会考虑数据的转换引擎工具。
-    * 模板组合：解决设计过程中的子模板复用，灵活组合，子模板的显示与否，子模板类型（用于与打印机纸盒映射）。
-    * 视图合成：解决数据与样式的结合，样式的展现，样式的扩展；
+### 模板编辑与预览
+<img title="模板编辑预览" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%BE%91%E9%A2%84%E8%A7%88_.gif"/>
+
+### 模板文件生成
+<img title="模板文件生成" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%9D%BF%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90_.gif"/>
+
 
 ## 关于html转PDF技术成熟度
 网上有一些文章针对网页转PDF进行了一些开源组件的转换测试，其实在大部分场景下文档类并不需要类似网页那么复杂的样式需求，并且网页会存在很多动态的js（而且有些网页的html并不一定规范），即使有也可以通过其他的支持标签去实现，并且文档类并不需要类似js的处理逻辑和动态效果。
 
-## 项目过程
-从2019年项目至于开始构思设计，断断续续。也是做了一些尝试，反复测试，反复修改。 \
-例如：\
-从freemaker 换成 thymeleaf； \
-从itext2版本到itext5版本，再到后来的pdfbox； \
-从flyingsaucer切换到openhtmltopdf，也感谢openhtmltopdf为html生成pdf提供了一个很好的技术方案。\
-项目需求中遇到很多新的需求，尤其是不同的省份可能会有不同的个性化样式需求，以及不同的个性穿插内容，如果产品类型多，又存在个性化，那应对的模板将是指数级别的增长。 \
-项目中变更的需求，如果模板过多，对于一个变更的需求是一件很痛苦的过程，并且很容易遗漏。 \
-因此不断测试尝试能够覆盖的需求点，通过配置的方式尽可能简化的方式满足需求。
-
-
-## 模板模块化
-模板模块化通过拆分子模板来实现模板的复用和复杂业务场景的组合。即"构件"->"模板"。
+## 睿印概念
+### 数据规则
+数据规则为辅助工具包对数据的转换，通常源系统的数据如果不符合生成的要求或者为了某些特殊业务需要定制数据时，可通过数据规则脚本进行转换，实现场景可配置化，降低硬代码，增强灵活性。
 
 ### 构件定义
 构件是PDF模板设计中的子模板，即将一个PDF拆分成多个块进行设计，最终的模板配置是由多个构件组成。  
@@ -110,8 +109,7 @@ https://www.w3.org/TR/css-page-3/
 4. rayin-htmladapter-spring-boot-starter springboot启动适配
 5. rayin-test                            测试样例
 6. rayin-springboot-sample               springboot 样例
-7. rayin-template-samples                行业模板样例
-8. rayin-design-server                   设计管理端服务后台
+7. rayin-datarule                        数据规则工具包
 
 
 ## 列举一些实现功能与特性
@@ -130,28 +128,18 @@ https://www.w3.org/TR/css-page-3/
     4. 数据格式化；
     5. 表达式，逻辑判断，例如显示逻辑判断；
     6. 国际化。
-3. 通过构件->模板 + 数据，灵活配置生成PDF.
+3. 通过构件->模板 + 数据规则->数据，灵活配置生成PDF.
 4. 模板中可以对不同尺寸的构件进行组合，例如A4+B5+A3.
 5. 实现构件类型自定义配置（主要用于后续大型打印机的纸盒识别，可通过模板配置后，绑定至PDF对应的元数据中，通过读取再加工转换为PS文件指定至对应的纸盒）.
 6. 实现构件空白页填充（奇数页构件补空白页）.
 7. 实现页码灵活计数，页码灵活显示，支持构件重计数,单页显示多页码.
-8. 支持多字体联动显示，生僻字显示.
+8. 自动加载字体，支持多字体联动显示，生僻字显示.
 9. 实现pdf元数据的保存与获取，通过模板生成的PDF，元数据中包括页码信息，隐藏标签页码坐标，可用于后续加工使用。
-10. 实现pdf嵌入.
-11. 实现字体自动加载.
-12. 实现pdf文件信息的源数据设置和读取.
-13. 实现隐藏标记，并可通过元数据进行获取对应页码，坐标（可用于后续再加工的定位，例如签章位置）。
-14. 实现线程池。
+10. 实现pdf嵌入. 
+11. 实现隐藏标记，并可通过元数据进行获取对应页码，坐标（可用于后续再加工的定位，例如签章位置）。
+12. 实现线程池。
+13. 集成简便，可单独引用jar包，也可与服务集成。
 
-## 基于工具包的设计管理端
-### 构件设计
-<img title="构件设计" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%9E%84%E4%BB%B6%E8%AE%BE%E8%AE%A1_.gif"/>
-
-### 模板编辑预览
-<img title="模板编辑预览" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%BE%91%E9%A2%84%E8%A7%88_.gif"/>
-
-### 模板文件生成
-<img title="模板文件生成" src="https://rayin-common-resources.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%9D%BF%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90_.gif"/>
 
 
 ### 项目地址
@@ -159,8 +147,9 @@ Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin)
 GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ### 开始使用
-新建项目，引入依赖包 \
+* 第一步：新建项目，引入依赖包 \
 如果使用阿里云可能会存在同步滞后，如果不能自动下载可使用原始的maven源。
+
 ```xml
 <dependency>
     <groupId>com.rayin</groupId>
@@ -170,12 +159,11 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ```
 
-### 创建构件或模板
-构件就是单个html \
-模板是json配置文件 \
-具体参见帮助手册 [https://www.yuque.com/liuer_doc/rayin](https://www.yuque.com/liuer_doc/rayin)
+* 第二步：创建构件（即单个html） \
+* 第三步：创建模板（即json配置文件） \
+具体参见 [帮助手册](https://www.yuque.com/liuer_doc/rayin)
 
-### 生成代码
+* 第四步：调用生成API
 ```java
     PDFGeneratorInterface pdfGenerator = new PDFGenerator();
     pdfGenerator.init();
@@ -188,7 +176,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 ```
 
 ## 详细使用说明请参见帮助文档
-[https://www.yuque.com/liuer_doc/rayin](https://www.yuque.com/liuer_doc/rayin)
+[帮助文档](https://www.yuque.com/liuer_doc/rayin)
 
 # ⭐⭐⭐⭐⭐
 如果觉得项目不错，麻烦给个⭐️star噢，你的⭐️就是我前进的动力! \

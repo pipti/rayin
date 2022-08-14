@@ -37,8 +37,8 @@ public class PdfBoxGeneratorPerformanceTest {
 
     static{
         try {
-            pdfGenerator = new PdfBoxGenerator();
-            pdfGenerator.init();
+//            pdfGenerator = new PdfBoxGenerator();
+//            pdfGenerator.init();
             rayinDataRule = new RayinDataRule();
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,7 +80,7 @@ public class PdfBoxGeneratorPerformanceTest {
 
 
     @Test
-    @JunitPerfConfig(duration = 300_000,threads = 3,warmUp = 1_000,
+    @JunitPerfConfig(duration = 30_000,threads = 1,warmUp = 1_000,
             reporter = {HtmlReporter.class, ConsoleReporter.class})
     public void ruleScriptDynamicJointTemplateTest() throws IOException, InstantiationException, IllegalAccessException {
         JSONObject jsonData = new JSONObject();
@@ -94,9 +94,11 @@ public class PdfBoxGeneratorPerformanceTest {
 //
 //        JSONPath.set(otherData,"orgs", orgs);
 //        log.debug(otherData.toString());
-
+        StopWatch watch = StopWatch.createStarted();
         Object result = rayinDataRule.executeGroovyFile(jsonData, otherData,"input", "other",
                 "rules/DynamicJonitTpl.groovy");
+        watch.stop();
+        log.info("ruleScriptDynamicJointTemplateTest duration：" +  watch.getTime() + "ms");
         log.debug(JSONObject.toJSONString(result));
 //        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
 //        String outputFile = new File(outputFileClass)
