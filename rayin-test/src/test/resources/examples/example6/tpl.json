@@ -15,14 +15,10 @@
       "pageNumIsDisplay":true,
       "pageNumDisplayPoss":[
           {
-            "x":280.33,
-            "y":830.33
-          },
-          {
-            "x":380.33,
+            "x":200.33,
             "y":830.33,
-            "content":"自定义页码：${pageNum}，${pageNumTotal}",
-            "fontSize":13,
+            "content":"构件组合模板页码：第${pageNum}页，共${pageNumTotal}页",
+            "fontSize":10,
             "fontFamily":"FangSong"
           }
         ]

@@ -867,7 +867,8 @@ public class PdfBoxGenerator implements PdfGenerator {
         info.setKeywords(pagesConfig.getKeywords());
         info.setProducer(
                 UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"));
-
+        info.setCreator(UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"));
+        info.setCreationDate(Calendar.getInstance());
         //写入文件相关配置信息包括页码，单模板类型以及页码起始页
         final Base64.Encoder encoder = Base64.getEncoder();
         logger.info(JSONObject.toJSONString(epfileInfo));

@@ -57,6 +57,9 @@
             border-collapse:collapse;
             word-wrap:  break-word;
         }
+        .page::before{
+            content: "第" counter(page) "页，共" counter(pages) "页";
+        }
         @page {
             size: A4 ;
             -fs-flow-top: "header";
@@ -74,7 +77,9 @@
             @right-bottom{
                 content: element(right-bottom);
             }
-
+            @bottom-center {
+                content: element(footer-center);
+            }
 
         }
 
@@ -109,6 +114,11 @@
                 margin-bottom: 5cm;
                 /**transform:rotate(90deg);*/
             }
+
+            div.footer-center{
+                display: block;
+                position: running(footer-center);
+            }
         }
         /*强制分页 如果不使用分页符，可在块中追加分页样式，例如<div class="page_break"></div> 或 <div class="page-break-after:always;"></div>*/
         .page_break { page-break-after:always;}
@@ -120,6 +130,11 @@
 <div id="right-bottom" class="right-bottom" align="center">
     <object type="image/barcode" style="width:200px;height:20px;transform:rotate(90deg);position: absolute;left:-70px" data-th-value="${grpInsuredHome.grpInsuredList[0].insurNo}" format="CODE_128"></object>
 </div>
+<div id="footer-center" class="footer-center" style="text-align: center">
+    <div>构建内页码，页角多行内容</div>
+    <span class="page"></span>
+</div>
+
 <!-- 底部固定内容 -->
 <div id="footer-left" class="footer-left" align="center" style="width: 100%; height: 80px; margin-bottom: 150px; border: 0px solid black; border-top: 0px;">
     <div style="border: 0.2pt solid black; border-top: 0px; width: 100%;">
