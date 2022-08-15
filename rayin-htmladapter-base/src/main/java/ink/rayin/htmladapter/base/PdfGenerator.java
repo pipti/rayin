@@ -40,6 +40,7 @@ import java.util.LinkedHashSet;
 public interface PdfGenerator {
     /**
      * 根据模板配置文件路径生成pdf
+     * Generate pdf based on template configuration file path
      * @param templateLocation 模板配置文件路径
      * @param jsonData  数据json
      * @param outputFilePath  输出文件路径
@@ -50,6 +51,7 @@ public interface PdfGenerator {
 
     /**
      * 根据模板配置字符串生成pdf
+     * Generate pdf from template configuration string
      * @param tplConfigStr 模板配置字符串
      * @param jsonData  数据json
      * @param outputFilePath  输出文件路径
@@ -70,6 +72,7 @@ public interface PdfGenerator {
                                                   ByteArrayOutputStream os, String password);
     /**
      * 根据模板配置字符串生成PDF流
+     * Generate PDF stream based on template configuration string
      * @param tplConfigStr  模板配置json
      * @param jsonData   数据json
      * @param os         输出流
@@ -80,6 +83,7 @@ public interface PdfGenerator {
 
     /**
      * 根据单个html文件路径（非配置文件，即html路径）生成pdf至指定路径
+     * Generate pdf to the specified path based on a single html file path (non-configuration file, i.e. html path)
      * @param htmlLocation 参见类说明
      * @param jsonData 数据
      * @param outputFilePath 输出文件绝对路径
@@ -90,6 +94,7 @@ public interface PdfGenerator {
 
     /**
      * 将html文件与数据匹配生成转换后的字符串
+     * Match html file with data to generate converted string
      * @param htmlLocation 参见类说明
      * @param jsonData  数据
      * @return html字符串
@@ -98,6 +103,7 @@ public interface PdfGenerator {
 
     /**
      * 将html字符串与数据匹配生成转换后的字符串
+     * Match html string with data to generate converted string
      * @param htmlStr html字符串
      * @param jsonData 数据
      * @return html字符串
@@ -107,6 +113,7 @@ public interface PdfGenerator {
 
     /**
      * html转换为pdf
+     * convert html to pdf
      * @param htmlStr html字符串
      * @param outputFile 输出文件路径
      */
@@ -114,6 +121,7 @@ public interface PdfGenerator {
 
     /**
      * html转换为pdf
+     * convert html to pdf
      * @param htmlStr html字符串
      * @param jsonData json数据
      * @param outputFile 输出文件路径
@@ -122,13 +130,15 @@ public interface PdfGenerator {
 
     /**
      * html字符串转换为pdf字节流
+     * Convert html string to pdf byte stream
      * @param htmlStr html字符串
      * @return PDF pdf输出流
      */
     ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlStr);
 
     /**
-     * 根据html文件流（html）生成pdf字节流
+     * 将带动态脚本的html字符串和数据结合生成pdf字节流
+     * Combine html string and data with dynamic script to generate pdf byte stream
      * @param htmlStr html输入流
      * @param jsonData     json数据
      * @return PDF ByteArrayOutputStream
@@ -136,7 +146,8 @@ public interface PdfGenerator {
     ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject jsonData);
 
     /**
-     * 根据html文件路径生成pdf字节流
+     * 将带动态脚本的html文件路径结合数据生成pdf字节流
+     * Combine html file path with dynamic script and data to generate pdf byte stream
      * @param htmlLocation  构件路径
      * @param jsonData     json数据
      * @return PDF ByteArrayOutputStream
@@ -145,6 +156,7 @@ public interface PdfGenerator {
 
     /**
      * PDF 元数据读取
+     * PDF metadata reading
      * @param pdf pdf输入流
      * @return 元数据HashMap
      * 2020-01-07
@@ -153,6 +165,7 @@ public interface PdfGenerator {
 
     /**
      * PDF 模板元数据读取
+     * PDF template metadata reading
      * @param pdf pdf流
      * @return json 字符串
      * 2020-01-07
@@ -161,17 +174,20 @@ public interface PdfGenerator {
 
     /**
      * 初始化
+     * Initialization
      */
      void init();
 
     /**
      * 初始化
+     * Initialization
      * @param customizeFontPathDirectory 自定义字体加载目录
      */
     void init(String customizeFontPathDirectory);
 
     /**
      * 初始化-线程池参数
+     * Initialization - thread pool parameters
      * @param minIdle 最小线程
      * @param maxIdle 最大空闲
      * @param maxTotal 最大线程总数
@@ -181,6 +197,7 @@ public interface PdfGenerator {
 
     /**
      * 获取加载的字体名称
+     * Get the loaded font name
      * @return  LinkedHashSet
      */
      LinkedHashSet<String> getFontNames();
@@ -188,6 +205,9 @@ public interface PdfGenerator {
     /**
      * excel数据格式，通过模板生成pdf，每条数据一个PDF，并生成至对应的目录中
      * 文件名为fileNamePrefix + "_" + 序号
+     * Excel data format, generate pdf through template,
+     * one PDF for each piece of data,
+     * and generate it to the corresponding directory with the file name fileNamePrefix + "_" + serial number
      * @param tplConfigStr 模板配置串
      * @param excelIs excel文件流
      * @param outputDirPath 输出目录
@@ -198,7 +218,7 @@ public interface PdfGenerator {
 
     /**
      * excel数据格式，通过模板生成pdf，并合并生成单个文件
-     *
+     * Excel data format, generate pdf through template, and merge to generate a single file
      * @param tplConfigStr 模板配置串
      * @param excelIs excel文件流
      * @param outputFilePath 文件路径（带文件名）
@@ -209,6 +229,9 @@ public interface PdfGenerator {
     /**
      * excel数据格式，通过构件生成pdf，每条数据一个PDF，并生成至对应的目录中
      * 文件名为fileNamePrefix + "_" + 序号
+     * Excel data format, generate pdf through elements,
+     * one PDF for each piece of data,
+     * and generate it to the corresponding directory with the file name fileNamePrefix + "_" + serial number
      * @param elementStr 构件字符串
      * @param excelIs excel文件流
      * @param outputDirPath 输出目录
@@ -218,8 +241,8 @@ public interface PdfGenerator {
                                       String outputDirPath,String fileNamePrefix);
 
     /**
-     * eexcel数据格式，通过构件生成pdf，并生成单个文件
-     *
+     * excel数据格式，通过构件生成pdf，并生成单个文件
+     * excel data format, generate pdf through elements, and generate a single file
      * @param elementStr 构件字符串
      * @param excelIs excel文件流
      * @param outputFilePath 文件路径（带文件名）
