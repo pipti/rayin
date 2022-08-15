@@ -4,12 +4,10 @@ import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONPath;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.ImmutableMap;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 import groovy.transform.ThreadInterrupt;
-import groovy.transform.TimedInterrupt;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import ink.rayin.tools.utils.DigestUtil;
 import ink.rayin.tools.utils.ResourceUtil;
@@ -20,9 +18,9 @@ import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 
 import org.kohsuke.groovy.sandbox.SandboxTransformer;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -38,6 +36,18 @@ import java.util.concurrent.*;
  *    那模板的数量就会几何式翻倍。<br>
  *    这种情况可以根据数据来动态组合"模板"配置，进而生成PDF。 <br>
  *
+ * The data rule conversion engine
+ * uses Groovy as the rule engine to handle the scenarios where data needs to be converted by data rules.
+ * According to the actual business, the following situations may occur:
+ * 1. The data of the source system is inconvenient to modify, and the data of the source system is reprocessed and modified to the data required by pdf
+ * 2. For the data that is only required by pdf, the original data is processed twice to obtain new data fields and apply them to the pdf
+ * 3. Specify different template numbers according to data rules, such as the same data, different branches use different templates
+ * 4. Dynamically splicing templates according to data rules can deal with more complex dynamic scenarios,
+ *    such as selecting different components according to different products.
+ *    Assuming that there are 20 product components and other components are fixed, you need to configure 20 sets of templates.
+ *    If There are different combinations of other components, and the number of templates will double geometrically.
+ *    In this case, a "template" configuration can be dynamically combined based on the data to generate a PDF.
+ *
  * @auther Jonah Wang / 王柱
  * @date 2022-08-07
  */
@@ -45,7 +55,17 @@ import java.util.concurrent.*;
 public class RayinDataRule {
     private ThreadPoolExecutor threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
             Runtime.getRuntime().availableProcessors(), 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(5));
-    private Cache<String, Script> innerLruCache = CacheBuilder.newBuilder()
+    private Cache<String, Script> innerScriptLruCache = CacheBuilder.newBuilder()
+            //最大容量
+            .maximumSize(1000)
+            //当缓存项在指定的时间段内没有被读或写就会被回收
+            .expireAfterAccess(30, TimeUnit.SECONDS)
+            //当缓存项上一次更新操作之后的多久会被刷新
+            //.refreshAfterWrite(5, TimeUnit.SECONDS)
+            // 设置并发级别为cpu核心数
+            .concurrencyLevel(Runtime.getRuntime().availableProcessors())
+            .build();
+    private Cache<String, String> innerFileLruCache = CacheBuilder.newBuilder()
             //最大容量
             .maximumSize(1000)
             //当缓存项在指定的时间段内没有被读或写就会被回收
@@ -57,7 +77,8 @@ public class RayinDataRule {
             .build();
 
     /**
-     * 执行groovy脚本
+     * 执行groovy脚本，缓存key为脚本的md5
+     * Execute the groovy script and cache the md5 with the key as the script
      * @param data 生成pdf所需要的数据
      * @param otherData 辅助数据，主要是辅助判断，例如机构参数
      * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
@@ -76,21 +97,15 @@ public class RayinDataRule {
 
 
         String scriptKey = DigestUtil.md5Hex(scriptString);
-        Script groovyScript = innerLruCache.getIfPresent(scriptKey);
+        Script groovyScript = innerScriptLruCache.getIfPresent(scriptKey);
         if (groovyScript == null) {
-            log.debug("重新加载缓存");
+            log.debug("reload script cache：\n" + scriptString);
             groovyScript = groovyShell.parse(scriptString);
-            innerLruCache.put(scriptKey, groovyScript);
+            innerScriptLruCache.put(scriptKey, groovyScript);
         }
 
-
         groovyScript.setBinding(binding);
-        // 重置调用时间
-//        ThreadLocalUtils.setStartTime();
-//        // 添加脚本名称
-//        ThreadLocalUtils.set("scriptName", DigestUtil.md5Hex(scriptString));
-        //Object result = groovyScript.run();
-        //Object result = groovyShell.evaluate(scriptString);
+
         Future<Object> future = threadPool.submit((Callable<Object>) groovyScript::run);
         try{
             return future.get(30, TimeUnit.SECONDS);
@@ -109,12 +124,12 @@ public class RayinDataRule {
     }
 
     /**
-     * 执行groovy 脚本文件-根据路径获取脚本文件
+     * 执行groovy 脚本文件-根据路径获取脚本文件-通过路径md5对脚本内容进行缓存
      * @param data 生成pdf所需要的数据
      * @param otherData 辅助数据，主要是辅助判断，例如机构参数
      * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
      * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
-     * @param scriptFilePath 脚本路径
+     * @param scriptFilePath 脚本绝对路径
      * @return
      * @throws IOException
      * @throws InstantiationException
@@ -122,12 +137,21 @@ public class RayinDataRule {
      */
     public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
                                            String otherDataName, String scriptFilePath) throws IOException, InstantiationException, IllegalAccessException {
+        String fileKey = DigestUtil.md5Hex(scriptFilePath);
+        String scriptString = innerFileLruCache.getIfPresent(fileKey);
+        if (scriptString == null) {
+            log.debug("reload file cache:" + scriptFilePath);
+            scriptString = ResourceUtil.getResourceAsString(scriptFilePath, StandardCharsets.UTF_8);
+            innerFileLruCache.put(fileKey, scriptString);
+        }
+
         return executeGroovyScript(data, otherData, dataName, otherDataName,
-                ResourceUtil.getResourceAsString(scriptFilePath, StandardCharsets.UTF_8));
+                scriptString);
     }
 
     /**
      * 执行groovy 脚本文件-依据数据动态拼接文件名获取脚本
+     * Execute the groovy script file - get the script by dynamically concatenating the file name according to the data
      * @param data 生成pdf所需要的数据
      * @param otherData 辅助数据，主要是辅助判断，例如机构参数
      * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
@@ -146,10 +170,7 @@ public class RayinDataRule {
     public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
                                        String otherDataName, String scriptFileNameSeparator,
                                        String rulesRootPath, String... scriptFileNameDataPaths) throws IOException, InstantiationException, IllegalAccessException {
-//        if(data == null){
-//            return null;
-//        }
-        //String script = "";
+
         String groovyScriptName = scriptFileNameSeparator;
         for(String sndp : scriptFileNameDataPaths){
             if(JSONPath.eval(data, sndp) == null){
@@ -159,56 +180,37 @@ public class RayinDataRule {
             groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator)? groovyScriptName + scriptFileNameSeparator : groovyScriptName;
         }
         groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator) ? groovyScriptName.substring(0, groovyScriptName.length() - 1) : groovyScriptName;
-        log.info("查找规则脚本文件：" + rulesRootPath + "/" + groovyScriptName + ".groovy");
+        log.info("查找规则脚本文件：" + rulesRootPath + File.separator + groovyScriptName + ".groovy");
 
-//        if(StringUtils.isNotBlank(groovyScriptName)){
-//            script += ResourceUtil.getResourceAsString(rulesDocPath + "/" + groovyScriptName + ".groovy", StandardCharsets.UTF_8);
-//        }else{
-//            log.error("data error,grovvy script name is null");
-//            throw new RayinException("data error,grovvy script name is null");
-//        }
-
-//        Binding binding = new Binding();
-//        binding.setProperty(dataName, data);
-//        binding.setProperty(otherDataName, otherData);
-//        GroovyShell groovyShell = createGroovyShell(binding);
-//
-//        Object result = groovyShell.evaluate(ResourceUtil.getResourceAsString("rules/" + groovyScriptName + ".groovy", StandardCharsets.UTF_8));
-//        return result;
-        return executeGroovyScript(data, otherData, dataName,
-                otherDataName, ResourceUtil.getResourceAsString(rulesRootPath + "/"  + groovyScriptName + ".groovy", StandardCharsets.UTF_8));
+        return executeGroovyFile(data, otherData, dataName,
+                otherDataName, rulesRootPath + File.separator  + groovyScriptName + ".groovy");
     }
 
+    /**
+     * 创建Groovy脚本实例
+     * Create Groovy script instance
+     * @return
+     */
     private static GroovyShell createGroovyShell(){
         CompilerConfiguration config = new CompilerConfiguration();
         config.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class));
 
-//        Map<String, Object> timeoutArgs = new HashMap<>();
-//        timeoutArgs.put("value", new ClosureExpression(
-//                Parameter.EMPTY_ARRAY,
-//                new ExpressionStatement(
-//                        new MethodCallExpression(
-//                                new ClassExpression(ClassHelper.make(ConditionInterceptor.class)),
-//                                "checkTimeout",
-//                                new ConstantExpression(10))
-//                )
-//        ));
-//        config.addCompilationCustomizers(new ASTTransformationCustomizer(timeoutArgs, ConditionalInterrupt.class));
-
-        //30秒
-//        Map<String, Object> timeoutArgs = ImmutableMap.of("value", 30);
-//        config.addCompilationCustomizers(new ASTTransformationCustomizer(timeoutArgs, TimedInterrupt.class));
-
         // 沙盒环境
         config.addCompilationCustomizers(new SandboxTransformer());
-
-//        GroovyClassLoader groovyLoader = new GroovyClassLoader();
-//        Class<Script> groovyClass = (Class<Script>) groovyLoader.parseClass(parentScriptString);
 
         // 注册方法拦截
         new GroovyNotSupportInterceptor().register();
         GroovyShell shell = new GroovyShell(config);
 
         return shell;
+    }
+
+    /**
+     * 清理缓存
+     * clear cache
+     */
+    public void clearCache(){
+        innerScriptLruCache.cleanUp();
+        innerFileLruCache.cleanUp();
     }
 }
