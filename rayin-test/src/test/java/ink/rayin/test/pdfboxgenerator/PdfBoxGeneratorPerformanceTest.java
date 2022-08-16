@@ -37,8 +37,8 @@ public class PdfBoxGeneratorPerformanceTest {
 
     static{
         try {
-//            pdfGenerator = new PdfBoxGenerator();
-//            pdfGenerator.init();
+            pdfGenerator = new PdfBoxGenerator();
+            pdfGenerator.init();
             rayinDataRule = new RayinDataRule();
         } catch (Exception e) {
             e.printStackTrace();
