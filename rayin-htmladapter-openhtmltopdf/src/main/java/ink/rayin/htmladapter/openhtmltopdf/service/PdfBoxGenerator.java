@@ -70,7 +70,7 @@ public class PdfBoxGenerator implements PdfGenerator {
 
     private final String jsonSchema = "tpl_schema.json";
     private static JsonNode jsonSchemaNode;
-
+    private final Base64.Encoder encoder = Base64.getEncoder();
     public PdfBoxGenerator() throws IOException {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 
@@ -569,12 +569,18 @@ public class PdfBoxGenerator implements PdfGenerator {
         org.jsoup.nodes.Document htmlDoc = Jsoup.parse(htmlContent);
 
         Elements imgLinks = htmlDoc.getElementsByTag("img");
+
         for(org.jsoup.nodes.Element link : imgLinks){
             String src = link.attr("src");
             if(StringUtil.isNotBlank(src)){
-                if(src.startsWith("/") || src.startsWith("\\")){
-                    link.attr("src","file:" + src);
+                if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("file:") || src.startsWith("data:image/")) {
+
+                }else if (src.startsWith("/") || src.startsWith("\\")) {
+                    src = "file:" + src;
+                }else{
+                    src = "file:" + ResourceUtil.getResourceAbsolutePathByClassPath(src);
                 }
+                link.attr("src", src);
             }
         }
         Elements objectLinks = htmlDoc.getElementsByTag("object");

@@ -53,28 +53,81 @@ import java.util.concurrent.*;
  */
 @Slf4j
 public class RayinDataRule {
-    private ThreadPoolExecutor threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
-            Runtime.getRuntime().availableProcessors(), 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(5));
-    private Cache<String, Script> innerScriptLruCache = CacheBuilder.newBuilder()
-            //最大容量
-            .maximumSize(1000)
-            //当缓存项在指定的时间段内没有被读或写就会被回收
-            .expireAfterAccess(30, TimeUnit.SECONDS)
-            //当缓存项上一次更新操作之后的多久会被刷新
-            //.refreshAfterWrite(5, TimeUnit.SECONDS)
-            // 设置并发级别为cpu核心数
-            .concurrencyLevel(Runtime.getRuntime().availableProcessors())
-            .build();
-    private Cache<String, String> innerFileLruCache = CacheBuilder.newBuilder()
-            //最大容量
-            .maximumSize(1000)
-            //当缓存项在指定的时间段内没有被读或写就会被回收
-            .expireAfterAccess(30, TimeUnit.SECONDS)
-            //当缓存项上一次更新操作之后的多久会被刷新
-            //.refreshAfterWrite(5, TimeUnit.SECONDS)
-            // 设置并发级别为cpu核心数
-            .concurrencyLevel(Runtime.getRuntime().availableProcessors())
-            .build();
+    /**
+     * groovy脚本执行线程池
+     */
+    private ThreadPoolExecutor threadPool;
+    /**
+     * groovy Scriopt对象缓存缓存
+     */
+    private Cache<String, Script> innerScriptLruCache;
+    /**
+     * groovy脚本文件缓存
+     */
+    private Cache<String, String> innerFileLruCache;
+
+    /**
+     * 构造方法
+     */
+    public RayinDataRule(){
+        threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
+                Runtime.getRuntime().availableProcessors(), 30, TimeUnit.SECONDS, new LinkedBlockingQueue<>(100));
+        innerScriptLruCache = CacheBuilder.newBuilder()
+                //最大容量
+                .maximumSize(1000)
+                //当缓存项在指定的时间段内没有被读或写就会被回收
+                .expireAfterAccess(60, TimeUnit.SECONDS)
+                //当缓存项上一次更新操作之后的多久会被刷新
+                //.refreshAfterWrite(5, TimeUnit.SECONDS)
+                // 设置并发级别为cpu核心数
+                .concurrencyLevel(Runtime.getRuntime().availableProcessors())
+                .build();
+        innerFileLruCache = CacheBuilder.newBuilder()
+                //最大容量
+                .maximumSize(1000)
+                //当缓存项在指定的时间段内没有被读或写就会被回收
+                .expireAfterAccess(60, TimeUnit.SECONDS)
+                //当缓存项上一次更新操作之后的多久会被刷新
+                //.refreshAfterWrite(5, TimeUnit.SECONDS)
+                // 设置并发级别为cpu核心数
+                .concurrencyLevel(Runtime.getRuntime().availableProcessors())
+                .build();
+    }
+
+    /**
+     * 构造方法
+     * @param scriptObjectMaximumCacheSize groovy script对象缓存最大容量，缓存个数
+     * @param scriptObjectCacheExpireAfterAccessSeconds groovy script对象缓存过期时间，单位秒（当缓存项在指定的时间段内没有被读或写就会被回收）
+     * @param scriptFileMaximumCacheSize groovy文件缓存最大容量，缓存个数
+     * @param scriptFileCacheExpireAfterAccessSeconds groovy文件缓存过期时间，单位秒（当缓存项在指定的时间段内没有被读或写就会被回收）
+     */
+    public RayinDataRule(int scriptObjectMaximumCacheSize, int scriptObjectCacheExpireAfterAccessSeconds,
+                         int scriptFileMaximumCacheSize, int scriptFileCacheExpireAfterAccessSeconds,
+                         int groovyExecuteKeepAliveTime, int threadPoolNum){
+        threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
+                Runtime.getRuntime().availableProcessors(), groovyExecuteKeepAliveTime, TimeUnit.SECONDS, new LinkedBlockingQueue<>(threadPoolNum));
+        innerScriptLruCache = CacheBuilder.newBuilder()
+                //最大容量
+                .maximumSize(scriptObjectMaximumCacheSize)
+                //当缓存项在指定的时间段内没有被读或写就会被回收
+                .expireAfterAccess(scriptObjectCacheExpireAfterAccessSeconds, TimeUnit.SECONDS)
+                //当缓存项上一次更新操作之后的多久会被刷新
+                //.refreshAfterWrite(5, TimeUnit.SECONDS)
+                // 设置并发级别为cpu核心数
+                .concurrencyLevel(Runtime.getRuntime().availableProcessors())
+                .build();
+
+        innerFileLruCache = CacheBuilder.newBuilder()
+                //最大容量
+                .maximumSize(scriptFileMaximumCacheSize)
+                //当缓存项在指定的时间段内没有被读或写就会被回收
+                .expireAfterAccess(scriptFileCacheExpireAfterAccessSeconds, TimeUnit.SECONDS)
+                //当缓存项上一次更新操作之后的多久会被刷新
+                //.refreshAfterWrite(5, TimeUnit.SECONDS)
+                // 设置并发级别为cpu核心数
+                .concurrencyLevel(Runtime.getRuntime().availableProcessors())
+                .build();
+    }
 
     /**
      * 执行groovy脚本，缓存key为脚本的md5
@@ -210,6 +263,7 @@ public class RayinDataRule {
      * clear cache
      */
     public void clearCache(){
+        //缓存内部会加锁处理
         innerScriptLruCache.cleanUp();
         innerFileLruCache.cleanUp();
     }
