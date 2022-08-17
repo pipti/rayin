@@ -583,6 +583,24 @@ public class PdfBoxGenerator implements PdfGenerator {
                 link.attr("src", src);
             }
         }
+        Elements printHideStyleEls = htmlDoc.getElementsByAttributeValueContaining("style","-fs-print-hidden:true");
+        for (org.jsoup.nodes.Element ele : printHideStyleEls) {
+            ele.attr("style",ele.attr("style").replaceAll("(background-image([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\)|background([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\))",""));
+        }
+
+//        Elements headStyle = htmlDoc.getElementsByTag("style");
+//        String pattern1 = "([\\s\\S]*)body([\\s\\S]*)\\{([\\s\\S]*)-fs-print-hidden([\\s\\S]*):([\\s\\S]*)true([\\s\\S]*)\\}([\\s\\S]*)";
+//        String pattern2 = "background([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\)";
+//        for(org.jsoup.nodes.Element ele : headStyle){
+//            boolean isMatch = Pattern.matches(pattern1, ele.data());
+//
+//            if(isMatch){
+//                ele.html(ele.data().replaceAll(pattern2,""));
+//                logger.debug(ele.data());
+//            }
+//        }
+
+
         Elements objectLinks = htmlDoc.getElementsByTag("object");
         for (org.jsoup.nodes.Element link : objectLinks) {
             String inner = link.text();
