@@ -317,4 +317,25 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         watch.stop();
         log.info("exp09FontsGenerateTest duration：" +  watch.getTime() + "ms");
     }
+
+    @Test
+    @Order(11)
+    public void exp11FontsGenerateTest() throws Exception {
+        log.info("exp09FontsGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
+
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+
+        // 生成pdf路径
+        // generate pdf path
+        String outputFile = new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "example11_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+
+        StopWatch watch = StopWatch.createStarted();
+        //数据参数可以为空
+        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example11/element1.html"),null,outputFile);
+        watch.stop();
+        log.info("exp11FontsGenerateTest duration：" +  watch.getTime() + "ms");
+    }
 }

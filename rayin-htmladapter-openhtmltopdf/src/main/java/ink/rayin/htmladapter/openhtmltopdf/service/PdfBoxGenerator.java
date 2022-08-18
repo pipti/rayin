@@ -24,6 +24,7 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.model.tplconfig.*;
 import ink.rayin.htmladapter.base.thymeleaf.ThymeleafHandler;
+import ink.rayin.htmladapter.base.utils.CSSParser;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRenderBuilder;
@@ -46,6 +47,8 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.css.CSSStyleDeclaration;
+import org.w3c.dom.css.CSSStyleSheet;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerFactory;
@@ -583,22 +586,24 @@ public class PdfBoxGenerator implements PdfGenerator {
                 link.attr("src", src);
             }
         }
-        Elements printHideStyleEls = htmlDoc.getElementsByAttributeValueContaining("style","-fs-print-hidden:true");
+        Elements printHideStyleEls = htmlDoc.getElementsByAttributeValueContaining("style","-fs-pdf-hidden");
         for (org.jsoup.nodes.Element ele : printHideStyleEls) {
-            ele.attr("style",ele.attr("style").replaceAll("(background-image([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\)|background([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\))",""));
+            if(CSSParser.checkSingleStylePropertyAndValue(ele.attr("style"), "-fs-pdf-hidden", "true")){
+                CSSStyleDeclaration csd = CSSParser.deleteSingleStyleProperty(ele.attr("style"), "background-image");
+                csd.removeProperty("background");
+                ele.attr("style", csd.toString());
+            }
+            //ele.attr("style",ele.attr("style").replaceAll("(background-image([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\)|background([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\))",""));
         }
 
-//        Elements headStyle = htmlDoc.getElementsByTag("style");
-//        String pattern1 = "([\\s\\S]*)body([\\s\\S]*)\\{([\\s\\S]*)-fs-print-hidden([\\s\\S]*):([\\s\\S]*)true([\\s\\S]*)\\}([\\s\\S]*)";
-//        String pattern2 = "background([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\)";
-//        for(org.jsoup.nodes.Element ele : headStyle){
-//            boolean isMatch = Pattern.matches(pattern1, ele.data());
-//
-//            if(isMatch){
-//                ele.html(ele.data().replaceAll(pattern2,""));
-//                logger.debug(ele.data());
-//            }
-//        }
+        Elements headStyle = htmlDoc.getElementsByTag("style");
+        for(org.jsoup.nodes.Element ele : headStyle){
+            if(CSSParser.checkCssPropertyAndValue(ele.html(), "body", "-fs-pdf-hidden", "true")){
+                CSSStyleSheet cs1 = CSSParser.deleteRuleProperty(ele.html(), "body", "background-image");
+                CSSStyleSheet cs2 = CSSParser.deleteRuleProperty(cs1, "body", "background");
+                ele.html(cs2.toString());
+            }
+        }
 
 
         Elements objectLinks = htmlDoc.getElementsByTag("object");
