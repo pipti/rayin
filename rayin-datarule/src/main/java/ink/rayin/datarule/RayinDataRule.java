@@ -182,19 +182,19 @@ public class RayinDataRule {
      * @param otherData 辅助数据，主要是辅助判断，例如机构参数
      * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
      * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
-     * @param scriptFilePath 脚本绝对路径
+     * @param scriptFileURI 脚本URI see {@link ink.rayin.tools.utils.ResourceUtil#getResourceAsString (final String resourceLocation,final Charset encoding)}
      * @return
      * @throws IOException
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
     public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
-                                           String otherDataName, String scriptFilePath) throws IOException, InstantiationException, IllegalAccessException {
-        String fileKey = DigestUtil.md5Hex(scriptFilePath);
+                                           String otherDataName, String scriptFileURI) throws IOException, InstantiationException, IllegalAccessException {
+        String fileKey = DigestUtil.md5Hex(scriptFileURI);
         String scriptString = innerFileLruCache.getIfPresent(fileKey);
         if (scriptString == null) {
-            log.debug("reload file cache:" + scriptFilePath);
-            scriptString = ResourceUtil.getResourceAsString(scriptFilePath, StandardCharsets.UTF_8);
+            log.debug("reload file cache:" + scriptFileURI);
+            scriptString = ResourceUtil.getResourceAsString(scriptFileURI, StandardCharsets.UTF_8);
             innerFileLruCache.put(fileKey, scriptString);
         }
 
@@ -210,8 +210,7 @@ public class RayinDataRule {
      * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
      * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
      * @param scriptFileNameSeparator 脚本文件数据名称分隔符，可空
-     * @param rulesRootPath 规则脚本所在根目录，（绝对路径，相对路径）
-     * @see ink.rayin.tools.utils.ResourceUtil#getResourceAsString
+     * @param rulesRootURI 规则脚本所在根路径 see {@link ink.rayin.tools.utils.ResourceUtil#getResourceAsString (final String resourceLocation,final Charset encoding)}
      * @param scriptFileNameDataPaths 数据规则转换脚本文件名称对应的数据路径，可以指定多个，多个可使用scriptFileNameSeparator参数做拼接
      *                            例如：public.org = 110 public.prdCode = PDA01 ,则参数(data,otherData,"input","otherInput", "_", "/Users/xiaobai/rules","public.org","public.prdCode"),
      *                            查找对应的规则脚本文件名称为 "_110_PDA01.groovy"，因为groovy脚本文件名不能以数字开头，因此会增加分隔符前缀
@@ -222,7 +221,7 @@ public class RayinDataRule {
      */
     public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
                                        String otherDataName, String scriptFileNameSeparator,
-                                       String rulesRootPath, String... scriptFileNameDataPaths) throws IOException, InstantiationException, IllegalAccessException {
+                                       String rulesRootURI, String... scriptFileNameDataPaths) throws IOException, InstantiationException, IllegalAccessException {
 
         String groovyScriptName = scriptFileNameSeparator;
         for(String sndp : scriptFileNameDataPaths){
@@ -233,10 +232,40 @@ public class RayinDataRule {
             groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator)? groovyScriptName + scriptFileNameSeparator : groovyScriptName;
         }
         groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator) ? groovyScriptName.substring(0, groovyScriptName.length() - 1) : groovyScriptName;
-        log.info("查找规则脚本文件：" + rulesRootPath + File.separator + groovyScriptName + ".groovy");
+        log.info("查找规则脚本文件：" + rulesRootURI + File.separator + groovyScriptName + ".groovy");
 
         return executeGroovyFile(data, otherData, dataName,
-                otherDataName, rulesRootPath + File.separator  + groovyScriptName + ".groovy");
+                otherDataName, rulesRootURI + File.separator  + groovyScriptName + ".groovy");
+    }
+
+    /**
+     * 根据数据获取groovy文件名
+     * 可根据数据动态匹配groovy规则脚本
+     * @param data 数据
+     * @param scriptFileNameSeparator  脚本文件数据名称分隔符，可空
+     * @param scriptFileNameDataPaths 数据规则转换脚本文件名称对应的数据路径，可以指定多个，多个可使用scriptFileNameSeparator参数做拼接
+     *                                  例如：public.org = 110 public.prdCode = PDA01 ,则参数(data,otherData,"input","otherInput", "_", "/Users/xiaobai/rules","public.org","public.prdCode"),
+     *                                  查找对应的规则脚本文件名称为 "_110_PDA01.groovy"，因为groovy脚本文件名不能以数字开头，因此会增加分隔符前缀
+     *                                  如果不使用分隔符，注意拼接的规则脚本文件名称最好不要以数字开头。
+     * @return
+     * @throws IOException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    public String getGroovyFileNameByData(JSONObject data, String scriptFileNameSeparator,
+                                    String... scriptFileNameDataPaths) throws IOException, InstantiationException, IllegalAccessException {
+
+        String groovyScriptName = scriptFileNameSeparator;
+        for(String sndp : scriptFileNameDataPaths){
+            if(JSONPath.eval(data, sndp) == null){
+                throw new RayinException("parameter error,'" + sndp + "' data path not found!");
+            }
+            groovyScriptName += JSONPath.eval(data, sndp).toString();
+            groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator)? groovyScriptName + scriptFileNameSeparator : groovyScriptName;
+        }
+        groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator) ? groovyScriptName.substring(0, groovyScriptName.length() - 1) : groovyScriptName;
+        //log.info("查找规则脚本文件：" + rulesRootURI + File.separator + groovyScriptName + ".groovy");
+        return groovyScriptName + ".groovy";
     }
 
     /**
