@@ -578,32 +578,36 @@ public class PdfBoxGenerator implements PdfGenerator {
             if(StringUtil.isNotBlank(src)){
                 if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("file:") || src.startsWith("data:image/")) {
 
-                }else if (src.startsWith("/") || src.startsWith("\\")) {
-                    src = "file:" + src;
+                }else if (src.startsWith(File.separator) || src.startsWith("\\")) {
+                    src = "file:" + File.separator + File.separator + src;
                 }else{
-                    src = "file:" + ResourceUtil.getResourceAbsolutePathByClassPath(src);
+                    src = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(src);
                 }
                 link.attr("src", src);
             }
         }
-        Elements printHideStyleEls = htmlDoc.getElementsByAttributeValueContaining("style","-fs-pdf-hidden");
-        for (org.jsoup.nodes.Element ele : printHideStyleEls) {
-            if(CSSParser.checkSingleStylePropertyAndValue(ele.attr("style"), "-fs-pdf-hidden", "true")){
-                CSSStyleDeclaration csd = CSSParser.deleteSingleStyleProperty(ele.attr("style"), "background-image");
-                csd.removeProperty("background");
-                ele.attr("style", csd.toString());
-            }
-            //ele.attr("style",ele.attr("style").replaceAll("(background-image([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\)|background([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\))",""));
+        Elements pdfHiddenEls = htmlDoc.getElementsByAttributeValueContaining("type", "pdfhidden");
+        for (org.jsoup.nodes.Element ele : pdfHiddenEls) {
+            ele.remove();
         }
-
-        Elements headStyle = htmlDoc.getElementsByTag("style");
-        for(org.jsoup.nodes.Element ele : headStyle){
-            if(CSSParser.checkCssPropertyAndValue(ele.html(), "body", "-fs-pdf-hidden", "true")){
-                CSSStyleSheet cs1 = CSSParser.deleteRuleProperty(ele.html(), "body", "background-image");
-                CSSStyleSheet cs2 = CSSParser.deleteRuleProperty(cs1, "body", "background");
-                ele.html(cs2.toString());
-            }
-        }
+//        Elements printHideStyleEls = htmlDoc.getElementsByAttributeValueContaining("style","-fs-pdf-hidden");
+//        for (org.jsoup.nodes.Element ele : printHideStyleEls) {
+//            if(CSSParser.checkSingleStylePropertyAndValue(ele.attr("style"), "-fs-pdf-hidden", "true")){
+//                CSSStyleDeclaration csd = CSSParser.deleteSingleStyleProperty(ele.attr("style"), "background-image");
+//                csd.removeProperty("background");
+//                ele.attr("style", csd.toString());
+//            }
+//            //ele.attr("style",ele.attr("style").replaceAll("(background-image([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\)|background([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\))",""));
+//        }
+//
+//        Elements headStyle = htmlDoc.getElementsByTag("style");
+//        for(org.jsoup.nodes.Element ele : headStyle){
+//            if(CSSParser.checkCssPropertyAndValue(ele.html(), "body", "-fs-pdf-hidden", "true")){
+//                CSSStyleSheet cs1 = CSSParser.deleteRuleProperty(ele.html(), "body", "background-image");
+//                CSSStyleSheet cs2 = CSSParser.deleteRuleProperty(cs1, "body", "background");
+//                ele.html(cs2.toString());
+//            }
+//        }
 
 
         Elements objectLinks = htmlDoc.getElementsByTag("object");

@@ -10,6 +10,10 @@ import org.w3c.dom.css.*;
 import java.io.IOException;
 import java.io.StringReader;
 
+/**
+ * css解析器
+ *
+ */
 @Slf4j
 public class CSSParser {
 
