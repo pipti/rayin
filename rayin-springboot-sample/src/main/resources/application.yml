@@ -10,15 +10,27 @@ spring:
     active: dev
 
 rayin:
+  # pdf生成相关配置
   pdf:
+    # 字体路径 本地绝对路径
+    font-path: /font_dir
+    # 最大空闲
     max-idle: 10
+    # 最大线程总数
     max-total: 20
+    # 最小线程
     min-idle: 4
-
+  # 数据规则引擎相关配置
   datarule:
+    # groovy script对象缓存最大容量，缓存个数
     script-object-maximum-cache-size: 200
+    # groovy script对象缓存过期时间，单位秒（当缓存项在指定的时间段内没有被读或写就会被回收）
     script-object-cache-expire-after-access-seconds: 900
+    # groovy文件缓存最大容量，缓存个数
     script-file-maximum-cache-size: 200
+    # groovy文件缓存过期时间，单位秒（当缓存项在指定的时间段内没有被读或写就会被回收）
     script-file-cache-expire-after-access-seconds: 900
+    # 线程活动时间
     groovy-execute-keep-alive-time: 60
+    # 执行任务队列数
     groovy-execute-thread-pool-num: 200

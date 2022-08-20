@@ -32,6 +32,29 @@ public class TplDataRuleTest {
      * @throws Exception
      */
     @Test
+    public void ruleScriptSimpleTest() throws Exception {
+        JSONObject jsonData = new JSONObject();
+        JSONPath.set(jsonData, "public.orgId" ,"110");
+        JSONPath.set(jsonData, "public.prdCode" ,"PDA01");
+
+        JSONObject otherData = new JSONObject();
+        HashMap orgs = new HashMap();
+        orgs.put("110", "北京分公司");
+
+        JSONPath.set(otherData,"orgs", orgs);
+        log.debug(otherData.toString());
+
+        //String scriptFileName = dataRule.getGroovyFileNameByData(jsonData, "_", "public.orgId", "public.prdCode");
+        Object result = dataRule.executeGroovyFile(jsonData, otherData,"input", "other",
+                "rules/simple.groovy");
+        log.debug(result.toString());
+    }
+
+    /**
+     * 根据数据拼接脚本文件名
+     * @throws Exception
+     */
+    @Test
     public void ruleScriptFileNameByDataComposeTest() throws Exception {
         JSONObject jsonData = new JSONObject();
         JSONPath.set(jsonData, "public.orgId" ,"110");

@@ -44,7 +44,7 @@ public class RayinDataRuleProperties {
      */
     private int scriptFileCacheExpireAfterAccessSeconds = 1800;
     /**
-     * 活动时间
+     * 线程活动时间
      */
     private int groovyExecuteKeepAliveTime = 30;
     /**
