@@ -19,8 +19,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties(prefix = "rayin")
-public class RayinProperties {
+@ConfigurationProperties(prefix = "rayin.pdf")
+public class RayinPdfProperties {
 
     /**
      * pdf生成类名
@@ -32,10 +32,6 @@ public class RayinProperties {
      */
     private String fontPath;
 
-    /**
-     * 规则脚本路径
-     */
-    private String ruleScriptPath;
 
     /**
      * 最小线程

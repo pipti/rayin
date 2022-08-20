@@ -29,6 +29,10 @@
         </dependency>
         <dependency>
             <groupId>ink.rayin</groupId>
+            <artifactId>rayin-datarule</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ink.rayin</groupId>
             <artifactId>rayin-tools</artifactId>
         </dependency>
         <dependency>

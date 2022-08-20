@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 @EnableRayinPdfAdpter
+@EnableRayinDataRuleAdpter
 public class RayinSpringbootServerApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

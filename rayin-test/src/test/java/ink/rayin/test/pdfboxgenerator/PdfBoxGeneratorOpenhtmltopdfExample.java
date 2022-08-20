@@ -62,7 +62,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
 
         StopWatch watch = StopWatch.createStarted();
         //数据参数可以为空
-        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example1/element1.html"),null,outputFile);
+        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example1/element3.html"),null,outputFile);
         watch.stop();
         log.info("exp01ElementGenerateTest duration：" +  watch.getTime() + "ms");
     }

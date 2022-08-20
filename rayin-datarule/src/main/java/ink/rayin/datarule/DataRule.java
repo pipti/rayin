@@ -52,7 +52,7 @@ import java.util.concurrent.*;
  * @date 2022-08-07
  */
 @Slf4j
-public class RayinDataRule {
+public class DataRule {
     /**
      * groovy脚本执行线程池
      */
@@ -69,12 +69,12 @@ public class RayinDataRule {
     /**
      * 构造方法
      */
-    public RayinDataRule(){
+    public DataRule(){
         threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
                 Runtime.getRuntime().availableProcessors(), 30, TimeUnit.SECONDS, new LinkedBlockingQueue<>(100));
         innerScriptLruCache = CacheBuilder.newBuilder()
                 //最大容量
-                .maximumSize(1000)
+                .maximumSize(500)
                 //当缓存项在指定的时间段内没有被读或写就会被回收
                 .expireAfterAccess(60, TimeUnit.SECONDS)
                 //当缓存项上一次更新操作之后的多久会被刷新
@@ -84,7 +84,7 @@ public class RayinDataRule {
                 .build();
         innerFileLruCache = CacheBuilder.newBuilder()
                 //最大容量
-                .maximumSize(1000)
+                .maximumSize(500)
                 //当缓存项在指定的时间段内没有被读或写就会被回收
                 .expireAfterAccess(60, TimeUnit.SECONDS)
                 //当缓存项上一次更新操作之后的多久会被刷新
@@ -100,12 +100,15 @@ public class RayinDataRule {
      * @param scriptObjectCacheExpireAfterAccessSeconds groovy script对象缓存过期时间，单位秒（当缓存项在指定的时间段内没有被读或写就会被回收）
      * @param scriptFileMaximumCacheSize groovy文件缓存最大容量，缓存个数
      * @param scriptFileCacheExpireAfterAccessSeconds groovy文件缓存过期时间，单位秒（当缓存项在指定的时间段内没有被读或写就会被回收）
+     * @param groovyExecuteKeepAliveTime groovy 执行线程空闲等待时间
+     * @param groovyExecuteThreadPoolNum groovy 执行任务队列数
      */
-    public RayinDataRule(int scriptObjectMaximumCacheSize, int scriptObjectCacheExpireAfterAccessSeconds,
-                         int scriptFileMaximumCacheSize, int scriptFileCacheExpireAfterAccessSeconds,
-                         int groovyExecuteKeepAliveTime, int threadPoolNum){
+    public DataRule(int scriptObjectMaximumCacheSize, int scriptObjectCacheExpireAfterAccessSeconds,
+                    int scriptFileMaximumCacheSize, int scriptFileCacheExpireAfterAccessSeconds,
+                    int groovyExecuteKeepAliveTime, int groovyExecuteThreadPoolNum){
+
         threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
-                Runtime.getRuntime().availableProcessors(), groovyExecuteKeepAliveTime, TimeUnit.SECONDS, new LinkedBlockingQueue<>(threadPoolNum));
+                Runtime.getRuntime().availableProcessors(), groovyExecuteKeepAliveTime, TimeUnit.SECONDS, new LinkedBlockingQueue<>(groovyExecuteThreadPoolNum));
         innerScriptLruCache = CacheBuilder.newBuilder()
                 //最大容量
                 .maximumSize(scriptObjectMaximumCacheSize)
@@ -152,7 +155,7 @@ public class RayinDataRule {
         String scriptKey = DigestUtil.md5Hex(scriptString);
         Script groovyScript = innerScriptLruCache.getIfPresent(scriptKey);
         if (groovyScript == null) {
-            log.debug("reload script cache：\n" + scriptString);
+            log.debug("reload script cache：\n ----------\n" + scriptString + "\n ----------");
             groovyScript = groovyShell.parse(scriptString);
             innerScriptLruCache.put(scriptKey, groovyScript);
         }
@@ -164,20 +167,21 @@ public class RayinDataRule {
             return future.get(30, TimeUnit.SECONDS);
         }catch (TimeoutException exception) {
             future.cancel(true);
-            log.error("TimeoutException,try cancel future task, is cancelled", future.isCancelled());
+            log.error("TimeoutException,try cancel future task, is cancelled", exception);
             //do something else
         }catch (InterruptedException  exception){
             future.cancel(true);
-            log.error("InterruptedException,try cancel future task, is cancelled" , future.isCancelled());
+            log.error("InterruptedException,try cancel future task, is cancelled" , exception);
         }catch (ExecutionException exception){
             future.cancel(true);
-            log.error("ExecutionException,try cancel future task, is cancelled" , future.isCancelled());
+            log.error("ExecutionException,try cancel future task, is cancelled" , exception);
         }
         return null;
     }
 
     /**
      * 执行groovy 脚本文件-根据路径获取脚本文件-通过路径md5对脚本内容进行缓存
+     * Execute the groovy script file - get the script file according to the path - cache the script content through the path md5
      * @param data 生成pdf所需要的数据
      * @param otherData 辅助数据，主要是辅助判断，例如机构参数
      * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
@@ -202,41 +206,41 @@ public class RayinDataRule {
                 scriptString);
     }
 
-    /**
-     * 执行groovy 脚本文件-依据数据动态拼接文件名获取脚本
-     * Execute the groovy script file - get the script by dynamically concatenating the file name according to the data
-     * @param data 生成pdf所需要的数据
-     * @param otherData 辅助数据，主要是辅助判断，例如机构参数
-     * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
-     * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
-     * @param scriptFileNameSeparator 脚本文件数据名称分隔符，可空
-     * @param rulesRootURI 规则脚本所在根路径 see {@link ink.rayin.tools.utils.ResourceUtil#getResourceAsString (final String resourceLocation,final Charset encoding)}
-     * @param scriptFileNameDataPaths 数据规则转换脚本文件名称对应的数据路径，可以指定多个，多个可使用scriptFileNameSeparator参数做拼接
-     *                            例如：public.org = 110 public.prdCode = PDA01 ,则参数(data,otherData,"input","otherInput", "_", "/Users/xiaobai/rules","public.org","public.prdCode"),
-     *                            查找对应的规则脚本文件名称为 "_110_PDA01.groovy"，因为groovy脚本文件名不能以数字开头，因此会增加分隔符前缀
-     *                            如果不使用分隔符，注意拼接的规则脚本文件名称最好不要以数字开头。
-     *
-     * @return
-     * @throws IOException
-     */
-    public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
-                                       String otherDataName, String scriptFileNameSeparator,
-                                       String rulesRootURI, String... scriptFileNameDataPaths) throws IOException, InstantiationException, IllegalAccessException {
-
-        String groovyScriptName = scriptFileNameSeparator;
-        for(String sndp : scriptFileNameDataPaths){
-            if(JSONPath.eval(data, sndp) == null){
-                throw new RayinException("parameter error,'" + sndp + "' data path not found!");
-            }
-            groovyScriptName += JSONPath.eval(data, sndp).toString();
-            groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator)? groovyScriptName + scriptFileNameSeparator : groovyScriptName;
-        }
-        groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator) ? groovyScriptName.substring(0, groovyScriptName.length() - 1) : groovyScriptName;
-        log.info("查找规则脚本文件：" + rulesRootURI + File.separator + groovyScriptName + ".groovy");
-
-        return executeGroovyFile(data, otherData, dataName,
-                otherDataName, rulesRootURI + File.separator  + groovyScriptName + ".groovy");
-    }
+//    /**
+//     * 执行groovy 脚本文件-依据数据动态拼接文件名获取脚本
+//     * Execute the groovy script file - get the script by dynamically concatenating the file name according to the data
+//     * @param data 生成pdf所需要的数据
+//     * @param otherData 辅助数据，主要是辅助判断，例如机构参数
+//     * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
+//     * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
+//     * @param scriptFileNameSeparator 脚本文件数据名称分隔符，可空
+//     * @param rulesRootURI 规则脚本所在根路径 see {@link ink.rayin.tools.utils.ResourceUtil#getResourceAsString (final String resourceLocation,final Charset encoding)}
+//     * @param scriptFileNameDataPaths 数据规则转换脚本文件名称对应的数据路径，可以指定多个，多个可使用scriptFileNameSeparator参数做拼接
+//     *                            例如：public.org = 110 public.prdCode = PDA01 ,则参数(data,otherData,"input","otherInput", "_", "/Users/xiaobai/rules","public.org","public.prdCode"),
+//     *                            查找对应的规则脚本文件名称为 "_110_PDA01.groovy"，因为groovy脚本文件名不能以数字开头，因此会增加分隔符前缀
+//     *                            如果不使用分隔符，注意拼接的规则脚本文件名称最好不要以数字开头。
+//     *
+//     * @return
+//     * @throws IOException
+//     */
+//    public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
+//                                       String otherDataName, String scriptFileNameSeparator,
+//                                       String rulesRootURI, String... scriptFileNameDataPaths) throws IOException, InstantiationException, IllegalAccessException {
+//
+//        String groovyScriptName = scriptFileNameSeparator;
+//        for(String sndp : scriptFileNameDataPaths){
+//            if(JSONPath.eval(data, sndp) == null){
+//                throw new RayinException("parameter error,'" + sndp + "' data path not found!");
+//            }
+//            groovyScriptName += JSONPath.eval(data, sndp).toString();
+//            groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator)? groovyScriptName + scriptFileNameSeparator : groovyScriptName;
+//        }
+//        groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator) ? groovyScriptName.substring(0, groovyScriptName.length() - 1) : groovyScriptName;
+//        log.info("查找规则脚本文件：" + rulesRootURI + File.separator + groovyScriptName + ".groovy");
+//
+//        return executeGroovyFile(data, otherData, dataName,
+//                otherDataName, rulesRootURI + File.separator  + groovyScriptName + ".groovy");
+//    }
 
     /**
      * 根据数据获取groovy文件名
@@ -248,12 +252,9 @@ public class RayinDataRule {
      *                                  查找对应的规则脚本文件名称为 "_110_PDA01.groovy"，因为groovy脚本文件名不能以数字开头，因此会增加分隔符前缀
      *                                  如果不使用分隔符，注意拼接的规则脚本文件名称最好不要以数字开头。
      * @return
-     * @throws IOException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     public String getGroovyFileNameByData(JSONObject data, String scriptFileNameSeparator,
-                                    String... scriptFileNameDataPaths) throws IOException, InstantiationException, IllegalAccessException {
+                                    String... scriptFileNameDataPaths) {
 
         String groovyScriptName = scriptFileNameSeparator;
         for(String sndp : scriptFileNameDataPaths){
@@ -264,7 +265,7 @@ public class RayinDataRule {
             groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator)? groovyScriptName + scriptFileNameSeparator : groovyScriptName;
         }
         groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator) ? groovyScriptName.substring(0, groovyScriptName.length() - 1) : groovyScriptName;
-        //log.info("查找规则脚本文件：" + rulesRootURI + File.separator + groovyScriptName + ".groovy");
+        log.info("groovy script name：" + File.separator + groovyScriptName + ".groovy");
         return groovyScriptName + ".groovy";
     }
 

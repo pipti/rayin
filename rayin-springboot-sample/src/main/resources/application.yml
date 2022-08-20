@@ -8,3 +8,17 @@ spring:
     name: rayin-springboot-sample
   profiles:
     active: dev
+
+rayin:
+  pdf:
+    max-idle: 10
+    max-total: 20
+    min-idle: 4
+
+  datarule:
+    script-object-maximum-cache-size: 200
+    script-object-cache-expire-after-access-seconds: 900
+    script-file-maximum-cache-size: 200
+    script-file-cache-expire-after-access-seconds: 900
+    groovy-execute-keep-alive-time: 60
+    groovy-execute-thread-pool-num: 200

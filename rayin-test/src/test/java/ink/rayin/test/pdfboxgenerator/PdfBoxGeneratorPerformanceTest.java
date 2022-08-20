@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.houbb.junitperf.core.annotation.JunitPerfConfig;
 import com.github.houbb.junitperf.core.report.impl.ConsoleReporter;
 import com.github.houbb.junitperf.core.report.impl.HtmlReporter;
-import ink.rayin.datarule.RayinDataRule;
+import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
@@ -21,8 +21,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.HashMap;
 
 /**
  * 简单的性能测试类
@@ -32,14 +30,14 @@ import java.util.HashMap;
 public class PdfBoxGeneratorPerformanceTest {
 
     static PdfGenerator pdfGenerator;
-    static RayinDataRule rayinDataRule;
+    static DataRule dataRule;
     Signature pdfSign = new PdfBoxSignature();
 
     static{
         try {
             pdfGenerator = new PdfBoxGenerator();
             pdfGenerator.init();
-            rayinDataRule = new RayinDataRule();
+            dataRule = new DataRule();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,7 +76,12 @@ public class PdfBoxGeneratorPerformanceTest {
     }
 
 
-
+    /**
+     * 模板测试
+     * @throws IOException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     @Test
     @JunitPerfConfig(duration = 30_000,threads = 1,warmUp = 1_000,
             reporter = {HtmlReporter.class, ConsoleReporter.class})
@@ -89,14 +92,10 @@ public class PdfBoxGeneratorPerformanceTest {
         JSONPath.set(jsonData, "public.prdCode" ,"PDA01");
 
         JSONObject otherData = new JSONObject();
-//        HashMap orgs = new HashMap();
-//        orgs.put("110", "北京分公司");
-//
-//        JSONPath.set(otherData,"orgs", orgs);
-//        log.debug(otherData.toString());
+
         StopWatch watch = StopWatch.createStarted();
-        Object result = rayinDataRule.executeGroovyFile(jsonData, otherData,"input", "other",
-                "rules/DynamicJonitTpl.groovy");
+        Object result = dataRule.executeGroovyFile(jsonData, otherData,"input", "other",
+                "rules/dynamic_jonit_tpl.groovy");
         watch.stop();
         log.info("ruleScriptDynamicJointTemplateTest duration：" +  watch.getTime() + "ms");
         log.debug(JSONObject.toJSONString(result));
@@ -107,4 +106,5 @@ public class PdfBoxGeneratorPerformanceTest {
 //                + "ruleScriptDynamicJointTemplateTest_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 //        pdfGenerator.generatePdfFileByTplConfigStr(JSONObject.toJSONString(result), jsonData, outputFile);
     }
+
 }

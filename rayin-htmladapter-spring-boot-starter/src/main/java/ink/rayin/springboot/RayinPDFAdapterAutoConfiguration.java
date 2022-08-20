@@ -15,9 +15,11 @@
  */
 package ink.rayin.springboot;
 
+import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,18 +27,20 @@ import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Resource;
 
+@Slf4j
 @SpringBootConfiguration
-@ConditionalOnClass(PdfGenerator.class)
-@EnableConfigurationProperties(RayinProperties.class)
+@ConditionalOnClass({PdfGenerator.class, DataRule.class})
+@EnableConfigurationProperties({RayinPdfProperties.class,RayinDataRuleProperties.class})
 public class RayinPDFAdapterAutoConfiguration {
     @Resource
-    private RayinProperties properties;
-
+    private RayinDataRuleProperties dataRuleProperties;
+    @Resource
+    private RayinPdfProperties pdfProperties;
     @Bean
     @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator")
     public PdfGenerator createHtmlToPdfRunnable() throws Exception {
         PdfBoxGenerator pdfBoxGenerator = new ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator();
-        pdfBoxGenerator.init(properties.getMinIdle(),properties.getMaxIdle(), properties.getMaxTotal(), properties.getFontPath());
+        pdfBoxGenerator.init(pdfProperties.getMinIdle(),pdfProperties.getMaxIdle(), pdfProperties.getMaxTotal(), pdfProperties.getFontPath());
 
         return pdfBoxGenerator;
     }
@@ -46,7 +50,26 @@ public class RayinPDFAdapterAutoConfiguration {
     public Signature createSignRunnable() {
         return new ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature();
     }
-//    @Bean
+
+    @Bean
+    @ConditionalOnClass(name= "ink.rayin.datarule.DataRule")
+    public DataRule createDataRuleRunnable() {
+        log.info("ScriptObjectMaximumCacheSize:" + dataRuleProperties.getScriptObjectMaximumCacheSize());
+        log.info("ScriptObjectCacheExpireAfterAccessSeconds:" + dataRuleProperties.getScriptObjectCacheExpireAfterAccessSeconds());
+        log.info("ScriptFileMaximumCacheSize:" + dataRuleProperties.getScriptFileMaximumCacheSize());
+        log.info("ScriptFileCacheExpireAfterAccessSeconds:" + dataRuleProperties.getScriptFileCacheExpireAfterAccessSeconds());
+        log.info("GroovyExecuteKeepAliveTime:" + dataRuleProperties.getGroovyExecuteKeepAliveTime());
+        log.info("GroovyExecuteThreadPoolNum:" + dataRuleProperties.getGroovyExecuteThreadPoolNum());
+
+        DataRule dataRule = new DataRule(dataRuleProperties.getScriptObjectMaximumCacheSize(),
+                dataRuleProperties.getScriptObjectCacheExpireAfterAccessSeconds(),
+                dataRuleProperties.getScriptFileMaximumCacheSize(),
+                dataRuleProperties.getScriptFileCacheExpireAfterAccessSeconds(),
+                dataRuleProperties.getGroovyExecuteKeepAliveTime(),
+                dataRuleProperties.getGroovyExecuteThreadPoolNum());
+        return dataRule;
+    }
+    //    @Bean
 //    @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature")
 //    public Runnable createPdfBoxSignRunnable(){
 //        return () -> {};
