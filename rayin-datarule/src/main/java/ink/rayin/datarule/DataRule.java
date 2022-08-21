@@ -48,8 +48,8 @@ import java.util.concurrent.*;
  *    If There are different combinations of other components, and the number of templates will double geometrically.
  *    In this case, a "template" configuration can be dynamically combined based on the data to generate a PDF.
  *
- * @auther Jonah Wang / 王柱
- * @date 2022-08-07
+ * @author  Jonah Wang / 王柱 2022-08-07
+ *
  */
 @Slf4j
 public class DataRule {
@@ -140,7 +140,7 @@ public class DataRule {
      * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
      * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
      * @param scriptString 脚本字符串
-     * @return
+     * @return 数据对象
      */
     public Object executeGroovyScript(JSONObject data, JSONObject otherData, String dataName,
                                            String otherDataName, String scriptString)  {
@@ -185,10 +185,8 @@ public class DataRule {
      * @param dataName 生成pdf所需要的数据在脚本中注入的变量名，即在脚本中引用的名称
      * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
      * @param scriptFileURI 脚本URI see {@link ink.rayin.tools.utils.ResourceUtil#getResourceAsString (final String resourceLocation,final Charset encoding)}
-     * @return
+     * @return 数据对象
      * @throws IOException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
                                            String otherDataName, String scriptFileURI) throws IOException{
@@ -249,7 +247,7 @@ public class DataRule {
      *                                  例如：public.org = 110 public.prdCode = PDA01 ,则参数(data,otherData,"input","otherInput", "_", "/Users/xiaobai/rules","public.org","public.prdCode"),
      *                                  查找对应的规则脚本文件名称为 "_110_PDA01.groovy"，因为groovy脚本文件名不能以数字开头，因此会增加分隔符前缀
      *                                  如果不使用分隔符，注意拼接的规则脚本文件名称最好不要以数字开头。
-     * @return
+     * @return 脚本文件名
      */
     public String getGroovyFileNameByData(JSONObject data, String scriptFileNameSeparator,
                                     String... scriptFileNameDataPaths) {

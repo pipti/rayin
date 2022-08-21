@@ -22,7 +22,7 @@ public class CSSParser {
      * @param cssStr css字符串
      * @param selectorStr css选择器字符串
      * @param property css属性字符串
-     * @return
+     * @return boolean
      * @throws IOException
      */
     public static boolean checkCssProperty(String cssStr, String selectorStr, String property) throws IOException {
@@ -50,7 +50,16 @@ public class CSSParser {
         return false;
     }
 
-    public static boolean checkCssPropertyAndValue(String cssStr, String selectorStr, String property, String value) throws IOException {
+    /**
+     *
+     * @param cssStr css字符串
+     * @param selectorStr 选择器名称
+     * @param propertyName 属性名称
+     * @param value 属性值
+     * @return boolean
+     * @throws IOException
+     */
+    public static boolean checkCssPropertyAndValue(String cssStr, String selectorStr, String propertyName, String value) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
         source.setEncoding("UTF-8");
         final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
@@ -67,7 +76,7 @@ public class CSSParser {
                 selectorText_ = ((CSSPageRule) rule).getSelectorText();
                 if(selectorStr.equals(selectorText_)){
                     CSSStyleDeclaration ss =  ((CSSPageRule)rule).getStyle();
-                    String propertyValue = ss.getPropertyValue(property);
+                    String propertyValue = ss.getPropertyValue(propertyName);
                     if("".equals(propertyValue) || propertyValue == null || !propertyValue.equals(value)){
                         return false;
                     }
@@ -78,7 +87,7 @@ public class CSSParser {
                 selectorText_ = ((CSSStyleRule) rule).getSelectorText();
                 if(selectorStr.equals(selectorText_)){
                     CSSStyleDeclaration ss =  ((CSSStyleRule)rule).getStyle();
-                    String propertyValue = ss.getPropertyValue(property);
+                    String propertyValue = ss.getPropertyValue(propertyName);
                     if("".equals(propertyValue) || propertyValue == null || !propertyValue.equals(value)){
                         return false;
                     }
@@ -91,34 +100,56 @@ public class CSSParser {
         return false;
     }
 
-    public static boolean checkSingleStylePropertyAndValue(String cssStr, String property, String value) throws IOException {
+    /**
+     * 检查tag中style中的属性+值是否存在
+     * @param cssStr css字符串
+     * @param propertyName 属性名称
+     * @param value 顺序值
+     * @return  boolean
+     * @throws IOException
+     */
+    public static boolean checkSingleStylePropertyAndValue(String cssStr, String propertyName, String value) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
         source.setEncoding("UTF-8");
         final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
         CSSStyleDeclaration decl = parser.parseStyleDeclaration(source);
-        if(StringUtil.isBlank(decl.getPropertyValue(property)) || !decl.getPropertyValue(property).equals(value)){
+        if(StringUtil.isBlank(decl.getPropertyValue(propertyName)) || !decl.getPropertyValue(propertyName).equals(value)){
             return false;
         }
         return true;
     }
 
-    public static boolean checkSingleStyleProperty(String cssStr, String property) throws IOException {
+    /**
+     * 检查tag中style中的属性是否存在
+     * @param cssStr css字符串
+     * @param propertyName 属性名称
+     * @return boolean
+     * @throws IOException
+     */
+    public static boolean checkSingleStyleProperty(String cssStr, String propertyName) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
         source.setEncoding("UTF-8");
         final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
         CSSStyleDeclaration decl = parser.parseStyleDeclaration(source);
-        if(StringUtil.isBlank(decl.getPropertyValue(property))){
+        if(StringUtil.isBlank(decl.getPropertyValue(propertyName))){
             return false;
         }
         return true;
     }
 
-    public static String getSingleStylePropertyValue(String cssStr, String property) throws IOException {
+    /**
+     * 获取tag中style中的属性值
+     * @param cssStr css字符串
+     * @param propertyName 属性名称
+     * @return 属性值
+     * @throws IOException
+     */
+    public static String getSingleStylePropertyValue(String cssStr, String propertyName) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
         source.setEncoding("UTF-8");
         final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
         CSSStyleDeclaration decl = parser.parseStyleDeclaration(source);
-        return decl.getPropertyValue(property);
+        return decl.getPropertyValue(propertyName);
     }
 
     /**
@@ -128,7 +159,7 @@ public class CSSParser {
      * @param propertyName 属性名称
      * @param propertyValue 属性值
      * @param priority 优先级 ，可空
-     * @return
+     * @return CSSStyleSheet
      * @throws IOException
      */
     public static CSSStyleSheet addRuleProperty(String cssStr,
@@ -157,6 +188,15 @@ public class CSSParser {
         return sheet;
     }
 
+    /**
+     * 添加选择器css属性
+     * @param sheet CSSStyleSheet对象
+     * @param selectorText css选择器名称
+     * @param propertyName 属性名称
+     * @param propertyValue 属性值
+     * @param priority priority
+     * @return CSSStyleSheet
+     */
     public static CSSStyleSheet addRuleProperty(CSSStyleSheet sheet,
                                                 String selectorText,
                                                 String propertyName,
@@ -179,6 +219,15 @@ public class CSSParser {
         return sheet;
     }
 
+    /**
+     * 添加tag内style的css属性
+     * @param cssStr css字符串
+     * @param propertyName 属性名称
+     * @param value 属性值
+     * @param priority priority
+     * @return CSSStyleDeclaration
+     * @throws IOException
+     */
     public static CSSStyleDeclaration addSingleStyleProperty(String cssStr, String propertyName, String value, String priority) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
         source.setEncoding("UTF-8");
@@ -188,6 +237,15 @@ public class CSSParser {
         return decl;
     }
 
+    /**
+     * 添加tag内style的css属性
+     * @param decl CSSStyleDeclaration对象
+     * @param propertyName 属性名称
+     * @param value 属性值
+     * @param priority priority
+     * @return CSSStyleDeclaration
+     * @throws IOException
+     */
     public static CSSStyleDeclaration addSingleStyleProperty(CSSStyleDeclaration decl, String propertyName, String value, String priority) throws IOException {
         decl.setProperty(propertyName, value, priority);
         return decl;
@@ -197,7 +255,7 @@ public class CSSParser {
      * 根据css选择器删除css样式
      * @param cssStr css字符串
      * @param selectorText css选择器
-     * @return
+     * @return CSSStyleSheet
      * @throws IOException
      */
     public static CSSStyleSheet deleteRule(String cssStr, String selectorText) throws IOException {
@@ -221,6 +279,12 @@ public class CSSParser {
         return sheet;
     }
 
+    /**
+     * 删除选择器样式
+     * @param sheet  CSSStyleSheet
+     * @param selectorText 选择器
+     * @return
+     */
     public static CSSStyleSheet deleteRule(CSSStyleSheet sheet, String selectorText) {
         CSSRuleList rules = sheet.getCssRules();
         if(rules.getLength() == 0 ){
@@ -243,7 +307,7 @@ public class CSSParser {
      * @param cssStr css字符串
      * @param selectorText css选择器
      * @param propertyName css属性名称
-     * @return
+     * @return CSSStyleSheet
      * @throws IOException
      */
     public static CSSStyleSheet deleteRuleProperty(String cssStr, String selectorText, String propertyName) throws IOException {
@@ -268,6 +332,13 @@ public class CSSParser {
         return sheet;
     }
 
+    /**
+     * 删除tag中style属性
+     * @param cssStr css字符串
+     * @param propertyName 属性名
+     * @return CSSStyleDeclaration
+     * @throws IOException
+     */
     public static CSSStyleDeclaration deleteSingleStyleProperty(String cssStr, String propertyName) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
         source.setEncoding("UTF-8");
@@ -277,11 +348,25 @@ public class CSSParser {
         return decl;
     }
 
+    /**
+     * 删除tag中style属性
+     * @param decl CSSStyleDeclaration
+     * @param propertyName 属性名
+     * @return CSSStyleDeclaration
+     * @throws IOException
+     */
     public static CSSStyleDeclaration deleteSingleStyleProperty(CSSStyleDeclaration decl, String propertyName) {
         decl.removeProperty(propertyName);
         return decl;
     }
 
+    /**
+     * 删除选择器中的属性
+     * @param sheet CSSStyleSheet
+     * @param selectorText 选择器
+     * @param propertyName 属性名
+     * @return CSSStyleSheet
+     */
     public static CSSStyleSheet deleteRuleProperty(CSSStyleSheet sheet, String selectorText, String propertyName) {
         CSSRuleList rules = sheet.getCssRules();
         if(rules.getLength() == 0 ){

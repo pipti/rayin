@@ -571,6 +571,11 @@ public class PdfBoxGenerator implements PdfGenerator {
 
         org.jsoup.nodes.Document htmlDoc = Jsoup.parse(htmlContent);
 
+        Elements pdfHiddenEls = htmlDoc.getElementsByAttributeValueContaining("type", "pdf/hidden");
+        for (org.jsoup.nodes.Element ele : pdfHiddenEls) {
+            ele.remove();
+        }
+
         Elements imgLinks = htmlDoc.getElementsByTag("img");
 
         for(org.jsoup.nodes.Element link : imgLinks){
@@ -580,16 +585,77 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                 }else if (src.startsWith(File.separator) || src.startsWith("\\")) {
                     src = "file:" + File.separator + File.separator + src;
+                    logger.debug("image url convert:" + src);
                 }else{
                     src = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(src);
+                    logger.debug("image url convert:" + src);
                 }
                 link.attr("src", src);
             }
         }
-        Elements pdfHiddenEls = htmlDoc.getElementsByAttributeValueContaining("type", "pdfhidden");
-        for (org.jsoup.nodes.Element ele : pdfHiddenEls) {
-            ele.remove();
+
+        Elements bgEls = htmlDoc.getElementsByAttributeValueContaining("style", "background");
+        String pattern = "[\\s\\S]*url\\((?<url>.*?)\\)[\\s\\S]*";
+        Pattern r = Pattern.compile(pattern);
+        for (org.jsoup.nodes.Element ele : bgEls) {
+            String bgCssStr = CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background");
+            logger.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background"));
+            if(bgCssStr.indexOf("url") >= 0){
+                Matcher matcher = r.matcher(bgCssStr);
+
+                while (matcher.find()){
+                    String url = matcher.group("url");
+                    String newUrl = url;
+                    if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
+
+                    }else if (url.startsWith(File.separator) || url.startsWith("\\")) {
+                        newUrl = "file:" + File.separator + File.separator + url;
+                        logger.debug("image url convert:\'" + newUrl + "'");
+                    }else{
+                        newUrl = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                        logger.debug("image url convert:\'" + newUrl + "'");
+                    }
+                    bgCssStr = bgCssStr.replace(url, newUrl);
+                }
+
+                CSSStyleDeclaration cssStyleDeclaration = CSSParser.addSingleStyleProperty(ele.attr("style"), "background", bgCssStr, null);
+                bgEls.attr("style", cssStyleDeclaration.getCssText());
+            }
         }
+        Elements bgImgEls = htmlDoc.getElementsByAttributeValueContaining("style", "background-image");
+        for (org.jsoup.nodes.Element ele : bgImgEls) {
+            String bgCssStr = CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image");
+            logger.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image"));
+            if(bgCssStr.indexOf("url") >= 0){
+                Matcher matcher = r.matcher(bgCssStr);
+
+                while (matcher.find()){
+                    String url = matcher.group("url");
+                    String newUrl = url;
+
+                    if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
+
+                    }else if (url.startsWith(File.separator) || url.startsWith("\\")) {
+                        newUrl = "file:" + File.separator + File.separator + url;
+                        logger.debug("image url convert:\'" + newUrl + "'");
+                    }else{
+                        newUrl = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                        logger.debug("image url convert:\'" + newUrl + "'");
+                    }
+                    bgCssStr = bgCssStr.replace(url, newUrl);
+                }
+
+                CSSStyleDeclaration cssStyleDeclaration = CSSParser.addSingleStyleProperty(ele.attr("style"), "background-image", bgCssStr, null);
+                bgEls.attr("style", cssStyleDeclaration.getCssText());
+            }
+        }
+
+
+        for (org.jsoup.nodes.Element ele : bgImgEls) {
+            logger.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image"));
+        }
+
+
 //        Elements printHideStyleEls = htmlDoc.getElementsByAttributeValueContaining("style","-fs-pdf-hidden");
 //        for (org.jsoup.nodes.Element ele : printHideStyleEls) {
 //            if(CSSParser.checkSingleStylePropertyAndValue(ele.attr("style"), "-fs-pdf-hidden", "true")){
