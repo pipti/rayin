@@ -133,7 +133,7 @@ public class DataRule {
     }
 
     /**
-     * 执行groovy脚本，缓存key为脚本的md5
+     * 执行groovy脚本字符串，缓存key为脚本的md5
      * Execute the groovy script and cache the md5 with the key as the script
      * @param data 生成pdf所需要的数据
      * @param otherData 辅助数据，主要是辅助判断，例如机构参数
@@ -141,11 +141,9 @@ public class DataRule {
      * @param otherDataName 辅助数据在脚本中注入的变量名，即辅助数据引用的名称
      * @param scriptString 脚本字符串
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     public Object executeGroovyScript(JSONObject data, JSONObject otherData, String dataName,
-                                           String otherDataName, String scriptString) throws InstantiationException, IllegalAccessException {
+                                           String otherDataName, String scriptString)  {
         Binding binding = new Binding();
         binding.setProperty(dataName, data);
         binding.setProperty(otherDataName, otherData);
@@ -193,7 +191,7 @@ public class DataRule {
      * @throws IllegalAccessException
      */
     public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
-                                           String otherDataName, String scriptFileURI) throws IOException, InstantiationException, IllegalAccessException {
+                                           String otherDataName, String scriptFileURI) throws IOException{
         String fileKey = DigestUtil.md5Hex(scriptFileURI);
         String scriptString = innerFileLruCache.getIfPresent(fileKey);
         if (scriptString == null) {

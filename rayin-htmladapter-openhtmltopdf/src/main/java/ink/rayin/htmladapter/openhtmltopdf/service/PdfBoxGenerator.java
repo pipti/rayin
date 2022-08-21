@@ -698,6 +698,17 @@ public class PdfBoxGenerator implements PdfGenerator {
                         link.append(value);
 
                         break;
+
+                    case "fontwatermark":
+                        CSSStyleDeclaration cssStyleDeclaration = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
+                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "left","600px",null);
+                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "top","300px",null);
+                        if(!CSSParser.checkSingleStyleProperty(link.attr("style"), "transform")){
+                            link.attr("style", cssStyleDeclaration.getCssText() + ";transform:rotate(40deg)");
+                        }else{
+                            link.attr("style", cssStyleDeclaration.getCssText());
+                        }
+
                 }
 
             }

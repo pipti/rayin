@@ -102,6 +102,25 @@ public class CSSParser {
         return true;
     }
 
+    public static boolean checkSingleStyleProperty(String cssStr, String property) throws IOException {
+        InputSource source = new InputSource(new StringReader(cssStr));
+        source.setEncoding("UTF-8");
+        final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
+        CSSStyleDeclaration decl = parser.parseStyleDeclaration(source);
+        if(StringUtil.isBlank(decl.getPropertyValue(property))){
+            return false;
+        }
+        return true;
+    }
+
+    public static String getSingleStylePropertyValue(String cssStr, String property) throws IOException {
+        InputSource source = new InputSource(new StringReader(cssStr));
+        source.setEncoding("UTF-8");
+        final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
+        CSSStyleDeclaration decl = parser.parseStyleDeclaration(source);
+        return decl.getPropertyValue(property);
+    }
+
     /**
      * 添加css属性
      * @param cssStr css字符串
@@ -158,6 +177,20 @@ public class CSSParser {
             }
         }
         return sheet;
+    }
+
+    public static CSSStyleDeclaration addSingleStyleProperty(String cssStr, String propertyName, String value, String priority) throws IOException {
+        InputSource source = new InputSource(new StringReader(cssStr));
+        source.setEncoding("UTF-8");
+        final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
+        CSSStyleDeclaration decl = parser.parseStyleDeclaration(source);
+        decl.setProperty(propertyName, value, priority);
+        return decl;
+    }
+
+    public static CSSStyleDeclaration addSingleStyleProperty(CSSStyleDeclaration decl, String propertyName, String value, String priority) throws IOException {
+        decl.setProperty(propertyName, value, priority);
+        return decl;
     }
 
     /**

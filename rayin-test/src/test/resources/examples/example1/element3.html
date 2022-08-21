@@ -20,14 +20,14 @@
             /*border: thin solid black;*/
         }
 
-        object[type="watermark"] {
-            display: block;
-            width: 50%;
-            height: 100px;
-            color:blue;
-            /*font-size: 30px;*/
-            /*transform: rotate(15deg);*/
-        }
+        /*object[type="watermark"] {*/
+        /*    display: block;*/
+        /*    width: 100px;*/
+        /*    height: 200px;*/
+        /*    color:blue;*/
+        /*    !*font-size: 30px;*!*/
+        /*    transform: rotate(40deg);*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -38,9 +38,8 @@
     </div>
     <object type="image/barcode" style="width:50px;height:20px;" value="123" format="CODE_39"></object>
 
-    <object type="watermark" value="RAYIN"></object>
 <!--    <img src="file:///Users/eric/Documents/dev_code/open_source/Rayin/rayin/rayin-test/src/test/resources/images/dems_1.png"/>-->
 </div>
-<object type="watermark" value="RAYIN"></object>
+<object type="fontwatermark" value="水印" style="color:#4ac055;font-size: 30px"></object>
 </body>
 </html>
