@@ -175,6 +175,9 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
     pdfGenerator.generatePdfFileByTplConfigFile(templateLocation, jsonData, outputFilePath);
 ```
 
+## v1.0.6新增数据规则工具
+
+
 ## 详细使用说明请参见帮助文档
 [帮助文档](https://www.yuque.com/liuer_doc/rayin)
 
@@ -187,4 +190,6 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
 
 ## 交流群
+<img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/wxqun_qrcode.JPG" width="300px">
+
 <img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
