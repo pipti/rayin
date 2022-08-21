@@ -175,15 +175,26 @@ public class CSSParser {
         if(rules.getLength() == 0 ){
             return null;
         }
+        String selectorText_ = "";
         for (int i = 0; i < rules.getLength(); i++) {
             final CSSRule rule = rules.item(i);
             //获取选择器名称
-            String selectorText_ = ((CSSStyleRule) rule).getSelectorText();
 
-            if(selectorText.equals(selectorText_)){
-                CSSStyleDeclaration cd =  ((CSSStyleRule)rule).getStyle();
-                cd.setProperty(propertyName, propertyValue, priority);
+            if(rule instanceof CSSPageRule) {
+                selectorText_ = ((CSSPageRule) rule).getSelectorText();
+                if(selectorText.equals(selectorText_)){
+                    CSSStyleDeclaration cd =  ((CSSPageRule)rule).getStyle();
+                    cd.setProperty(propertyName, propertyValue, priority);
+                }
             }
+            if(rule instanceof CSSStyleRule) {
+                selectorText_ = ((CSSStyleRule) rule).getSelectorText();
+                if(selectorText.equals(selectorText_)){
+                    CSSStyleDeclaration cd =  ((CSSStyleRule)rule).getStyle();
+                    cd.setProperty(propertyName, propertyValue, priority);
+                }
+            }
+
         }
         return sheet;
     }
