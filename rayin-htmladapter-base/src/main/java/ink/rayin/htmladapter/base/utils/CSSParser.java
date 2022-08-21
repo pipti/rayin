@@ -23,7 +23,7 @@ public class CSSParser {
      * @param selectorStr css选择器字符串
      * @param property css属性字符串
      * @return boolean
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static boolean checkCssProperty(String cssStr, String selectorStr, String property) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -57,7 +57,7 @@ public class CSSParser {
      * @param propertyName 属性名称
      * @param value 属性值
      * @return boolean
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static boolean checkCssPropertyAndValue(String cssStr, String selectorStr, String propertyName, String value) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -106,7 +106,7 @@ public class CSSParser {
      * @param propertyName 属性名称
      * @param value 顺序值
      * @return  boolean
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static boolean checkSingleStylePropertyAndValue(String cssStr, String propertyName, String value) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -124,7 +124,7 @@ public class CSSParser {
      * @param cssStr css字符串
      * @param propertyName 属性名称
      * @return boolean
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static boolean checkSingleStyleProperty(String cssStr, String propertyName) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -142,7 +142,7 @@ public class CSSParser {
      * @param cssStr css字符串
      * @param propertyName 属性名称
      * @return 属性值
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static String getSingleStylePropertyValue(String cssStr, String propertyName) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -160,7 +160,7 @@ public class CSSParser {
      * @param propertyValue 属性值
      * @param priority 优先级 ，可空
      * @return CSSStyleSheet
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static CSSStyleSheet addRuleProperty(String cssStr,
                                                 String selectorText,
@@ -226,7 +226,7 @@ public class CSSParser {
      * @param value 属性值
      * @param priority priority
      * @return CSSStyleDeclaration
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static CSSStyleDeclaration addSingleStyleProperty(String cssStr, String propertyName, String value, String priority) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -244,9 +244,8 @@ public class CSSParser {
      * @param value 属性值
      * @param priority priority
      * @return CSSStyleDeclaration
-     * @throws IOException
      */
-    public static CSSStyleDeclaration addSingleStyleProperty(CSSStyleDeclaration decl, String propertyName, String value, String priority) throws IOException {
+    public static CSSStyleDeclaration addSingleStyleProperty(CSSStyleDeclaration decl, String propertyName, String value, String priority) {
         decl.setProperty(propertyName, value, priority);
         return decl;
     }
@@ -256,7 +255,7 @@ public class CSSParser {
      * @param cssStr css字符串
      * @param selectorText css选择器
      * @return CSSStyleSheet
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static CSSStyleSheet deleteRule(String cssStr, String selectorText) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -283,7 +282,7 @@ public class CSSParser {
      * 删除选择器样式
      * @param sheet  CSSStyleSheet
      * @param selectorText 选择器
-     * @return
+     * @return CSSStyleSheet
      */
     public static CSSStyleSheet deleteRule(CSSStyleSheet sheet, String selectorText) {
         CSSRuleList rules = sheet.getCssRules();
@@ -308,7 +307,7 @@ public class CSSParser {
      * @param selectorText css选择器
      * @param propertyName css属性名称
      * @return CSSStyleSheet
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static CSSStyleSheet deleteRuleProperty(String cssStr, String selectorText, String propertyName) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -337,7 +336,7 @@ public class CSSParser {
      * @param cssStr css字符串
      * @param propertyName 属性名
      * @return CSSStyleDeclaration
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static CSSStyleDeclaration deleteSingleStyleProperty(String cssStr, String propertyName) throws IOException {
         InputSource source = new InputSource(new StringReader(cssStr));
@@ -353,7 +352,6 @@ public class CSSParser {
      * @param decl CSSStyleDeclaration
      * @param propertyName 属性名
      * @return CSSStyleDeclaration
-     * @throws IOException
      */
     public static CSSStyleDeclaration deleteSingleStyleProperty(CSSStyleDeclaration decl, String propertyName) {
         decl.removeProperty(propertyName);
