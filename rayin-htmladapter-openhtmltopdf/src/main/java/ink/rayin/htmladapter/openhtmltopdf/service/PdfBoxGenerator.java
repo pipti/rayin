@@ -76,6 +76,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     private final String jsonSchema = "tpl_schema.json";
     private static JsonNode jsonSchemaNode;
     private final Base64.Encoder encoder = Base64.getEncoder();
+    private final String os = System.getProperty("os.name");
     public PdfBoxGenerator() throws IOException {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 
@@ -584,12 +585,20 @@ public class PdfBoxGenerator implements PdfGenerator {
             String src = link.attr("src");
             if(StringUtil.isNotBlank(src)){
                 if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("file:") || src.startsWith("data:image/")) {
-
-                }else if (src.startsWith(File.separator) || src.startsWith("\\")) {
-                    src = "file:" + File.separator + File.separator + src;
+                    if(src.startsWith("file:")){
+                        src = src.replace("\\", "/");
+                    }
+                }else if (src.startsWith("/") || src.startsWith("\\")) {
+                    src = "file:" + "//" + src;
+                    src = src.replace("\\" , "/");
                     logger.debug("image url convert:" + src);
                 }else{
-                    src = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(src);
+                    if(os != null && os.toLowerCase().startsWith("windows")){
+                        src = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(src);
+                    }else{
+                        src = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(src);
+                    }
+                    src = src.replace("\\" , "/");
                     logger.debug("image url convert:" + src);
                 }
                 link.attr("src", src);
@@ -609,12 +618,20 @@ public class PdfBoxGenerator implements PdfGenerator {
                     String url = matcher.group("url");
                     String newUrl = url;
                     if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
-
-                    }else if (url.startsWith(File.separator) || url.startsWith("\\")) {
-                        newUrl = "file:" + File.separator + File.separator + url;
+                        if(url.startsWith("file:")){
+                            url = url.replace("\\", "/");
+                        }
+                    }else if (url.startsWith("/") || url.startsWith("\\")) {
+                        newUrl = "file:" + "//" + url;
+                        newUrl = newUrl.replace("\\" , "/");
                         logger.debug("image url convert:\'" + newUrl + "'");
                     }else{
-                        newUrl = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                        if (os != null && os.toLowerCase().startsWith("windows")){
+                            newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                        }else{
+                            newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                        }
+                        newUrl = newUrl.replace("\\" , "/");
                         logger.debug("image url convert:\'" + newUrl + "'");
                     }
                     bgCssStr = bgCssStr.replace(url, newUrl);
@@ -636,12 +653,20 @@ public class PdfBoxGenerator implements PdfGenerator {
                     String newUrl = url;
 
                     if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
-
-                    }else if (url.startsWith(File.separator) || url.startsWith("\\")) {
-                        newUrl = "file:" + File.separator + File.separator + url;
+                        if(url.startsWith("file:")){
+                            url = url.replace("\\", "/");
+                        }
+                    }else if (url.startsWith("/") || url.startsWith("\\")) {
+                        newUrl = "file:" + "//" + url;
+                        newUrl = newUrl.replace("\\" , "/");
                         logger.debug("image url convert:\'" + newUrl + "'");
                     }else{
-                        newUrl = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                        if (os != null && os.toLowerCase().startsWith("windows")){
+                            newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                        }else{
+                            newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                        }
+                        newUrl = newUrl.replace("\\" , "/");
                         logger.debug("image url convert:\'" + newUrl + "'");
                     }
                     bgCssStr = bgCssStr.replace(url, newUrl);
@@ -684,12 +709,20 @@ public class PdfBoxGenerator implements PdfGenerator {
                         String newUrl = url;
 
                         if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
-
-                        }else if (url.startsWith(File.separator) || url.startsWith("\\")) {
-                            newUrl = "file:" + File.separator + File.separator + url;
+                            if(url.startsWith("file:")){
+                                url = url.replace("\\", "/");
+                            }
+                        }else if (url.startsWith("/") || url.startsWith("\\")) {
+                            newUrl = "file:" + "//" + url;
+                            newUrl = newUrl.replace("\\" , "/");
                             logger.debug("image url convert:\'" + newUrl + "'");
                         }else{
-                            newUrl = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                            if (os != null && os.toLowerCase().startsWith("windows")){
+                                newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                            }else{
+                                newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                            }
+                            newUrl = newUrl.replace("\\" , "/");
                             logger.debug("image url convert:\'" + newUrl + "'");
                         }
                         background = background.replace(url, newUrl);
@@ -708,12 +741,20 @@ public class PdfBoxGenerator implements PdfGenerator {
                         String newUrl = url;
 
                         if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
-
-                        }else if (url.startsWith(File.separator) || url.startsWith("\\")) {
-                            newUrl = "file:" + File.separator + File.separator + url;
+                            if(url.startsWith("file:")){
+                                url = url.replace("\\", "/");
+                            }
+                        }else if (url.startsWith("/") || url.startsWith("\\")) {
+                            newUrl = "file:" + "//" + url;
+                            newUrl = newUrl.replace("\\" , "/");
                             logger.debug("image url convert:\'" + newUrl + "'");
                         }else{
-                            newUrl = "file:" + File.separator + File.separator + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                            if (os != null && os.toLowerCase().startsWith("windows")){
+                                newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                            }else{
+                                newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+                            }
+                            newUrl = newUrl.replace("\\" , "/");
                             logger.debug("image url convert:\'" + newUrl + "'");
                         }
                         backgroundImage = backgroundImage.replace(url, newUrl);
@@ -751,9 +792,9 @@ public class PdfBoxGenerator implements PdfGenerator {
 //            }
 //        }
 
-        for (org.jsoup.nodes.Element ele : bgImgEls) {
-            logger.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image"));
-        }
+//        for (org.jsoup.nodes.Element ele : bgImgEls) {
+//            logger.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image"));
+//        }
 
 
 //        Elements printHideStyleEls = htmlDoc.getElementsByAttributeValueContaining("style","-fs-pdf-hidden");
