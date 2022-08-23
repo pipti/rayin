@@ -18,6 +18,10 @@
             margin: 1cm;
             /*margin-bottom: 1cm;*/
             /*border: thin solid black;*/
+            @top-left {
+                content: element(top-left);
+            }
+
         }
         table{
             border-collapse:collapse;
@@ -39,9 +43,18 @@
             /*padding:2px;*/
             /*text-align: center;*/
         }
+        @media print {
+            div.top-left {
+                display: block;
+                position: running(top-left);
+            }
+        }
     </style>
 </head>
 <body>
+<div id="top-left" class="top-left">
+    <img src="images/rayin.png" style="width:100px"/>
+</div>
 <div style="text-align: center;">
     <span style="font-size: 14px;">班级明细</span>
 </div>

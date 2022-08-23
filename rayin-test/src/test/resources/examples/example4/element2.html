@@ -18,6 +18,9 @@
             margin: 1cm;
             /*margin-bottom: 1cm;*/
             /*border: thin solid black;*/
+            @right-top {
+                content: element(right-top);
+            }
         }
         table{
             border-collapse:collapse;
@@ -38,9 +41,21 @@
             /*padding:2px;*/
             /*text-align: center;*/
         }
+
+        @media print {
+            div.right-top {
+                display: block;
+                position: running(right-top);
+            }
+        }
     </style>
 </head>
 <body>
+<div id="right-top" class="right-top">
+    <div style="position: relative;right:100px;top:-30px">
+        <img src="images/rayin.png" style="width:100px;"/>
+    </div>
+</div>
 <div style="text-align: center;">
     <span style="font-size: 14px;">成绩单</span>
 </div>

@@ -7,7 +7,7 @@
       "pageNumIsDisplay":true,
       "pageNumDisplayPoss":[
         {
-          "content":"example4-${pageNum}/${pageNumTotal}"
+          "content":"第一个构件-${pageNum}/${pageNumTotal}"
         }
       ]
     },
@@ -17,7 +17,7 @@
       "pageNumIsDisplay":true,
       "pageNumDisplayPoss":[
         {
-          "content":"example4-${pageNum}，${pageNumTotal}"
+          "content":"第二个构件-${pageNum}，${pageNumTotal}"
         }
       ]
     }

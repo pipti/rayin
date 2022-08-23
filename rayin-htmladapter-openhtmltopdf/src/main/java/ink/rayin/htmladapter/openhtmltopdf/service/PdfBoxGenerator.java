@@ -678,99 +678,99 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
         }
 
-        Elements styleTagEls = htmlDoc.getElementsByTag("style");
-        String cssNew = "";
-        for (org.jsoup.nodes.Element ele : styleTagEls) {
-            InputSource source = new InputSource(new StringReader(ele.html()));
-            source.setEncoding("UTF-8");
-            final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
-            CSSStyleSheet sheet = parser.parseStyleSheet(source, null, null);
-            CSSRuleList rules = sheet.getCssRules();
-            String selectorText_= null;
-            CSSStyleDeclaration ss = null;
-            for (int i = 0; i < rules.getLength(); i++) {
-                final CSSRule rule = rules.item(i);
-                //获取选择器名称
-                if(rule instanceof CSSPageRule) {
-                    selectorText_ = ((CSSPageRule) rule).getSelectorText();
-                    ss =  ((CSSPageRule)rule).getStyle();
-                }
-                if(rule instanceof CSSStyleRule) {
-                    selectorText_ = ((CSSStyleRule) rule).getSelectorText();
-                    ss =  ((CSSStyleRule)rule).getStyle();
-                }
-
-                String background = ss.getPropertyValue("background");
-                String backgroundImage = ss.getPropertyValue("background-image");
-                if(StringUtil.isNotBlank(background) && background.indexOf("url") >= 0){
-                    Matcher matcher = r.matcher(background);
-
-                    while (matcher.find()){
-                        String url = matcher.group("url");
-                        String newUrl = url;
-
-                        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
-                            if(url.startsWith("file:")){
-                                url = url.replace("\\", "/");
-                            }
-                        }else if (url.startsWith("/") || url.startsWith("\\")) {
-                            newUrl = "file:" + "//" + url;
-                            newUrl = newUrl.replace("\\" , "/");
-                            logger.debug("image url convert:\'" + newUrl + "'");
-                        }else{
-                            if (os != null && os.toLowerCase().startsWith("windows")){
-                                newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
-                            }else{
-                                newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
-                            }
-                            newUrl = newUrl.replace("\\" , "/");
-                            logger.debug("image url convert:\'" + newUrl + "'");
-                        }
-                        background = background.replace(url, newUrl);
-                    }
-                    //ss = CSSParser.addSingleStyleProperty(ss, "background" , background, null);
-                    //CSSStyleDeclaration cd =  ((CSSStyleRule)rule).getStyle();
-                    ss.setProperty("background", background, null);
-                    //cssNew = CSSParser.addRuleProperty(ele.data(), selectorText_, "background", background, null).toString();
-                }
-
-                if(StringUtil.isNotBlank(backgroundImage) && backgroundImage.indexOf("url") >= 0){
-                    Matcher matcher = r.matcher(backgroundImage);
-
-                    while (matcher.find()){
-                        String url = matcher.group("url");
-                        String newUrl = url;
-
-                        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
-                            if(url.startsWith("file:")){
-                                url = url.replace("\\", "/");
-                            }
-                        }else if (url.startsWith("/") || url.startsWith("\\")) {
-                            newUrl = "file:" + "//" + url;
-                            newUrl = newUrl.replace("\\" , "/");
-                            logger.debug("image url convert:\'" + newUrl + "'");
-                        }else{
-                            if (os != null && os.toLowerCase().startsWith("windows")){
-                                newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
-                            }else{
-                                newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
-                            }
-                            newUrl = newUrl.replace("\\" , "/");
-                            logger.debug("image url convert:\'" + newUrl + "'");
-                        }
-                        backgroundImage = backgroundImage.replace(url, newUrl);
-                    }
-                    //ss = CSSParser.addSingleStyleProperty(ss, "background" , background, null);
-                    //CSSStyleDeclaration cd =  ((CSSStyleRule)rule).getStyle();
-                    ss.setProperty("background-image", backgroundImage, null);
-                    //cssNew = CSSParser.addRuleProperty(ele.data(), selectorText_, "background", background, null).toString();
-                }
-//                if("".equals(propertyValue) || propertyValue == null){
-//                    return false;
+//        Elements styleTagEls = htmlDoc.getElementsByTag("style");
+//        String cssNew = "";
+//        for (org.jsoup.nodes.Element ele : styleTagEls) {
+//            InputSource source = new InputSource(new StringReader(ele.html()));
+//            source.setEncoding("UTF-8");
+//            final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
+//            CSSStyleSheet sheet = parser.parseStyleSheet(source, null, null);
+//            CSSRuleList rules = sheet.getCssRules();
+//            String selectorText_= null;
+//            CSSStyleDeclaration ss = null;
+//            for (int i = 0; i < rules.getLength(); i++) {
+//                final CSSRule rule = rules.item(i);
+//                //获取选择器名称
+//                if(rule instanceof CSSPageRule) {
+//                    selectorText_ = ((CSSPageRule) rule).getSelectorText();
+//                    ss =  ((CSSPageRule)rule).getStyle();
 //                }
-            }
-            ele.html(sheet.toString());
-        }
+//                if(rule instanceof CSSStyleRule) {
+//                    selectorText_ = ((CSSStyleRule) rule).getSelectorText();
+//                    ss =  ((CSSStyleRule)rule).getStyle();
+//                }
+//
+//                String background = ss.getPropertyValue("background");
+//                String backgroundImage = ss.getPropertyValue("background-image");
+//                if(StringUtil.isNotBlank(background) && background.indexOf("url") >= 0){
+//                    Matcher matcher = r.matcher(background);
+//
+//                    while (matcher.find()){
+//                        String url = matcher.group("url");
+//                        String newUrl = url;
+//
+//                        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
+//                            if(url.startsWith("file:")){
+//                                url = url.replace("\\", "/");
+//                            }
+//                        }else if (url.startsWith("/") || url.startsWith("\\")) {
+//                            newUrl = "file:" + "//" + url;
+//                            newUrl = newUrl.replace("\\" , "/");
+//                            logger.debug("image url convert:\'" + newUrl + "'");
+//                        }else{
+//                            if (os != null && os.toLowerCase().startsWith("windows")){
+//                                newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+//                            }else{
+//                                newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+//                            }
+//                            newUrl = newUrl.replace("\\" , "/");
+//                            logger.debug("image url convert:\'" + newUrl + "'");
+//                        }
+//                        background = background.replace(url, newUrl);
+//                    }
+//                    //ss = CSSParser.addSingleStyleProperty(ss, "background" , background, null);
+//                    //CSSStyleDeclaration cd =  ((CSSStyleRule)rule).getStyle();
+//                    ss.setProperty("background", background, null);
+//                    //cssNew = CSSParser.addRuleProperty(ele.data(), selectorText_, "background", background, null).toString();
+//                }
+//
+//                if(StringUtil.isNotBlank(backgroundImage) && backgroundImage.indexOf("url") >= 0){
+//                    Matcher matcher = r.matcher(backgroundImage);
+//
+//                    while (matcher.find()){
+//                        String url = matcher.group("url");
+//                        String newUrl = url;
+//
+//                        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
+//                            if(url.startsWith("file:")){
+//                                url = url.replace("\\", "/");
+//                            }
+//                        }else if (url.startsWith("/") || url.startsWith("\\")) {
+//                            newUrl = "file:" + "//" + url;
+//                            newUrl = newUrl.replace("\\" , "/");
+//                            logger.debug("image url convert:\'" + newUrl + "'");
+//                        }else{
+//                            if (os != null && os.toLowerCase().startsWith("windows")){
+//                                newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+//                            }else{
+//                                newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
+//                            }
+//                            newUrl = newUrl.replace("\\" , "/");
+//                            logger.debug("image url convert:\'" + newUrl + "'");
+//                        }
+//                        backgroundImage = backgroundImage.replace(url, newUrl);
+//                    }
+//                    //ss = CSSParser.addSingleStyleProperty(ss, "background" , background, null);
+//                    //CSSStyleDeclaration cd =  ((CSSStyleRule)rule).getStyle();
+//                    ss.setProperty("background-image", backgroundImage, null);
+//                    //cssNew = CSSParser.addRuleProperty(ele.data(), selectorText_, "background", background, null).toString();
+//                }
+////                if("".equals(propertyValue) || propertyValue == null){
+////                    return false;
+////                }
+//            }
+//            ele.html(sheet.toString());
+//        }
 
 
 
