@@ -77,6 +77,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     private static JsonNode jsonSchemaNode;
     private final Base64.Encoder encoder = Base64.getEncoder();
     private final String os = System.getProperty("os.name");
+    private final String tmpDir = System.getProperty("java.io.tmpdir");
     public PdfBoxGenerator() throws IOException {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 
@@ -857,11 +858,21 @@ public class PdfBoxGenerator implements PdfGenerator {
                         int elPageNum = doc.getNumberOfPages();
 
                         if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("file:")) {
-
+                            if(value.startsWith("file:")){
+                                value = value.replace("\\", "/");
+                            }
                         }else if (value.startsWith("/") || value.startsWith("\\")) {
-                            value = "file:" + value;
+                            value = "file:" + "//" + value;
+                            value = value.replace("\\" , "/");
+                            logger.debug("pdf url convert:\'" + value + "'");
                         }else{
-                            value = "file:" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
+                            if (os != null && os.toLowerCase().startsWith("windows")){
+                                value = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
+                            }else{
+                                value = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
+                            }
+                            value = value.replace("\\" , "/");
+                            logger.debug("pdf url convert:\'" + value + "'");
                         }
 
                         if(StringUtil.isNotBlank(pages)){
@@ -870,6 +881,8 @@ public class PdfBoxGenerator implements PdfGenerator {
                                 box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
                             }
                         }else{
+
+
                             for(int i = 1; i <= elPageNum; i++){
                                 //content = doc.getPage(i - 1);
                                 //overContentWidth = content.getMediaBox().getWidth();
