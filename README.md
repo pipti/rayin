@@ -159,8 +159,8 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ```
 
-* 第二步：创建构件（即单个html） \
-* 第三步：创建模板（即json配置文件） \
+* 第二步：创建构件（即单个html） 
+* 第三步：创建模板（即json配置文件） 
 具体参见 [帮助手册](https://www.yuque.com/liuer_doc/rayin)
 
 * 第四步：调用生成API
@@ -175,8 +175,9 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
     pdfGenerator.generatePdfFileByTplConfigFile(templateLocation, jsonData, outputFilePath);
 ```
 
-## v1.0.6新增数据规则工具
-
+## v1.0.6 新增数据规则处理
+可以对数据进行规则转换，模板配置动态生成。  
+参见：[数据规则帮助](https://www.yuque.com/liuer_doc/rayin/yu0v5l)  
 
 ## 详细使用说明请参见帮助文档
 [帮助文档](https://www.yuque.com/liuer_doc/rayin)
@@ -184,7 +185,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 # ⭐⭐⭐⭐⭐
 如果觉得项目不错，麻烦给个⭐️star噢，你的⭐️就是我前进的动力! \
 程序问题或者使用问题可加群或提交issue！ \
-程序难免存在问题，欢迎提出问题以及宝贵的建议！
+程序难免存在问题，欢迎提出问题以及宝贵的建议！  
 
 # 欢迎共享行业样例模板
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)

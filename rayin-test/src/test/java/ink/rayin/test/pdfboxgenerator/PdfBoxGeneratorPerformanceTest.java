@@ -99,12 +99,12 @@ public class PdfBoxGeneratorPerformanceTest {
         watch.stop();
         log.info("ruleScriptDynamicJointTemplateTest duration：" +  watch.getTime() + "ms");
         log.debug(JSONObject.toJSONString(result));
-//        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
-//        String outputFile = new File(outputFileClass)
-//                .getParentFile().getParent()
-//                + "/tmp/"
-//                + "ruleScriptDynamicJointTemplateTest_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
-//        pdfGenerator.generatePdfFileByTplConfigStr(JSONObject.toJSONString(result), jsonData, outputFile);
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFile = new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "ruleScriptDynamicJointTemplateTest_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+        pdfGenerator.generatePdfFileByTplConfigStr(JSONObject.toJSONString(result), jsonData, outputFile);
     }
 
 }

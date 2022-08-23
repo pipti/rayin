@@ -318,6 +318,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         log.info("exp09FontsGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
+    /**
+     * PdfHidden套打标签测试
+     *
+     */
     @Test
     @Order(11)
     public void exp11PdfHiddenTagGenerateTest() throws Exception {
@@ -350,5 +354,31 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example11/element2.html"),null,outputFile);
         watch.stop();
         log.info("exp11PdfHiddenTagGenerateTest duration：" +  watch.getTime() + "ms");
+    }
+
+    /**
+     * 图片加载测试
+     * Image loading test
+     */
+    @Test
+    @Order(12)
+    public void exp12ImageLoadGenerateTest() throws Exception {
+        log.info("exp12PdfHiddenTagGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
+
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+
+        // 生成pdf路径
+        // generate pdf path
+        String outputFile = new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "example12_display_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+
+        StopWatch watch = StopWatch.createStarted();
+        //数据参数可以为空
+        //套打图片未隐藏
+        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example12/element1.html"),null,outputFile);
+        watch.stop();
+        log.info("exp12PdfHiddenTagGenerateTest duration：" +  watch.getTime() + "ms");
     }
 }
