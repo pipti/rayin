@@ -154,23 +154,6 @@ public interface PdfGenerator {
      */
     ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String htmlLocation, JSONObject jsonData);
 
-    /**
-     * PDF 元数据读取
-     * PDF metadata reading
-     * @param pdf pdf输入流
-     * @return 元数据HashMap
-     * 2020-01-07
-     */
-     HashMap<String, String> pdfAttrsRead(InputStream pdf);
-
-    /**
-     * PDF 模板元数据读取
-     * PDF template metadata reading
-     * @param pdf pdf流
-     * @return json 字符串
-     * 2020-01-07
-     */
-     String pdfPageInfoRead(InputStream pdf);
 
     /**
      * 初始化

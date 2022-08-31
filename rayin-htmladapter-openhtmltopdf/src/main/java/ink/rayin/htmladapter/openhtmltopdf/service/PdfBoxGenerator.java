@@ -21,8 +21,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import com.steadystate.css.parser.CSSOMParser;
-import com.steadystate.css.parser.SACParserCSS3;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.model.tplconfig.*;
 import ink.rayin.htmladapter.base.thymeleaf.ThymeleafHandler;
@@ -1140,48 +1138,6 @@ public class PdfBoxGenerator implements PdfGenerator {
         os.reset();
         doc.save(os);
         doc.close();
-    }
-
-
-    /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#pdfAttrsRead
-     */
-    @SneakyThrows
-    @Override
-    public HashMap<String, String> pdfAttrsRead(InputStream fis) {
-        // 读取要合并的文档
-        PDDocument document = PDDocument.load(fis);
-        PDDocumentInformation info = document.getDocumentInformation();
-
-        HashMap pdfMeta = new HashMap<String,String>();
-        pdfMeta.put("Author",info.getAuthor());
-        pdfMeta.put("Creator",info.getCreator());
-        pdfMeta.put("Keywords",info.getKeywords());
-        pdfMeta.put("Producer",info.getProducer());
-        pdfMeta.put("Subject",info.getSubject());
-        pdfMeta.put("Title",info.getTitle());
-        pdfMeta.put("PagesInfo",info.getCustomMetadataValue("PagesInfo"));
-        document.close();
-        return pdfMeta;
-    }
-
-    /**
-     * PDF 文件信息读取
-     * @param fis 输入文件流
-     * @return 元数据信息base64
-     * 2020-01-07
-     */
-    @SneakyThrows
-    @Override
-    public String pdfPageInfoRead(InputStream fis) {
-        HashMap pra = pdfAttrsRead(fis);
-        //写入文件相关配置信息包括页码，单模板类型以及页码起始页
-        final Base64.Decoder decoder = Base64.getDecoder();
-        Object pagesInfo = pra.get("PagesInfo");
-        if (pagesInfo == null) {
-            return null;
-        }
-        return new String(decoder.decode(pagesInfo.toString()),"UTF-8") ;
     }
 
     /**

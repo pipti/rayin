@@ -11,6 +11,7 @@ import ink.rayin.htmladapter.base.model.tplconfig.SignatureProperty;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
+import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxTools;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
@@ -265,7 +266,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/tpl.json"),jsonData,outputFile);
 
-        String pageInfoJsonStr = pdfGenerator.pdfPageInfoRead(ResourceUtil.getResourceAsStream(outputFile));
+        String pageInfoJsonStr = PdfBoxTools.pdfPageInfoRead(ResourceUtil.getResourceAsStream(outputFile));
         log.info(pageInfoJsonStr);
         Gson gson = new Gson();
         RayinMeta rayinMeta = gson.fromJson(pageInfoJsonStr, RayinMeta.class);
