@@ -44,6 +44,7 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
 import org.jsoup.nodes.Comment;
+import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
@@ -821,7 +822,10 @@ public class PdfBoxGenerator implements PdfGenerator {
             org.jsoup.nodes.Document htmlDocNew = Jsoup.parse(htmlContent);
             Elements obPdElements2 = htmlDocNew.getElementsByAttributeValueContaining("type", "file/pdf");
             obPdElements2.forEach(e->{e.remove();});
-            apendFiles.add(this.generatePdfStreamByHtmlStr(htmlDocNew.html()));
+            List<DataNode> body = htmlDocNew.getElementsByTag("body").dataNodes();
+            if(body.size() > 0){
+                apendFiles.add(this.generatePdfStreamByHtmlStr(htmlDocNew.html()));
+            }
         }
         Elements objectLinks = htmlDoc.getElementsByTag("object");
         for (org.jsoup.nodes.Element link : objectLinks) {
