@@ -36,7 +36,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.pdfbox.pdfparser.PDFStreamParser;
 import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.encryption.*;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.jsoup.Jsoup;
@@ -814,8 +816,13 @@ public class PdfBoxGenerator implements PdfGenerator {
 //                ele.html(cs2.toString());
 //            }
 //        }
-
-
+        Elements obPdElements = htmlDoc.getElementsByAttributeValueContaining("type", "file/pdf");
+        if(obPdElements.size() > 0){
+            org.jsoup.nodes.Document htmlDocNew = Jsoup.parse(htmlContent);
+            Elements obPdElements2 = htmlDocNew.getElementsByAttributeValueContaining("type", "file/pdf");
+            obPdElements2.forEach(e->{e.remove();});
+            apendFiles.add(this.generatePdfStreamByHtmlStr(htmlDocNew.html()));
+        }
         Elements objectLinks = htmlDoc.getElementsByTag("object");
         for (org.jsoup.nodes.Element link : objectLinks) {
             String inner = link.text();
@@ -844,11 +851,11 @@ public class PdfBoxGenerator implements PdfGenerator {
                         }
 
                         ByteArrayOutputStream pdfOs = null;
-                        try{
+//                        try{
                             pdfOs = ResourceUtil.getResourceAsByte(value);
-                        }catch (FileNotFoundException fe){
-                            throw new RayinException("无法找到文件：" + fe.getMessage());
-                        }
+//                        }catch (FileNotFoundException fe){
+//                            throw new RayinException("无法找到文件：" + fe.getMessage());
+//                        }
 
 
                         PDDocument doc = PDDocument.load(pdfOs.toByteArray());
@@ -875,17 +882,22 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                         if(StringUtil.isNotBlank(pages)){
                             String[] pageB = pages.split(",");
+                            PDDocument extractDoc = new PDDocument();
                             for(String k : pageB){
-                                box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
+                                //box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
+                                extractDoc.addPage(doc.getPage(Integer.valueOf(k)));
                             }
+                            ByteArrayOutputStream os = new ByteArrayOutputStream();
+                            extractDoc.save(os);
+                            apendFiles.add(os);
                         }else{
+                            apendFiles.add(ResourceUtil.getResourceAsByte(value.substring(7)));
 
-
-                            for(int i = 1; i <= elPageNum; i++){
-                                //content = doc.getPage(i - 1);
-                                //overContentWidth = content.getMediaBox().getWidth();
-                                box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ i + "\"/>\n");
-                            }
+//                            for(int i = 1; i <= elPageNum; i++){
+//                                //content = doc.getPage(i - 1);
+//                                //overContentWidth = content.getMediaBox().getWidth();
+//                                box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ i + "\"/>\n");
+//                            }
                         }
 
                         doc.close();
@@ -931,6 +943,9 @@ public class PdfBoxGenerator implements PdfGenerator {
 
             }
 
+        }
+        if(apendFiles.size() > 0){
+            return mergePDF(apendFiles);
         }
 
         OpenhttptopdfRenderBuilder openhttptopdfRenderBuilder = null;
