@@ -2,153 +2,204 @@
 <html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
-    <style>
+    <style type="text/css">
 
-        body {
-            font-family: FangSong,HanaMinB;
-            line-height: 1.2;
-            /*设置背景色*/
-            /*background: #00FF00 ;*/
-            /*设置背景图片*/
-            /*background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;*/
-        }
-        /** 指定pdf纸张大小 **/
-        @page {
-            size: A4 ;
-            margin: 1cm;
-            /*margin-bottom: 1cm;*/
-            /*border: thin solid black;*/
-        }
-        table{
-            border-collapse:collapse;
-            /*width:100%;*/
-            -fs-table-paginate:paginate;
-            page-break-inside:auto;
-        }
-        tr {
-            page-break-inside:avoid; page-break-after:auto;
-        }
-        td{
-            /*border-collapse:collapse;*/
-            border: 1px solid #000000;
-            /*padding:2px;*/
-        }
-        th{
-            border-collapse:collapse;
-            border: 1px solid #000000;
-            /*padding:2px;*/
-            /*text-align: center;*/
-        }
-    </style>
+    body {
+      font-family: FangSong,HanaMinB;
+      word-break:break-all;
+      word-wrap: break-word;
+	  font-size: 10.6667px;
+      /*设置背景色*/
+      /*background: #00FF00 ;*/
+      /*设置背景图片*/
+      /*background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;*/
+    }
+
+    /** 第一页样式 **/
+    /*@page :first{*/
+      /*size: A4 ;*/
+      /*margin: 0.5cm;*/
+      /*margin-bottom: 6cm;*/
+      /*@bottom-center{*/
+        /*content: element(footer-left);*/
+      /*}*/
+    /*}*/
+
+    /*@media print {*/
+      /*div.footer-left{*/
+        /*display: block;*/
+        /*position: running(footer-left);*/
+      /*}*/
+    /*}*/
+    /*旋转div试例*/
+    .rotate_div{
+      margin:100px;
+      width:200px;
+      height:100px;
+      background-color:yellow;
+      /* Rotate div */
+      transform:rotate(90deg);
+    }
+
+    table{
+      border-collapse:collapse;
+      width:100%;
+      -fs-table-paginate:paginate;
+      page-break-inside:auto;
+    }
+
+    tr { page-break-inside:auto; page-break-after:auto;}
+    td{
+      border-collapse:collapse;
+    }
+    th{
+      border-collapse:collapse;
+    }
+
+    /*强制分页 如果不使用分页符，可在块中追加分页样式，例如<div class="page_break"></div> 或 <div class="page-break-after:always;"></div>*/
+    .page_break { page-break-after:always;}
+  </style>
+    <style id="rayin_page_style">
+    /** 指定pdf纸张大小 **/
+    @page {
+      size: A4 ;
+      margin: 1cm;
+      /*margin-bottom: 1cm;*/
+      /*border: thin solid black;*/
+    }
+  </style>
 </head>
 <body>
-<div style="text-align: center;">
-    <span style="font-size: 14px;">Thymeleaf动态脚本常用函数测试</span>
-</div>
-<table style="width:100%">
-    <tr style="background: lightgrey"><td>函数名称</td><td>说明</td><td>原始值</td><td>函数返回值</td></tr>
-    <tr>
-        <td style="width:30%">
-            ${#strings.isEmpty(longStr)}
+<div style="text-align: center;"><span style="font-size: 14px;">Thymeleaf动态脚本常用函数测试</span></div>
+<table border="1" style="border-collapse: collapse; width: 100%; height: 315px;">
+    <tbody>
+    <tr style="background: lightgrey; height: 17px;">
+        <td style="width: 33.6774%; height: 17px;">函数名称</td>
+        <td style="width: 30.3272%; height: 17px;">说明</td>
+        <td style="width: 18.3179%; height: 17px;">原始值</td>
+        <td style="width: 17.6774%; height: 17px;">函数返回值</td>
+    </tr>
+    <tr style="height: 17px;">
+        <td style="width: 33.6774%; height: 17px;"><span style="font-size: 8pt;">${#strings.isEmpty(str1)}</span></td>
+        <td style="width: 30.3272%; height: 17px;"><span style="font-size: 8pt;">判断字符串是否为空</span></td>
+        <td style="width: 18.3179%; height: 17px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 17px;"><span data-th-text="${#strings.isEmpty(str1)}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr style="height: 17px;">
+        <td style="width: 33.6774%; height: 17px;"><span style="font-size: 8pt;">${#strings.toUpperCase(str1)}</span></td>
+        <td style="width: 30.3272%; height: 17px;"><span style="font-size: 8pt;">转换为大写字符串</span></td>
+        <td style="width: 18.3179%; height: 17px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 17px;"><span data-th-text="${#strings.toUpperCase(str1)}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr style="height: 17px;">
+        <td style="width: 33.6774%; height: 17px;"><span style="font-size: 8pt;">${#strings.toLowerCase(str1)}</span></td>
+        <td style="width: 30.3272%; height: 17px;"><span style="font-size: 8pt;">转换为小写字符串</span></td>
+        <td style="width: 18.3179%; height: 17px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 17px;"><span data-th-text="${#strings.toLowerCase(str1)}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr style="height: 51px;">
+        <td style="width: 33.6774%; height: 51px;"><span style="font-size: 8pt;">${#strings.defaultString(abc,'默认值')}</span><br /><span style="font-size: 8pt;">${#strings.defaultString(str1,'默认值')}</span></td>
+        <td style="width: 30.3272%; height: 51px;"><span style="font-size: 8pt;">对字符串执行&ldquo;isEmpty()&rdquo;检查, 如果不为空则返回原始值，如果是空则返回后面的值</span></td>
+        <td style="width: 18.3179%; height: 51px;"><span data-th-text="${abc}" style="font-size: 8pt;"></span><br /><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 51px;"><span data-th-text="${#strings.defaultString(abc,'默认值')}" style="font-size: 8pt;"></span><br /><span data-th-text="${#strings.defaultString(str1,'默认值')}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr style="height: 17px;">
+        <td style="width: 33.6774%; height: 17px;"><span style="font-size: 8pt;">${#strings.contains(str1,'ab')}</span></td>
+        <td style="width: 30.3272%; height: 17px;"><span style="font-size: 8pt;">包含字符串</span></td>
+        <td style="width: 18.3179%; height: 17px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 17px;"><span data-th-text="${#strings.contains(str1,'ab')}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr style="height: 34px;">
+        <td style="width: 33.6774%; height: 34px;"><span style="font-size: 8pt;">${#strings.containsIgnoreCase(str1,'dea')}</span></td>
+        <td style="width: 30.3272%; height: 34px;"><span style="font-size: 8pt;">包含字符串不区分大小写</span></td>
+        <td style="width: 18.3179%; height: 34px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 34px;"><span data-th-text="${#strings.containsIgnoreCase(str1,'dea')}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr style="height: 58px;">
+        <td style="width: 33.6774%; height: 58px;">
+            <div><span style="font-size: 8pt;"><span style="font-size: 10.6667px;">${#strings.startsWith(</span>str1<span style="font-size: 10.6667px;">,'一二三')}</span><br /></span></div>
+            <div><span style="font-size: 10.6667px;">${#strings.startsWith(str1,'二三')}</span></div>
         </td>
-        <td>
-            判断字符串是否为空
+        <td style="width: 30.3272%; height: 58px;"><span style="font-size: 8pt;">是否以参数字符串开头</span></td>
+        <td style="width: 18.3179%; height: 58px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span><br /><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 58px;"><span data-th-text="${#strings.startsWith(str1,'一二三')}" style="font-size: 8pt;"></span><br /><span data-th-text="${#strings.startsWith(str1,'二三')}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr style="height: 58px;">
+        <td style="width: 33.6774%; height: 58px;">
+            <div><span style="font-size: 8pt;"><span style="font-size: 10.6667px;"><span style="font-size: 10.6667px;">${#strings.endsWith(</span><span style="font-size: 10.6667px;">str1</span><span style="font-size: 10.6667px;">,'ABC')}</span><br /></span></span></div>
+            <div><span style="font-size: 10.6667px;">${#strings.endsWith(</span><span style="font-size: 10.6667px;">str1</span><span style="font-size: 10.6667px;">,'AB')}</span></div>
         </td>
-        <td data-th-text="${longStr}">
-        </td>
-        <td data-th-text="${#strings.isEmpty(longStr)}">
-        </td>
+        <td style="width: 30.3272%; height: 58px;"><span style="font-size: 10.6667px;">是否以参数字符串结尾</span></td>
+        <td style="width: 18.3179%; height: 58px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span><br /><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 58px;"><span data-th-text="${#strings.endsWith(str1,'ABC')}" style="font-size: 8pt;"></span><br /><span data-th-text="${#strings.endsWith(str1,'AB')}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr style="height: 29px;">
+        <td style="width: 33.6774%; height: 29px;"><span style="font-size: 10.6667px;">${#strings.indexOf(str1,'B')}</span></td>
+        <td style="width: 30.3272%; height: 29px;"><span style="font-size: 10.6667px;">字符串索引位置</span></td>
+        <td style="width: 18.3179%; height: 29px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 29px;"><span data-th-text="${#strings.indexOf(str1,'三四')}" style="font-size: 8pt;"></span></td>
     </tr>
     <tr>
-        <td>
-            ${#strings.toUpperCase(longStr)}
-        </td>
-        <td>
-            转换为大写字符串
-        </td>
-        <td data-th-text="${longStr}">
-        </td>
-        <td data-th-text="${#strings.toUpperCase(longStr)}">
-        </td>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.substring(str1,3,5)}</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">字符串截取</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.substring(str1,3,5)}" style="font-size: 8pt;"></span></td>
     </tr>
     <tr>
-        <td>
-            ${#strings.toLowerCase(longStr)}
-        </td>
-        <td>
-            转换为小写字符串
-        </td>
-        <td data-th-text="${longStr}">
-        </td>
-        <td data-th-text="${#strings.toLowerCase(longStr)}">
-        </td>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.substringAfter(str1,'123')}</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">参数之后的字符串</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.substringAfter(str1,'123')}" style="font-size: 8pt;"></span></td>
     </tr>
     <tr>
-        <td>
-            ${#strings.defaultString(abc,'默认值')}<br>
-            ${#strings.defaultString(longStr,'默认值')}
-        </td>
-        <td>
-            对字符串执行“isEmpty()”检查, 如果不为空则返回原始值，如果是空则返回后面的值
-        </td>
-        <td data-th-text="${abc}">
-        </td>
-        <td >
-            <span data-th-text="${#strings.defaultString(abc,'默认值')}"></span><br>
-            <span data-th-text="${#strings.defaultString(longStr,'默认值')}"></span>
-        </td>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.substringBefore(str1,'123')}</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">参数之前的字符串</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.substringBefore(str1,'123')}" style="font-size: 8pt;"></span></td>
     </tr>
     <tr>
-        <td>
-            ${#strings.contains(longStr,'ab')}
-        </td>
-        <td>
-            包含字符串
-        </td>
-        <td data-th-text="${longStr}">
-        </td>
-        <td data-th-text="${#strings.contains(longStr,'ab')}">
-        </td>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.replace(str1,'123','321')}</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">字符串替换</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.replace(str1,'123','321')}" style="font-size: 8pt;"></span></td>
     </tr>
     <tr>
-        <td>
-            ${#strings.containsIgnoreCase(longStr,'dea')}
-        </td>
-        <td>
-            包含字符串不区分大小写
-        </td>
-        <td data-th-text="${longStr}">
-        </td>
-        <td data-th-text="${#strings.containsIgnoreCase(longStr,'dea')}">
-        </td>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.prepend(str1,'666')}</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">在前面拼接字符串</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.prepend(str1,'666')}" style="font-size: 8pt;"></span></td>
     </tr>
-
-
-
-<!--    <tr>-->
-<!--        <td>-->
-<!--            ${#strings.arrayIsEmpty(array)}-->
-<!--        </td>-->
-<!--        <td>-->
-<!--            判断数组是否为空-->
-<!--        </td>-->
-<!--        <td data-th-text="${array}">-->
-<!--        </td>-->
-<!--        <td data-th-text="${#strings.arrayIsEmpty(array)}">-->
-<!--        </td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <td>-->
-<!--            ${#strings.listIsEmpty(list)}-->
-<!--        </td>-->
-<!--        <td>-->
-<!--            判断list是否为空-->
-<!--        </td>-->
-<!--        <td data-th-text="${list}">-->
-<!--        </td>-->
-<!--        <td data-th-text="${#strings.listIsEmpty(list)}">-->
-<!--        </td>-->
-<!--    </tr>-->
+    <tr>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.append(str1,'666')}</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">在后面拼接字符串</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.append(str1,'666')}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.trim(str2)}</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">去空格</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str2}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.trim(str2)}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.length(str1)}</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">字符串长度</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.length(str1)}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.abbreviate(str1,10)}<br /></span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">限定字符串显示长度后加省略号</span></td>
+        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%;"><span data-th-text="${#strings.abbreviate(str1,10)}" style="font-size: 8pt;"></span></td>
+    </tr>
+    <tr>
+        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+        <td style="width: 18.3179%;"></td>
+        <td style="width: 17.6774%;"></td>
+    </tr>
+    </tbody>
 </table>
 </body>
 </html>
