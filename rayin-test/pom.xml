@@ -85,12 +85,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>QLExpress</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
         </dependency>

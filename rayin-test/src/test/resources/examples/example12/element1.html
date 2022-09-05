@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+
+        body {
+            font-family: FangSong,HanaMinB;
+            line-height: 1.2;
+            /*设置背景色*/
+            /*background: #00FF00 ;*/
+            /*设置背景图片*/
+            /*background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;*/
+        }
+        /** 指定pdf纸张大小 **/
+        @page {
+            size: A4 ;
+            margin: 1cm;
+            /*margin-bottom: 1cm;*/
+            /*border: thin solid black;*/
+        }
+        table{
+            border-collapse:collapse;
+            /*width:100%;*/
+            -fs-table-paginate:paginate;
+            page-break-inside:auto;
+        }
+        tr {
+            page-break-inside:avoid; page-break-after:auto;
+        }
+        td{
+            /*border-collapse:collapse;*/
+            border: 1px solid #000000;
+            /*padding:2px;*/
+        }
+        th{
+            border-collapse:collapse;
+            border: 1px solid #000000;
+            /*padding:2px;*/
+            /*text-align: center;*/
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center;">
+    <span style="font-size: 14px;">Thymeleaf动态脚本常用函数测试</span>
+</div>
+<table style="width:100%">
+    <tr style="background: lightgrey"><td>函数名称</td><td>说明</td><td>原始值</td><td>函数返回值</td></tr>
+    <tr>
+        <td style="width:30%">
+            ${#strings.isEmpty(longStr)}
+        </td>
+        <td>
+            判断字符串是否为空
+        </td>
+        <td data-th-text="${longStr}">
+        </td>
+        <td data-th-text="${#strings.isEmpty(longStr)}">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ${#strings.toUpperCase(longStr)}
+        </td>
+        <td>
+            转换为大写字符串
+        </td>
+        <td data-th-text="${longStr}">
+        </td>
+        <td data-th-text="${#strings.toUpperCase(longStr)}">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ${#strings.toLowerCase(longStr)}
+        </td>
+        <td>
+            转换为小写字符串
+        </td>
+        <td data-th-text="${longStr}">
+        </td>
+        <td data-th-text="${#strings.toLowerCase(longStr)}">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ${#strings.defaultString(abc,'默认值')}<br>
+            ${#strings.defaultString(longStr,'默认值')}
+        </td>
+        <td>
+            对字符串执行“isEmpty()”检查, 如果不为空则返回原始值，如果是空则返回后面的值
+        </td>
+        <td data-th-text="${abc}">
+        </td>
+        <td >
+            <span data-th-text="${#strings.defaultString(abc,'默认值')}"></span><br>
+            <span data-th-text="${#strings.defaultString(longStr,'默认值')}"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ${#strings.contains(longStr,'ab')}
+        </td>
+        <td>
+            包含字符串
+        </td>
+        <td data-th-text="${longStr}">
+        </td>
+        <td data-th-text="${#strings.contains(longStr,'ab')}">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ${#strings.containsIgnoreCase(longStr,'dea')}
+        </td>
+        <td>
+            包含字符串不区分大小写
+        </td>
+        <td data-th-text="${longStr}">
+        </td>
+        <td data-th-text="${#strings.containsIgnoreCase(longStr,'dea')}">
+        </td>
+    </tr>
+
+
+
+<!--    <tr>-->
+<!--        <td>-->
+<!--            ${#strings.arrayIsEmpty(array)}-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            判断数组是否为空-->
+<!--        </td>-->
+<!--        <td data-th-text="${array}">-->
+<!--        </td>-->
+<!--        <td data-th-text="${#strings.arrayIsEmpty(array)}">-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td>-->
+<!--            ${#strings.listIsEmpty(list)}-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            判断list是否为空-->
+<!--        </td>-->
+<!--        <td data-th-text="${list}">-->
+<!--        </td>-->
+<!--        <td data-th-text="${#strings.listIsEmpty(list)}">-->
+<!--        </td>-->
+<!--    </tr>-->
+</table>
+</body>
+</html>

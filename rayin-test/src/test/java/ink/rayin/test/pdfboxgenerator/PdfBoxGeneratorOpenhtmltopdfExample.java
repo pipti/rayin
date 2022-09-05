@@ -355,4 +355,29 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         log.info("exp11PdfHiddenTagGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
+    /**
+     * example01
+     * 单个构件生成测试
+     * single element generate test
+     */
+    @Test
+    @Order(12)
+    public void exp12ThymeleafFunctionTest() throws Exception {
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example12/data.json");
+        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
+
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
+
+        String outputFile = new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "example12_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+
+        StopWatch watch = StopWatch.createStarted();
+        //数据参数可以为空
+        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example12/element1.html"),jsonData,outputFile);
+        watch.stop();
+        log.info("exp12ThymeleafFunctionTest duration：" +  watch.getTime() + "ms");
+    }
 }
