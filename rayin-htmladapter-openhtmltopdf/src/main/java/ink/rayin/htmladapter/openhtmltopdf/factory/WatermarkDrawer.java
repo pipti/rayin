@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,8 +51,7 @@ public class WatermarkDrawer implements FSObjectDrawer {
 
                     double realWidth = width / dotsPerPixel;
                     double realHeight = height / dotsPerPixel;
-
-
+                    float fontSize = 20f;
                     Font font;
                     Color colorRGB = Color.RED;
                     try {
@@ -60,18 +60,35 @@ public class WatermarkDrawer implements FSObjectDrawer {
                             fontStr = "FangSong";
                         }
                         String colorStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"color");
-                        if(StringUtil.isNotBlank(colorStr)){
-                            String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
 
-                            //int color = (int)Long.parseLong(colorStr, 16);
-                            int r = Integer.parseInt(rgb[0].trim());
-                            int g = Integer.parseInt(rgb[1].trim());
-                            int b = Integer.parseInt(rgb[2].trim());
-                            colorRGB = new Color(r,g,b);
+                        if(colorStr.toLowerCase().indexOf("rgb") < 0 && colorStr.toLowerCase().indexOf("#") < 0){
+                            Field field = Class.forName("java.awt.Color").getField(colorStr);
+                            colorRGB =  (Color)field.get(null);
+                        }else{
+                            if(colorStr.toLowerCase().indexOf("#") >= 0){
+                                colorRGB = Color.getColor(colorStr);
+                            }else if(colorStr.toLowerCase().indexOf("rgb") >= 0){
+                                String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
+//
+                                //int color = (int)Long.parseLong(colorStr, 16);
+                                int r = Integer.parseInt(rgb[0].trim());
+                                int g = Integer.parseInt(rgb[1].trim());
+                                int b = Integer.parseInt(rgb[2].trim());
+                                colorRGB = new Color(r,g,b);
+                            }
                         }
+//                        if(StringUtil.isNotBlank(colorStr)){
+//                            String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
+//
+//                            //int color = (int)Long.parseLong(colorStr, 16);
+//                            int r = Integer.parseInt(rgb[0].trim());
+//                            int g = Integer.parseInt(rgb[1].trim());
+//                            int b = Integer.parseInt(rgb[2].trim());
+//                            colorRGB = new Color(r,g,b);
+//                        }
 
                         String fontSizeStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-size");
-                        float fontSize = 20f;
+
                         // TODO
 
                         if(StringUtil.isNotBlank(fontSizeStr)){
@@ -92,13 +109,30 @@ public class WatermarkDrawer implements FSObjectDrawer {
                     } catch (FontFormatException | IOException e1) {
                         e1.printStackTrace();
                         throw new RuntimeException(e1);
+                    } catch (NoSuchFieldException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (ClassNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (IllegalAccessException ex) {
+                        throw new RuntimeException(ex);
                     }
 
                     Rectangle2D bounds = font.getStringBounds(e.getAttribute("value"), g2d.getFontRenderContext());
 
+                    String opacityStr = null;
+                    try {
+                        opacityStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"opacity");
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    float opacity = 0.3f;
+                    if(StringUtil.isNumeric(opacityStr)){
+                        opacity = Float.parseFloat(opacityStr);
+                    }
+
                     g2d.setFont(font);
                     g2d.setPaint(colorRGB);
-                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
                     int colCount = new Double(pageWidth/bounds.getWidth()*2).intValue();
                     int rowCount = new Double(pageHeight/bounds.getHeight()*2).intValue();
 
