@@ -152,9 +152,9 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ```xml
 <dependency>
-    <groupId>com.rayin</groupId>
+    <groupId>ink.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
 
 ```
