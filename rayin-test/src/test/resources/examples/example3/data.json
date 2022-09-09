@@ -1,5 +1,8 @@
 {"student": [
   {"name": "小明","Grade":"三年级", "age":9, "gender": "男"},
-  {"name": "小红", "Grade":"一年级", "age":7, "gender": "女"}
+  {"name": "小红", "Grade":"一年级", "age":7, "gender": "女"},
+  {"name": "小蓝", "Grade":"二年级", "age":5, "gender": "女"},
+  {"name": "小黄", "Grade":"一年级", "age":3, "gender": "男"},
+  {"name": "小白", "Grade":"一年级", "age":6, "gender": "女"}
 ]
 }
