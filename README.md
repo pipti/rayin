@@ -175,7 +175,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
     pdfGenerator.generatePdfFileByTplConfigFile(templateLocation, jsonData, outputFilePath);
 ```
 
-## v1.0.6 新增数据规则处理
+## v1.0.6 以上版本 新增数据规则处理
 可以对数据进行规则转换，模板配置动态生成。  
 参见：[数据规则帮助](https://www.yuque.com/liuer_doc/rayin/yu0v5l)  
 
