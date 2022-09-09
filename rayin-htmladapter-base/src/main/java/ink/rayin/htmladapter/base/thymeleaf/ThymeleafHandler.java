@@ -18,7 +18,6 @@ package ink.rayin.htmladapter.base.thymeleaf;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 
-import com.google.gson.Gson;
 import ink.rayin.htmladapter.base.utils.CodeMessage;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import ink.rayin.tools.utils.Charsets;
@@ -42,7 +41,6 @@ public class ThymeleafHandler {
     private static Context context  = new Context();
     private static Logger logger = LoggerFactory.getLogger(ThymeleafHandler.class);
     private static ThymeleafHandler thymeleafHandler = new ThymeleafHandler();
-    Gson gson = new Gson();
     static {
         templateEngine.getConfiguration();
     }
@@ -61,7 +59,7 @@ public class ThymeleafHandler {
      */
     public String templateEngineProcessByString(String htmlStr, JSONObject jsonData){
         if(jsonData != null){
-            context.setVariables(gson.fromJson(jsonData.toJSONString(), Map.class));
+            context.setVariables(JSON.parseObject(jsonData.toJSONString(), Map.class));
         }
         String r = null;
         try{

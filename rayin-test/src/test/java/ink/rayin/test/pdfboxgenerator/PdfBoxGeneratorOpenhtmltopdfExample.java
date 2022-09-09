@@ -1,8 +1,8 @@
 package ink.rayin.test.pdfboxgenerator;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.gson.Gson;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.model.tplconfig.MarkInfo;
@@ -268,8 +268,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
 
         String pageInfoJsonStr = PdfBoxTools.pdfPageInfoRead(ResourceUtil.getResourceAsStream(outputFile));
         log.info(pageInfoJsonStr);
-        Gson gson = new Gson();
-        RayinMeta rayinMeta = gson.fromJson(pageInfoJsonStr, RayinMeta.class);
+        RayinMeta rayinMeta = JSONObject.parseObject(pageInfoJsonStr, RayinMeta.class);
         List<MarkInfo> markInfoList = rayinMeta.getMarkInfos();
         List<SignatureProperty> spl = new ArrayList();
         for(MarkInfo m:markInfoList){
