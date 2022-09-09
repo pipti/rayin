@@ -70,9 +70,8 @@
   </style>
 </head>
 <body>
-<object type="fontwatermark" value="RAYIN 睿印" style="color:#00BFFF;font-size:30px;opacity:0.5;transform:rotate(20deg)"/>
 <div style="text-align: center;"><span style="font-size: 14px;">Thymeleaf动态脚本常用函数测试</span></div>
-<table border="1" style="border-collapse: collapse; width: 100%; height: 315px;">
+<table border="1" style="border-collapse: collapse; width: 100%; height: 786px;">
     <tbody>
     <tr style="background: lightgrey; height: 17px;">
         <td style="width: 33.6774%; height: 17px;">函数名称</td>
@@ -140,65 +139,177 @@
         <td style="width: 18.3179%; height: 29px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
         <td style="width: 17.6774%; height: 29px;"><span data-th-text="${#strings.indexOf(str1,'三四')}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.substring(str1,3,5)}</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">字符串截取</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.substring(str1,3,5)}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.substring(str1,3,5)}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">字符串截取</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.substring(str1,3,5)}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.substringAfter(str1,'123')}</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">参数之后的字符串</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.substringAfter(str1,'123')}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.substringAfter(str1,'123')}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">参数之后的字符串</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.substringAfter(str1,'123')}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.substringBefore(str1,'123')}</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">参数之前的字符串</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.substringBefore(str1,'123')}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.substringBefore(str1,'123')}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">参数之前的字符串</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.substringBefore(str1,'123')}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.replace(str1,'123','321')}</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">字符串替换</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.replace(str1,'123','321')}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.replace(str1,'123','321')}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">字符串替换</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.replace(str1,'123','321')}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.prepend(str1,'666')}</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">在前面拼接字符串</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.prepend(str1,'666')}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.prepend(str1,'666')}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">在前面拼接字符串</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.prepend(str1,'666')}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.append(str1,'666')}</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">在后面拼接字符串</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.append(str1,'666')}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.append(str1,'666')}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">在后面拼接字符串</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.append(str1,'666')}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.trim(str2)}</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">去空格</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str2}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.trim(str2)}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.trim(str2)}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">去空格</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str2}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.trim(str2)}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.length(str1)}</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">字符串长度</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.length(str1)}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.length(str1)}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">字符串长度</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.length(str1)}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">${#strings.abbreviate(str1,10)}<br /></span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">限定字符串显示长度后加省略号</span></td>
-        <td style="width: 18.3179%;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
-        <td style="width: 17.6774%;"><span data-th-text="${#strings.abbreviate(str1,10)}" style="font-size: 8pt;"></span></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">${#strings.abbreviate(str1,10)}<br /></span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">限定字符串显示长度后加省略号</span></td>
+        <td style="width: 18.3179%; height: 15px;"><span data-th-text="${str1}" style="font-size: 8pt;"></span></td>
+        <td style="width: 17.6774%; height: 15px;"><span data-th-text="${#strings.abbreviate(str1,10)}" style="font-size: 8pt;"></span></td>
     </tr>
-    <tr>
-        <td style="width: 33.6774%;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
-        <td style="width: 30.3272%;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
-        <td style="width: 18.3179%;"></td>
-        <td style="width: 17.6774%;"></td>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;">&nbsp;${#strings.capitalize(str)}</span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;">&nbsp;将第一个字符转换为大写</span></td>
+        <td style="width: 18.3179%; height: 15px;"></td>
+        <td style="width: 17.6774%; height: 15px;"></td>
+    </tr>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;"><span style="font-size: 10.6667px;">${#strings.unCapitalize(str)}</span><br /></span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;"><span style="font-size: 10.6667px;">将第一个字符转换为小写</span><br /></span></td>
+        <td style="width: 18.3179%; height: 15px;"></td>
+        <td style="width: 17.6774%; height: 15px;"></td>
+    </tr>
+    <tr style="height: 15px;">
+        <td style="width: 33.6774%; height: 15px;"><span style="font-size: 10.6667px;"><span style="font-size: 10.6667px;">${#strings.capitalizeWords(str)}</span><br /></span></td>
+        <td style="width: 30.3272%; height: 15px;"><span style="font-size: 10.6667px;"><span style="font-size: 10.6667px;">将每个单词的第一个字符转换为大写</span><br /></span></td>
+        <td style="width: 18.3179%; height: 15px;"></td>
+        <td style="width: 17.6774%; height: 15px;"></td>
+    </tr>
+    <tr style="height: 30px;">
+        <td style="width: 33.6774%; height: 30px;"><span style="font-size: 10.6667px;"><span style="font-size: 10.6667px;">${#strings.capitalizeWords(str,delimiters)}</span><br /></span></td>
+        <td style="width: 30.3272%; height: 30px;"><span style="font-size: 10.6667px;"><span style="font-size: 10.6667px;">使用分隔符节点，将每个单词的第一个字符转换为大写</span><br /></span></td>
+        <td style="width: 18.3179%; height: 30px;"></td>
+        <td style="width: 17.6774%; height: 30px;"></td>
+    </tr>
+    <tr style="height: 27px;">
+        <td style="width: 33.6774%; height: 27px;">
+            <div><span style="font-size: 10.6667px;">${#strings.equals(str1, str2)}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 27px;"><span style="font-size: 10.6667px;">字符串比较</span></td>
+        <td style="width: 18.3179%; height: 27px;"></td>
+        <td style="width: 17.6774%; height: 27px;"><span style="font-size: 10.6667px;" data-th-text="${#strings.equals(str1, str2)}"></span></td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">${#strings.equalsIgnoreCase(first, second)}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">字符串比较 忽略大小写</span></td>
+        <td style="width: 18.3179%; height: 42px;"></td>
+        <td style="width: 17.6774%; height: 42px;"><span style="font-size: 10.6667px;" data-th-text="${#strings.equalsIgnoreCase(str1, str2)}"></span></td>
+    </tr>
+    <tr style="height: 27px;">
+        <td style="width: 33.6774%; height: 27px;">
+            <div><span style="font-size: 10.6667px;">${#strings.concat(str1,str2,str3)}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 27px;"><span style="font-size: 10.6667px;">字符串拼接</span></td>
+        <td style="width: 18.3179%; height: 27px;"></td>
+        <td style="width: 17.6774%; height: 27px;"><span style="font-size: 10.6667px;" data-th-text="${#strings.concat(str1,str2,str3)}"></span></td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">${#strings.concatReplaceNulls(nullValue, values...)}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">?字符串拼接忽略空值</span></td>
+        <td style="width: 18.3179%; height: 42px;"></td>
+        <td style="width: 17.6774%; height: 42px;"><span style="font-size: 10.6667px;" data-th-text="${#strings.concatReplaceNulls('',str2,str3)}"></span></td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">${#numbers.formatInteger(num1,10,'COMMA')}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">整数格式化为整数,COMMA为,号分割，不足5位补0</span></td>
+        <td style="width: 18.3179%; height: 42px;"><span data-th-text="${num1}"></span></td>
+        <td style="width: 17.6774%; height: 42px;"><span style="font-size: 10.6667px;" data-th-text="${#numbers.formatInteger(num1,10,'COMMA')}"></span></td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">${#numbers.formatDecimal(num1,10,3)}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">数字格式化,保留整数和小数位</span></td>
+        <td style="width: 18.3179%; height: 42px;"><span data-th-text="${num1}"></span></td>
+        <td style="width: 17.6774%; height: 42px;"><span style="font-size: 10.6667px;" data-th-text="${#numbers.formatDecimal(num1,10,3)}"></span></td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">${#numbers.formatDecimal(num1,1,'COMMA',2,'POINT')}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">数字格式化,保留整数和小数位，使用分隔符</span></td>
+        <td style="width: 18.3179%; height: 42px;"><span data-th-text="${num1}"></span></td>
+        <td style="width: 17.6774%; height: 42px;"><span style="font-size: 10.6667px;" data-th-text="${#numbers.formatDecimal(num1,1,'COMMA',2,'POINT')}"></span>
+        </td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">${#lists.size(list1)}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">list大小</span></td>
+        <td style="width: 18.3179%; height: 42px;"><span data-th-text="${list1}"></span></td>
+        <td style="width: 17.6774%; height: 42px;"><span style="font-size: 10.6667px;" data-th-text="${#lists.size(list1)}"></span>
+        </td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">${#lists.isEmpty(list1)}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">list判空</span></td>
+        <td style="width: 18.3179%; height: 42px;"><span data-th-text="${list1}"></span></td>
+        <td style="width: 17.6774%; height: 42px;"><span style="font-size: 10.6667px;" data-th-text="${#lists.isEmpty(list1)}"></span>
+        </td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">${#lists.sort(array1)}</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">list排序</span></td>
+        <td style="width: 18.3179%; height: 42px;"><span data-th-text="${array1}"></span></td>
+        <td style="width: 17.6774%; height: 42px;"><span style="font-size: 10.6667px;" data-th-text="${#lists.sort(array1)}"></span>
+        </td>
+    </tr>
+    <tr style="height: 42px;">
+        <td style="width: 33.6774%; height: 42px;">
+            <div><span style="font-size: 10.6667px;">data-th-each="seq:${#numbers.sequence(1,5)}"</span></div>
+        </td>
+        <td style="width: 30.3272%; height: 42px;"><span style="font-size: 10.6667px;">seq</span></td>
+        <td style="width: 18.3179%; height: 42px;"></td>
+        <td style="width: 17.6774%; height: 42px;">
+            <div data-th-each="seq:${#numbers.sequence(1,5)}"><span data-th-text="${seq}"></span></div>
+        </td>
     </tr>
     </tbody>
 </table>
