@@ -1,6 +1,5 @@
 package ink.rayin.test.pdfboxgenerator;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import ink.rayin.htmladapter.base.PdfGenerator;
