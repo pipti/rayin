@@ -84,10 +84,10 @@
 
 ## 主要的开源框架一览
 ### PDFBOX
-官网：https://pdfbox.apache.org/  \
+官网：https://pdfbox.apache.org/  
 
 ### thymeleaf 官网
-https://www.thymeleaf.org/index.html  \
+https://www.thymeleaf.org/index.html  
 类似freemaker的动态脚本，好处是直接打开html，浏览器可以正常解析，不破坏html结构，在设计预览比较重要。
 
 ### openhtmltopdf
@@ -183,8 +183,8 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 [帮助文档](https://www.yuque.com/liuer_doc/rayin)
 
 # ⭐⭐⭐⭐⭐
-如果觉得项目不错，麻烦给个⭐️star噢，你的⭐️就是我前进的动力! \
-程序问题或者使用问题可加群或提交issue！ \
+如果觉得项目不错，麻烦给个⭐️star噢，你的⭐️就是我前进的动力!  
+程序问题或者使用问题可加群或提交issue！  
 程序难免存在问题，欢迎提出问题以及宝贵的建议！  
 
 # 欢迎共享行业样例模板
