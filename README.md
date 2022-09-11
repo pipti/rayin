@@ -191,6 +191,6 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
 
 ## 交流群
-<img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/wxqun_qrcode.JPG" width="300px">
+<img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/wxq_qr.jpg" width="300px">
 
 <img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
