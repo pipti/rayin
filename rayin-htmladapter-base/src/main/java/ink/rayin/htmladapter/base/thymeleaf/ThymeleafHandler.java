@@ -39,7 +39,6 @@ import java.util.Map;
 public class ThymeleafHandler {
 
     private static TemplateEngine templateEngine = new TemplateEngine();
-    private static Context context  = new Context();
     private static Logger logger = LoggerFactory.getLogger(ThymeleafHandler.class);
     private static ThymeleafHandler thymeleafHandler = new ThymeleafHandler();
     Gson gson = new Gson();
@@ -60,6 +59,7 @@ public class ThymeleafHandler {
      * @return html字符串
      */
     public String templateEngineProcessByString(String htmlStr, JSONObject jsonData){
+         Context context  = new Context();
         if(jsonData != null){
             context.setVariables(gson.fromJson(jsonData.toJSONString(), Map.class));
         }
@@ -87,6 +87,7 @@ public class ThymeleafHandler {
      * @return 解析后的字符串
      */
     public String templateEngineProcessByPath(String filePath, JSONObject jsonData) {
+        Context context  = new Context();
         if(jsonData != null){
             context.setVariables(JSON.parseObject(jsonData.toJSONString(),Map.class));
         }
