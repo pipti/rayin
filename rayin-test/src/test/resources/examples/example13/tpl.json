@@ -5,11 +5,15 @@
   "author":"rayin",
   "keywords":"templateTest,binddata",
   "elements":[
-    {"elementPath":"examples/example13/element1.html"
+    {"elementPath":"examples/example13/element1.html",
+      "addBlankPage":true,
+      "pageNumIsFirstPage":true,
+      "pageNumIsCalculate":true,
+      "pageNumIsDisplay":true
     },
     {"elementPath":"examples/example13/element2.html",
       "addBlankPage":true,
-      "pageNumIsFirstPage":true,
+      "pageNumIsFirstPage":false,
       "pageNumIsCalculate":true,
       "pageNumIsDisplay":true
       }
