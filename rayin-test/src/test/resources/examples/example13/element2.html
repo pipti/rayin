@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+
+        body {
+            font-family: FangSong,HanaMinB;
+            line-height: 1.2;
+            /*设置背景色*/
+            /*background: #00FF00 ;*/
+            /*设置背景图片*/
+            /*background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;*/
+        }
+        /** 指定pdf纸张大小 **/
+        @page {
+            size: A4 ;
+            margin: 1cm;
+            /*margin-bottom: 1cm;*/
+            /*border: thin solid black;*/
+        }
+
+        .page_break { page-break-after:always;}
+        .seclev2 {
+                text-indent:20pt;
+              }
+          .seclev2c {
+               text-indent:40pt;
+           }
+        a {
+            text-decoration:none;
+         }
+         a:link {
+            color:#000000;
+         }
+         a:visited {color:#00FF00;}
+    </style>
+</head>
+<body>
+<bookmarks>
+    <bookmark name="第四章" href="#section4">
+        <bookmark name="4.1 xxx" href="#subsec41"/>
+        <bookmark name="4.2 xxx" href="#subsec42"/>
+        <bookmark name="4.3 xxx" href="#subsec43"/>
+    </bookmark>
+    <bookmark name="第五章" href="#section5">
+        <bookmark name="5.1 xxxx" href="#subsec51"/>
+        <bookmark name="5.2 xxxx" href="#subsec52"/>
+        <bookmark name="5.3 xxx" href="#subsec53"/>
+    </bookmark>
+    <bookmark name="第六章" href="#section6">
+        <bookmark name="6.1 xxx" href="#subsec61"/>
+        <bookmark name="6.2 xxx" href="#subsec62"/>
+        <bookmark name="6.3 xxx" href="#subsec63"/>
+    </bookmark>
+</bookmarks>
+<div id="section4" class="seclev1"><h1>第四章</h1></div>
+<div id="subsec41" class="seclev2"><h2>4.1 xxxx</h2>
+    <div>内容</div>
+</div>
+
+<div id="subsec42" class="seclev2"><h2>4.2 xxxx</h2>
+    <div>内容</div>
+</div>
+
+<div id="subsec43" class="seclev2"><h2>4.3 xxxx</h2>
+    <div>内容</div>
+</div>
+<div style="page-break-after:always;"></div>
+<div id="section5" ><h1>第五章</h1></div>
+<div id="subsec51" class="seclev2"><h2>5.1 xxxx</h2>
+    <div>内容</div>
+</div>
+<div id="subsec52" class="seclev2"><h2>5.2 xxxx</h2>
+    <div>内容</div>
+</div>
+
+<div id="subsec53" class="seclev2"><h2>5.3 xxxx</h2>
+    <div>内容</div>
+</div>
+
+<div style="page-break-after:always;"></div>
+<div id="section6"><h1>第六章</h1></div>
+<div id="subsec61" class="seclev2"><h2>5.1 xxxx</h2>
+    <div>内容</div>
+</div>
+<div id="subsec62" class="seclev2"><h2>5.2 xxxx</h2>
+    <div>内容</div>
+</div>
+<div id="subsec63" class="seclev2"><h2>5.3 xxxx</h2>
+    <div>内容</div>
+</div>
+</body>
+
+</html>

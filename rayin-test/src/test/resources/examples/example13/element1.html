@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+       body {
+                  font-family: FangSong,HanaMinB;
+                  line-height: 1.2;
+                  /*设置背景色*/
+                  /*background: #00FF00 ;*/
+                  /*设置背景图片*/
+                  /*background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;*/
+              }
+              /** 指定pdf纸张大小 **/
+              @page {
+                  size: A4 ;
+                  margin: 1cm;
+                  /*margin-bottom: 1cm;*/
+                  /*border: thin solid black;*/
+              }
+
+              .page_break { page-break-after:always;}
+
+              .seclev2 {
+                text-indent:20pt;
+              }
+              .seclev2c {
+                   text-indent:40pt;
+               }
+            a {
+                text-decoration:none;
+             }
+         a:link {
+            color:#000000;
+         }
+         a:visited {color:#00FF00;}
+
+        ul li{
+            position: relative;
+            line-height: 40px;
+            list-style: none;
+        }
+        .sec-lev1{
+            margin-right: 10px;
+            font-size: 16px;
+            line-height: 40px;
+            color: #000;
+            display:inline-block;
+        }
+        .sec-line{
+            width: 85%;
+            display:inline-block;
+            margin-left:0px;
+            margin-right:0px;
+        }
+        hr {
+            border:1px dotted black;
+        }
+        .sec-page{
+            position: absolute;
+            right: 0px;
+            width: 50px;
+            height: 40px;
+            display:inline-block;
+            font-size: 14px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<bookmarks>
+    <bookmark name="第一章" href="#section1">
+        <bookmark name="1.1 xxx" href="#subsec11"/>
+        <bookmark name="1.2 xxx" href="#subsec12"/>
+        <bookmark name="1.3 xxx" href="#subsec13"/>
+    </bookmark>
+    <bookmark name="第二章" href="#section2">
+        <bookmark name="2.1 xxxx" href="#subsec21"/>
+        <bookmark name="2.2 xxxx" href="#subsec22"/>
+        <bookmark name="2.3 xxx" href="#subsec23"/>
+    </bookmark>
+    <bookmark name="第三章" href="#section3">
+        <bookmark name="3.1 xxx" href="#subsec31"/>
+        <bookmark name="3.2 xxx" href="#subsec32"/>
+        <bookmark name="3.3 xxx" href="#subsec33"/>
+    </bookmark>
+</bookmarks>
+<ul>
+    <li>
+        <div class="sec-lev1"><a href="#section1">第一章</a></div>
+        <div class="sec-line"><hr></div>
+        <div class="sec-page">
+            1
+        </div>
+    </li>
+    <li>
+        <div class="sec-lev1"><a href="#section2">第二章</a></div>
+        <div class="sec-line"><hr></div>
+        <div class="sec-page">
+            2
+        </div>
+    </li>
+    <li>
+        <div class="sec-lev1"><a href="#section3">第三章</a></div>
+        <div class="sec-line"><hr></div>
+        <div class="sec-page">
+            3
+        </div>
+    </li>
+</ul>
+
+<div style="page-break-after:always;"></div>
+<div id="section1" class="seclev1"><h1>第一章</h1></div>
+<div id="subsec11" class="seclev2"><h2>1.1 xxxx</h2>
+    <div>内容</div>
+</div>
+
+<div id="subsec12" class="seclev2"><h2>1.2 xxxx</h2>
+    <div>内容</div>
+</div>
+
+<div id="subsec13" class="seclev2"><h2>1.3 xxxx</h2>
+    <div>内容</div>
+</div>
+<div style="page-break-after:always;"></div>
+<div id="section2" ><h1>第二章</h1></div>
+<div id="subsec21" class="seclev2"><h2>2.1 xxxx</h2>
+    <div>内容</div>
+</div>
+<div id="subsec22" class="seclev2"><h2>2.2 xxxx</h2>
+    <div>内容</div>
+</div>
+
+<div id="subsec23" class="seclev2"><h2>2.3 xxxx</h2>
+    <div>内容</div>
+</div>
+
+<div style="page-break-after:always;"></div>
+<div id="section3"><h1>第三章</h1></div>
+<div id="subsec31" class="seclev2"><h2>3.1 xxxx</h2>
+    <div>内容</div>
+</div>
+<div id="subsec32" class="seclev2"><h2>3.2 xxxx</h2>
+    <div>内容</div>
+</div>
+<div id="subsec33" class="seclev2"><h2>3.3 xxxx</h2>
+    <div>内容</div>
+</div>
+</body>
+</html>

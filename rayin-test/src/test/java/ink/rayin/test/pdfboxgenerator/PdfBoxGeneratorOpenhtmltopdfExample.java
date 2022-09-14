@@ -354,9 +354,9 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     }
 
     /**
-     * example01
-     * 单个构件生成测试
-     * single element generate test
+     * example12
+     *
+     * Thymeleaf Function test
      */
     @Test
     @Order(12)
@@ -377,5 +377,31 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example12/element1.html"),jsonData,outputFile);
         watch.stop();
         log.info("exp12ThymeleafFunctionTest duration：" +  watch.getTime() + "ms");
+    }
+
+    /**
+     * example13
+     * Bookmark generate test
+     */
+    @Test
+    @Order(13)
+    public void exp13BookmarkTest() throws Exception {
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+//        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/data.json");
+//        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
+//
+//        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
+
+        String outputFile = new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "example13_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+
+        StopWatch watch = StopWatch.createStarted();
+        //数据参数可以为空
+        //pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/element1.html"), null, outputFile);
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/tpl.json"),null,outputFile);
+        watch.stop();
+        log.info("exp13BookmarkTest duration：" +  watch.getTime() + "ms");
     }
 }

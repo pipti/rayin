@@ -1,0 +1,17 @@
+{
+  "templateName":"template13",
+  "title":"template13",
+  "subject": "test",
+  "author":"rayin",
+  "keywords":"templateTest,binddata",
+  "elements":[
+    {"elementPath":"examples/example13/element1.html"
+    },
+    {"elementPath":"examples/example13/element2.html",
+      "addBlankPage":true,
+      "pageNumIsFirstPage":true,
+      "pageNumIsCalculate":true,
+      "pageNumIsDisplay":true
+      }
+  ]
+}
