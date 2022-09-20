@@ -16,6 +16,12 @@
       "pageNumIsFirstPage":false,
       "pageNumIsCalculate":true,
       "pageNumIsDisplay":true
-      }
+      },
+    {"elementPath":"examples/example13/element3.html",
+      "addBlankPage":true,
+      "pageNumIsFirstPage":false,
+      "pageNumIsCalculate":true,
+      "pageNumIsDisplay":true
+    }
   ]
 }
