@@ -5,6 +5,9 @@
   "author":"rayin",
   "keywords":"templateTest,binddata",
   "elements":[
+    {
+      "catalog": true
+    },
     {"elementPath":"examples/example13/element1.html",
       "addBlankPage":true,
       "pageNumIsFirstPage":true,
@@ -16,12 +19,6 @@
       "pageNumIsFirstPage":false,
       "pageNumIsCalculate":true,
       "pageNumIsDisplay":true
-      },
-    {"elementPath":"examples/example13/element3.html",
-      "addBlankPage":true,
-      "pageNumIsFirstPage":false,
-      "pageNumIsCalculate":true,
-      "pageNumIsDisplay":true
-    }
+      }
   ]
 }

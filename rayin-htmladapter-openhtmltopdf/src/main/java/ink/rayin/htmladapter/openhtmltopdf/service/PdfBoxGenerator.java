@@ -32,13 +32,18 @@ import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRendererObjectFa
 import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxPositionFindByKey;
 import ink.rayin.tools.utils.*;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.encryption.*;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineNode;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
 import org.jsoup.nodes.Comment;
@@ -65,9 +70,8 @@ import java.util.regex.Pattern;
  * @author Jonah Wang
  */
 
+@Slf4j
 public class PdfBoxGenerator implements PdfGenerator {
-    private static Logger logger = LoggerFactory.getLogger(PdfBoxGenerator.class);
-
     private ThymeleafHandler thymeleafHandler = ThymeleafHandler.getInstance();
 
     private final String jsonSchema = "tpl_schema.json";
@@ -160,7 +164,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                 try{
                     fos.close();
                 }catch(IOException e){
-                    logger.error("fos close error",e);
+                    log.error("fos close error",e);
                 }
             }
             if(bos != null){
@@ -208,7 +212,7 @@ public class PdfBoxGenerator implements PdfGenerator {
 
         JsonNode tplConfigJsonDataNode = JsonSchemaValidator.getJsonNodeFromString(tplConfigStr);
         if(tplConfigJsonDataNode == null){
-            new RayinException("json报文格式不正确！");
+            new RayinException("JSON schema check error！");
         }
         JsonSchemaValidator.validateJsonByFgeByJsonNode(tplConfigJsonDataNode, jsonSchemaNode);
         /** 校验配置结束 **/
@@ -239,6 +243,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                 el.setPageNum(-1);
                 continue;
             }
+
             //遍历构件并将生成的pdf字节流写入列表
             ByteArrayOutputStream tmp = generatePdfSteamByHtmlFileAndData(templateConfig,el,dataJson,pageProperties);
             if(tmp != null) {
@@ -368,12 +373,13 @@ public class PdfBoxGenerator implements PdfGenerator {
         /** 写入页码结束 **/
 
         //最终将生成的构件字节列表合并成文件
-        List<Element> rp = new ArrayList<Element>(50);
-        List<MarkInfo> signInfo = new ArrayList<MarkInfo>(50);
-        RayinMeta efi = writeTargetFile(os, mergePDF(out).toByteArray());
+        List<Element> rp = new ArrayList<>(50);
+        List<MarkInfo> signInfo = new ArrayList<>(50);
+        ByteArrayOutputStream endPageNumOs = new ByteArrayOutputStream();
+        RayinMeta efi = writeTargetFile(endPageNumOs, mergePDF(out).toByteArray());
 
         int calPageNum = 1;
-
+        Element catalogEle = null;
         for(Element page:pages){
             Element pa = new Element();
             pa.setPageCount(page.getPageCount());
@@ -384,10 +390,12 @@ public class PdfBoxGenerator implements PdfGenerator {
             pa.setPageNumIsCalculate(page.isPageNumIsCalculate());
             pa.setPageNumIsDisplay(page.isPageNumIsDisplay());
             pa.setPageNumIsFirstPage(page.isPageNumIsFirstPage());
+            pa.setCatalog(page.isCatalog());
             if(page.getMarkKeys() != null && page.getMarkKeys().size() > 0){
+                ByteArrayOutputStream finalOs = endPageNumOs;
                 page.getMarkKeys().forEach(s->{
                     try {
-                        List<float[]> fl = PdfBoxPositionFindByKey.findKeywordPagesPostions(os.toByteArray(),s.getKeyword());
+                        List<float[]> fl = PdfBoxPositionFindByKey.findKeywordPagesPostions(finalOs.toByteArray(),s.getKeyword());
                         fl.forEach(f->{
                             MarkInfo mi = new MarkInfo();
                             mi.setKeyword(s.getKeyword());
@@ -405,12 +413,80 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
             rp.add(pa);
             calPageNum = calPageNum + page.getPageCount();
+            if(page.isCatalog()){
+                catalogEle = pa;
+            }
+        }
+        if(catalogEle != null){
+            PDDocument pdfWithBookmarks = PDDocument.load(endPageNumOs.toByteArray());
+            PDDocumentOutline pdo = pdfWithBookmarks.getDocumentCatalog().getDocumentOutline();
+            JSONArray jsonArray = getBookmark(pdfWithBookmarks, pdo);
+
+            JSONObject bookmarksJson = new JSONObject();
+            bookmarksJson.put("catalogs",jsonArray);
+            ByteArrayOutputStream catalogPageOs = null;
+            if(StringUtil.isBlank(catalogEle.getCatalogElementPath()) &&
+                    StringUtil.isBlank(catalogEle.getCatalogElementContent())){
+                catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), bookmarksJson);
+            }else{
+                if(StringUtil.isNotBlank(catalogEle.getCatalogElementPath()) ){
+                    catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(catalogEle.getCatalogElementPath(),StandardCharsets.UTF_8), bookmarksJson);
+                }
+                if(StringUtil.isNotBlank(catalogEle.getBlankElementContent()) ){
+                    catalogPageOs = generatePdfSteamByHtmlStrAndData(catalogEle.getBlankElementContent(), bookmarksJson);
+                }
+
+            }
+            if(catalogPageOs != null){
+                // 开始替换目录页
+                    PDDocument outputPd = new PDDocument();
+                PDDocument oldPd = PDDocument.load(endPageNumOs.toByteArray());
+                PDDocument catalogPd = PDDocument.load(catalogPageOs.toByteArray());
+
+                PDPageTree oldPages = oldPd.getDocumentCatalog().getPages();
+                PDPageTree catalogPages = catalogPd.getDocumentCatalog().getPages();
+
+                for(int m = 0; m < oldPages.getCount(); m++){
+                    //if(m >= catalogEle.getPageNum() - 1 && m < catalogEle.getPageNum() + catalogEle.getPageCount() - 1){
+                       // oldPd.removePage(m);
+                     //   outputPd.addPage(catalogPages.get(m));
+                    //}else{
+                        //outputPd.addPage(oldPages.get(m));
+                    //}
+                }
+                //outputPd.getDocumentCatalog().setDocumentOutline(pdo);
+                //ByteArrayOutputStream newos = new ByteArrayOutputStream();
+                oldPd.save(os);
+
+                // outputPd.save(new File("/Users/eric/Desktop/a.pdf"));
+                pdfWithBookmarks.close();
+                oldPd.close();
+                catalogPd.close();
+                outputPd.close();
+            }
+
         }
 
         efi.setPagesInfo(rp);
         efi.setMarkInfos(signInfo);
 
         return efi;
+    }
+
+    private JSONArray getBookmark(PDDocument pd, PDOutlineNode bookmark) throws IOException{
+        PDOutlineItem current = bookmark.getFirstChild();
+        JSONArray jsonArray = new JSONArray();
+        while (current != null) {
+            Catalog catalog = new Catalog();
+            PDPage currentPage = current.findDestinationPage(pd);
+            Integer pageNumber = pd.getDocumentCatalog().getPages().indexOf(currentPage) + 1;
+            catalog.setTitle(current.getTitle());
+            catalog.setPageNum(pageNumber);
+            catalog.setCatalogs(getBookmark(pd, current));
+            jsonArray.add(catalog);
+            current = current.getNextSibling();
+        }
+        return jsonArray;
     }
 
     /**
@@ -443,23 +519,44 @@ public class PdfBoxGenerator implements PdfGenerator {
     @SneakyThrows
     private ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) {
 
-        String htmlContent = "";
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        if(config.isCatalog()){
+            // TODO 抽取bookmark 生成目录计算页数
+            JSONObject bookmarksJson = extractBookMarksFromTemplate(pagesConfig, data);
+            if(StringUtil.isBlank(config.getCatalogElementPath()) &&
+                    StringUtil.isBlank(config.getCatalogElementContent())){
+                bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), bookmarksJson);
+            }else{
+                if(StringUtil.isNotBlank(config.getCatalogElementPath()) ){
+                    bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(config.getCatalogElementPath(),StandardCharsets.UTF_8), bookmarksJson);
+                }
+                if(StringUtil.isNotBlank(config.getBlankElementContent()) ){
+                    bo = generatePdfSteamByHtmlStrAndData(config.getBlankElementContent(), bookmarksJson);
+                }
 
-        if(StringUtil.isNotBlank(config.getContent())) {
-            htmlContent = htmlStrDataFilling(config.getContent(), data);
+            }
+            log.debug("目录数据："+ bookmarksJson.toJSONString());
+        }else{
+            String htmlContent = "";
+
+            if(StringUtil.isNotBlank(config.getContent())) {
+                htmlContent = htmlStrDataFilling(config.getContent(), data);
+            }
+
+            if(StringUtil.isNotBlank(config.getElementPath())){
+                htmlContent = htmlFileDataFilling(config.getElementPath(), data);
+            }
+
+            //logger.info(htmlContent);
+            Set<MarkInfo> signature = new HashSet<>();
+            bo = this.generatePdfStreamByHtmlStr(htmlContent, signature);
+            config.setMarkKeys(signature);
+            if(bo == null){
+                return null;
+            }
         }
 
-        if(StringUtil.isNotBlank(config.getElementPath())){
-            htmlContent = htmlFileDataFilling(config.getElementPath(), data);
-        }
 
-        //logger.info(htmlContent);
-        Set<MarkInfo> signature = new HashSet<MarkInfo>();
-        ByteArrayOutputStream bo = this.generatePdfStreamByHtmlStr(htmlContent, signature);
-        config.setMarkKeys(signature);
-        if(bo == null){
-            return null;
-        }
         //PdfReader reader;
         PDDocument pdfDoc = PDDocument.load(bo.toByteArray());
 
@@ -500,10 +597,61 @@ public class PdfBoxGenerator implements PdfGenerator {
         return bo;
     }
 
+    private JSONObject extractBookMarksFromTemplate(TemplateConfig pagesConfig, JSONObject data) {
+        List<Element> els = pagesConfig.getElements();
+        JSONArray totalyBookmarks = new JSONArray();
+        String htmlContent = "";
+       // JSONArray catalogArray = new JSONArray();
+        for(Element elConfig:els){
+            if(StringUtil.isNotBlank(elConfig.getContent())) {
+                htmlContent = htmlStrDataFilling(elConfig.getContent(), data);
+            }
 
-    /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#htmlFileDataFilling
-     */
+            if(StringUtil.isNotBlank(elConfig.getElementPath())){
+                htmlContent = htmlFileDataFilling(elConfig.getElementPath(), data);
+            }
+            org.jsoup.nodes.Document htmlDoc = Jsoup.parse(htmlContent);
+
+            Elements ElBookmarks = htmlDoc.getElementsByTag("bookmarks");
+            //一个构件里的所有标签
+            for(org.jsoup.nodes.Element elbookmark : ElBookmarks){
+
+                for(org.jsoup.nodes.Element sb : elbookmark.children().tagName("bookmark")){
+                    Catalog catalog = new Catalog();
+                    catalog.setTitle(sb.attr("name"));
+                    catalog.setCatalogs(convertBookMarkToJSON(sb.children().tagName("bookmark")));
+                    totalyBookmarks.add(catalog);
+                }
+            }
+
+        }
+        JSONObject catalogs = new JSONObject();
+        catalogs.put("catalogs",totalyBookmarks);
+        return catalogs;
+
+    }
+
+
+    private JSONArray convertBookMarkToJSON(Elements els){
+        JSONArray subCatalogArray = new JSONArray();
+        for(org.jsoup.nodes.Element el : els) {
+            Catalog catalog = new Catalog();
+            catalog.setTitle(el.attr("name"));
+            catalog.setCatalogs(convertBookMarkToJSON(el.children().tagName("bookmark")));
+            subCatalogArray.add(catalog);
+        }
+        return subCatalogArray;
+//        Catalog catalog = new Catalog();
+//        catalog.setTitle(element.attr("name"));
+//        Elements elements = element.getElementsByTag("bookmark");
+//        if(elements.size() > 0){
+//            convertBookMarkToJSON
+//        }
+    }
+
+        /**
+         * @see ink.rayin.htmladapter.base.PdfGenerator#htmlFileDataFilling
+         */
     @SneakyThrows
     @Override
     public String htmlFileDataFilling(String htmlLocation, JSONObject data) {
@@ -589,7 +737,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                 }else if (src.startsWith("/") || src.startsWith("\\")) {
                     src = "file:" + "//" + src;
                     src = src.replace("\\" , "/");
-                    logger.debug("image url convert:" + src);
+                    log.debug("image url convert:" + src);
                 }else{
                     if(os != null && os.toLowerCase().startsWith("windows")){
                         src = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(src);
@@ -597,7 +745,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                         src = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(src);
                     }
                     src = src.replace("\\" , "/");
-                    logger.debug("image url convert:" + src);
+                    log.debug("image url convert:" + src);
                 }
                 link.attr("src", src);
             }
@@ -608,7 +756,7 @@ public class PdfBoxGenerator implements PdfGenerator {
         Pattern r = Pattern.compile(pattern);
         for (org.jsoup.nodes.Element ele : bgEls) {
             String bgCssStr = CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background");
-            logger.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background"));
+            log.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background"));
             if(bgCssStr.indexOf("url") >= 0){
                 Matcher matcher = r.matcher(bgCssStr);
 
@@ -622,7 +770,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                     }else if (url.startsWith("/") || url.startsWith("\\")) {
                         newUrl = "file:" + "//" + url;
                         newUrl = newUrl.replace("\\" , "/");
-                        logger.debug("image url convert:\'" + newUrl + "'");
+                        log.debug("image url convert:\'" + newUrl + "'");
                     }else{
                         if (os != null && os.toLowerCase().startsWith("windows")){
                             newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
@@ -630,7 +778,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                             newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
                         }
                         newUrl = newUrl.replace("\\" , "/");
-                        logger.debug("image url convert:\'" + newUrl + "'");
+                        log.debug("image url convert:\'" + newUrl + "'");
                     }
                     bgCssStr = bgCssStr.replace(url, newUrl);
                 }
@@ -642,7 +790,7 @@ public class PdfBoxGenerator implements PdfGenerator {
         Elements bgImgEls = htmlDoc.getElementsByAttributeValueContaining("style", "background-image");
         for (org.jsoup.nodes.Element ele : bgImgEls) {
             String bgCssStr = CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image");
-            logger.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image"));
+            log.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image"));
             if(bgCssStr.indexOf("url") >= 0){
                 Matcher matcher = r.matcher(bgCssStr);
 
@@ -657,7 +805,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                     }else if (url.startsWith("/") || url.startsWith("\\")) {
                         newUrl = "file:" + "//" + url;
                         newUrl = newUrl.replace("\\" , "/");
-                        logger.debug("image url convert:\'" + newUrl + "'");
+                        log.debug("image url convert:\'" + newUrl + "'");
                     }else{
                         if (os != null && os.toLowerCase().startsWith("windows")){
                             newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
@@ -665,7 +813,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                             newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
                         }
                         newUrl = newUrl.replace("\\" , "/");
-                        logger.debug("image url convert:\'" + newUrl + "'");
+                        log.debug("image url convert:\'" + newUrl + "'");
                     }
                     bgCssStr = bgCssStr.replace(url, newUrl);
                 }
@@ -859,7 +1007,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                             }else if (value.startsWith("/") || value.startsWith("\\")) {
                                 value = "file:" + "//" + value;
                                 value = value.replace("\\" , "/");
-                                logger.debug("pdf url convert:\'" + value + "'");
+                                log.debug("pdf url convert:\'" + value + "'");
                             }else{
                                 if (os != null && os.toLowerCase().startsWith("windows")){
                                     value = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
@@ -867,7 +1015,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                     value = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
                                 }
                                 value = value.replace("\\" , "/");
-                                logger.debug("pdf url convert:\'" + value + "'");
+                                log.debug("pdf url convert:\'" + value + "'");
                             }
 
                             if(StringUtil.isNotBlank(pages)){
@@ -985,7 +1133,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                 pdfRendererBuilder.run();
 
             } catch (Exception e) {
-                logger.error(htmlDoc.toString());
+                log.error(htmlDoc.toString());
                 throw e;
             }
 
@@ -1162,7 +1310,7 @@ public class PdfBoxGenerator implements PdfGenerator {
         info.setCreationDate(Calendar.getInstance());
         //写入文件相关配置信息包括页码，单模板类型以及页码起始页
         final Base64.Encoder encoder = Base64.getEncoder();
-        logger.info(JSONObject.toJSONString(epfileInfo));
+        log.info(JSONObject.toJSONString(epfileInfo));
         info.setCustomMetadataValue("PagesInfo",encoder.encodeToString(JSONObject.toJSONString(epfileInfo).getBytes()));
         os.reset();
         doc.save(os);

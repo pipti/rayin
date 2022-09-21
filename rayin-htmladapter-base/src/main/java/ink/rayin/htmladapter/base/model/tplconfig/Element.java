@@ -161,7 +161,26 @@ public class Element {
     @Setter
     private String elementAvaliableDataPath;
 
+    /**
+     * 是否为目录构件
+     */
+    @Getter
+    @Setter
+    private boolean catalog = false;
 
+    /**
+     * 目录构件内容，html内容
+     */
+    @Getter
+    @Setter
+    private String catalogElementContent;
+
+    /**
+     * 目录构件路径
+     */
+    @Getter
+    @Setter
+    private String catalogElementPath;
     /**
      * 质检内容
      * overlap 重叠
