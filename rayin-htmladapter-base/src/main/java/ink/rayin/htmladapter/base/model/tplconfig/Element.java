@@ -146,6 +146,12 @@ public class Element {
     private Set<MarkInfo> markKeys;
 
     /**
+     * 隐藏标签关键字
+     */
+    @Getter
+    @Setter
+    private int index;
+    /**
      * 是否解析生僻字
      */
 //    @Getter

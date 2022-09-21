@@ -231,8 +231,13 @@ public class PdfBoxGenerator implements PdfGenerator {
         //返回的相关实际配置信息
         List<Element> pageProperties = new ArrayList<>();
 
-
+        Element catalogEle = null;
+        int pageCula = 0;
+        int elIndex = 0;
+        int catalogElementPrePageCount = 0;
         for(Element el:pages){
+            el.setIndex(elIndex);
+            elIndex++;
             // 判断数据路径是否存在，如果为空则直接跳过
             try{
                 if(StringUtil.isNotBlank(el.getElementAvaliableDataPath())){
@@ -249,8 +254,74 @@ public class PdfBoxGenerator implements PdfGenerator {
             if(tmp != null) {
                 out.add(tmp);
             }
+            pageCula = pageCula + el.getPageCount();
+            if(el.isCatalog()){
+                if(el.isPageNumIsCalculate()){
+                    catalogElementPrePageCount = pageCula - el.getPageCount();
+                }else{
+                    catalogElementPrePageCount = pageCula;
+                }
+
+                catalogEle = el;
+            }
         }
         /** 生成文件结束 **/
+
+        List<ByteArrayOutputStream> outClone1 = new ArrayList();
+        List<ByteArrayOutputStream> outClone2 = new ArrayList();
+
+        for(ByteArrayOutputStream bos : out){
+            InputStream streamIs1 = new ByteArrayInputStream(bos.toByteArray());
+            InputStream streamIs2 = new ByteArrayInputStream(bos.toByteArray());
+            ByteArrayOutputStream stremOs1 = new ByteArrayOutputStream();
+            IOUtils.copy(streamIs1, stremOs1);
+            outClone1.add(stremOs1);
+            ByteArrayOutputStream stremOs2 = new ByteArrayOutputStream();
+            IOUtils.copy(streamIs2, stremOs2);
+            outClone2.add(stremOs2);
+        }
+
+        if(catalogEle != null){
+            ByteArrayOutputStream tempMergeOs = new ByteArrayOutputStream();
+
+            RayinMeta efi = writeTargetFile(tempMergeOs, mergePDF(outClone1).toByteArray());
+
+            PDDocument pdfWithBookmarks = PDDocument.load(tempMergeOs.toByteArray());
+            // int catalogPageCount = catalogEle.getPageCount();
+            // int currentPageNum = catalogEle.getPageNum();
+            int logicPageOffset =  catalogElementPrePageCount;
+
+            PDDocumentOutline pdo = pdfWithBookmarks.getDocumentCatalog().getDocumentOutline();
+            JSONArray jsonArray = getBookmark(pdfWithBookmarks, pdo, logicPageOffset);
+
+            JSONObject bookmarksJson = new JSONObject();
+            bookmarksJson.put("catalogs",jsonArray);
+            ByteArrayOutputStream catalogPageOs = null;
+            if(StringUtil.isBlank(catalogEle.getCatalogElementPath()) &&
+                    StringUtil.isBlank(catalogEle.getCatalogElementContent())){
+                catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), bookmarksJson);
+            }else{
+                if(StringUtil.isNotBlank(catalogEle.getCatalogElementPath()) ){
+                    catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(catalogEle.getCatalogElementPath(),StandardCharsets.UTF_8), bookmarksJson);
+                }
+                if(StringUtil.isNotBlank(catalogEle.getBlankElementContent()) ){
+                    catalogPageOs = generatePdfSteamByHtmlStrAndData(catalogEle.getBlankElementContent(), bookmarksJson);
+                }
+
+            }
+            if(catalogPageOs != null){
+
+                outClone2.set(catalogEle.getIndex(),catalogPageOs);
+//                oldPd.save(os);
+
+                // outputPd.save(new File("/Users/eric/Desktop/a.pdf"));
+                pdfWithBookmarks.close();
+//                oldPd.close();
+//                catalogPd.close();
+//                outputPd.close();
+            }
+
+        }
 
         /** 写入页码开始 **/
         //写入页码开始 对生成后字节流进行遍历 读取配置写入页码
@@ -279,7 +350,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                         footerStr = "第" + pageNum + "页，共" + pageNumTotal + "页";
                         pp.setLogicPageNum(pageNum);
 
-                        PDDocument doc = PDDocument.load(out.get(i).toByteArray());
+                        PDDocument doc = PDDocument.load(outClone2.get(i).toByteArray());
 
                         int j = 0;
                         //PdfContentByte content;
@@ -319,7 +390,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                         // 关键字页码设置
                                         if(StringUtil.isNotBlank(pos.getMark())){
 
-                                            List<float[]> fl = PdfBoxPositionFindByKey.findKeywordPagePostions(out.get(i).toByteArray(),pos.getMark(),j);
+                                            List<float[]> fl = PdfBoxPositionFindByKey.findKeywordPagePostions(outClone2.get(i).toByteArray(),pos.getMark(),j);
 
                                             if(fl.size() > 0){
 
@@ -358,7 +429,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                         ByteArrayOutputStream out2 = new ByteArrayOutputStream();
                         doc.save(out2);
                         doc.close();
-                        out.set(i,out2);
+                        outClone2.set(i,out2);
 
                     }else{
                         pageNum++;
@@ -375,11 +446,11 @@ public class PdfBoxGenerator implements PdfGenerator {
         //最终将生成的构件字节列表合并成文件
         List<Element> rp = new ArrayList<>(50);
         List<MarkInfo> signInfo = new ArrayList<>(50);
-        ByteArrayOutputStream endPageNumOs = new ByteArrayOutputStream();
-        RayinMeta efi = writeTargetFile(endPageNumOs, mergePDF(out).toByteArray());
+       // ByteArrayOutputStream endPageNumOs = new ByteArrayOutputStream();
+        RayinMeta efi = writeTargetFile(os, mergePDF(outClone2).toByteArray());
 
         int calPageNum = 1;
-        Element catalogEle = null;
+
         for(Element page:pages){
             Element pa = new Element();
             pa.setPageCount(page.getPageCount());
@@ -392,7 +463,7 @@ public class PdfBoxGenerator implements PdfGenerator {
             pa.setPageNumIsFirstPage(page.isPageNumIsFirstPage());
             pa.setCatalog(page.isCatalog());
             if(page.getMarkKeys() != null && page.getMarkKeys().size() > 0){
-                ByteArrayOutputStream finalOs = endPageNumOs;
+                ByteArrayOutputStream finalOs = os;
                 page.getMarkKeys().forEach(s->{
                     try {
                         List<float[]> fl = PdfBoxPositionFindByKey.findKeywordPagesPostions(finalOs.toByteArray(),s.getKeyword());
@@ -413,59 +484,9 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
             rp.add(pa);
             calPageNum = calPageNum + page.getPageCount();
-            if(page.isCatalog()){
-                catalogEle = pa;
-            }
-        }
-        if(catalogEle != null){
-            PDDocument pdfWithBookmarks = PDDocument.load(endPageNumOs.toByteArray());
-            PDDocumentOutline pdo = pdfWithBookmarks.getDocumentCatalog().getDocumentOutline();
-            JSONArray jsonArray = getBookmark(pdfWithBookmarks, pdo);
-
-            JSONObject bookmarksJson = new JSONObject();
-            bookmarksJson.put("catalogs",jsonArray);
-            ByteArrayOutputStream catalogPageOs = null;
-            if(StringUtil.isBlank(catalogEle.getCatalogElementPath()) &&
-                    StringUtil.isBlank(catalogEle.getCatalogElementContent())){
-                catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), bookmarksJson);
-            }else{
-                if(StringUtil.isNotBlank(catalogEle.getCatalogElementPath()) ){
-                    catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(catalogEle.getCatalogElementPath(),StandardCharsets.UTF_8), bookmarksJson);
-                }
-                if(StringUtil.isNotBlank(catalogEle.getBlankElementContent()) ){
-                    catalogPageOs = generatePdfSteamByHtmlStrAndData(catalogEle.getBlankElementContent(), bookmarksJson);
-                }
-
-            }
-            if(catalogPageOs != null){
-                // 开始替换目录页
-                    PDDocument outputPd = new PDDocument();
-                PDDocument oldPd = PDDocument.load(endPageNumOs.toByteArray());
-                PDDocument catalogPd = PDDocument.load(catalogPageOs.toByteArray());
-
-                PDPageTree oldPages = oldPd.getDocumentCatalog().getPages();
-                PDPageTree catalogPages = catalogPd.getDocumentCatalog().getPages();
-
-                for(int m = 0; m < oldPages.getCount(); m++){
-                    //if(m >= catalogEle.getPageNum() - 1 && m < catalogEle.getPageNum() + catalogEle.getPageCount() - 1){
-                       // oldPd.removePage(m);
-                     //   outputPd.addPage(catalogPages.get(m));
-                    //}else{
-                        //outputPd.addPage(oldPages.get(m));
-                    //}
-                }
-                //outputPd.getDocumentCatalog().setDocumentOutline(pdo);
-                //ByteArrayOutputStream newos = new ByteArrayOutputStream();
-                oldPd.save(os);
-
-                // outputPd.save(new File("/Users/eric/Desktop/a.pdf"));
-                pdfWithBookmarks.close();
-                oldPd.close();
-                catalogPd.close();
-                outputPd.close();
-            }
 
         }
+
 
         efi.setPagesInfo(rp);
         efi.setMarkInfos(signInfo);
@@ -473,22 +494,31 @@ public class PdfBoxGenerator implements PdfGenerator {
         return efi;
     }
 
-    private JSONArray getBookmark(PDDocument pd, PDOutlineNode bookmark) throws IOException{
+    private JSONArray getBookmark(PDDocument pd, PDOutlineNode bookmark, int logicPageOffset) throws IOException{
         PDOutlineItem current = bookmark.getFirstChild();
         JSONArray jsonArray = new JSONArray();
         while (current != null) {
             Catalog catalog = new Catalog();
             PDPage currentPage = current.findDestinationPage(pd);
-            Integer pageNumber = pd.getDocumentCatalog().getPages().indexOf(currentPage) + 1;
+            Integer pageNumber = pd.getDocumentCatalog().getPages().indexOf(currentPage) + 1 - logicPageOffset;
             catalog.setTitle(current.getTitle());
             catalog.setPageNum(pageNumber);
-            catalog.setCatalogs(getBookmark(pd, current));
+            catalog.setCatalogs(getBookmark(pd, current, logicPageOffset));
             jsonArray.add(catalog);
             current = current.getNextSibling();
         }
         return jsonArray;
     }
+    private List deepCopy(List list) throws IOException, ClassNotFoundException{
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(byteOut);
+        out.writeObject(list);
 
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+        ObjectInputStream in =new ObjectInputStream(byteIn);
+        List dest = (List)in.readObject();
+        return dest;
+    }
     /**
      * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByHtmlAndData
      */
@@ -641,12 +671,6 @@ public class PdfBoxGenerator implements PdfGenerator {
             subCatalogArray.add(catalog);
         }
         return subCatalogArray;
-//        Catalog catalog = new Catalog();
-//        catalog.setTitle(element.attr("name"));
-//        Elements elements = element.getElementsByTag("bookmark");
-//        if(elements.size() > 0){
-//            convertBookMarkToJSON
-//        }
     }
 
         /**
@@ -969,7 +993,6 @@ public class PdfBoxGenerator implements PdfGenerator {
             org.jsoup.nodes.Element htmlNew = new org.jsoup.nodes.Element("html");
             org.jsoup.nodes.Element head = htmlDocClone.head();
             Elements body = htmlDocClone.getElementsByTag("body");
-            Elements newBody = new Elements();
             for(org.jsoup.nodes.Element element:body){
                 org.jsoup.nodes.Element bodyNew = new org.jsoup.nodes.Element("body");
                 List<org.jsoup.nodes.Element> bodyEls = element.children();

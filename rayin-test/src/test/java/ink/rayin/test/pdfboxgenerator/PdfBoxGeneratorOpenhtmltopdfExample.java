@@ -387,10 +387,10 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Order(13)
     public void exp13BookmarkTest() throws Exception {
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
-        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/data.json");
-        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
+//        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/data.json");
+//        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
-        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
+//        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
         String outputFile = new File(outputFileClass)
                 .getParentFile().getParent()
@@ -400,7 +400,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         StopWatch watch = StopWatch.createStarted();
         //数据参数可以为空
         //pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/element1.html"), null, outputFile);
-        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/tpl.json"),jsonData,outputFile);
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/tpl.json"),null,outputFile);
         watch.stop();
         log.info("exp13BookmarkTest duration：" +  watch.getTime() + "ms");
     }
