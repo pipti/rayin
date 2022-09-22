@@ -303,19 +303,20 @@ public class PdfBoxGenerator implements PdfGenerator {
 
             PDDocumentOutline pdo = pdfWithBookmarks.getDocumentCatalog().getDocumentOutline();
             JSONArray jsonArray = getBookmark(pdfWithBookmarks, pdo, logicPageOffset);
-
-            JSONObject bookmarksJson = new JSONObject();
-            bookmarksJson.put("catalogs",jsonArray);
+            if(dataJson == null){
+                dataJson = new JSONObject();
+            }
+            dataJson.put("catalogs",jsonArray);
             ByteArrayOutputStream catalogPageOs = null;
             if(StringUtil.isBlank(catalogEle.getElementPath()) &&
                     StringUtil.isBlank(catalogEle.getContent())){
-                catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), bookmarksJson);
+                catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), dataJson);
             }else{
                 if(StringUtil.isNotBlank(catalogEle.getElementPath()) ){
-                    catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(catalogEle.getElementPath(),StandardCharsets.UTF_8), bookmarksJson);
+                    catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(catalogEle.getElementPath(),StandardCharsets.UTF_8), dataJson);
                 }
                 if(StringUtil.isNotBlank(catalogEle.getBlankElementContent()) ){
-                    catalogPageOs = generatePdfSteamByHtmlStrAndData(catalogEle.getBlankElementContent(), bookmarksJson);
+                    catalogPageOs = generatePdfSteamByHtmlStrAndData(catalogEle.getBlankElementContent(), dataJson);
                 }
 
             }
@@ -552,20 +553,24 @@ public class PdfBoxGenerator implements PdfGenerator {
 
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
         if(StringUtil.isNotBlank(config.getElementType()) && config.getElementType().equals(ElementType.CATALOG.getKey())){
-            JSONObject bookmarksJson = extractBookMarksFromTemplate(pagesConfig, data);
+            JSONArray bookmarksJson = extractBookMarksFromTemplate(pagesConfig, data);
+            if(data == null){
+                data = new JSONObject();
+            }
+            data.put("catalogs",bookmarksJson);
             if(StringUtil.isBlank(config.getElementPath()) &&
                     StringUtil.isBlank(config.getContent())){
-                bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), bookmarksJson);
+                bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), data);
             }else{
                 if(StringUtil.isNotBlank(config.getElementPath()) ){
-                    bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(config.getElementPath(),StandardCharsets.UTF_8), bookmarksJson);
+                    bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(config.getElementPath(),StandardCharsets.UTF_8), data);
                 }
                 if(StringUtil.isNotBlank(config.getBlankElementContent()) ){
-                    bo = generatePdfSteamByHtmlStrAndData(config.getBlankElementContent(), bookmarksJson);
+                    bo = generatePdfSteamByHtmlStrAndData(config.getBlankElementContent(), data);
                 }
 
             }
-            log.debug("目录数据："+ bookmarksJson.toJSONString());
+            log.debug("catalog data："+ bookmarksJson.toJSONString());
         }else{
             String htmlContent = "";
 
@@ -625,11 +630,11 @@ public class PdfBoxGenerator implements PdfGenerator {
         return bo;
     }
 
-    private JSONObject extractBookMarksFromTemplate(TemplateConfig pagesConfig, JSONObject data) {
+    private JSONArray extractBookMarksFromTemplate(TemplateConfig pagesConfig, JSONObject data) {
         List<Element> els = pagesConfig.getElements();
         JSONArray totalyBookmarks = new JSONArray();
         String htmlContent = "";
-       // JSONArray catalogArray = new JSONArray();
+        // JSONArray catalogArray = new JSONArray();
         for(Element elConfig:els){
             if(StringUtil.isNotBlank(elConfig.getContent())) {
                 htmlContent = htmlStrDataFilling(elConfig.getContent(), data);
@@ -653,9 +658,8 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
 
         }
-        JSONObject catalogs = new JSONObject();
-        catalogs.put("catalogs",totalyBookmarks);
-        return catalogs;
+
+        return totalyBookmarks;
 
     }
 
