@@ -55,16 +55,19 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * pdf模板生成服务
  *
- * @author Jonah Wang
+ * @author Jonah Wang / 2019-08-25
  */
 
 @Slf4j
@@ -375,6 +378,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                                     for (PageNumDisplayPos pos : pp.getPageNumDisplayPoss()) {
                                         // 坐标页码设置
                                         String pageNumContent = footerStr;
+                                        // TODO reference https://github.com/danfickle/openhtmltopdf/issues/344
                                         if (StringUtil.isNotBlank(pos.getContent())) {
                                             pageNumContent = pos.getContent().replace("${pageNum}", pageNum + "").replace("${pageNumTotal}", pageNumTotal + "");
                                         }
@@ -383,11 +387,40 @@ public class PdfBoxGenerator implements PdfGenerator {
                                                 = new PDPageContentStream(doc, content, PDPageContentStream.AppendMode.APPEND, false);
 
                                         contentStreamEl.beginText();
+
+                                        // Color 对象转换
+                                        String colorStr = pos.getColor();
+                                        Color colorRGB = null;
+                                        if(StringUtil.isNotBlank(colorStr)){
+                                            if(colorStr.toLowerCase().indexOf("rgb") < 0 && colorStr.toLowerCase().indexOf("#") < 0){
+                                                Field field = Class.forName("java.awt.Color").getField(colorStr);
+                                                colorRGB =  (Color)field.get(null);
+                                            }else{
+                                                if(colorStr.toLowerCase().indexOf("#") >= 0){
+                                                    colorRGB = Color.getColor(colorStr);
+                                                }else if(colorStr.toLowerCase().indexOf("rgb") >= 0){
+                                                    String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
+//
+                                                    //int color = (int)Long.parseLong(colorStr, 16);
+                                                    int r = Integer.parseInt(rgb[0].trim());
+                                                    int g = Integer.parseInt(rgb[1].trim());
+                                                    int b = Integer.parseInt(rgb[2].trim());
+                                                    colorRGB = new Color(r,g,b);
+                                                }
+                                            }
+                                        }
+
+
+                                        // 页码文字设置
+                                        contentStreamEl.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache()
+                                                .get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
+                                        if(colorRGB != null){
+                                            contentStreamEl.setNonStrokingColor(colorRGB);
+                                        }
                                         contentStreamEl.newLineAtOffset(pos.getX()==0f?content.getMediaBox().getWidth()/2 - 30:pos.getX(), pos.getY() != 0f?overContentHeight - pos.getY():20);
 
-                                        contentStreamEl.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
-
                                         contentStreamEl.showText(pageNumContent);
+
                                         contentStreamEl.endText();
                                         contentStreamEl.close();
 

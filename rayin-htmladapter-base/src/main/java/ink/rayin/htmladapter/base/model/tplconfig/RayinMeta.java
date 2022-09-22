@@ -16,8 +16,7 @@
 package ink.rayin.htmladapter.base.model.tplconfig;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
@@ -26,34 +25,14 @@ import java.util.List;
  *
  * @author Janah Wang / 王柱 2019-08-25
  */
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RayinMeta {
-
-    @Getter
-    @Setter
     private String filePath;
-
-    @Getter
-    @Setter
     private int fileTotalPageCount;
-
-    @Getter
-    @Setter
     private String fileSize;
-
-    @Getter
-    @Setter
     private String fileMD5;
-
-    @Getter
-    @Setter
     private List<Element> pagesInfo;
-
-    @Getter
-    @Setter
     private List<MarkInfo> markInfos;
-
-    @Getter
-    @Setter
     private String secretKey;
 }

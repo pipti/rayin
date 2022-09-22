@@ -15,8 +15,7 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
@@ -25,22 +24,12 @@ import java.util.List;
  *
  * @author Janah Wang / 王柱 2019-08-25
  */
+@Data
 public class PageNumProperties {
 
-    @Getter
-    @Setter
     private boolean pageNumIsFirstPage;
-
-    @Getter
-    @Setter
     private boolean pageNumIsCalculate;
-
-    @Getter
-    @Setter
     private boolean pageNumIsDisplay;
-
-    @Getter
-    @Setter
     private List<PageNumDisplayPos> pageNumDisplayPoss;
 
 }

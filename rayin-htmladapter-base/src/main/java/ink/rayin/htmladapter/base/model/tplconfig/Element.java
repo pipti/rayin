@@ -16,8 +16,7 @@
 package ink.rayin.htmladapter.base.model.tplconfig;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 import java.util.Set;
@@ -27,43 +26,39 @@ import java.util.Set;
  *
  * @author Janah Wang / 王柱 2019-08-25
  */
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Element {
 
     /**
      * 构件路径
      */
-    @Getter
-    @Setter
+
     private String elementPath;
 
     /**
      * 构件路径
      */
-    @Getter
-    @Setter
+
     private String elementId;
 
     /**
      * 构件类型
      * 保留字：catalog
      */
-    @Getter
-    @Setter
+
     private String elementType;
 
     /**
      * 构件版本
      */
-    @Getter
-    @Setter
+
     private String elementVersion;
 
     /**
      * 构件名称
      */
-    @Getter
-    @Setter
+
     private String name;
 
     /**
@@ -79,93 +74,61 @@ public class Element {
     /**
      * 页码属性
      */
-    @Getter
-    @Setter
     private boolean pageNumIsFirstPage;
 
-    @Getter
-    @Setter
     private boolean pageNumIsCalculate;
 
-    @Getter
-    @Setter
     private boolean pageNumIsDisplay;
 
-    @Getter
-    @Setter
     private List<PageNumDisplayPos> pageNumDisplayPoss;
 
-    @Getter
-    @Setter
     private PageNumStyle pageNumStyle;
 
-    @Getter
-    @Setter
     private boolean addBlankPage;
 
     /**
      * 空白页模板路径
      */
-    @Getter
-    @Setter
     private String blankElementPath;
 
     /**
      * 空白页模板内容
      */
-    @Getter
-    @Setter
     private String blankElementContent;
 
     /**
      * 页数
      */
-    @Getter
-    @Setter
     private int pageCount;
 
     /**
      * 实际页码
      */
-    @Getter
-    @Setter
     private int pageNum;
-
 
     /**
      * 逻辑页码
      */
-    @Getter
-    @Setter
     private int logicPageNum;
 
     /**
      * 隐藏标签关键字
      */
-    @Getter
-    @Setter
     private Set<MarkInfo> markKeys;
 
     /**
      * 隐藏标签关键字
      */
-    @Getter
-    @Setter
     private int index;
 
     /**
      * 构件可用数据显示路径
      * 该参数主要控制构件是否显示，取决数据路径是否存在，如果不存则不显示
      */
-    @Getter
-    @Setter
     private String elementAvaliableDataPath;
-
     /**
      * 目录构件内容，html内容
      */
-    @Getter
-    @Setter
     private String content;
 
     /**

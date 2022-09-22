@@ -16,8 +16,6 @@
 package ink.rayin.htmladapter.base.model.tplconfig;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 标记信息
@@ -26,7 +24,6 @@ import lombok.Setter;
  */
 @Data
 public class MarkInfo {
-
     private String keyword;
     private int pageNum;
     private float x;

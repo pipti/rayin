@@ -8,13 +8,18 @@ import java.io.InputStream;
 import java.util.Base64;
 import java.util.HashMap;
 
+/**
+ * PDF工具类
+ *
+ * @author Janah Wang / 王柱 2022-08-31
+ */
 public class PdfBoxTools {
+
     /**
      * PDF 元数据读取
      * PDF metadata reading
      * @param pdf pdf输入流
      * @return 元数据HashMap
-     * 2020-01-07
      */
     @SneakyThrows
     public static HashMap<String, String> pdfAttrsRead(InputStream pdf){
@@ -39,7 +44,6 @@ public class PdfBoxTools {
      * PDF template metadata reading
      * @param pdf pdf流
      * @return json 字符串
-     * 2020-01-07
      */
     @SneakyThrows
     public static String pdfPageInfoRead(InputStream pdf){

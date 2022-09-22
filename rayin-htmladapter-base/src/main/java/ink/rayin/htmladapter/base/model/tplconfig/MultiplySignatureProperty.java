@@ -15,26 +15,16 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * 签名签章属性
  *
- * 2019-09-08
- * @author Janah Wang / 王柱
+ * @author Janah Wang / 王柱 2019-09-08
  */
+@Data
 public class MultiplySignatureProperty {
-
-    @Getter
-    @Setter
     private int startPageNum;
-
-    @Getter
-    @Setter
     private int endPageNum;
-
-    @Getter
-    @Setter
     private String signatureImagePath;
 }

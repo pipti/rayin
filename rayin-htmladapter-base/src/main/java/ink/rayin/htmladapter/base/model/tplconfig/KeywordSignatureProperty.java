@@ -15,22 +15,16 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * 签名签章属性
  *
  * @author Janah Wang / 王柱 2019-09-08
  */
+@Data
 public class KeywordSignatureProperty {
 
-    @Getter
-    @Setter
     private String keyword;
-
-
-    @Getter
-    @Setter
     private String signature_path;
 }

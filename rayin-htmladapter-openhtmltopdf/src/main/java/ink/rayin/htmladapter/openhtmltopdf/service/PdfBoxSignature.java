@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * 签章
  * 签章暂只是测试使用，不要用于生产环境
- * @author Janah Wang / 王柱
+ * @author Janah Wang / 王柱 2022-03-16
  */
 public class PdfBoxSignature implements Signature {
 
