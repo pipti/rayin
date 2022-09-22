@@ -320,12 +320,10 @@ public class PdfBoxGenerator implements PdfGenerator {
 
             }
             if(catalogPageOs != null){
-
                 outClone2.set(catalogEle.getIndex(),catalogPageOs);
                 // outputPd.save(new File("/Users/eric/Desktop/a.pdf"));
-                pdfWithBookmarks.close();
-
             }
+            pdfWithBookmarks.close();
 
         }
 

@@ -81,7 +81,7 @@ public class PdfBoxPositionFindByKey {
             List<float[]> pagePositions = findKeywordPagePostions(pdfData,keyword,page);
             pagesPositions.addAll(pagePositions);
         }
-
+        document.close();
         return pagesPositions;
     }
 
@@ -102,6 +102,7 @@ public class PdfBoxPositionFindByKey {
             float[] pos = new float[]{pageNum,hit.getX(),hit.getY()};
             positions.add(pos);
         }
+        document.close();
         return positions;
     }
 
