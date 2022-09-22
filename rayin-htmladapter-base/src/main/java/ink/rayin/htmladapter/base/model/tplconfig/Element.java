@@ -46,6 +46,7 @@ public class Element {
 
     /**
      * 构件类型
+     * 保留字：catalog
      */
     @Getter
     @Setter
@@ -67,7 +68,7 @@ public class Element {
 
     /**
      * 构件内容
-     */
+     *
     @Getter
     @Setter
     private String content;
@@ -151,13 +152,6 @@ public class Element {
     @Getter
     @Setter
     private int index;
-    /**
-     * 是否解析生僻字
-     */
-//    @Getter
-//    @Setter
-//    private boolean uncommonCharsAnalysis;
-
 
     /**
      * 构件可用数据显示路径
@@ -168,25 +162,12 @@ public class Element {
     private String elementAvaliableDataPath;
 
     /**
-     * 是否为目录构件
-     */
-    @Getter
-    @Setter
-    private boolean catalog = false;
-
-    /**
      * 目录构件内容，html内容
      */
     @Getter
     @Setter
-    private String catalogElementContent;
+    private String content;
 
-    /**
-     * 目录构件路径
-     */
-    @Getter
-    @Setter
-    private String catalogElementPath;
     /**
      * 质检内容
      * overlap 重叠

@@ -5,9 +5,11 @@
   "author":"rayin",
   "keywords":"templateTest,binddata",
   "elements":[
-    {"elementPath":"examples/example13/element4.html"},
+    {"elementPath":"examples/example13/element4.html"
+    },
     {
-      "catalog": true,
+      "elementType": "catalog",
+      "elementPath":"examples/example13/custom_catalog.html",
       "pageNumIsFirstPage":true,
       "pageNumIsCalculate":true,
       "pageNumIsDisplay":true

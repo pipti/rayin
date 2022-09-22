@@ -38,7 +38,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.encryption.*;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline;
@@ -50,8 +49,6 @@ import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.css.*;
 
 import javax.xml.transform.OutputKeys;
@@ -83,7 +80,7 @@ public class PdfBoxGenerator implements PdfGenerator {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 
             if(jsonSchemaNode == null){
-                new RayinException("json校验文件不存在！初始化失败");
+                new RayinException("json schema file is not exists,init failed!");
             }
     }
 
@@ -235,7 +232,10 @@ public class PdfBoxGenerator implements PdfGenerator {
         int pageCula = 0;
         int elIndex = 0;
         int catalogElementPrePageCount = 0;
+        boolean isPageNumIsFirstPage = false;
         for(Element el:pages){
+
+
             el.setIndex(elIndex);
             elIndex++;
             // 判断数据路径是否存在，如果为空则直接跳过
@@ -255,7 +255,15 @@ public class PdfBoxGenerator implements PdfGenerator {
                 out.add(tmp);
             }
             pageCula = pageCula + el.getPageCount();
-            if(el.isCatalog()){
+            if(StringUtil.isNotBlank(el.getElementType()) && el.getElementType().equals(ElementType.CATALOG.getKey())){
+                if(catalogEle != null){
+                    throw new RayinException("Only one 'elementType=catalog' can be set!");
+                }
+
+                if(isPageNumIsFirstPage){
+                    throw new RayinException("'elementType=catalog' cannot be set after 'isPageNumIsFirstPage=true' setting");
+                }
+
                 if(el.isPageNumIsCalculate()){
                     catalogElementPrePageCount = pageCula - el.getPageCount();
                 }else{
@@ -263,6 +271,9 @@ public class PdfBoxGenerator implements PdfGenerator {
                 }
 
                 catalogEle = el;
+            }
+            if(el.isPageNumIsFirstPage()){
+                isPageNumIsFirstPage = true;
             }
         }
         /** 生成文件结束 **/
@@ -287,8 +298,7 @@ public class PdfBoxGenerator implements PdfGenerator {
             RayinMeta efi = writeTargetFile(tempMergeOs, mergePDF(outClone1).toByteArray());
 
             PDDocument pdfWithBookmarks = PDDocument.load(tempMergeOs.toByteArray());
-            // int catalogPageCount = catalogEle.getPageCount();
-            // int currentPageNum = catalogEle.getPageNum();
+
             int logicPageOffset =  catalogElementPrePageCount;
 
             PDDocumentOutline pdo = pdfWithBookmarks.getDocumentCatalog().getDocumentOutline();
@@ -297,12 +307,12 @@ public class PdfBoxGenerator implements PdfGenerator {
             JSONObject bookmarksJson = new JSONObject();
             bookmarksJson.put("catalogs",jsonArray);
             ByteArrayOutputStream catalogPageOs = null;
-            if(StringUtil.isBlank(catalogEle.getCatalogElementPath()) &&
-                    StringUtil.isBlank(catalogEle.getCatalogElementContent())){
+            if(StringUtil.isBlank(catalogEle.getElementPath()) &&
+                    StringUtil.isBlank(catalogEle.getContent())){
                 catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), bookmarksJson);
             }else{
-                if(StringUtil.isNotBlank(catalogEle.getCatalogElementPath()) ){
-                    catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(catalogEle.getCatalogElementPath(),StandardCharsets.UTF_8), bookmarksJson);
+                if(StringUtil.isNotBlank(catalogEle.getElementPath()) ){
+                    catalogPageOs = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(catalogEle.getElementPath(),StandardCharsets.UTF_8), bookmarksJson);
                 }
                 if(StringUtil.isNotBlank(catalogEle.getBlankElementContent()) ){
                     catalogPageOs = generatePdfSteamByHtmlStrAndData(catalogEle.getBlankElementContent(), bookmarksJson);
@@ -312,13 +322,9 @@ public class PdfBoxGenerator implements PdfGenerator {
             if(catalogPageOs != null){
 
                 outClone2.set(catalogEle.getIndex(),catalogPageOs);
-//                oldPd.save(os);
-
                 // outputPd.save(new File("/Users/eric/Desktop/a.pdf"));
                 pdfWithBookmarks.close();
-//                oldPd.close();
-//                catalogPd.close();
-//                outputPd.close();
+
             }
 
         }
@@ -461,7 +467,7 @@ public class PdfBoxGenerator implements PdfGenerator {
             pa.setPageNumIsCalculate(page.isPageNumIsCalculate());
             pa.setPageNumIsDisplay(page.isPageNumIsDisplay());
             pa.setPageNumIsFirstPage(page.isPageNumIsFirstPage());
-            pa.setCatalog(page.isCatalog());
+
             if(page.getMarkKeys() != null && page.getMarkKeys().size() > 0){
                 ByteArrayOutputStream finalOs = os;
                 page.getMarkKeys().forEach(s->{
@@ -486,7 +492,6 @@ public class PdfBoxGenerator implements PdfGenerator {
             calPageNum = calPageNum + page.getPageCount();
 
         }
-
 
         efi.setPagesInfo(rp);
         efi.setMarkInfos(signInfo);
@@ -541,8 +546,6 @@ public class PdfBoxGenerator implements PdfGenerator {
         return this.generatePdfStreamByHtmlStr(htmlContent);
     }
 
-
-
     /**
      * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfSteamByHtmlFileAndData
      */
@@ -550,15 +553,14 @@ public class PdfBoxGenerator implements PdfGenerator {
     private ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) {
 
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
-        if(config.isCatalog()){
-            // TODO 抽取bookmark 生成目录计算页数
+        if(StringUtil.isNotBlank(config.getElementType()) && config.getElementType().equals(ElementType.CATALOG.getKey())){
             JSONObject bookmarksJson = extractBookMarksFromTemplate(pagesConfig, data);
-            if(StringUtil.isBlank(config.getCatalogElementPath()) &&
-                    StringUtil.isBlank(config.getCatalogElementContent())){
+            if(StringUtil.isBlank(config.getElementPath()) &&
+                    StringUtil.isBlank(config.getContent())){
                 bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString("catalog.html",StandardCharsets.UTF_8), bookmarksJson);
             }else{
-                if(StringUtil.isNotBlank(config.getCatalogElementPath()) ){
-                    bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(config.getCatalogElementPath(),StandardCharsets.UTF_8), bookmarksJson);
+                if(StringUtil.isNotBlank(config.getElementPath()) ){
+                    bo = generatePdfSteamByHtmlStrAndData(ResourceUtil.getResourceAsString(config.getElementPath(),StandardCharsets.UTF_8), bookmarksJson);
                 }
                 if(StringUtil.isNotBlank(config.getBlankElementContent()) ){
                     bo = generatePdfSteamByHtmlStrAndData(config.getBlankElementContent(), bookmarksJson);
@@ -586,8 +588,6 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
         }
 
-
-        //PdfReader reader;
         PDDocument pdfDoc = PDDocument.load(bo.toByteArray());
 
         int pageNum = 0;
