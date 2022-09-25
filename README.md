@@ -1,6 +1,6 @@
 # 睿印
 ![Hex.pm](https://img.shields.io/hexpm/l/plug)
-![Hex.pm](https://img.shields.io/badge/Release-V1.0.7-green.svg)
+![Hex.pm](https://img.shields.io/badge/Release-V1.0.9-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg) \
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
 ![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
@@ -10,10 +10,8 @@
 ![Hex.pm](https://img.shields.io/badge/fastjson2-2.0.10-green.svg)
 ![Hex.pm](https://img.shields.io/badge/easyexcel-3.1.1-green.svg)
 ![Hex.pm](https://img.shields.io/badge/groovy-3.0.11-green.svg)
-![Hex.pm](https://img.shields.io/badge/commons-pool2-2.6.1-green.svg)
 ![Hex.pm](https://img.shields.io/badge/jsonpath-2.4.0-green.svg)
-![Hex.pm](https://img.shields.io/badge/slf4j-api-1.7.36-green.svg)
-![Hex.pm](https://img.shields.io/badge/commons-lang3-3.12.0-green.svg)
+
 
 ## 睿印是什么
 通用业务场景的电子凭证批量生成工具，即 数据+构件+模板=批量动态生成PDF工具
@@ -159,7 +157,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 <dependency>
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
 </dependency>
 
 ```
@@ -196,6 +194,5 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
 
 ## 交流群
-<img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/wxq_qr.jpg" width="300px">
-
+微信二维码七天有效期刷新比较麻烦，因此不再使用微信群  
 <img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
