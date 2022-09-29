@@ -197,7 +197,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
 
 # v1.0.9 主要更新内容
-支持自动生成目。
+支持自动生成目录。
 
 ## 交流群
 微信二维码七天有效期刷新比较麻烦，企业微信省事，免费  
