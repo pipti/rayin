@@ -189,11 +189,16 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 如果觉得项目不错，麻烦给个⭐️star噢，你的⭐️就是我前进的动力!  
 程序问题或者使用问题可加群或提交issue！  
 程序难免存在问题，欢迎提出问题以及宝贵的建议！  
+如果你有好的需求和建议，也欢迎提出！
+
 
 # 测试样例以及共享行业样例模板
 所有测试样例包含在该项目中   
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
 
+# v1.0.9 主要更新内容
+支持自动生成目。
+
 ## 交流群
-微信二维码七天有效期刷新比较麻烦，因此不再使用微信群  
+微信二维码七天有效期刷新比较麻烦，企业微信省事，免费  
 <img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
