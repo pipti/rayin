@@ -200,5 +200,5 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 支持自动生成目录。
 
 ## 交流群
-微信二维码七天有效期刷新比较麻烦，企业微信省事，免费  
+微信二维码七天有效期刷新比较麻烦，企业微信省事，无需下载企业微信，可微信扫码
 <img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
