@@ -183,7 +183,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 参见：[数据规则帮助](https://www.yuque.com/liuer_doc/rayin/yu0v5l)  
 
 ## 详细使用说明请参见帮助文档
-[帮助文档](https://www.yuque.com/liuer_doc/rayin)
+[帮助文档](https://rayin.ink)
 
 # ⭐⭐⭐⭐⭐
 如果觉得项目不错，麻烦给个⭐️star噢，你的⭐️就是我前进的动力!  
