@@ -12,7 +12,7 @@
 ![Hex.pm](https://img.shields.io/badge/groovy-4.0.6-green.svg)
 ![Hex.pm](https://img.shields.io/badge/jsonpath-2.4.0-green.svg)
 
-[中文](./README.md)  |[英文](./README_en.md)
+[中文](./README.md)  |[English](./README_en.md)
 ## 睿印是什么
 通用业务场景的电子凭证批量生成工具，即 数据+构件+模板=批量动态生成PDF工具
 
