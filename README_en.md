@@ -1,6 +1,6 @@
-# 睿印
+# RAYIN
 ![Hex.pm](https://img.shields.io/hexpm/l/plug)
-![Hex.pm](https://img.shields.io/badge/Release-V1.0.9-green.svg)
+![Hex.pm](https://img.shields.io/badge/Release-V1.0.10-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg) \
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
 ![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
@@ -16,7 +16,7 @@
 ## What's the Rayin!
 Mass production tools, electronic documents of general business scenarios that data + component + template = batch dynamically generate PDF tools;
 
-## Origin and pain points of the project
+## Pain points of the project
 Inspired by a large company's internal project.
 Found problems in the process of project:
 1. Format design is not easy: the original PDF template to make way for complex, relying on A tool, and from the system level through the template for the generation of the logic is complex, and binding data item is also more complicated;
@@ -27,7 +27,7 @@ Found problems in the process of project:
    These problems to make common business personnel through the service means to achieve the template is not reality;
    Based on the above problems, therefore, to solve how to be more convenient for PDF template configuration, if you can better support extensibility and changeful business scenarios;
 
-## 项目过程
+## Project Process
 Starting from the 2019 project for conceptual design, on and off.   
 Also made some attempts to test repeatedly, modify repeatedly. 
 Encountered in the project needs a lot of new requirements, especially in different provinces personalized style may have different requirements, as well as different personality with content, if the product type many, again there is a personalized, the response to the template will be the index level of growth.   
@@ -35,7 +35,7 @@ Needs of changes in the project, if the template is overmuch, demand for a chang
 So the constantly test to try to cover the demand points, through the way of configuration simplified way to meet the needs of variety as much as possible.
 
 
-## 达到目标
+## Target
 Scalability, flexibility, low code;
 Based on the above goal hierarchical design, digestion and changeable step by step a personalized requirements, thereby reducing the number of the template;
 Through "data rules" "element" "template" three layer structure through configuration as far as possible to solve the business scenario, rather than hard code to deal with;
@@ -44,7 +44,7 @@ Through "data rules" "element" "template" three layer structure through configur
    * template：Solve component reuse in the process of design, page number, blank pages, for large printer paper box selection problem;
 
 In conclusion: trinity, dynamic configuration of multiple link address business scenarios for variety:
-<img title="示意" src="https://gitee.com/liuercode/images/raw/master/rayin/demonstrate1.png" width="500px">
+<img title="view" src="https://gitee.com/liuercode/images/raw/master/rayin/demonstrate1.png" width="500px">
 
 ## The sample show
 ### Font demo
@@ -110,38 +110,38 @@ https://www.w3.org/TR/css-page-3/
 
 
 ## List some support functions and features
-1. The following list for openhtmltopdf support CSS to generate electronic documents commonly used features:
-    1. Support automatic extension, including form, long text;
-    2. The head and tail paging support form head to tail;
-    3. Support CSS2.0 and 3.0 portion of the style;
-    4. Support @ Page media features, that is, paper size definition, Page box model (Page shows around);
-    5. Support local loading images, HTTP/HTTPS protocol, according to the loading pictures of base64 display;
-    6. Support the directory label;
-    7. Support the qr code and bar code display;
-2. Dynamic data binding to generate electronic documents listed below part thymeleaf commonly used features：
-    1. Dynamic data binding;
-    2. Data layers of nested loop；
-    3. According to solid block cycle，table，div；
-    4. Data formatting；
-    5. Expression of logic, such as display logic judgment；
-    6. internationalization。
+1. The following list for openhtmltopdf support CSS to generate electronic documents commonly used features:  
+    1. Support automatic extension, including form, long text;  
+    2. The head and tail paging support form head to tail;  
+    3. Support CSS2.0 and 3.0 portion of the style;  
+    4. Support @ Page media features, that is, paper size definition, Page box model (Page shows around);  
+    5. Support local loading images, HTTP/HTTPS protocol, according to the loading pictures of base64 display;  
+    6. Support the directory label;  
+    7. Support the qr code and bar code display;  
+2. Dynamic data binding to generate electronic documents listed below part thymeleaf commonly used features： 
+    1. Dynamic data binding;  
+    2. Data layers of nested loop;  
+    3. According to solid block cycle，table，div;  
+    4. Data formatting;   
+    5. Expression of logic, such as display logic judgment;  
+    6. internationalization.  
 3. Through the element-> template + data rules -> data, flexible configuration to generate PDF;
 4. In the template can undertake combination element of different sizes, such as A4 B5 A3;
-5. Custom configuration implementation artifacts types (mainly used for subsequent carton identification of large printers, can pass template configuration, bound to the PDF corresponding metadata, by reading the reprocessing into PS file specifies to the corresponding carton); 
-6. Implementation artifacts blank page fill (odd element fill blank pages);
-7. Realize the flexible page count, page number, according to the flexible support component count, single page display page.
-8. 自动加载字体，支持多字体联动显示，生僻字显示.
-9. 实现pdf元数据的保存与获取，通过模板生成的PDF，元数据中包括页码信息，隐藏标签页码坐标，可用于后续加工使用。
-10. 实现pdf嵌入. 
-11. 实现隐藏标记，并可通过元数据进行获取对应页码，坐标（可用于后续再加工的定位，例如签章位置）。
-12. 实现线程池。
-13. 集成简便，可单独引用jar包，也可与服务集成。
+5. Custom configuration implementation artifacts types (mainly used for subsequent carton identification of large printers, can pass template configuration, bound to the PDF corresponding metadata, by reading the reprocessing into PS file specifies to the corresponding carton);   
+6. Implementation artifacts blank page fill (odd element fill blank pages);  
+7. Realize the flexible page count, page number, according to the flexible support component count, single page display page.  
+8. Automatically loaded fonts, support for multiple font linkage, according to the rarely used word display;  
+9. Implement PDF metadata preservation and access, through templates generated PDF, metadata include the page number information, hidden tag page coordinates, can be used for subsequent processing;  
+10. Realize the PDF embedded;   
+11. Realize the hidden tags, and can be used to obtain corresponding page through metadata and coordinates (can be used for subsequent reprocessing positioning, such as signature);  
+12. Realize the thread pool;  
+13. Integration is simple, can be a separate quote jars, and service integration.  
 
 
 
-### project url
-Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin)  
-GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
+### project url  
+Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin)    
+GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)  
 
 ### Get Started
 * Step one: new project, the introduction of depend on the package.  
@@ -187,9 +187,6 @@ welcome to ask questions and valuable advice!, If you have a good demand and the
 All the test cases included in the project
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
 
-# v1.0.9 The main updates
-Support automatic generation of directory.
-
 ## Communication group
 Enterprise WeChat convenient communication, can use WeChat scan code to add group
-<img title="交流群二维码" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
+<img title="communication" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">
