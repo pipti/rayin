@@ -51,7 +51,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(1)
     public void exp01ElementGenerateTest() throws Exception {
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         // generate pdf path
@@ -75,7 +75,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(2)
     public void exp02SimpleTemplateGenerateTest() throws Exception {
-       String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+       String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         // generate pdf path
@@ -105,7 +105,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //generate pdf by element
         JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         // generate pdf path
@@ -134,7 +134,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //依据构建配置生成PDF
         JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         String outputFile = new File(outputFileClass)
@@ -163,7 +163,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //generate pdf by element
         JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         // generate pdf path
@@ -192,7 +192,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //依据构建配置生成PDF
         JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         String outputFile = new File(outputFileClass)
@@ -223,7 +223,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         //generate pdf by element
         JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
 
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         // generate pdf path
@@ -249,7 +249,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     public void exp08SignTest() throws Exception {
         log.info("exp08SignTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example6/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
@@ -301,7 +301,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     public void exp09FontsGenerateTest() throws Exception {
         log.info("exp09FontsGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         // generate pdf path
@@ -326,7 +326,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     public void exp11PdfHiddenTagGenerateTest() throws Exception {
         log.info("exp11PdfHiddenTagGenerateTest start time：" + new Timestamp(System.currentTimeMillis()));
 
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         // generate pdf path
@@ -361,7 +361,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(12)
     public void exp12ThymeleafFunctionTest() throws Exception {
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
         String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example12/data.json");
         JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 
@@ -386,7 +386,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     @Test
     @Order(13)
     public void exp13BookmarkTest() throws Exception {
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 //        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/data.json");
 //        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
 

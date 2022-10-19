@@ -4,7 +4,6 @@ package ink.rayin.tools.utils;
 import ink.rayin.tools.support.StrFormatter;
 import ink.rayin.tools.support.StrSpliter;
 import org.springframework.util.Assert;
-import org.springframework.web.util.HtmlUtils;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -171,9 +170,9 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @param html html
 	 * @return {String}
 	 */
-	public static String escapeHtml(String html) {
-		return HtmlUtils.htmlEscape(html);
-	}
+//	public static String escapeHtml(String html) {
+//		return HtmlUtils.htmlEscape(html);
+//	}
 
 	/**
 	 * 清理字符串，清理出某些不可见字符

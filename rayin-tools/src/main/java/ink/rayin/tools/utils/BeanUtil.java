@@ -125,10 +125,9 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * @param source the source bean
 	 * @param target the target bean class
 	 * @param <T> 泛型标记
-	 * @throws BeansException if the copying failed
 	 * @return T
 	 */
-	public static <T> T copyProperties(Object source, Class<T> target) throws BeansException {
+	public static <T> T copyProperties(Object source, Class<T> target) {
 		T to = newInstance(target);
 		BeanUtil.copyProperties(source, to);
 		return to;

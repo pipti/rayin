@@ -7,7 +7,6 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.SynthesizingMethodParameter;
-import org.springframework.web.method.HandlerMethod;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -81,15 +80,15 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
 	 * @param <A>            泛型标记
 	 * @return {Annotation}
 	 */
-	public static <A extends Annotation> A getAnnotation(HandlerMethod handlerMethod, Class<A> annotationType) {
-		// 先找方法，再找方法上的类
-		A annotation = handlerMethod.getMethodAnnotation(annotationType);
-		if (null != annotation) {
-			return annotation;
-		}
-		// 获取类上面的Annotation，可能包含组合注解，故采用spring的工具类
-		Class<?> beanType = handlerMethod.getBeanType();
-		return AnnotatedElementUtils.findMergedAnnotation(beanType, annotationType);
-	}
+//	public static <A extends Annotation> A getAnnotation(HandlerMethod handlerMethod, Class<A> annotationType) {
+//		// 先找方法，再找方法上的类
+//		A annotation = handlerMethod.getMethodAnnotation(annotationType);
+//		if (null != annotation) {
+//			return annotation;
+//		}
+//		// 获取类上面的Annotation，可能包含组合注解，故采用spring的工具类
+//		Class<?> beanType = handlerMethod.getBeanType();
+//		return AnnotatedElementUtils.findMergedAnnotation(beanType, annotationType);
+//	}
 
 }

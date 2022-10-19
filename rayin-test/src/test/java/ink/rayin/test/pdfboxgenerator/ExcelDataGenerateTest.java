@@ -38,7 +38,7 @@ public class ExcelDataGenerateTest {
 
     @Test
     public void generateFilesByExcel() throws Exception {
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
         // 生成pdf路径
         // generate pdf path
         String outputDir = new File(outputFileClass).getParentFile().getParent() + "/tmp/";
@@ -53,7 +53,7 @@ public class ExcelDataGenerateTest {
     @Test
     public void generateFileByExcel() throws Exception {
         log.info("exp10generateFileByExcelTest start time：" + new Timestamp(System.currentTimeMillis()));
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
         // 生成pdf路径
         // generate pdf path
         String outputFile = new File(outputFileClass)

@@ -60,7 +60,7 @@ public class PdfBoxGeneratorPerformanceTest {
 
 
         String outputFile ="";
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
 
         // 生成pdf路径
         outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)

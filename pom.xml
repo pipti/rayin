@@ -204,14 +204,20 @@
                 <version>3.12.0</version>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>org.apache.groovy</groupId>
                 <artifactId>groovy</artifactId>
-                <version>3.0.11</version>
+                <version>4.0.6</version>
             </dependency>
             <dependency>
                 <groupId>org.craftercms</groupId>
                 <artifactId>groovy-sandbox</artifactId>
                 <version>4.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.rest-assured</groupId>
+                <artifactId>rest-assured</artifactId>
+                <version>5.2.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -296,6 +302,28 @@
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
+<!--                        <source>16</source>-->
+<!--                        <target>16</target>-->
+<!--                        <fork>true</fork>-->
+<!--                        <compilerArgs>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>-->
+<!--                            <arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED</arg>-->
+<!--                        </compilerArgs>-->
+<!--                        <annotationProcessorPaths>-->
+<!--                            <path>-->
+<!--                                <groupId>org.projectlombok</groupId>-->
+<!--                                <artifactId>lombok</artifactId>-->
+<!--                                <version>1.18.16</version>-->
+<!--                            </path>-->
+<!--                        </annotationProcessorPaths>-->
                     </configuration>
                 </plugin>
 

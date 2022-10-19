@@ -30,8 +30,14 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
+            <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.rest-assured</groupId>
+                    <artifactId>rest-assured</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.craftercms</groupId>
@@ -93,6 +99,9 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
