@@ -22,20 +22,19 @@ package ink.rayin.htmladapter.base.utils;
  */
 public enum CodeMessage {
     SUCCESS(0, "SUCCESS"),
-    FAILED(-1, "操作失败"),
+    FAILED(-1, "opertion failed"),
     //Error code for Http
-    HTTP_BAD_REQUEST(400, "请求参数错误"),
-    HTTP_UNAUTHORIZED(401, "认证失败"),
-    HTTP_DENIED(403,"拒绝访问"),
-    HTTP_NOT_FOUND(404, "访问资源不存在"),
-    HTTP_INTERNAL_SERVER_ERROR(500, "服务器内部错误，请联系管理员"),
-    HTTP_READ_RESP_ERROR(501, "HTTP读取response失败"),
+    HTTP_BAD_REQUEST(400, "Request parameter error"),
+    HTTP_UNAUTHORIZED(401, "Authentication failed"),
+    HTTP_DENIED(403,"Access denied"),
+    HTTP_NOT_FOUND(404, "Access to the resource does not exist"),
+    HTTP_INTERNAL_SERVER_ERROR(500, "Server internal error, please contact your administrator"),
+    HTTP_READ_RESP_ERROR(501, "HTTP read response failed"),
     HTTP_INIT_CLIENT_ERROR(502, "PoolingHttpClientConnectionManager初始化失败"),
-    HTTP_FORWARD_SERVER_ERROR(503, "微服务转发错误"),
-    DATA_FORMAT_ERROR(1000, "数据格式错误"),
+    DATA_FORMAT_ERROR(1000, "data format error"),
     //Error code for ecs business
-    BIZ_UNKNOWN_ERROR(600, "非预期错误"),
-    DATA_RESOLVE_FAIL(1001, "数据解析错误"),
+    BIZ_UNKNOWN_ERROR(600, "unexpected error"),
+    DATA_RESOLVE_FAIL(1001, "Data parsing errors"),
     OTHERS(99999, "others error");
     //system code
 

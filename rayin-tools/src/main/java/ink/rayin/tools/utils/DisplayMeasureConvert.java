@@ -30,8 +30,6 @@ public class DisplayMeasureConvert {
 
     /**
      * cmToPixels
-     * @param cm
-     * @param dpi
      * @return
      */
     public static float cmToPixels(float cm, int dpi) {
@@ -40,8 +38,6 @@ public class DisplayMeasureConvert {
 
     /**
      * pixelsToInches
-     * @param pixels
-     * @param dpi
      * @return
      */
     public static float pixelsToInches(float pixels, int dpi) {
