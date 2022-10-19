@@ -12,7 +12,7 @@
 ![Hex.pm](https://img.shields.io/badge/groovy-3.0.11-green.svg)
 ![Hex.pm](https://img.shields.io/badge/jsonpath-2.4.0-green.svg)
 
-[中文](./README.md)  |[英文](./README_en.md)
+[中文](./README.md)  |[English](./README_en.md)
 ## What's the Rayin!
 Mass production tools, electronic documents of general business scenarios that data + component + template = batch dynamically generate PDF tools;
 
@@ -150,7 +150,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 <dependency>
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
 </dependency>
 
 ```
