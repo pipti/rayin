@@ -28,9 +28,7 @@ import org.apache.pdfbox.pdmodel.encryption.SecurityProvider;
 import org.springframework.util.Base64Utils;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.security.*;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
