@@ -116,11 +116,11 @@
                 <artifactId>fastjson2-extension</artifactId>
                 <version>${fastjson2.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.36</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.slf4j</groupId>-->
+<!--                <artifactId>slf4j-api</artifactId>-->
+<!--                <version>1.7.36</version>-->
+<!--            </dependency>-->
 
 <!--            <dependency>-->
 <!--                <groupId>log4j</groupId>-->
@@ -211,7 +211,7 @@
             <dependency>
                 <groupId>org.craftercms</groupId>
                 <artifactId>groovy-sandbox</artifactId>
-                <version>4.0.0</version>
+                <version>4.0.1</version>
             </dependency>
 
             <dependency>
@@ -223,10 +223,10 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-api</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -245,23 +245,7 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

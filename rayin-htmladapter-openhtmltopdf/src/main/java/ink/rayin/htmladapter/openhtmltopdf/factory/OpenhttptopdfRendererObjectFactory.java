@@ -34,14 +34,12 @@ import com.openhtmltopdf.util.XRLog;
 import ink.rayin.tools.utils.ResourceUtil;
 import ink.rayin.tools.utils.StringUtil;
 import lombok.SneakyThrows;
-import org.apache.commons.pool2.PoolUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 
 import java.awt.*;
@@ -62,11 +60,10 @@ import java.util.jar.JarFile;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<OpenhttptopdfRenderBuilder> {
-    private static Logger logger = LoggerFactory.getLogger(OpenhttptopdfRendererObjectFactory.class);
-
     private  HashMap<String,File> fontFileCache = new HashMap<>();
-    private  static HashMap<String, FSSupplier<InputStream>> fontFSSupplierCache = new HashMap<String,FSSupplier<InputStream>>();
+    private  static HashMap<String, FSSupplier<InputStream>> fontFSSupplierCache = new HashMap<>();
     private  static HashMap<String, byte[]> fontFileCacheIsb = new HashMap<>();
     private static LinkedHashSet<String> fontNames = new LinkedHashSet<>();
 
@@ -121,10 +118,10 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
             poolConfig.setSoftMinEvictableIdleTimeMillis(SoftMinEvictableIdleTimeMillis);
 
-            logger.debug("pool param:");
-            logger.debug("MaxIdle:" + MaxIdle);
-            logger.debug("MaxTotal:" + MaxTotal);
-            logger.debug("MinIdle:" + MinIdle);
+            log.debug("pool param:");
+            log.debug("MaxIdle:" + MaxIdle);
+            log.debug("MaxTotal:" + MaxTotal);
+            log.debug("MinIdle:" + MinIdle);
             //新建一个对象池,传入对象工厂和配置
             objectPool = new GenericObjectPool<OpenhttptopdfRenderBuilder>(factory, poolConfig);
 
@@ -174,7 +171,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      */
     @SneakyThrows
     public static OpenhttptopdfRenderBuilder getPdfRendererBuilderInstance() {
-        logger.debug("pollActiveNum:" + objectPool.getNumActive());
+        log.debug("pollActiveNum:" + objectPool.getNumActive());
         return objectPool.borrowObject();
     }
 
@@ -213,7 +210,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                 fontsFile = fontsResource.getFile();
             }
         }catch (FileNotFoundException e){
-            logger.warn("No extend fonts and no load extend fonts resources!");
+            log.warn("No extend fonts and no load extend fonts resources!");
         }
 
         if(fontsFile != null) {
@@ -228,7 +225,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     if (f == null || f.isDirectory()) {
                         break;
                     }
-                    logger.debug("add extend local font =>" + f.getAbsolutePath());
+                    log.debug("add extend local font =>" + f.getAbsolutePath());
 
                     //将字体写入内存
                     byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
@@ -254,7 +251,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
             try {
                 jarURLConnection = (JarURLConnection) fontsUrl.openConnection();
                 if(jarURLConnection == null){
-                    logger.warn("No extend fonts and no load extend fonts resources!");
+                    log.warn("No extend fonts and no load extend fonts resources!");
                     return;
                     // return fontResolver;
                 }
@@ -273,7 +270,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         File jarfile = inputStreamToFile(jarFile.getInputStream(jarEntry),jarFileName.substring(jarFileName.lastIndexOf("/"),jarFileName.lastIndexOf(".")),
                                 jarFileName.substring(jarFileName.lastIndexOf(".")) );
                         fontTmpPath = jarfile.getAbsolutePath();
-                        logger.debug("extend jar font save to tmpdir => " + fontTmpPath);
+                        log.debug("extend jar font save to tmpdir => " + fontTmpPath);
 
                         //将字体写入内存
                         byte[] fontByte = ResourceUtil.getResourceAsByte(jarfile.getAbsolutePath()).toByteArray();
@@ -284,7 +281,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
                             @Override
                             public InputStream supply() {
-                                logger.debug("readFontName Requesting font");
+                                log.debug("readFontName Requesting font");
                                 return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
                             }
                         });
@@ -295,7 +292,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
                             @Override
                             public InputStream supply() {
-                                logger.debug("read font PSName Requesting font");
+                                log.debug("read font PSName Requesting font");
                                 return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
                             }
                         });
@@ -325,7 +322,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     if (f == null || f.isDirectory()) {
                         break;
                     }
-                    logger.debug("add extend local font =>" + f.getAbsolutePath());
+                    log.debug("add extend local font =>" + f.getAbsolutePath());
 
                     //将字体写入内存
                     byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
@@ -352,7 +349,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
             try {
                 jarURLConnection = (JarURLConnection) defaultFontUrl.openConnection();
                 if(jarURLConnection == null){
-                    logger.warn("No default fonts and no load default fonts resources!");
+                    log.warn("No default fonts and no load default fonts resources!");
                     return;
                     // return fontResolver;
                 }
@@ -371,7 +368,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         File jarfile = inputStreamToFile(jarFile.getInputStream(jarEntry),jarFileName.substring(jarFileName.lastIndexOf("/"),jarFileName.lastIndexOf(".")),
                                 jarFileName.substring(jarFileName.lastIndexOf(".")) );
                         fontTmpPath = jarfile.getAbsolutePath();
-                        logger.debug("default font save to tmpdir => " + fontTmpPath);
+                        log.debug("default font save to tmpdir => " + fontTmpPath);
 
                         //将字体写入内存
                         byte[] fontByte = ResourceUtil.getResourceAsByte(jarfile.getAbsolutePath()).toByteArray();
@@ -382,7 +379,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
                             @Override
                             public InputStream supply() {
-                                logger.debug("read font name Requesting font");
+                                log.debug("read font name Requesting font");
                                 return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
                             }
                         });
@@ -393,7 +390,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
                             @Override
                             public InputStream supply() {
-                                logger.debug("read font PSName Requesting font");
+                                log.debug("read font PSName Requesting font");
                                 return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
                             }
                         });
@@ -420,7 +417,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     if (f == null || f.isDirectory()) {
                         break;
                     }
-                    logger.debug("add default local font =>" + f.getAbsolutePath());
+                    log.debug("add default local font =>" + f.getAbsolutePath());
 
                     //将字体写入内存
                     byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
@@ -441,11 +438,11 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         }
 
         if(fontNames.size() != 0){
-            logger.info("added fonts info：");
+            log.info("added fonts info：");
 
-            logger.info("ThreadId:" + Thread.currentThread().getId() + ",added fonts info：");
+            log.info("ThreadId:" + Thread.currentThread().getId() + ",added fonts info：");
             fontNames.forEach((v)->{
-                logger.info(v);
+                log.info(v);
             });
         }
 
@@ -508,8 +505,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
     @Override
     public PooledObject<OpenhttptopdfRenderBuilder> makeObject() {
         String i = UUID.randomUUID().toString();
-        logger.debug("make OpenhttptopdfRender object：" + i);
-
+        log.debug("make OpenhttptopdfRender object：" + i);
         FSCacheEx<String, FSCacheValue> fsCacheEx = new FSDefaultCacheStore();
         OpenhttptopdfRenderBuilder openhttptopdfRenderBuilder = new OpenhttptopdfRenderBuilder();
         PdfRendererBuilder builder = new PdfRendererBuilder();
@@ -520,7 +516,6 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         builder.useMathMLDrawer(new MathMLDrawer());
         builder.addDOMMutator(LaTeXDOMMutator.INSTANCE);
         builder.defaultTextDirection(BaseRendererBuilder.TextDirection.LTR);
-
         builder.useCacheStore(PdfRendererBuilder.CacheStore.PDF_FONT_METRICS, fsCacheEx);
             fontFSSupplierCache.forEach((key,value)->{
             builder.useFont(value,key, 500, BaseRendererBuilder.FontStyle.NORMAL, true);
