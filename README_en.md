@@ -145,7 +145,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ### Get Started
 * Step one: new project, the introduction of depend on the package.  
-  If you use other sources may exist synchronous lag, if you can't automatically download can use the original source of maven.     
+
 ```xml
 <dependency>
     <groupId>ink.rayin</groupId>
