@@ -3,7 +3,7 @@
 ![Hex.pm](https://img.shields.io/badge/Release-V1.0.10-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg) \
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
-![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
+![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.27-green.svg)
 ![Hex.pm](https://img.shields.io/badge/openhtmltopdf-1.0.10-green.svg)
 ![Hex.pm](https://img.shields.io/badge/thymeleaf-3.0.11.RELEASE-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Lombok-1.8.24-green.svg)
@@ -14,7 +14,7 @@
 
 [中文](./README.md)  |[English](./README_en.md)
 ## 睿印是什么
-通用业务场景的电子凭证批量生成工具，即 数据+构件+模板=批量动态生成PDF工具
+可以应对复杂显示、模板组合业务场景的电子凭证批量生成工具。
 
 ## 项目起源和痛点
 某大型公司的内部项目的启发而来。  

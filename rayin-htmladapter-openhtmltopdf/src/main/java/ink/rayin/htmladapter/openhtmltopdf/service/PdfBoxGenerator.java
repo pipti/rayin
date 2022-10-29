@@ -79,6 +79,8 @@ public class PdfBoxGenerator implements PdfGenerator {
     private final Base64.Encoder encoder = Base64.getEncoder();
     private final String os = System.getProperty("os.name");
     private final String tmpDir = System.getProperty("java.io.tmpdir");
+    private final String sign = "80550ec4bfc10691e6c45aa88de3f62e";
+
     public PdfBoxGenerator() throws IOException {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 
@@ -882,144 +884,6 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
         }
 
-//        Elements styleTagEls = htmlDoc.getElementsByTag("style");
-//        String cssNew = "";
-//        for (org.jsoup.nodes.Element ele : styleTagEls) {
-//            InputSource source = new InputSource(new StringReader(ele.html()));
-//            source.setEncoding("UTF-8");
-//            final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
-//            CSSStyleSheet sheet = parser.parseStyleSheet(source, null, null);
-//            CSSRuleList rules = sheet.getCssRules();
-//            String selectorText_= null;
-//            CSSStyleDeclaration ss = null;
-//            for (int i = 0; i < rules.getLength(); i++) {
-//                final CSSRule rule = rules.item(i);
-//                //获取选择器名称
-//                if(rule instanceof CSSPageRule) {
-//                    selectorText_ = ((CSSPageRule) rule).getSelectorText();
-//                    ss =  ((CSSPageRule)rule).getStyle();
-//                }
-//                if(rule instanceof CSSStyleRule) {
-//                    selectorText_ = ((CSSStyleRule) rule).getSelectorText();
-//                    ss =  ((CSSStyleRule)rule).getStyle();
-//                }
-//
-//                String background = ss.getPropertyValue("background");
-//                String backgroundImage = ss.getPropertyValue("background-image");
-//                if(StringUtil.isNotBlank(background) && background.indexOf("url") >= 0){
-//                    Matcher matcher = r.matcher(background);
-//
-//                    while (matcher.find()){
-//                        String url = matcher.group("url");
-//                        String newUrl = url;
-//
-//                        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
-//                            if(url.startsWith("file:")){
-//                                url = url.replace("\\", "/");
-//                            }
-//                        }else if (url.startsWith("/") || url.startsWith("\\")) {
-//                            newUrl = "file:" + "//" + url;
-//                            newUrl = newUrl.replace("\\" , "/");
-//                            logger.debug("image url convert:\'" + newUrl + "'");
-//                        }else{
-//                            if (os != null && os.toLowerCase().startsWith("windows")){
-//                                newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
-//                            }else{
-//                                newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
-//                            }
-//                            newUrl = newUrl.replace("\\" , "/");
-//                            logger.debug("image url convert:\'" + newUrl + "'");
-//                        }
-//                        background = background.replace(url, newUrl);
-//                    }
-//                    //ss = CSSParser.addSingleStyleProperty(ss, "background" , background, null);
-//                    //CSSStyleDeclaration cd =  ((CSSStyleRule)rule).getStyle();
-//                    ss.setProperty("background", background, null);
-//                    //cssNew = CSSParser.addRuleProperty(ele.data(), selectorText_, "background", background, null).toString();
-//                }
-//
-//                if(StringUtil.isNotBlank(backgroundImage) && backgroundImage.indexOf("url") >= 0){
-//                    Matcher matcher = r.matcher(backgroundImage);
-//
-//                    while (matcher.find()){
-//                        String url = matcher.group("url");
-//                        String newUrl = url;
-//
-//                        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file:") || url.startsWith("data:image/")) {
-//                            if(url.startsWith("file:")){
-//                                url = url.replace("\\", "/");
-//                            }
-//                        }else if (url.startsWith("/") || url.startsWith("\\")) {
-//                            newUrl = "file:" + "//" + url;
-//                            newUrl = newUrl.replace("\\" , "/");
-//                            logger.debug("image url convert:\'" + newUrl + "'");
-//                        }else{
-//                            if (os != null && os.toLowerCase().startsWith("windows")){
-//                                newUrl = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
-//                            }else{
-//                                newUrl = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(url);
-//                            }
-//                            newUrl = newUrl.replace("\\" , "/");
-//                            logger.debug("image url convert:\'" + newUrl + "'");
-//                        }
-//                        backgroundImage = backgroundImage.replace(url, newUrl);
-//                    }
-//                    //ss = CSSParser.addSingleStyleProperty(ss, "background" , background, null);
-//                    //CSSStyleDeclaration cd =  ((CSSStyleRule)rule).getStyle();
-//                    ss.setProperty("background-image", backgroundImage, null);
-//                    //cssNew = CSSParser.addRuleProperty(ele.data(), selectorText_, "background", background, null).toString();
-//                }
-////                if("".equals(propertyValue) || propertyValue == null){
-////                    return false;
-////                }
-//            }
-//            ele.html(sheet.toString());
-//        }
-
-
-
-
-
-//        if(rules.getLength() == 0 ){
-//            return false;
-//        }
-//        for (int i = 0; i < rules.getLength(); i++) {
-//            final CSSRule rule = rules.item(i);
-//            //获取选择器名称
-//            String selectorText_ = ((CSSStyleRule) rule).getSelectorText();
-//            if(selectorStr.equals(selectorText_)){
-//                CSSStyleDeclaration ss =  ((CSSStyleRule)rule).getStyle();
-//                String propertyValue = ss.getPropertyValue(property);
-//                if("".equals(propertyValue) || propertyValue == null){
-//                    return false;
-//                }
-//                return true;
-//            }
-//        }
-
-//        for (org.jsoup.nodes.Element ele : bgImgEls) {
-//            logger.debug(CSSParser.getSingleStylePropertyValue(ele.attr("style"), "background-image"));
-//        }
-
-
-//        Elements printHideStyleEls = htmlDoc.getElementsByAttributeValueContaining("style","-fs-pdf-hidden");
-//        for (org.jsoup.nodes.Element ele : printHideStyleEls) {
-//            if(CSSParser.checkSingleStylePropertyAndValue(ele.attr("style"), "-fs-pdf-hidden", "true")){
-//                CSSStyleDeclaration csd = CSSParser.deleteSingleStyleProperty(ele.attr("style"), "background-image");
-//                csd.removeProperty("background");
-//                ele.attr("style", csd.toString());
-//            }
-//            //ele.attr("style",ele.attr("style").replaceAll("(background-image([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\)|background([\\s\\S]*):([\\s\\S]*)url([\\s\\S]*)\\(([\\s\\S]*)\\))",""));
-//        }
-//
-//        Elements headStyle = htmlDoc.getElementsByTag("style");
-//        for(org.jsoup.nodes.Element ele : headStyle){
-//            if(CSSParser.checkCssPropertyAndValue(ele.html(), "body", "-fs-pdf-hidden", "true")){
-//                CSSStyleSheet cs1 = CSSParser.deleteRuleProperty(ele.html(), "body", "background-image");
-//                CSSStyleSheet cs2 = CSSParser.deleteRuleProperty(cs1, "body", "background");
-//                ele.html(cs2.toString());
-//            }
-//        }
         Elements pdfElements = htmlDoc.getElementsByAttributeValueContaining("type", "file/pdf");
         if(pdfElements.size() > 0){
             org.jsoup.nodes.Document htmlDocClone = Jsoup.parse(htmlContent);
@@ -1205,7 +1069,8 @@ public class PdfBoxGenerator implements PdfGenerator {
         PDDocumentInformation pdInfo = pdDoc.getDocumentInformation();
         pdInfo.setProducer(
                 UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"));
-
+        pdInfo.setCreator(UnicodeUtil.decode("\\u0040\\u004d\\u0041\\u0044\\u0045\\u0020\\u0042\\u0059\\u0020\\u0052\\u0041\\u0059\\u0049\\u004e"));
+        pdInfo.setCustomMetadataValue("sign",encoder.encodeToString(JSONObject.toJSONString(sign).getBytes()));
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         pdDoc.save(baos);
         pdDoc.close();
@@ -1324,6 +1189,7 @@ public class PdfBoxGenerator implements PdfGenerator {
         doc.close();
 
         RayinMeta rayinMetadata = new RayinMeta();
+
         //文件总页数
         int pages=doc.getNumberOfPages();
 
@@ -1370,6 +1236,7 @@ public class PdfBoxGenerator implements PdfGenerator {
         final Base64.Encoder encoder = Base64.getEncoder();
         log.info(JSONObject.toJSONString(epfileInfo));
         info.setCustomMetadataValue("PagesInfo",encoder.encodeToString(JSONObject.toJSONString(epfileInfo).getBytes()));
+
         os.reset();
         doc.save(os);
         doc.close();

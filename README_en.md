@@ -3,7 +3,7 @@
 ![Hex.pm](https://img.shields.io/badge/Release-V1.0.10-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg) \
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
-![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.25-green.svg)
+![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.27-green.svg)
 ![Hex.pm](https://img.shields.io/badge/openhtmltopdf-1.0.10-green.svg)
 ![Hex.pm](https://img.shields.io/badge/thymeleaf-3.0.11.RELEASE-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Lombok-1.8.24-green.svg)
@@ -14,7 +14,7 @@
 
 [中文](./README.md)  |[English](./README_en.md)
 ## What's the Rayin!
-Mass production tools, electronic documents of general business scenarios that data + component + template = batch dynamically generate PDF tools;
+Can deal with complicated display, template combination business scenario mass production tool of electronic documents.  
 
 ## Pain points of the project
 Inspired by a large company's internal project.

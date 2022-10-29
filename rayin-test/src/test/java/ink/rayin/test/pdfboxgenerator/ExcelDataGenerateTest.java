@@ -63,7 +63,7 @@ public class ExcelDataGenerateTest {
 
         StopWatch watch = StopWatch.createStarted();
         pdfGenerator.generatePdfFileByTplAndExcel(ResourceUtil.getResourceAsString("examples/example10/tpl.json", StandardCharsets.UTF_8),
-                ResourceUtil.getResourceAsStream("examples/example10/data.xlsx"),outputFile);
+                ResourceUtil.getResourceAsStream("examples/example10/data.xlsx"), outputFile);
         watch.stop();
         log.info("exp10generateFileByExcelTest duration：" +  watch.getTime() + "ms");
     }

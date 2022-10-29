@@ -14,6 +14,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 文件工具类
@@ -292,11 +293,48 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * @param in InputStream
 	 * @param file File
 	 */
-	public static void toFile(InputStream in, final File file) {
+	public static void toFile(InputStream in, final File file) throws IOException {
+		Objects.requireNonNull(file, "file");
+		if (file.exists()) {
+			requireFile(file, "file");
+			requireCanWrite(file, "file");
+		} else {
+			createParentDirectories(file);
+		}
+
 		try (OutputStream out = new FileOutputStream(file)) {
 			FileUtil.copy(in, out);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
+		}
+	}
+	private static File requireFile(File file, String name) {
+		Objects.requireNonNull(file, name);
+		if (!file.isFile()) {
+			throw new IllegalArgumentException("Parameter '" + name + "' is not a file: " + file);
+		} else {
+			return file;
+		}
+	}
+	private static void requireCanWrite(File file, String name) {
+		Objects.requireNonNull(file, "file");
+		if (!file.canWrite()) {
+			throw new IllegalArgumentException("File parameter '" + name + " is not writable: '" + file + "'");
+		}
+	}
+
+	public static File createParentDirectories(File file) throws IOException {
+		return mkdirs(getParentFile(file));
+	}
+
+	private static File getParentFile(File file) {
+		return file == null ? null : file.getParentFile();
+	}
+	private static File mkdirs(File directory) throws IOException {
+		if (directory != null && !directory.mkdirs() && !directory.isDirectory()) {
+			throw new IOException("Cannot create directory '" + directory + "'.");
+		} else {
+			return directory;
 		}
 	}
 

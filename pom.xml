@@ -47,7 +47,7 @@
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-compress.version>1.21</commons-compress.version>
-        <commons-pool2.version>2.6.1</commons-pool2.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
         <junit>4.13.2</junit>
         <flexmark.version>0.62.2</flexmark.version>
         <cn.hutool>5.7.22</cn.hutool>
