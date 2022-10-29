@@ -35,4 +35,5 @@ public class RayinMeta {
     private List<Element> pagesInfo;
     private List<MarkInfo> markInfos;
     private String secretKey;
+    private String sign = "80550ec4bfc10691e6c45aa88de3f62e";
 }

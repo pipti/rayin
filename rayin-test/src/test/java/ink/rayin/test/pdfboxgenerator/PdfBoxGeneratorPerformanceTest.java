@@ -46,7 +46,7 @@ public class PdfBoxGeneratorPerformanceTest {
     /**
      * 5线程，执行 30000ms，延迟1s执行，默认以 html 输出测试结果
      *
-     * 备注：原始包模板数据显示格式存在问题，不显示图表，lib下为修改后的包
+     * 备注：junitperf原始包模板数据显示格式存在问题，不显示图表，lib下为修改后的包
      */
     @Test
     @JunitPerfConfig(duration = 30_000,threads = 5,warmUp = 1_000,
