@@ -147,8 +147,8 @@ Gitee : [https://gitee.com/Rayin/rayin](https://gitee.com/Rayin/rayin)
 GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 ### 开始使用
-* 第一步：新建项目，引入依赖包 \
-  如果使用阿里云可能会存在同步滞后，如果不能自动下载可使用原始的maven源。
+* 第一步：新建项目，引入依赖包  
+  如果使用阿里云最新的版本可能会存在同步滞后，如果不能自动下载可使用原始的maven源。
 
 ```xml
 <dependency>
