@@ -187,6 +187,9 @@ welcome to ask questions and valuable advice!, If you have a good demand and the
 All the test cases included in the project
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
 
+# Disclaimer：
+Any direct or indirect with farce printing generated any content for all the consequences has nothing to do with the farce of developers, content is not limited to, font, graphics, text and other related content;
+
 ## Communication group
 Enterprise WeChat convenient communication, can use WeChat scan code to add group
 <img title="communication" src="https://gitee.com/liuercode/images/raw/master/rayin/weixinqun_qr.JPG" width="300px">

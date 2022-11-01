@@ -80,7 +80,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     private final String os = System.getProperty("os.name");
     private final String tmpDir = System.getProperty("java.io.tmpdir");
     private final String sign = "80550ec4bfc10691e6c45aa88de3f62e";
-
+    private final String defaultFontName = "FangSong";
     public PdfBoxGenerator() throws IOException {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 
@@ -366,6 +366,10 @@ public class PdfBoxGenerator implements PdfGenerator {
                         //PdfContentByte content;
                         PDPage content;
                         int elPageNum = doc.getNumberOfPages();
+                        PDType0Font pf = PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(defaultFontName).supply());
+                        PDType0Font pfp = null;
+                        Map<String, PDType0Font> pdFontMap = new HashMap();
+                        pdFontMap.put(defaultFontName, pf);
                         while(true){
                             if(j >= elPageNum) {
                                 break;
@@ -374,6 +378,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                             if(content != null){
 
                                 float overContentHeight = content.getMediaBox().getHeight();
+
                                 //获取自定义配置
                                 if(pp.getPageNumDisplayPoss() != null && pp.getPageNumDisplayPoss().size() > 0) {
                                     //获取页码坐标
@@ -412,10 +417,17 @@ public class PdfBoxGenerator implements PdfGenerator {
                                             }
                                         }
 
-
+                                        if(StringUtil.isNotBlank(pos.getFontFamily()) && OpenhttptopdfRendererObjectFactory.getFSSupplierCache()
+                                                .get(pos.getFontFamily()) != null){
+                                            if(pdFontMap.get(pos.getFontFamily()) == null){
+                                                pdFontMap.put(pos.getFontFamily(), PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(pos.getFontFamily()).supply()));
+                                            }
+                                            pfp = pdFontMap.get(pos.getFontFamily());
+                                        }else{
+                                            pfp = pdFontMap.get(defaultFontName);
+                                        }
                                         // 页码文字设置
-                                        contentStreamEl.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache()
-                                                .get(StringUtil.isNotBlank(pos.getFontFamily())?pos.getFontFamily():"FangSong").supply()), pos.getFontSize() != 0?pos.getFontSize():10);
+                                        contentStreamEl.setFont(pfp, pos.getFontSize() != 0?pos.getFontSize():10);
                                         if(colorRGB != null){
                                             contentStreamEl.setNonStrokingColor(colorRGB);
                                         }
@@ -434,12 +446,12 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                                             if(fl.size() > 0){
 
-                                                PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.APPEND, false);
+                                                PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.APPEND, true);
                                                 contentStream.beginText();
                                                 for(float[] f:fl){
                                                 contentStream.newLineAtOffset(f[0], f[1]);
                                                 }
-                                                contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
+                                                contentStream.setFont(pf, 10);
                                                 contentStream.showText(footerStr);
                                                 contentStream.endText();
                                                 contentStream.close();
@@ -450,10 +462,10 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                                     }
                                 }else {
-                                    PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.APPEND, false);
+                                    PDPageContentStream contentStream = new PDPageContentStream(doc, content,PDPageContentStream.AppendMode.APPEND, true);
                                     contentStream.beginText();
                                     contentStream.newLineAtOffset(content.getMediaBox().getWidth()/2 - 30, 20);
-                                    contentStream.setFont(PDType0Font.load(doc, OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get("FangSong").supply()), 10);
+                                    contentStream.setFont(pf, 10);
                                     contentStream.showText(footerStr);
                                     contentStream.endText();
                                     contentStream.close();
@@ -465,8 +477,10 @@ public class PdfBoxGenerator implements PdfGenerator {
                             pageNum++;
                             footerStr = "第" + pageNum + "页，共" + pageNumTotal + "页";
                             j++;
+                            // log.debug("增加页码：" + pageNum);
                         }
                         ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+                        //log.debug(Instrumentation);
                         doc.save(out2);
                         doc.close();
                         outClone2.set(i,out2);

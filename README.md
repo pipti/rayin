@@ -1,6 +1,6 @@
 # 睿印
 ![Hex.pm](https://img.shields.io/hexpm/l/plug)
-![Hex.pm](https://img.shields.io/badge/Release-V1.0.10-green.svg)
+![Hex.pm](https://img.shields.io/badge/Release-V1.1.0-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg) \
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
 ![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.27-green.svg)
@@ -154,7 +154,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 <dependency>
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.0.10</version>
+    <version>1.1.0</version>
 </dependency>
 
 ```
@@ -193,6 +193,10 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 所有测试样例包含在该项目中   
 [https://gitee.com/Rayin/rayin-template-sample](https://gitee.com/Rayin/rayin-template-sample)
 
+本项目采用Apache 2.0许可，请尊重开源项目作者，在软件中附带睿印开源软件许可。  
+
+# 免责申明：
+任何直接或间接因使用睿印生成的任何内容所导致的全部后果与睿印的开发者无关，内容不限于字体，图片，文字等相关内容。
 
 ## 交流群
 微信二维码七天有效期刷新比较麻烦，企业微信省事，无需下载企业微信，可微信扫码
