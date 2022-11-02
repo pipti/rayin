@@ -283,7 +283,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
             }
         }
 
-        pdfSign.multipleSign("123456", "examples/example8/p12sign.p12", "examples/example8/example6.pdf",
+        pdfSign.multipleSign("123456", "examples/example8/p12sign.p12", "examples/example8/example06.pdf",
                 outputFile,spl);
         watch.stop();
 
@@ -403,5 +403,27 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
         pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/tpl.json"),null,outputFile);
         watch.stop();
         log.info("exp13BookmarkTest duration：" +  watch.getTime() + "ms");
+    }
+
+    @Test
+    @Order(15)
+    public void exp15BookmarkTest() throws Exception {
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
+//        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/data.json");
+//        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
+
+//        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
+
+        String outputFile = new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "example15_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
+
+        StopWatch watch = StopWatch.createStarted();
+        //数据参数可以为空
+        //pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example13/element1.html"), null, outputFile);
+        pdfGenerator.generatePdfFileByTplConfigFile(ResourceUtil.getResourceAbsolutePathByClassPath("examples/example15/东上U途RPA产品帮助文档_1667296809750tpl.json"),null,outputFile);
+        watch.stop();
+        log.info("exp15BookmarkTest duration：" +  watch.getTime() + "ms");
     }
 }

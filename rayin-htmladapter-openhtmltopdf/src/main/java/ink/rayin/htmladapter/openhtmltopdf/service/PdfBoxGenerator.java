@@ -80,7 +80,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     private final String os = System.getProperty("os.name");
     private final String tmpDir = System.getProperty("java.io.tmpdir");
     private final String sign = "80550ec4bfc10691e6c45aa88de3f62e";
-    private final String defaultFontName = "FangSong";
+    private final String defaultFontName = "AlibabaPuHuiTi-Light";
     public PdfBoxGenerator() throws IOException {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 

@@ -97,6 +97,8 @@ https://github.com/danfickle/openhtmltopdf
 https://github.com/adobe-fonts
 ### google Fonts noto-cjk
 https://github.com/googlefonts/noto-cjk
+### 阿里普惠字体
+https://fonts.alibabagroup.com/#/font
 
 ### W3C CSS
 https://www.w3.org/TR/css-page-3/  

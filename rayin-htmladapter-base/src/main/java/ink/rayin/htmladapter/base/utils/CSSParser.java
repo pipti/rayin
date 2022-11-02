@@ -396,7 +396,7 @@ public class CSSParser {
 
     public static void main(String[] args) throws IOException {
         String q = "body {\n" +
-                "            font-family: FangSong,HanaMinB;\n" +
+                "            font-family: AlibabaPuHuiTi-Light,HanaMinB;\n" +
                 "            line-height: 1.2;\n" +
                 "            font-size:12px;\n" +
                 "            font-weight:normal\n" +
@@ -406,7 +406,7 @@ public class CSSParser {
                 "            background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;\n" +
                 "        }";
         String a = "background: #ffcc44";
-        String b = "body {/*background: #00FF00 ;*/font-family: FangSong,HanaMinB;background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;background: #00FF00 ;-fs-print-hidden:true}";
+        String b = "body {/*background: #00FF00 ;*/font-family: AlibabaPuHuiTi-Light,HanaMinB;background-image:url(data:image/gif;base64,AAAA) no-repeat fixed top;background: #00FF00 ;-fs-print-hidden:true}";
         log.debug(CSSParser.checkCssProperty(b, "body", "background") + "");
         log.debug(CSSParser.deleteRuleProperty(b, "body", "background-image").toString());
         log.debug(CSSParser.checkCssPropertyAndValue(b, "body", "-fs-print-hidden", "true") + "");

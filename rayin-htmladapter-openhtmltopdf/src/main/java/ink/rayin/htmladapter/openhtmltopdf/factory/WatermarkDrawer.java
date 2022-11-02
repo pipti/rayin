@@ -57,7 +57,7 @@ public class WatermarkDrawer implements FSObjectDrawer {
                     try {
                         String fontStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-family");
                         if(StringUtil.isBlank(fontStr)){
-                            fontStr = "FangSong";
+                            fontStr = "AlibabaPuHuiTi-Light";
                         }
                         String colorStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"color");
 
