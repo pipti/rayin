@@ -19,8 +19,7 @@
             "y":830.33,
             "content":"构件组合模板页码：第${pageNum}页，共${pageNumTotal}页",
             "fontSize":10,
-            "color":"blue",
-            "fontFamily":"汉仪中黑简"
+            "color":"blue"
           }
         ]
       }
