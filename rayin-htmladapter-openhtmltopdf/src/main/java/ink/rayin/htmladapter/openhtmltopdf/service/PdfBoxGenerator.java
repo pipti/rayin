@@ -1026,7 +1026,7 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                         break;
 
-                    case "fontwatermark":
+                    case "watermark":
                         CSSStyleDeclaration cssStyleDeclaration = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
                         cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "left","600px",null);
                         cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "top","300px",null);

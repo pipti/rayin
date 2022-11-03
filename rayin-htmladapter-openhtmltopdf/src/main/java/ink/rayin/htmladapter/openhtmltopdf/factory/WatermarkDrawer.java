@@ -57,10 +57,12 @@ public class WatermarkDrawer implements FSObjectDrawer {
                     try {
                         String fontStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-family");
                         if(StringUtil.isBlank(fontStr)){
-                            fontStr = "ZWenYi";
+                            fontStr = "HKTSongW9";
                         }
                         String colorStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"color");
-
+                        if(StringUtil.isBlank(colorStr)){
+                            colorStr = "red";
+                        }
                         if(colorStr.toLowerCase().indexOf("rgb") < 0 && colorStr.toLowerCase().indexOf("#") < 0){
                             Field field = Class.forName("java.awt.Color").getField(colorStr);
                             colorRGB =  (Color)field.get(null);

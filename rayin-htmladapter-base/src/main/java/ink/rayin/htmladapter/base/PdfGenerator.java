@@ -38,7 +38,7 @@ import java.util.LinkedHashSet;
  * @author Janah Wang / 王柱
  */
 public interface PdfGenerator {
-    String defaultFontName = "ZWenYi";
+    String defaultFontName = "HKSongw7";
     String sign = "80550ec4bfc10691e6c45aa88de3f62e";
     /**
      * 根据模板配置文件路径生成pdf
