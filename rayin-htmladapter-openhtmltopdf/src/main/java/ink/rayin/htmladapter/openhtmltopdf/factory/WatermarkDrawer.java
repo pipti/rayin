@@ -51,7 +51,7 @@ public class WatermarkDrawer implements FSObjectDrawer {
 
                     double realWidth = width / dotsPerPixel;
                     double realHeight = height / dotsPerPixel;
-                    float fontSize = 20f;
+                    float fontSize = 25f;
                     Font font;
                     Color colorRGB = Color.RED;
                     try {
@@ -92,7 +92,6 @@ public class WatermarkDrawer implements FSObjectDrawer {
                         String fontSizeStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-size");
 
                         // TODO
-
                         if(StringUtil.isNotBlank(fontSizeStr)){
                             if(fontSizeStr.indexOf("px") > 0){
                                 fontSizeStr = fontSizeStr.replace("px","");
@@ -142,7 +141,7 @@ public class WatermarkDrawer implements FSObjectDrawer {
                             for(int j = 0; j< colCount; j++){
                                 g2d.drawString(e.getAttribute("value"),
                                         (float) (j * bounds.getWidth() * 2),
-                                        (float) (i * bounds.getHeight() * 2));
+                                        (float) (i * bounds.getHeight() * 3));
                             }
                          }
 
