@@ -289,17 +289,17 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         //将字体写入内存
                         byte[] fontByte = ResourceUtil.getResourceAsByte(jarfile.getAbsolutePath()).toByteArray();
 
-                        final String  fontName = readFontName(jarfile);
-                        log.debug(fontName);
-                        fontFileCacheIsb.put(fontName,fontByte);
-                        fontNames.add(fontName);
-                        fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
-                            @Override
-                            public InputStream supply() {
-                                log.debug("readFontName Requesting font");
-                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
-                            }
-                        });
+//                        final String  fontName = readFontPSName(jarfile);
+//                        log.debug(fontName);
+//                        fontFileCacheIsb.put(fontName,fontByte);
+//                        fontNames.add(fontName);
+//                        fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
+//                            @Override
+//                            public InputStream supply() {
+//                                log.debug("readFontName Requesting font");
+//                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
+//                            }
+//                        });
 
                         final String  fontPSName = readFontPSName(jarfile);
                         fontFileCacheIsb.put(fontPSName,fontByte);
