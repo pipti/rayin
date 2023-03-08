@@ -25,7 +25,6 @@ import com.openhtmltopdf.latexsupport.LaTeXDOMMutator;
 import com.openhtmltopdf.mathmlsupport.MathMLDrawer;
 import com.openhtmltopdf.objects.jfreechart.JFreeChartBarDiagramObjectDrawer;
 import com.openhtmltopdf.objects.jfreechart.JFreeChartPieDiagramObjectDrawer;
-import com.openhtmltopdf.objects.zxing.ZXingObjectDrawer;
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.openhtmltopdf.render.DefaultObjectDrawerFactory;

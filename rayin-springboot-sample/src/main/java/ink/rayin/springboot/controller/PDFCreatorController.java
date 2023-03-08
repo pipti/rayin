@@ -35,13 +35,12 @@ public class PDFCreatorController {
      * @param jsonData
      * @return
      */
-    @GetMapping(value = "/pdf/create/tpl/{tplName}/file", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/pdf/create/tpl/{tplName}/file", produces = MediaType.APPLICATION_JSON_VALUE)
     public void pdfCreateByTplToFile(@PathVariable("tplName") String tplName, @RequestBody JSONObject jsonData) throws Exception {
         // 生成pdf路径
         // generate pdf path
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
-        String outputFile = new File(outputFileClass)
-                .getParentFile().getParent()
+        //String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+        String outputFile = "."
                 + "/tmp/"
                 + "example01_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
         pdfGenerator.generatePdfFileByTplConfigFile("tpl/"+tplName + "/tpl.json" , jsonData, outputFile);
