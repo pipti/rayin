@@ -230,13 +230,27 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
 
                     final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));
+                    final String  fontPSName = readFontPSName(f);
+                    if(!fontFileName.equals(fontPSName)){
+                        log.warn("⚠️⚠️⚠️It is found that the font file name: " + fontFileName+ " ≠ font PSName: " + fontPSName + ". If the font is finally deployed as a jar package under the project resource/fonts, the font family in the component should use the PSName, or change the font file name to be consistent with the PSName！");
+                    }
                     fontFileCacheIsb.put(fontFileName,fontByte);
+                    fontFileCacheIsb.put(fontPSName,fontByte);
+
                     fontNames.add(fontFileName);
+                    fontNames.add(fontPSName);
                     fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
                         @Override
                         public InputStream supply() {
                             //logger.debug("font file name Requesting font：" + fontFileName);
                             return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
+                        }
+                    });
+                    fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
+                        @Override
+                        public InputStream supply() {
+                            //logger.debug("font file name Requesting font：" + fontFileName);
+                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
                         }
                     });
 
@@ -274,16 +288,17 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         //将字体写入内存
                         byte[] fontByte = ResourceUtil.getResourceAsByte(jarfile.getAbsolutePath()).toByteArray();
 
-                        final String  fontName = readFontName(jarfile);
-                        fontFileCacheIsb.put(fontName,fontByte);
-                        fontNames.add(fontName);
-                        fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
-                            @Override
-                            public InputStream supply() {
-                                log.debug("readFontName Requesting font");
-                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
-                            }
-                        });
+//                        final String  fontName = readFontPSName(jarfile);
+//                        log.debug(fontName);
+//                        fontFileCacheIsb.put(fontName,fontByte);
+//                        fontNames.add(fontName);
+//                        fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
+//                            @Override
+//                            public InputStream supply() {
+//                                log.debug("readFontName Requesting font");
+//                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
+//                            }
+//                        });
 
                         final String  fontPSName = readFontPSName(jarfile);
                         fontFileCacheIsb.put(fontPSName,fontByte);
@@ -327,13 +342,27 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
 
                     final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));
+                    final String fontPSName = readFontPSName(f);
+                    if(!fontFileName.equals(fontPSName)){
+                        log.warn("⚠️⚠️⚠️It is found that the font file name: " + fontFileName+ " ≠ the font PSName: " + fontPSName + ". If the font is finally deployed as a jar package under the project resource/fonts, the font family in the component should use the PSName, or change the font file name to be consistent with the PSName！");
+                    }
                     fontFileCacheIsb.put(fontFileName,fontByte);
+                    fontFileCacheIsb.put(fontPSName,fontByte);
+
                     fontNames.add(fontFileName);
+                    fontNames.add(fontPSName);
                     fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
                         @Override
                         public InputStream supply() {
                             //logger.debug("font file name Requesting font");
                             return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
+                        }
+                    });
+                    fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
+                        @Override
+                        public InputStream supply() {
+                            //logger.debug("font file name Requesting font");
+                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
                         }
                     });
 
@@ -422,13 +451,26 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                     byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
 
                     final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));
+                    final String readFontPSName = readFontPSName(f);
+
                     fontFileCacheIsb.put(fontFileName,fontByte);
+                    fontFileCacheIsb.put(readFontPSName,fontByte);
+
                     fontNames.add(fontFileName);
+                    fontNames.add(readFontPSName);
                     fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
                         @Override
                         public InputStream supply() {
                             //logger.debug("font file name Requesting font");
                             return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
+                        }
+                    });
+
+                    fontFSSupplierCache.put(readFontPSName,new FSSupplier<InputStream>() {
+                        @Override
+                        public InputStream supply() {
+                            //logger.debug("font file name Requesting font");
+                            return new ByteArrayInputStream(fontFileCacheIsb.get(readFontPSName));
                         }
                     });
 

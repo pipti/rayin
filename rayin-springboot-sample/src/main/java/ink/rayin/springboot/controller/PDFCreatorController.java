@@ -35,13 +35,11 @@ public class PDFCreatorController {
      * @param jsonData
      * @return
      */
-    @PostMapping(value = "/pdf/create/tpl/{tplName}/file", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/pdf/create/tpl/{tplName}/file", produces = MediaType.APPLICATION_JSON_VALUE)
     public void pdfCreateByTplToFile(@PathVariable("tplName") String tplName, @RequestBody JSONObject jsonData) throws Exception {
         // 生成pdf路径
         // generate pdf path
-        //String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
-        String outputFile = "."
-                + "/tmp/"
+        String outputFile = "./tmp/"
                 + "example01_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
         pdfGenerator.generatePdfFileByTplConfigFile("tpl/"+tplName + "/tpl.json" , jsonData, outputFile);
     }
@@ -70,9 +68,7 @@ public class PDFCreatorController {
         // 生成pdf路径
         // generate pdf path
         String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
-        String outputFile = new File(outputFileClass)
-                .getParentFile().getParent()
-                + "/tmp/"
+        String outputFile = "./tmp/"
                 + templateId + "_"+System.currentTimeMillis() + ".pdf";
         pdfGenerator.generatePdfFileByTplConfigFile("tpl/" + templateId + "/tpl.json" , outputData, outputFile);
     }
