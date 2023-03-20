@@ -95,11 +95,13 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         Font f = Font.createFont(Font.TRUETYPE_FONT, font);
         return f.getPSName();
     }
-    @SneakyThrows
-    private String readFontName(File font) {
-        Font f = Font.createFont(Font.TRUETYPE_FONT, font);
-        return f.getFontName();
-    }
+    // 2023-03-20 openjdk 读取字体文件如果字体文件没有fontname 则会报错
+    // 统一修改为只读取psname
+//    @SneakyThrows
+//    private String readFontName(File font) {
+//        Font f = Font.createFont(Font.TRUETYPE_FONT, font);
+//        return f.getFontName();
+//    }
 
     public static void init() {
         synchronized(OpenhttptopdfRendererObjectFactory.class) {
@@ -401,16 +403,16 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         //将字体写入内存
                         byte[] fontByte = ResourceUtil.getResourceAsByte(jarfile.getAbsolutePath()).toByteArray();
 
-                        final String  fontName = readFontName(jarfile);
-                        fontFileCacheIsb.put(fontName,fontByte);
-                        fontNames.add(fontName);
-                        fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
-                            @Override
-                            public InputStream supply() {
-                                log.debug("read font name Requesting font");
-                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
-                            }
-                        });
+//                        final String  fontName = readFontName(jarfile);
+//                        fontFileCacheIsb.put(fontName,fontByte);
+//                        fontNames.add(fontName);
+                        //fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
+//                            @Override
+//                            public InputStream supply() {
+//                                log.debug("read font name Requesting font");
+//                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
+//                            }
+//                        });
 
                         final String  fontPSName = readFontPSName(jarfile);
                         fontFileCacheIsb.put(fontPSName,fontByte);
