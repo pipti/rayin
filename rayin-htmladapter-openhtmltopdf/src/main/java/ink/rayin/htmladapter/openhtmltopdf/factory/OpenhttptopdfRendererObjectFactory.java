@@ -92,8 +92,13 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
     @SneakyThrows
     private String readFontPSName(File font) {
-        Font f = Font.createFont(Font.TRUETYPE_FONT, font);
-        return f.getPSName();
+        try{
+            Font f = Font.createFont(Font.TRUETYPE_FONT, font);
+            return f.getPSName();
+        }catch(FontFormatException e){
+            log.error("!!! font psname read error:" + font.getAbsolutePath(),e);
+        }
+        return "";
     }
     // 2023-03-20 openjdk 读取字体文件如果字体文件没有fontname 则会报错
     // 统一修改为只读取psname
