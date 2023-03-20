@@ -96,17 +96,21 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
             Font f = Font.createFont(Font.TRUETYPE_FONT, font);
             return f.getPSName();
         }catch(FontFormatException e){
-            log.error("!!! font psname read error:" + font.getAbsolutePath(),e);
+            log.warn("⚠️⚠️⚠️font psname read error:" + font.getAbsolutePath(),e);
         }
-        return "";
+        return null;
     }
-    // 2023-03-20 openjdk 读取字体文件如果字体文件没有fontname 则会报错
-    // 统一修改为只读取psname
-//    @SneakyThrows
-//    private String readFontName(File font) {
-//        Font f = Font.createFont(Font.TRUETYPE_FONT, font);
-//        return f.getFontName();
-//    }
+
+    @SneakyThrows
+    private String readFontName(File font) {
+        try{
+            Font f = Font.createFont(Font.TRUETYPE_FONT, font);
+            return f.getFontName();
+        }catch(FontFormatException e){
+            log.warn("⚠️⚠️⚠️font psname read error:" + font.getAbsolutePath(),e);
+        }
+        return null;
+    }
 
     public static void init() {
         synchronized(OpenhttptopdfRendererObjectFactory.class) {
@@ -139,20 +143,6 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         cFontPathDirectory = customizeFontPathDirectory;
         init();
     }
-
-//    /**
-//     * 初始化-线程池参数
-//     * @param minIdle 最小线程
-//     * @param maxIdle 最大空闲
-//     * @param maxTotal 最大线程总数
-//     * @throws Exception
-//     */
-//    public static void init(int minIdle,int maxIdle,int maxTotal) throws Exception {
-//        MinIdle = minIdle;
-//        MaxIdle = maxIdle;
-//        MaxTotal = maxTotal;
-//        init();
-//    }
 
     /**
      * 初始化-线程池参数
@@ -204,55 +194,69 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      */
     @SneakyThrows
     private void FontCache(){
-        File fontsLocalDir = null;
-        Resource fontsResource = ResourceUtil.getResource("fonts");
-
-        File fontsFile = null;
-        URL fontsUrl = null;
-        try{
-            if(fontsResource.getURL().toString().lastIndexOf(".jar") > 0){
-                fontsUrl = fontsResource.getURL();
-            }else{
-                fontsFile = fontsResource.getFile();
-            }
-        }catch (FileNotFoundException e){
-            log.warn("No extend fonts and no load extend fonts resources!");
+        log.info("▶▶▶ adding base fonts  ▶▶▶");
+        addFontsFromResource("rayin_default_fonts");
+        log.info("▶▶▶ adding package fonts ▶▶▶ ");
+        addFontsFromResource("fonts");
+        log.info("▶▶▶ adding config fonts ▶▶▶");
+        if(cFontPathDirectory != null){
+            addFontsFromResource(cFontPathDirectory);
         }
 
-        if(fontsFile != null) {
-            fontsLocalDir = fontsFile;
 
-            if (fontsLocalDir != null && fontsLocalDir.isDirectory()) {
-                List<File> flist = new ArrayList<File>();
-                dirAllFontFiles(fontsLocalDir,flist);
+        if(fontNames.size() != 0){
+            log.info("◕‿◕ added fonts info ◕‿◕");
 
-                for (int i = 0; i < flist.size(); i++) {
-                    File f = flist.get(i);
-                    if (f == null || f.isDirectory()) {
-                        break;
+            log.info("ThreadId:" + Thread.currentThread().getId() + ",added fonts info：");
+            fontNames.forEach((v)->{
+                log.info(v);
+            });
+        }
+    }
+
+    private void addFontsFromResource(String resourcePath) throws IOException {
+        Resource fontResource = ResourceUtil.getResource(resourcePath);
+        URL fontUrl = fontResource.getURL();
+        if(fontUrl.getPath().indexOf(".jar!") > 0){
+            addFontsFromJar(fontUrl);
+        }else{
+            File cFontsFile = fontResource.getFile();
+            addFontsFromDir(cFontsFile);
+        }
+    }
+
+    private void addFontsFromDir(File fontsLocalDir) throws IOException {
+        if (fontsLocalDir != null && fontsLocalDir.isDirectory()) {
+            List<File> flist = new ArrayList<File>();
+            dirAllFontFiles(fontsLocalDir, flist);
+
+            for (int i = 0; i < flist.size(); i++) {
+                File f = flist.get(i);
+                if (f == null || f.isDirectory()) {
+                    break;
+                }
+                log.debug("add extend local font =>" + f.getAbsolutePath());
+
+                //将字体写入内存
+                byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
+
+                final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));
+                log.debug("fontFileName=>" + fontFileName);
+                fontFileCacheIsb.put(fontFileName,fontByte);
+                fontNames.add(fontFileName);
+                fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
+                    @Override
+                    public InputStream supply() {
+                        //logger.debug("font file name Requesting font：" + fontFileName);
+                        return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
                     }
-                    log.debug("add extend local font =>" + f.getAbsolutePath());
+                });
 
-                    //将字体写入内存
-                    byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
-
-                    final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));
-                    final String  fontPSName = readFontPSName(f);
-                    if(!fontFileName.equals(fontPSName)){
-                        log.warn("⚠️⚠️⚠️It is found that the font file name: " + fontFileName+ " ≠ font PSName: " + fontPSName + ". If the font is finally deployed as a jar package under the project resource/fonts, the font family in the component should use the PSName, or change the font file name to be consistent with the PSName！");
-                    }
-                    fontFileCacheIsb.put(fontFileName,fontByte);
+                final String  fontPSName = readFontPSName(f);
+                if(fontPSName != null){
+                    log.debug("fontPSName=>" + fontPSName);
                     fontFileCacheIsb.put(fontPSName,fontByte);
-
-                    fontNames.add(fontFileName);
                     fontNames.add(fontPSName);
-                    fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
-                        @Override
-                        public InputStream supply() {
-                            //logger.debug("font file name Requesting font：" + fontFileName);
-                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
-                        }
-                    });
                     fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
                         @Override
                         public InputStream supply() {
@@ -260,13 +264,28 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                             return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
                         }
                     });
-
                 }
+
+                final String  fontName = readFontName(f);
+                if(fontName != null){
+                    log.debug("fontName=>" + fontName);
+                    fontFileCacheIsb.put(fontName,fontByte);
+                    fontNames.add(fontName);
+                    fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
+                        @Override
+                        public InputStream supply() {
+                            //logger.debug("font file name Requesting font：" + fontFileName);
+                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
+                        }
+                    });
+                }
+
             }
         }
+    }
 
+    private void addFontsFromJar(URL fontsUrl) throws IOException {
         JarURLConnection jarURLConnection = null;
-
         if(fontsUrl != null){
             try {
                 jarURLConnection = (JarURLConnection) fontsUrl.openConnection();
@@ -290,33 +309,55 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                         File jarfile = inputStreamToFile(jarFile.getInputStream(jarEntry),jarFileName.substring(jarFileName.lastIndexOf("/"),jarFileName.lastIndexOf(".")),
                                 jarFileName.substring(jarFileName.lastIndexOf(".")) );
                         fontTmpPath = jarfile.getAbsolutePath();
+
+                        log.debug("jarFileName => " + jarFileName);
                         log.debug("extend jar font save to tmpdir => " + fontTmpPath);
 
                         //将字体写入内存
                         byte[] fontByte = ResourceUtil.getResourceAsByte(jarfile.getAbsolutePath()).toByteArray();
 
-//                        final String  fontName = readFontPSName(jarfile);
-//                        log.debug(fontName);
-//                        fontFileCacheIsb.put(fontName,fontByte);
-//                        fontNames.add(fontName);
-//                        fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
-//                            @Override
-//                            public InputStream supply() {
-//                                log.debug("readFontName Requesting font");
-//                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
-//                            }
-//                        });
-
-                        final String  fontPSName = readFontPSName(jarfile);
-                        fontFileCacheIsb.put(fontPSName,fontByte);
-                        fontNames.add(fontPSName.replace(" ",""));
-                        fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
+                        final String fontFileName = jarFileName.substring(jarFileName.lastIndexOf("/") + 1,jarFileName.lastIndexOf("."));
+                        fontFileCacheIsb.put(fontFileName,fontByte);
+                        fontNames.add(fontFileName);
+                        log.debug("jarFontFileName => " + fontFileName);
+                        fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
                             @Override
                             public InputStream supply() {
                                 log.debug("read font PSName Requesting font");
-                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
+                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
                             }
                         });
+
+
+                        final String  fontName = readFontName(jarfile);
+                        if(fontName != null){
+                            log.debug("fontName=>" + fontName);
+                            fontFileCacheIsb.put(fontName,fontByte);
+                            fontNames.add(fontName);
+                            fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
+                                @Override
+                                public InputStream supply() {
+                                    log.debug("readFontName Requesting font");
+                                    return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
+                                }
+                            });
+                        }
+
+
+                        final String  fontPSName = readFontPSName(jarfile);
+                        if(fontPSName != null){
+                            log.debug("fontPSName=>" + fontPSName);
+                            fontFileCacheIsb.put(fontPSName,fontByte);
+                            fontNames.add(fontPSName.replace(" ",""));
+                            fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
+                                @Override
+                                public InputStream supply() {
+                                    log.debug("read font PSName Requesting font");
+                                    return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
+                                }
+                            });
+                        }
+
 
                         //TODO 临时文件也有可能升级，最好不要使用FILE读取
                         jarfile.delete();
@@ -328,175 +369,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                 return;
             }
         }
-        //自定义的字体路径
-        if(StringUtil.isNotBlank(cFontPathDirectory)){
-            Resource defaultFontResource = ResourceUtil.getResource(cFontPathDirectory);
-            File cFontsFile = defaultFontResource.getFile();
-            //fontsLocalDir = cFontsFile;
-
-            if (cFontsFile.isDirectory()) {
-                List<File> flist = new ArrayList<File>();
-                dirAllFontFiles(cFontsFile,flist);
-
-                for (int i = 0; i < flist.size(); i++) {
-                    File f = flist.get(i);
-                    if (f == null || f.isDirectory()) {
-                        break;
-                    }
-                    log.debug("add extend local font =>" + f.getAbsolutePath());
-
-                    //将字体写入内存
-                    byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
-
-                    final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));
-                    final String fontPSName = readFontPSName(f);
-                    if(!fontFileName.equals(fontPSName)){
-                        log.warn("⚠️⚠️⚠️It is found that the font file name: " + fontFileName+ " ≠ the font PSName: " + fontPSName + ". If the font is finally deployed as a jar package under the project resource/fonts, the font family in the component should use the PSName, or change the font file name to be consistent with the PSName！");
-                    }
-                    fontFileCacheIsb.put(fontFileName,fontByte);
-                    fontFileCacheIsb.put(fontPSName,fontByte);
-
-                    fontNames.add(fontFileName);
-                    fontNames.add(fontPSName);
-                    fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
-                        @Override
-                        public InputStream supply() {
-                            //logger.debug("font file name Requesting font");
-                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
-                        }
-                    });
-                    fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
-                        @Override
-                        public InputStream supply() {
-                            //logger.debug("font file name Requesting font");
-                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
-                        }
-                    });
-
-                }
-            }
-        }
-
-        //base包默认字体
-        Resource defaultFontResource = ResourceUtil.getResource("rayin_default_fonts");
-        URL defaultFontUrl = defaultFontResource.getURL();
-        if(defaultFontUrl.getPath().indexOf(".jar!") > 0){
-            try {
-                jarURLConnection = (JarURLConnection) defaultFontUrl.openConnection();
-                if(jarURLConnection == null){
-                    log.warn("No default fonts and no load default fonts resources!");
-                    return;
-                    // return fontResolver;
-                }
-                JarFile jarFile = jarURLConnection.getJarFile();
-                Enumeration<JarEntry> jarEntrys = jarFile.entries();
-                JarEntry jarEntry ;
-                String fontTmpPath;
-                String jarFileName;
-                //File jarfile;
-                while (jarEntrys.hasMoreElements()) {
-                    jarEntry = jarEntrys.nextElement();
-                    jarFileName = jarEntry.getName();
-
-                    if(jarEntry.isDirectory() || ".afm;.pfm;.ttf;.otf;.ttc".indexOf(jarFileName.substring(jarFileName.lastIndexOf(".")).toLowerCase()) < 0){
-                    }else{
-                        File jarfile = inputStreamToFile(jarFile.getInputStream(jarEntry),jarFileName.substring(jarFileName.lastIndexOf("/"),jarFileName.lastIndexOf(".")),
-                                jarFileName.substring(jarFileName.lastIndexOf(".")) );
-                        fontTmpPath = jarfile.getAbsolutePath();
-                        log.debug("default font save to tmpdir => " + fontTmpPath);
-
-                        //将字体写入内存
-                        byte[] fontByte = ResourceUtil.getResourceAsByte(jarfile.getAbsolutePath()).toByteArray();
-
-//                        final String  fontName = readFontName(jarfile);
-//                        fontFileCacheIsb.put(fontName,fontByte);
-//                        fontNames.add(fontName);
-                        //fontFSSupplierCache.put(fontName,new FSSupplier<InputStream>() {
-//                            @Override
-//                            public InputStream supply() {
-//                                log.debug("read font name Requesting font");
-//                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontName));
-//                            }
-//                        });
-
-                        final String  fontPSName = readFontPSName(jarfile);
-                        fontFileCacheIsb.put(fontPSName,fontByte);
-                        fontNames.add(fontPSName.replace(" ",""));
-                        fontFSSupplierCache.put(fontPSName,new FSSupplier<InputStream>() {
-                            @Override
-                            public InputStream supply() {
-                                log.debug("read font PSName Requesting font");
-                                return new ByteArrayInputStream(fontFileCacheIsb.get(fontPSName));
-                            }
-                        });
-
-                        //TODO 临时文件也有可能升级，最好不要使用FILE读取
-                        jarfile.delete();
-                    }
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-        }else{
-            File cFontsFile = defaultFontResource.getFile();
-            //fontsLocalDir = cFontsFile;
-
-            if (cFontsFile.isDirectory()) {
-                List<File> flist = new ArrayList<File>();
-                dirAllFontFiles(cFontsFile,flist);
-
-                for (int i = 0; i < flist.size(); i++) {
-                    File f = flist.get(i);
-                    if (f == null || f.isDirectory()) {
-                        break;
-                    }
-                    log.debug("add default local font =>" + f.getAbsolutePath());
-
-                    //将字体写入内存
-                    byte[] fontByte = ResourceUtil.getResourceAsByte(f.getAbsolutePath()).toByteArray();
-
-                    final String  fontFileName = f.getName().substring(0,f.getName().indexOf("."));
-                    final String readFontPSName = readFontPSName(f);
-
-                    fontFileCacheIsb.put(fontFileName,fontByte);
-                    fontFileCacheIsb.put(readFontPSName,fontByte);
-
-                    fontNames.add(fontFileName);
-                    fontNames.add(readFontPSName);
-                    fontFSSupplierCache.put(fontFileName,new FSSupplier<InputStream>() {
-                        @Override
-                        public InputStream supply() {
-                            //logger.debug("font file name Requesting font");
-                            return new ByteArrayInputStream(fontFileCacheIsb.get(fontFileName));
-                        }
-                    });
-
-                    fontFSSupplierCache.put(readFontPSName,new FSSupplier<InputStream>() {
-                        @Override
-                        public InputStream supply() {
-                            //logger.debug("font file name Requesting font");
-                            return new ByteArrayInputStream(fontFileCacheIsb.get(readFontPSName));
-                        }
-                    });
-
-                }
-            }
-        }
-
-        if(fontNames.size() != 0){
-            log.info("added fonts info：");
-
-            log.info("ThreadId:" + Thread.currentThread().getId() + ",added fonts info：");
-            fontNames.forEach((v)->{
-                log.info(v);
-            });
-        }
-
-
     }
-
     public static HashMap<String, byte[]> getFontCacheInfo(){
         return fontFileCacheIsb;
     }
