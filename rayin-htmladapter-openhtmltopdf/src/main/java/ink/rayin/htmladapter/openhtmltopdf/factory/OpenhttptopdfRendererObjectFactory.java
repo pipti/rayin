@@ -215,13 +215,19 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
     }
 
     private void addFontsFromResource(String resourcePath) throws IOException {
-        Resource fontResource = ResourceUtil.getResource(resourcePath);
-        URL fontUrl = fontResource.getURL();
-        if(fontUrl.getPath().indexOf(".jar!") > 0){
-            addFontsFromJar(fontUrl);
-        }else{
-            File cFontsFile = fontResource.getFile();
-            addFontsFromDir(cFontsFile);
+        Resource fontsResource = ResourceUtil.getResource(resourcePath);
+        File fontsFile = null;
+        URL fontsUrl = null;
+        try{
+            if(fontsResource.getURL().toString().lastIndexOf(".jar") > 0){
+                fontsUrl = fontsResource.getURL();
+                addFontsFromJar(fontsUrl);
+            }else{
+                fontsFile = fontsResource.getFile();
+                addFontsFromDir(fontsFile);
+            }
+        }catch (FileNotFoundException e){
+            log.warn("No extend fonts and no load extend fonts resources!");
         }
     }
 
