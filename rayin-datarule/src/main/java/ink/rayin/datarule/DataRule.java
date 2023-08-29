@@ -11,6 +11,7 @@ import groovy.transform.ThreadInterrupt;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import ink.rayin.tools.utils.DigestUtil;
 import ink.rayin.tools.utils.ResourceUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -142,8 +143,9 @@ public class DataRule {
      * @param scriptString 脚本字符串
      * @return 数据对象
      */
+    @SneakyThrows
     public Object executeGroovyScript(JSONObject data, JSONObject otherData, String dataName,
-                                           String otherDataName, String scriptString)  {
+                                           String otherDataName, String scriptString){
         Binding binding = new Binding();
         binding.setProperty(dataName, data);
         binding.setProperty(otherDataName, otherData);
@@ -161,20 +163,20 @@ public class DataRule {
         groovyScript.setBinding(binding);
 
         Future<Object> future = threadPool.submit((Callable<Object>) groovyScript::run);
-        try{
+        //try{
             return future.get(30, TimeUnit.SECONDS);
-        }catch (TimeoutException exception) {
-            future.cancel(true);
-            log.error("TimeoutException,try cancel future task, is cancelled", exception);
-            //do something else
-        }catch (InterruptedException  exception){
-            future.cancel(true);
-            log.error("InterruptedException,try cancel future task, is cancelled" , exception);
-        }catch (ExecutionException exception){
-            future.cancel(true);
-            log.error("ExecutionException,try cancel future task, is cancelled" , exception);
-        }
-        return null;
+//        }catch (TimeoutException exception) {
+//            future.cancel(true);
+//            log.error("TimeoutException,try cancel future task, is cancelled", exception);
+//            //do something else
+//        }catch (InterruptedException  exception){
+//            future.cancel(true);
+//            log.error("InterruptedException,try cancel future task, is cancelled" , exception);
+//        }catch (ExecutionException exception){
+//            future.cancel(true);
+//            log.error("ExecutionException,try cancel future task, is cancelled" , exception);
+//        }
+//        return null;
     }
 
     /**

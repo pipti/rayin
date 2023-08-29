@@ -5,18 +5,18 @@
     <parent>
         <artifactId>rayin-parent</artifactId>
         <groupId>ink.rayin</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <packaging>jar</packaging>
 
     <properties>
         <!-- Define the version of OPEN HTML TO PDF in the properties section of your POM. -->
         <openhtml.version>1.0.10</openhtml.version>
-        <pdfbox.version>2.0.27</pdfbox.version>
+        <pdfbox.version>2.0.29</pdfbox.version>
     </properties>
 
     <dependencies>
@@ -45,6 +45,10 @@
                 <exclusion>
                     <groupId>org.apache.pdfbox</groupId>
                     <artifactId>pdfbox</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pdfbox</groupId>
+                    <artifactId>fontbox</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
