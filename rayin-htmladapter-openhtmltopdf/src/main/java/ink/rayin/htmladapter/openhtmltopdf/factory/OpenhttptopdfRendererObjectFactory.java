@@ -31,7 +31,6 @@ import com.openhtmltopdf.render.DefaultObjectDrawerFactory;
 import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
 import com.openhtmltopdf.util.XRLog;
 import ink.rayin.tools.utils.ResourceUtil;
-import ink.rayin.tools.utils.StringUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.PooledObject;
@@ -458,7 +457,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         factory.registerDrawer("image/barcode", new ZXingObjectDrawer());
         factory.registerDrawer("jfreechart/pie", new JFreeChartPieDiagramObjectDrawer());
         factory.registerDrawer("jfreechart/bar", new JFreeChartBarDiagramObjectDrawer());
-        factory.registerDrawer("font/watermark", new WatermarkDrawer(fontFSSupplierCache));
+        factory.registerDrawer("font/watermark", new FontWatermarkDrawer(fontFSSupplierCache));
         builder.useObjectDrawerFactory(factory);
         openhttptopdfRenderBuilder.setPdfRendererBuilder(builder);
 

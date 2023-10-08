@@ -30,14 +30,14 @@ import java.util.regex.Pattern;
  * @author Jonah Wang
  */
 @Slf4j
-public class WatermarkDrawer implements FSObjectDrawer {
+public class FontWatermarkDrawer implements FSObjectDrawer {
     HashMap<String, FSSupplier<InputStream>> fontCache;
 
-    public WatermarkDrawer(HashMap<String, FSSupplier<InputStream>> fontCache){
+    public FontWatermarkDrawer(HashMap<String, FSSupplier<InputStream>> fontCache){
         this.fontCache = fontCache;
     }
 
-    public WatermarkDrawer() {
+    public FontWatermarkDrawer() {
     }
 
     @Override
@@ -79,7 +79,7 @@ public class WatermarkDrawer implements FSObjectDrawer {
             String opacity = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"opacity");
            // String value = e.getAttribute("value");
             String colorStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"color");
-            String degStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"rotate");
+            String degStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"transform");
 
 
 
@@ -100,6 +100,9 @@ public class WatermarkDrawer implements FSObjectDrawer {
                     int g = Integer.parseInt(rgb[1].trim());
                     int b = Integer.parseInt(rgb[2].trim());
                     colorRGB = new Color(r,g,b);
+                }else{
+                    Class objectName = Class.forName("java.awt.Color." + colorStr.toUpperCase());
+                    colorRGB = (Color) objectName.newInstance();
                 }
             }
 //                        if(StringUtil.isNotBlank(colorStr)){
@@ -161,9 +164,9 @@ public class WatermarkDrawer implements FSObjectDrawer {
 
                         float fontWidth = (float)bounds.getWidth();
                         float fontHeight = (float)bounds.getHeight();
-                        int deg = 45;
+                        int deg = 30;
                         if(StringUtil.isNotBlank(degStr)){
-                            String regex = "\\d+";
+                            String regex = "(?<=[rotate(])\\d+(?=[deg)])";
                             Pattern pattern = Pattern.compile(regex);
                             Matcher matcher = pattern.matcher(degStr);
 
@@ -173,17 +176,16 @@ public class WatermarkDrawer implements FSObjectDrawer {
                                 break;
                             }
                         }
-                       // fontHeight = fontHeight*deg;
-                       // fontWidth = fontWidth/deg;
+
                         // 旋转后的矩形宽高
                         // width = w*cosα + h*sinα
                         // height = h*cosα + w*sinα
 
-                        float rotateWidth = fontWidth * (float)Math.cos(deg) + fontHeight * (float)Math.sin(deg);
-                        float rotateHeight = fontHeight * (float)Math.cos(deg) + fontWidth * (float)Math.sin(deg);
-                        // 根据纸张大小添加水印，30度倾斜
-                        for (int h = 0; h < pageHeight; h = h + (int)fontHeight + 50) {
-                            for (int w = 0; w < pageWidth; w = w + (int)fontWidth + 50) {
+                        float rotateWidth = fontWidth * (float)Math.cos(Math.toRadians(deg)) + fontHeight * (float)Math.sin(Math.toRadians(deg));
+                        float rotateHeight = fontHeight * (float)Math.cos(Math.toRadians(deg)) + fontWidth * (float)Math.sin(Math.toRadians(deg));
+                        // 根据纸张大小添加水印
+                        for (int h = 0; h < pageHeight; h = h + (int)rotateHeight + 50) {
+                            for (int w = 0; w < pageWidth; w = w + (int)rotateWidth + 50) {
                                 try {
                                     contentStream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(deg), w, h));
 
@@ -215,6 +217,8 @@ public class WatermarkDrawer implements FSObjectDrawer {
         } catch (IllegalAccessException ex) {
             throw new RuntimeException(ex);
         } catch (FontFormatException ex) {
+            throw new RuntimeException(ex);
+        } catch (InstantiationException ex) {
             throw new RuntimeException(ex);
         }
 
