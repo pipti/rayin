@@ -8,6 +8,12 @@ import com.openhtmltopdf.render.RenderingContext;
 import ink.rayin.htmladapter.base.utils.CSSParser;
 import ink.rayin.tools.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
+import org.apache.pdfbox.util.Matrix;
 import org.w3c.dom.Element;
 
 import java.awt.*;
@@ -17,9 +23,13 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+/**
+ * @author Jonah Wang
+ */
 @Slf4j
-@Deprecated
 public class WatermarkDrawer implements FSObjectDrawer {
     HashMap<String, FSSupplier<InputStream>> fontCache;
 
@@ -45,40 +55,53 @@ public class WatermarkDrawer implements FSObjectDrawer {
 //        } catch (IOException ex) {
 //            throw new RuntimeException(ex);
 //        }
+        PDPage page = ((PdfBoxOutputDevice) outputDevice).getPage();
+        try {
+            PDPageContentStream contentStream = new PDPageContentStream(((PdfBoxOutputDevice) outputDevice).getWriter(), page, PDPageContentStream.AppendMode.APPEND, true, true);
+            // 设置字体和字号
+            String fontSizeStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-size");
+            float fontSize;
+            // TODO
+            if(StringUtil.isNotBlank(fontSizeStr)){
+                if(fontSizeStr.indexOf("px") > 0){
+                    fontSizeStr = fontSizeStr.replace("px","");
+                    fontSize = Float.parseFloat(fontSizeStr)/dotsPerPixel;
+                }
+                if(fontSizeStr.indexOf("pt") > 0){
+                    fontSizeStr = fontSizeStr.replace("pt","");
+                    fontSize = Float.parseFloat(fontSizeStr);
+                }
+                fontSize = Float.parseFloat(fontSizeStr);
+            }else{
+                fontSize = 20;
+            }
+            String fontStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-family");
+            String opacity = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"opacity");
+           // String value = e.getAttribute("value");
+            String colorStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"color");
+            String degStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"rotate");
 
-        outputDevice.drawWithGraphics(0 , 0, (float) pageWidth*2,
-                (float) pageHeight*2, (Graphics2D g2d) -> {
 
-                    double realWidth = width / dotsPerPixel;
-                    double realHeight = height / dotsPerPixel;
-                    float fontSize = 25f;
-                    Font font;
-                    Color colorRGB = Color.RED;
-                    try {
-                        String fontStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-family");
-                        if(StringUtil.isBlank(fontStr)){
-                            fontStr = "HKTSongW9";
-                        }
-                        String colorStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"color");
-                        if(StringUtil.isBlank(colorStr)){
-                            colorStr = "red";
-                        }
-                        if(colorStr.toLowerCase().indexOf("rgb") < 0 && colorStr.toLowerCase().indexOf("#") < 0){
-                            Field field = Class.forName("java.awt.Color").getField(colorStr);
-                            colorRGB =  (Color)field.get(null);
-                        }else{
-                            if(colorStr.toLowerCase().indexOf("#") >= 0){
-                                colorRGB = Color.getColor(colorStr);
-                            }else if(colorStr.toLowerCase().indexOf("rgb") >= 0){
-                                String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
-//
-                                //int color = (int)Long.parseLong(colorStr, 16);
-                                int r = Integer.parseInt(rgb[0].trim());
-                                int g = Integer.parseInt(rgb[1].trim());
-                                int b = Integer.parseInt(rgb[2].trim());
-                                colorRGB = new Color(r,g,b);
-                            }
-                        }
+
+            if(StringUtil.isBlank(colorStr)){
+                colorStr = "red";
+            }
+            Color colorRGB = Color.RED;
+            if(colorStr.toLowerCase().indexOf("rgb") < 0 && colorStr.toLowerCase().indexOf("#") < 0){
+                Field field = Class.forName("java.awt.Color").getField(colorStr);
+                colorRGB =  (Color)field.get(null);
+            }else{
+                if(colorStr.toLowerCase().indexOf("#") >= 0){
+                    colorRGB = Color.getColor(colorStr);
+                }else if(colorStr.toLowerCase().indexOf("rgb") >= 0){
+                    String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
+                    //int color = (int)Long.parseLong(colorStr, 16);
+                    int r = Integer.parseInt(rgb[0].trim());
+                    int g = Integer.parseInt(rgb[1].trim());
+                    int b = Integer.parseInt(rgb[2].trim());
+                    colorRGB = new Color(r,g,b);
+                }
+            }
 //                        if(StringUtil.isNotBlank(colorStr)){
 //                            String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
 //
@@ -89,64 +112,212 @@ public class WatermarkDrawer implements FSObjectDrawer {
 //                            colorRGB = new Color(r,g,b);
 //                        }
 
-                        String fontSizeStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-size");
 
-                        // TODO
-                        if(StringUtil.isNotBlank(fontSizeStr)){
-                            if(fontSizeStr.indexOf("px") > 0){
-                                fontSizeStr = fontSizeStr.replace("px","");
-                                fontSize = Float.parseFloat(fontSizeStr)/dotsPerPixel;
-                            }
-                            if(fontSizeStr.indexOf("pt") > 0){
-                                fontSizeStr = fontSizeStr.replace("pt","");
-                                fontSize = Float.parseFloat(fontSizeStr);
-                            }
-                            fontSize = Float.parseFloat(fontSizeStr);
+            if(StringUtil.isBlank(fontStr)){
+                fontStr = "DFPSongW7";
+            }
+            if(StringUtil.isBlank(opacity)){
+                opacity = "0.5";
+            }
+
+            //String fontStr = "AlibabaPuHuiTi-Light";
+            //contentStream.setFont(fontStr, 36);
+
+            // PDFont font;
+            PDFont  font = PDType0Font.load(pdfBoxOutputDevice.getWriter(), fontCache.get(fontStr).supply(), true);
+
+
+            PDExtendedGraphicsState r = new PDExtendedGraphicsState();
+
+            // 设置透明度
+            r.setNonStrokingAlphaConstant(Float.parseFloat(opacity));
+            r.setAlphaSourceFlag(true);
+            contentStream.setGraphicsStateParameters(r);
+
+
+            // 设置水印字体颜色
+            //final int[] color = {0, 0, 0, 210};
+            contentStream.setNonStrokingColor(colorRGB);
+            // contentStream.setNonStrokingColor(color[0], color[1], color[2], color[3]);
+            contentStream.beginText();
+            contentStream.setFont(font, fontSize);
+
+            // 获取PDF页面大小
+//            float pageHeight = page.getMediaBox().getHeight();
+//            float pageWidth = page.getMediaBox().getWidth();
+
+            Font font2d;
+            Font parent = Font.createFont(Font.TRUETYPE_FONT, fontCache.get(fontStr).supply());
+
+            font2d = parent.deriveFont(fontSize);
+
+            outputDevice.drawWithGraphics(0 , 0, (float) pageWidth*2,
+                    (float) pageHeight*2, (Graphics2D g2d) -> {
+                        String value = e.getAttribute("value");
+                        if(StringUtil.isBlank(value)){
+                            value = "未设置value";
                         }
-                        Font parent = Font.createFont(Font.TRUETYPE_FONT, fontCache.get(fontStr).supply());
+                        Rectangle2D bounds = font2d.getStringBounds(value, g2d.getFontRenderContext());
 
-                        //Font parent = Font.createFont(Font.TRUETYPE_FONT, new File("/Users/eric/Documents/dev_projects/opensource/rayin/rayin-htmladapter-base/src/main/resources/rayin_default_fonts/FangSong.ttf"));
-                        font = parent.deriveFont(fontSize);
-                    } catch (FontFormatException | IOException e1) {
-                        e1.printStackTrace();
-                        throw new RuntimeException(e1);
-                    } catch (NoSuchFieldException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (ClassNotFoundException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (IllegalAccessException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                        float fontWidth = (float)bounds.getWidth();
+                        float fontHeight = (float)bounds.getHeight();
+                        int deg = 45;
+                        if(StringUtil.isNotBlank(degStr)){
+                            String regex = "\\d+";
+                            Pattern pattern = Pattern.compile(regex);
+                            Matcher matcher = pattern.matcher(degStr);
 
-                    Rectangle2D bounds = font.getStringBounds(e.getAttribute("value"), g2d.getFontRenderContext());
-
-                    String opacityStr = null;
-                    try {
-                        opacityStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"opacity");
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    float opacity = 0.3f;
-                    if(StringUtil.isNumeric(opacityStr)){
-                        opacity = Float.parseFloat(opacityStr);
-                    }
-
-                    g2d.setFont(font);
-                    g2d.setPaint(colorRGB);
-                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-                    int colCount = new Double(pageWidth/bounds.getWidth()*2).intValue();
-                    int rowCount = new Double(pageHeight/bounds.getHeight()*2).intValue();
-
-                        for(int i = 0; i< rowCount; i++){
-                            for(int j = 0; j< colCount; j++){
-                                g2d.drawString(e.getAttribute("value"),
-                                        (float) (j * bounds.getWidth() * 2),
-                                        (float) (i * bounds.getHeight() * 3));
+                            while (matcher.find()) {
+                                String number = matcher.group();
+                                deg = Integer.parseInt(number);
+                                break;
                             }
-                         }
+                        }
+                       // fontHeight = fontHeight*deg;
+                       // fontWidth = fontWidth/deg;
+                        // 旋转后的矩形宽高
+                        // width = w*cosα + h*sinα
+                        // height = h*cosα + w*sinα
+
+                        float rotateWidth = fontWidth * (float)Math.cos(deg) + fontHeight * (float)Math.sin(deg);
+                        float rotateHeight = fontHeight * (float)Math.cos(deg) + fontWidth * (float)Math.sin(deg);
+                        // 根据纸张大小添加水印，30度倾斜
+                        for (int h = 0; h < pageHeight; h = h + (int)fontHeight + 50) {
+                            for (int w = 0; w < pageWidth; w = w + (int)fontWidth + 50) {
+                                try {
+                                    contentStream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(deg), w, h));
+
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                                try {
+                                    contentStream.showText(value);
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            }
+                        }
+                    });
 
 
-                });
+
+            // 结束渲染，关闭流
+            contentStream.endText();
+            contentStream.restoreGraphicsState();
+            contentStream.close();
+
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        } catch (NoSuchFieldException ex) {
+            throw new RuntimeException(ex);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        } catch (IllegalAccessException ex) {
+            throw new RuntimeException(ex);
+        } catch (FontFormatException ex) {
+            throw new RuntimeException(ex);
+        }
+
+//        outputDevice.drawWithGraphics(0 , 0, (float) pageWidth*2,
+//                (float) pageHeight*2, (Graphics2D g2d) -> {
+//
+//                    double realWidth = width / dotsPerPixel;
+//                    double realHeight = height / dotsPerPixel;
+//                    float fontSize = 25f;
+//                    Font font;
+//                    Color colorRGB = Color.RED;
+//                    try {
+//                        String fontStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"font-family");
+//                        if(StringUtil.isBlank(fontStr)){
+//                            fontStr = "HKTSongW9";
+//                        }
+//                        String colorStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"color");
+//                        if(StringUtil.isBlank(colorStr)){
+//                            colorStr = "red";
+//                        }
+//                        if(colorStr.toLowerCase().indexOf("rgb") < 0 && colorStr.toLowerCase().indexOf("#") < 0){
+//                            Field field = Class.forName("java.awt.Color").getField(colorStr);
+//                            colorRGB =  (Color)field.get(null);
+//                        }else{
+//                            if(colorStr.toLowerCase().indexOf("#") >= 0){
+//                                colorRGB = Color.getColor(colorStr);
+//                            }else if(colorStr.toLowerCase().indexOf("rgb") >= 0){
+//                                String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
+////
+//                                //int color = (int)Long.parseLong(colorStr, 16);
+//                                int r = Integer.parseInt(rgb[0].trim());
+//                                int g = Integer.parseInt(rgb[1].trim());
+//                                int b = Integer.parseInt(rgb[2].trim());
+//                                colorRGB = new Color(r,g,b);
+//                            }
+//                        }
+////                        if(StringUtil.isNotBlank(colorStr)){
+////                            String[] rgb = colorStr.substring(4,colorStr.length() - 1).split(",");
+////
+////                            //int color = (int)Long.parseLong(colorStr, 16);
+////                            int r = Integer.parseInt(rgb[0].trim());
+////                            int g = Integer.parseInt(rgb[1].trim());
+////                            int b = Integer.parseInt(rgb[2].trim());
+////                            colorRGB = new Color(r,g,b);
+////                        }
+//
+//
+//                        // TODO
+//                        if(StringUtil.isNotBlank(fontSizeStr)){
+//                            if(fontSizeStr.indexOf("px") > 0){
+//                                fontSizeStr = fontSizeStr.replace("px","");
+//                                fontSize = Float.parseFloat(fontSizeStr)/dotsPerPixel;
+//                            }
+//                            if(fontSizeStr.indexOf("pt") > 0){
+//                                fontSizeStr = fontSizeStr.replace("pt","");
+//                                fontSize = Float.parseFloat(fontSizeStr);
+//                            }
+//                            fontSize = Float.parseFloat(fontSizeStr);
+//                        }
+//                        Font parent = Font.createFont(Font.TRUETYPE_FONT, fontCache.get(fontStr).supply());
+//
+//                        //Font parent = Font.createFont(Font.TRUETYPE_FONT, new File("/Users/eric/Documents/dev_projects/opensource/rayin/rayin-htmladapter-base/src/main/resources/rayin_default_fonts/FangSong.ttf"));
+//                        font = parent.deriveFont(fontSize);
+//                    } catch (FontFormatException | IOException e1) {
+//                        e1.printStackTrace();
+//                        throw new RuntimeException(e1);
+//                    } catch (NoSuchFieldException ex) {
+//                        throw new RuntimeException(ex);
+//                    } catch (ClassNotFoundException ex) {
+//                        throw new RuntimeException(ex);
+//                    } catch (IllegalAccessException ex) {
+//                        throw new RuntimeException(ex);
+//                    }
+//
+//                    Rectangle2D bounds = font.getStringBounds(e.getAttribute("value"), g2d.getFontRenderContext());
+//
+//                    String opacityStr = null;
+//                    try {
+//                        opacityStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"opacity");
+//                    } catch (IOException ex) {
+//                        throw new RuntimeException(ex);
+//                    }
+//                    float opacity = 0.3f;
+//                    if(StringUtil.isNumeric(opacityStr)){
+//                        opacity = Float.parseFloat(opacityStr);
+//                    }
+//
+//                    g2d.setFont(font);
+//                    g2d.setPaint(colorRGB);
+//                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+//                    int colCount = new Double(pageWidth/bounds.getWidth()*2).intValue();
+//                    int rowCount = new Double(pageHeight/bounds.getHeight()*2).intValue();
+//
+//                        for(int i = 0; i< rowCount; i++){
+//                            for(int j = 0; j< colCount; j++){
+//                                g2d.drawString(e.getAttribute("value"),
+//                                        (float) (j * bounds.getWidth() * 2),
+//                                        (float) (i * bounds.getHeight() * 3));
+//                            }
+//                         }
+//
+//
+//                });
 
         return null;
     }
