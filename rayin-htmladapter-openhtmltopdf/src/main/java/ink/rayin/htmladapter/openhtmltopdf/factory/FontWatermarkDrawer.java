@@ -48,7 +48,6 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
         float pageHeight = pdfBoxOutputDevice.getPage().getMediaBox().getHeight();
         float pageWidth = pdfBoxOutputDevice.getPage().getMediaBox().getWidth();
 
-
         PDPage page = ((PdfBoxOutputDevice) outputDevice).getPage();
         try {
             PDPageContentStream contentStream = new PDPageContentStream(((PdfBoxOutputDevice) outputDevice).getWriter(), page, PDPageContentStream.AppendMode.APPEND, true, true);
@@ -59,7 +58,7 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
             if(StringUtil.isNotBlank(fontSizeStr)){
                 if(fontSizeStr.indexOf("px") > 0){
                     fontSizeStr = fontSizeStr.replace("px","");
-                    fontSize = Float.parseFloat(fontSizeStr)/dotsPerPixel;
+                    fontSize = Float.parseFloat(fontSizeStr) * 0.75f;
                 }
                 if(fontSizeStr.indexOf("pt") > 0){
                     fontSizeStr = fontSizeStr.replace("pt","");

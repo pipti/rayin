@@ -996,7 +996,7 @@ public class PdfBoxGenerator implements PdfGenerator {
             String style = link.attr("style");
             String[] styles = style.split(";");
             
-            if(StringUtil.isNotBlank(type) && StringUtil.isNotBlank(value)){
+            if(StringUtil.isNotBlank(type)){
                 float width = 0;
                 float height = 0;
                 switch(type){
@@ -1033,6 +1033,15 @@ public class PdfBoxGenerator implements PdfGenerator {
                         if(link.attr("style").indexOf("transform") < 0){
                             link.attr("style", cssStyleDeclaration.getCssText() + ";transform:rotate(40deg)");
                         }
+                        break;
+                    case "img/watermark":
+                        CSSStyleDeclaration cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
+                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "left","600px",null);
+                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "top","300px",null);
+                        if(link.attr("style").indexOf("transform") < 0){
+                            link.attr("style", cssStyleDeclaration1.getCssText() + ";transform:rotate(40deg)");
+                        }
+//                        break;
 //                        else{
 //                            link.attr("style", cssStyleDeclaration.getCssText());
 //                        }
@@ -1053,7 +1062,7 @@ public class PdfBoxGenerator implements PdfGenerator {
             openhttptopdfRenderBuilder = OpenhttptopdfRendererObjectFactory.getPdfRendererBuilderInstance();
 
             pdfRendererBuilder = openhttptopdfRenderBuilder.getPdfRendererBuilder();
-
+            log.debug(htmlDoc.html());
             try {
                 //避免使用Jsoup转换字符串进行直接转换w3c,document,因为不是严格的xml格式，转换存在问题
                 //PDFCreationListener pdfCreationListener = new XHtmlMetaToPdfInfoAdapter(w3cDoc);
