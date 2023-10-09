@@ -168,8 +168,8 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
                         float rotateWidth = fontWidth * (float)Math.cos(Math.toRadians(deg)) + fontHeight * (float)Math.sin(Math.toRadians(deg));
                         float rotateHeight = fontHeight * (float)Math.cos(Math.toRadians(deg)) + fontWidth * (float)Math.sin(Math.toRadians(deg));
                         // 根据纸张大小添加水印
-                        for (int h = 0; h < pageHeight; h = h + (int)rotateHeight + 50) {
-                            for (int w = 0; w < pageWidth; w = w + (int)rotateWidth + 50) {
+                        for (int h = 0; h < pageHeight; h = h + (int)rotateHeight + 20) {
+                            for (int w = 0; w < pageWidth; w = w + (int)rotateWidth + 20) {
                                 try {
                                     contentStream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(deg), w, h));
 
