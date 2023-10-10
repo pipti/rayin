@@ -1,32 +1,37 @@
 package ink.rayin.htmladapter.openhtmltopdf.factory;
 
-import com.openhtmltopdf.extend.FSObjectDrawer;
-import com.openhtmltopdf.extend.OutputDevice;
-import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
-import com.openhtmltopdf.render.RenderingContext;
-import ink.rayin.htmladapter.base.utils.CSSParser;
-import ink.rayin.tools.utils.*;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.pdfbox.cos.COSName;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.PDPageTree;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
-import org.apache.pdfbox.util.Matrix;
-import org.apache.xmlbeans.impl.common.IOUtil;
-import org.w3c.dom.Element;
-
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.io.*;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.openhtmltopdf.extend.FSObjectDrawer;
+import com.openhtmltopdf.extend.OutputDevice;
+import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
+import com.openhtmltopdf.render.RenderingContext;
+
+import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
+import org.apache.pdfbox.util.Matrix;
+
+import org.w3c.dom.Element;
+import lombok.extern.slf4j.Slf4j;
+
+import ink.rayin.htmladapter.base.utils.CSSParser;
+import ink.rayin.tools.utils.*;
+
 /**
- * @author Jonah Wang
+ * 图片水印插件
+ *
+ * @author Jonah Wang <br>
+ * html标签样例，如果会生成多页需要将标签放到&lt;body&gt;...最后位置&lt;/body&gt; <br>
+ * &lt;object type="img/watermark" src="images/rayin.png" style="opacity: 0.5;transform:rotate(30deg);width:100px"/&gt;
+ *
  */
 @Slf4j
 public class ImageWatermarkDrawer implements FSObjectDrawer {
@@ -57,7 +62,7 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
                 }
             }
 
-            String os = System.getProperty("os.name");
+           // String os = System.getProperty("os.name");
             ByteArrayOutputStream imgBos = new ByteArrayOutputStream();
             if(StringUtil.isNotBlank(src)){
                 if(src.startsWith("data:image/")){
@@ -76,11 +81,6 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
                     log.debug("image url convert:" + src);
                     imgBos = ResourceUtil.getResourceAsByte(src);
                 }else{
-//                    if(os != null && os.toLowerCase().startsWith("windows")){
-//                        src = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(src);
-//                    }else{
-//                        src = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(src);
-//                    }
                     src = src.replace("\\" , "/");
                     imgBos = ResourceUtil.getResourceAsByte(src);
                 }
@@ -89,14 +89,14 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
             }
 
             //log.debug("imgBos.size()"+imgBos.size());
-            if(imgBos.size()/1024 > 30){
-                log.warn("水印图片有点大噢！");
-            }
+//            if(imgBos.size()/1024 > 30){
+//                log.warn("水印图片有点大噢！");
+//            }
             if(StringUtil.isBlank(opacity)){
                 opacity = "0.5";
             }
-
-            PDImageXObject pdImage = PDImageXObject.createFromByteArray(((PdfBoxOutputDevice) outputDevice).getWriter(), imgBos.toByteArray(), "");
+            PDDocument pdd = ((PdfBoxOutputDevice) outputDevice).getWriter();
+            PDImageXObject pdImage = PDImageXObject.createFromByteArray(pdd, imgBos.toByteArray(), "");
             PDExtendedGraphicsState pdfExtState = new PDExtendedGraphicsState();
             float imgHeight = (imgWidth/pdImage.getWidth())*pdImage.getHeight();
 
@@ -126,7 +126,7 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
 
             PDPage page;
             PDPageContentStream contentStream;
-            PDDocument pdd = ((PdfBoxOutputDevice) outputDevice).getWriter();
+
             int pageCount = pdd.getNumberOfPages();
 
             for(int p = 0; p < pageCount; p++){
