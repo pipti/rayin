@@ -1,29 +1,31 @@
 package ink.rayin.htmladapter.openhtmltopdf.factory;
 
-import java.awt.*;
-import java.io.*;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.openhtmltopdf.extend.FSObjectDrawer;
 import com.openhtmltopdf.extend.OutputDevice;
 import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
 import com.openhtmltopdf.render.RenderingContext;
-
+import ink.rayin.htmladapter.base.utils.CSSParser;
+import ink.rayin.tools.utils.Base64Util;
+import ink.rayin.tools.utils.IoUtil;
+import ink.rayin.tools.utils.ResourceUtil;
+import ink.rayin.tools.utils.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 import org.apache.pdfbox.util.Matrix;
-
 import org.w3c.dom.Element;
-import lombok.extern.slf4j.Slf4j;
 
-import ink.rayin.htmladapter.base.utils.CSSParser;
-import ink.rayin.tools.utils.*;
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 图片水印插件
@@ -34,8 +36,8 @@ import ink.rayin.tools.utils.*;
  *
  */
 @Slf4j
-public class ImageWatermarkDrawer implements FSObjectDrawer {
-    public ImageWatermarkDrawer() {
+public class FilePdfDrawer implements FSObjectDrawer {
+    public FilePdfDrawer() {
     }
 
     @Override
@@ -44,45 +46,46 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
         float pageHeight = pdfBoxOutputDevice.getPage().getMediaBox().getHeight();
         float pageWidth = pdfBoxOutputDevice.getPage().getMediaBox().getWidth();
 
-        String opacity = null;
+//        String opacity = null;
         try {
-            opacity = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"opacity");
-            String degStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"transform");
+           // opacity = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"opacity");
+           // String degStr = CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"transform");
             String src = e.getAttribute("value");
-            String imgWidthStr =  CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"width");
-            float imgWidth = 100;
-            if(StringUtil.isNotBlank(imgWidthStr)){
-                if(imgWidthStr.indexOf("px") > 0){
-                    imgWidthStr = imgWidthStr.replace("px","");
-                    imgWidth = Float.parseFloat(imgWidthStr) * 0.75f;
-                }
-                if(imgWidthStr.indexOf("pt") > 0){
-                    imgWidthStr = imgWidthStr.replace("pt","");
-                    imgWidth = Float.parseFloat(imgWidthStr);
-                }
-            }
+            String pages = e.getAttribute("page");
+           // String imgWidthStr =  CSSParser.getSingleStylePropertyValue(e.getAttribute("style"),"width");
+//            float imgWidth = 100;
+//            if(StringUtil.isNotBlank(imgWidthStr)){
+//                if(imgWidthStr.indexOf("px") > 0){
+//                    imgWidthStr = imgWidthStr.replace("px","");
+//                    imgWidth = Float.parseFloat(imgWidthStr) * 0.75f;
+//                }
+//                if(imgWidthStr.indexOf("pt") > 0){
+//                    imgWidthStr = imgWidthStr.replace("pt","");
+//                    imgWidth = Float.parseFloat(imgWidthStr);
+//                }
+//            }
 
            // String os = System.getProperty("os.name");
-            ByteArrayOutputStream imgBos = new ByteArrayOutputStream();
+            ByteArrayOutputStream pdfBos = new ByteArrayOutputStream();
             if(StringUtil.isNotBlank(src)){
                 if(src.startsWith("data:image/")){
                     String base64Str = src.replaceFirst("data:.*;base64,", "");
                     byte[] imgByte = Base64Util.decodeFromString(base64Str);
-                    IoUtil.copy(imgByte, imgBos);
+                    IoUtil.copy(imgByte, pdfBos);
                 }else if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("file:")) {
                     if(src.startsWith("file:")){
                         src = src.replace("file:", "");
                         src = src.replace("\\", "/");
                     }
-                    imgBos = ResourceUtil.getResourceAsByte(src);
+                    pdfBos = ResourceUtil.getResourceAsByte(src);
                 }else if (src.startsWith("/") || src.startsWith("\\")) {
                   //  src = "file:" + "//" + src;
                     src = src.replace("\\" , "/");
                     log.debug("image url convert:" + src);
-                    imgBos = ResourceUtil.getResourceAsByte(src);
+                    pdfBos = ResourceUtil.getResourceAsByte(src);
                 }else{
                     src = src.replace("\\" , "/");
-                    imgBos = ResourceUtil.getResourceAsByte(src);
+                    pdfBos = ResourceUtil.getResourceAsByte(src);
                 }
             }else{
                 return null;
@@ -92,74 +95,91 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
 //            if(imgBos.size()/1024 > 30){
 //                log.warn("水印图片有点大噢！");
 //            }
-            if(StringUtil.isBlank(opacity)){
-                opacity = "0.5";
-            }
+//            if(StringUtil.isBlank(opacity)){
+//                opacity = "0.5";
+//            }
             PDDocument pdd = ((PdfBoxOutputDevice) outputDevice).getWriter();
-            PDImageXObject pdImage = PDImageXObject.createFromByteArray(pdd, imgBos.toByteArray(), "");
-            PDExtendedGraphicsState pdfExtState = new PDExtendedGraphicsState();
-            float imgHeight = (imgWidth/pdImage.getWidth())*pdImage.getHeight();
-
-            // 设置透明度
-            pdfExtState.setNonStrokingAlphaConstant(Float.parseFloat(opacity));
-            pdfExtState.setAlphaSourceFlag(true);
-            pdfExtState.getCOSObject().setItem(COSName.MASK, COSName.MULTIPLY);
-
-            int deg = 0;
-            if(StringUtil.isNotBlank(degStr)){
-                String regex = "(?<=[rotate(])\\d+(?=[deg)])";
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(degStr);
-
-                while (matcher.find()) {
-                    String number = matcher.group();
-                    deg = Integer.parseInt(number);
-                    break;
+            PDDocument doc = PDDocument.load(pdfBos.toByteArray());
+            int pagesa = pdd.getNumberOfPages();
+            if(StringUtil.isNotBlank(pages)){
+                String[] pageB = pages.split(",");
+               // PDDocument extractDoc = new PDDocument();
+                for(String k : pageB){
+                    //box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
+                    pdd.addPage(doc.getPage(Integer.valueOf(k)));
+                }
+//                ByteArrayOutputStream os = new ByteArrayOutputStream();
+//                extractDoc.save(os);
+//                apendFiles.add(os);
+            }else{
+                for(int p = 0; p < doc.getNumberOfPages(); p++){
+                    pdd.addPage(doc.getPage(p));
                 }
             }
+//            PDImageXObject pdImage = PDImageXObject.createFromByteArray(pdd, imgBos.toByteArray(), "");
+//            PDExtendedGraphicsState pdfExtState = new PDExtendedGraphicsState();
+//            float imgHeight = (imgWidth/pdImage.getWidth())*pdImage.getHeight();
+
+            // 设置透明度
+//            pdfExtState.setNonStrokingAlphaConstant(Float.parseFloat(opacity));
+//            pdfExtState.setAlphaSourceFlag(true);
+//            pdfExtState.getCOSObject().setItem(COSName.MASK, COSName.MULTIPLY);
+
+//            int deg = 0;
+//            if(StringUtil.isNotBlank(degStr)){
+//                String regex = "(?<=[rotate(])\\d+(?=[deg)])";
+//                Pattern pattern = Pattern.compile(regex);
+//                Matcher matcher = pattern.matcher(degStr);
+//
+//                while (matcher.find()) {
+//                    String number = matcher.group();
+//                    deg = Integer.parseInt(number);
+//                    break;
+//                }
+//            }
 
             // 旋转后的矩形宽高
             // width = w*cosα + h*sinα
             // height = h*cosα + w*sinα
-            float rotateWidth = imgWidth * (float)Math.cos(Math.toRadians(deg)) + imgHeight * (float)Math.sin(Math.toRadians(deg));
-            float rotateHeight = imgHeight * (float)Math.cos(Math.toRadians(deg)) + imgWidth * (float)Math.sin(Math.toRadians(deg));
+//            float rotateWidth = imgWidth * (float)Math.cos(Math.toRadians(deg)) + imgHeight * (float)Math.sin(Math.toRadians(deg));
+//            float rotateHeight = imgHeight * (float)Math.cos(Math.toRadians(deg)) + imgWidth * (float)Math.sin(Math.toRadians(deg));
 
-            PDPage page;
-            PDPageContentStream contentStream;
+//            PDPage page;
+//            PDPageContentStream contentStream;
+//
+//            int pageCount = pdd.getNumberOfPages();
+//
+//            for(int p = 0; p < pageCount; p++){
+//                page = pdd.getPage(p);
+//
+//                contentStream = new PDPageContentStream(pdd, page, PDPageContentStream.AppendMode.APPEND, true, true);
+//                contentStream.setGraphicsStateParameters(pdfExtState);
+//
+//                // 根据纸张大小添加水印
+//                for (int h = 0; h < pageHeight; h = h + (int)rotateHeight + 20) {
+//                    for (int w = 0; w < pageWidth; w = w + (int)rotateWidth + 20) {
+//                        try {
+//                            Matrix matrix = new Matrix();
+//                            // 位置
+//                            matrix.translate(w, h);
+//                            // 旋转角度
+//                            matrix.rotate(Math.toRadians(deg));
+//                            // 修正图片大小
+//                            matrix.scale(imgWidth, imgHeight);
+//                            // 绘制
+//                            contentStream.drawImage(pdImage, matrix);
+//                        } catch (IOException ex) {
+//                            throw new RuntimeException(ex);
+//                        }
+//
+//                    }
+//                }
+//
+//                // 结束渲染，关闭流
+//                contentStream.restoreGraphicsState();
+//                contentStream.close();
 
-            int pageCount = pdd.getNumberOfPages();
 
-            for(int p = 0; p < pageCount; p++){
-                page = pdd.getPage(p);
-
-                contentStream = new PDPageContentStream(pdd, page, PDPageContentStream.AppendMode.APPEND, true, true);
-                contentStream.setGraphicsStateParameters(pdfExtState);
-
-                // 根据纸张大小添加水印
-                for (int h = 0; h < pageHeight; h = h + (int)rotateHeight + 20) {
-                    for (int w = 0; w < pageWidth; w = w + (int)rotateWidth + 20) {
-                        try {
-                            Matrix matrix = new Matrix();
-                            // 位置
-                            matrix.translate(w, h);
-                            // 旋转角度
-                            matrix.rotate(Math.toRadians(deg));
-                            // 修正图片大小
-                            matrix.scale(imgWidth, imgHeight);
-                            // 绘制
-                            contentStream.drawImage(pdImage, matrix);
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
-
-                    }
-                }
-
-                // 结束渲染，关闭流
-                contentStream.restoreGraphicsState();
-                contentStream.close();
-
-            }
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

@@ -898,94 +898,93 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
         }
 
-        Elements pdfElements = htmlDoc.getElementsByAttributeValueContaining("type", "file/pdf");
-        if(pdfElements.size() > 0){
-            org.jsoup.nodes.Document htmlDocClone = Jsoup.parse(htmlContent);
-            //  Elements obPdElements2 = htmlDocNew.getElementsByAttributeValueContaining("type", "file/pdf");
-           // obPdElements2.forEach(e->{e.remove();});
-            org.jsoup.nodes.Element htmlNew = new org.jsoup.nodes.Element("html");
-            org.jsoup.nodes.Element head = htmlDocClone.head();
-            Elements body = htmlDocClone.getElementsByTag("body");
-            for(org.jsoup.nodes.Element element:body){
-                org.jsoup.nodes.Element bodyNew = new org.jsoup.nodes.Element("body");
-                List<org.jsoup.nodes.Element> bodyEls = element.children();
-
-                for(org.jsoup.nodes.Element bodyEl : bodyEls){
-                    if(bodyEl.attr("type").equals("file/pdf")){
-                        if(bodyNew.childNodes().size() > 0) {
-                            htmlNew.appendChild(head);
-                            htmlNew.appendChild(bodyNew);
-                            // 之前的控件生成
-                            apendFiles.add(this.generatePdfStreamByHtmlStr(htmlNew.html()));
-
-                            htmlNew = new org.jsoup.nodes.Element("html");
-                            bodyNew = new org.jsoup.nodes.Element("body");
-                        }
-                            // pdf控件插入
-                            String value = bodyEl.attr("value");
-                            String pages = bodyEl.attr("page");
-                            if(StringUtil.isBlank(value)) {
-                                continue;
-                            }
-
-                            ByteArrayOutputStream pdfOs = null;
-
-                            pdfOs = ResourceUtil.getResourceAsByte(value);
-
-                            PDDocument doc = PDDocument.load(pdfOs.toByteArray());
-
-                            //int elPageNum = doc.getNumberOfPages();
-
-                            if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("file:")) {
-                                if(value.startsWith("file:")){
-                                    value = value.replace("\\", "/");
-                                }
-                            }else if (value.startsWith("/") || value.startsWith("\\")) {
-                                value = "file:" + "//" + value;
-                                value = value.replace("\\" , "/");
-                                log.debug("pdf url convert:\'" + value + "'");
-                            }else{
-                                if (os != null && os.toLowerCase().startsWith("windows")){
-                                    value = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
-                                }else{
-                                    value = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
-                                }
-                                value = value.replace("\\" , "/");
-                                log.debug("pdf url convert:\'" + value + "'");
-                            }
-
-                            if(StringUtil.isNotBlank(pages)){
-                                String[] pageB = pages.split(",");
-                                PDDocument extractDoc = new PDDocument();
-                                for(String k : pageB){
-                                    //box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
-                                    extractDoc.addPage(doc.getPage(Integer.valueOf(k)));
-                                }
-                                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                                extractDoc.save(os);
-                                apendFiles.add(os);
-                            }else{
-                                apendFiles.add(ResourceUtil.getResourceAsByte(value.substring(7)));
-                            }
-
-                            doc.close();
-                            pdfOs.close();
-
-                    }else{
-                        if(!StringUtil.isBlank(bodyEl.toString().trim())){
-                            bodyNew.appendChild(bodyEl);
-                        }
-                    }
-                }
-                if(bodyNew.childNodes().size() > 0) {
-                    htmlNew.appendChild(head);
-                    htmlNew.appendChild(bodyNew);
-                    // 之前的控件生成
-                    apendFiles.add(this.generatePdfStreamByHtmlStr(htmlNew.html()));
-                    htmlNew = new org.jsoup.nodes.Element("html");
-                }
-            }
-        }
+//        Elements pdfElements = htmlDoc.getElementsByAttributeValueContaining("type", "file/pdf");
+//        if(pdfElements.size() > 0){
+//            org.jsoup.nodes.Document htmlDocClone = Jsoup.parse(htmlContent);
+//           
+//            org.jsoup.nodes.Element htmlNew = new org.jsoup.nodes.Element("html");
+//            org.jsoup.nodes.Element head = htmlDocClone.head();
+//            Elements body = htmlDocClone.getElementsByTag("body");
+//            for(org.jsoup.nodes.Element element:body){
+//                org.jsoup.nodes.Element bodyNew = new org.jsoup.nodes.Element("body");
+//                List<org.jsoup.nodes.Element> bodyEls = element.children();
+//
+//                for(org.jsoup.nodes.Element bodyEl : bodyEls){
+//                    if(bodyEl.attr("type").equals("file/pdf")){
+//                        if(bodyNew.childNodes().size() > 0) {
+//                            htmlNew.appendChild(head);
+//                            htmlNew.appendChild(bodyNew);
+//                            // 之前的控件生成
+//                            apendFiles.add(this.generatePdfStreamByHtmlStr(htmlNew.html()));
+//
+//                            htmlNew = new org.jsoup.nodes.Element("html");
+//                            bodyNew = new org.jsoup.nodes.Element("body");
+//                        }
+//                            // pdf控件插入
+//                            String value = bodyEl.attr("value");
+//                            String pages = bodyEl.attr("page");
+//                            if(StringUtil.isBlank(value)) {
+//                                continue;
+//                            }
+//
+//                            ByteArrayOutputStream pdfOs = null;
+//
+//                            pdfOs = ResourceUtil.getResourceAsByte(value);
+//
+//                            PDDocument doc = PDDocument.load(pdfOs.toByteArray());
+//
+//                            //int elPageNum = doc.getNumberOfPages();
+//
+//                            if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("file:")) {
+//                                if(value.startsWith("file:")){
+//                                    value = value.replace("\\", "/");
+//                                }
+//                            }else if (value.startsWith("/") || value.startsWith("\\")) {
+//                                value = "file:" + "//" + value;
+//                                value = value.replace("\\" , "/");
+//                                log.debug("pdf url convert:\'" + value + "'");
+//                            }else{
+//                                if (os != null && os.toLowerCase().startsWith("windows")){
+//                                    value = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
+//                                }else{
+//                                    value = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
+//                                }
+//                                value = value.replace("\\" , "/");
+//                                log.debug("pdf url convert:\'" + value + "'");
+//                            }
+//
+//                            if(StringUtil.isNotBlank(pages)){
+//                                String[] pageB = pages.split(",");
+//                                PDDocument extractDoc = new PDDocument();
+//                                for(String k : pageB){
+//                                    //box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
+//                                    extractDoc.addPage(doc.getPage(Integer.valueOf(k)));
+//                                }
+//                                ByteArrayOutputStream os = new ByteArrayOutputStream();
+//                                extractDoc.save(os);
+//                                apendFiles.add(os);
+//                            }else{
+//                                apendFiles.add(ResourceUtil.getResourceAsByte(value.substring(7)));
+//                            }
+//
+//                            doc.close();
+//                            pdfOs.close();
+//
+//                    }else{
+//                        if(!StringUtil.isBlank(bodyEl.toString().trim())){
+//                            bodyNew.appendChild(bodyEl);
+//                        }
+//                    }
+//                }
+//                if(bodyNew.childNodes().size() > 0) {
+//                    htmlNew.appendChild(head);
+//                    htmlNew.appendChild(bodyNew);
+//                    // 之前的控件生成
+//                    apendFiles.add(this.generatePdfStreamByHtmlStr(htmlNew.html()));
+//                    htmlNew = new org.jsoup.nodes.Element("html");
+//                }
+//            }
+//        }
         Elements objectLinks = htmlDoc.getElementsByTag("object");
         for (org.jsoup.nodes.Element link : objectLinks) {
             String inner = link.text();
@@ -1040,6 +1039,13 @@ public class PdfBoxGenerator implements PdfGenerator {
                         cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "top","300px",null);
                         if(link.attr("style").indexOf("transform") < 0){
                             link.attr("style", cssStyleDeclaration1.getCssText() + ";transform:rotate(40deg)");
+                        }
+                    case "file/pdf":
+                        CSSStyleDeclaration cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
+                        cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(cssStyleDeclaration2, "left","600px",null);
+                        cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(cssStyleDeclaration2, "top","300px",null);
+                        if(link.attr("style").indexOf("transform") < 0){
+                            link.attr("style", cssStyleDeclaration2.getCssText() + ";transform:rotate(40deg)");
                         }
 //                        break;
 //                        else{
