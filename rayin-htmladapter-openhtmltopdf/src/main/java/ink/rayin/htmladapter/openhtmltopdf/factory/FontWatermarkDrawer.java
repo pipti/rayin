@@ -332,7 +332,7 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
         String opacityStr = CSSParser.getSingleStylePropertyValue(style, "opacity");
         String colorStr = CSSParser.getSingleStylePropertyValue(style, "color");
         String degStr = CSSParser.getSingleStylePropertyValue(style, "transform");
-
+        String marginStr = CSSParser.getSingleStylePropertyValue(style,"margin");
         // 设置字体和字号
         String fontSizeStr = CSSParser.getSingleStylePropertyValue(style, "font-size");
         float fontSize = 20;
@@ -390,10 +390,20 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
                 colorRGB = (Color) objectName.newInstance();
             }
         }
-
-        setWatermark(pdd,value,deg, opacity, colorRGB, fontIs,fontSize);
+        float margin = 30;
+        if(StringUtil.isNotBlank(marginStr)){
+            if(marginStr.indexOf("px") > 0){
+                marginStr = marginStr.replace("px","");
+                margin = Float.parseFloat(marginStr) * 0.75f;
+            }
+            if(marginStr.indexOf("pt") > 0){
+                marginStr = marginStr.replace("pt","");
+                margin = Float.parseFloat(marginStr);
+            }
+        }
+        setWatermark(pdd,value,deg, opacity, colorRGB, fontIs,fontSize, margin);
     }
-    public static void setWatermark(PDDocument pdd, String value, float deg, float opactity, Color colorRGB, InputStream fontIs, float fontSize) throws IOException, FontFormatException {
+    public static void setWatermark(PDDocument pdd, String value, float deg, float opactity, Color colorRGB, InputStream fontIs, float fontSize, float margin) throws IOException, FontFormatException {
         byte[] fontB = IoUtil.toByteArray(fontIs);
         InputStream fontIs1 = new ByteArrayInputStream(fontB);
         InputStream fontIs2 = new ByteArrayInputStream(fontB);
@@ -440,8 +450,8 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
             contentStream.setFont(font, fontSize);
 
             // 根据纸张大小添加水印
-            for (int h = 10; h < page.getMediaBox().getHeight(); h = h + (int) rotateHeight + 20) {
-                for (int w = -10; w < page.getMediaBox().getWidth(); w = w + (int) rotateWidth + 20) {
+            for (int h = (int)(rotateHeight/2*-1); h < page.getMediaBox().getHeight() + rotateHeight; h = h + (int) rotateHeight + (int)margin) {
+                for (int w = (int)(rotateWidth/2*-1); w < page.getMediaBox().getWidth() + rotateWidth; w = w + (int) rotateWidth + (int)margin) {
                     try {
                         contentStream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(deg), w, h));
 

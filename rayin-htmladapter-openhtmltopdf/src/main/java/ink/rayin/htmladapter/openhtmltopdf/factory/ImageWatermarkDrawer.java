@@ -205,7 +205,7 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
         float opacity = 0.5f;
         String opacityStr = CSSParser.getSingleStylePropertyValue(style,"opacity");
         String degStr = CSSParser.getSingleStylePropertyValue(style,"transform");
-
+        String marginStr = CSSParser.getSingleStylePropertyValue(style,"margin");
         String imgWidthStr =  CSSParser.getSingleStylePropertyValue(style,"width");
         float imgWidth = 100;
         if(StringUtil.isNotBlank(imgWidthStr)){
@@ -216,6 +216,17 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
             if(imgWidthStr.indexOf("pt") > 0){
                 imgWidthStr = imgWidthStr.replace("pt","");
                 imgWidth = Float.parseFloat(imgWidthStr);
+            }
+        }
+        float margin = 30;
+        if(StringUtil.isNotBlank(marginStr)){
+            if(marginStr.indexOf("px") > 0){
+                marginStr = marginStr.replace("px","");
+                margin = Float.parseFloat(marginStr) * 0.75f;
+            }
+            if(marginStr.indexOf("pt") > 0){
+                marginStr = marginStr.replace("pt","");
+                margin = Float.parseFloat(marginStr);
             }
         }
         int deg = 40;
@@ -234,10 +245,11 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
         if(StringUtil.isNotBlank(opacityStr)){
             opacity = Float.parseFloat(opacityStr);
         }
-        setWatermark(pdd, imgBos,imgWidth, deg, opacity);
+
+        setWatermark(pdd, imgBos,imgWidth, deg, opacity, margin);
 
     }
-    public static void setWatermark(PDDocument pdd,ByteArrayOutputStream imgBos, float imgWidth, float deg,float opactity) throws IOException {
+    public static void setWatermark(PDDocument pdd,ByteArrayOutputStream imgBos, float imgWidth, float deg,float opactity, float margin) throws IOException {
         PDImageXObject pdImage = PDImageXObject.createFromByteArray(pdd, imgBos.toByteArray(), "");
         PDExtendedGraphicsState pdfExtState = new PDExtendedGraphicsState();
         float imgHeight = (imgWidth / pdImage.getWidth()) * pdImage.getHeight();
@@ -266,8 +278,8 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
             contentStream.setGraphicsStateParameters(pdfExtState);
 
             // 根据纸张大小添加水印
-            for (int h = 10; h < page.getMediaBox().getHeight(); h = h + (int) rotateHeight + 20) {
-                for (int w = -10; w < page.getMediaBox().getWidth(); w = w + (int) rotateWidth + 20) {
+            for (int h = (int)(rotateHeight/2*-1); h < page.getMediaBox().getHeight() + rotateHeight; h = h + (int) rotateHeight + (int)margin) {
+                for (int w = (int)(rotateWidth/2*-1); w < page.getMediaBox().getWidth() + rotateWidth; w = w + (int) rotateWidth + (int)margin) {
                     try {
                         Matrix matrix = new Matrix();
                         // 位置
