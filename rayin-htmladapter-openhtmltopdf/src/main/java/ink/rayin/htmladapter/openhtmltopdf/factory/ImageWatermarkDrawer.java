@@ -88,10 +88,10 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
                 return null;
             }
 
-            //log.debug("imgBos.size()"+imgBos.size());
-//            if(imgBos.size()/1024 > 30){
-//                log.warn("水印图片有点大噢！");
-//            }
+            log.debug("imgBos.size()"+imgBos.size());
+            if(imgBos.size()/1024 > 30){
+                log.warn("水印图片有点大噢！");
+            }
             if(StringUtil.isBlank(opacity)){
                 opacity = "0.5";
             }

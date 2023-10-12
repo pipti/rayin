@@ -239,8 +239,6 @@ public class PdfBoxGenerator implements PdfGenerator {
         int catalogElementPrePageCount = 0;
         boolean isPageNumIsFirstPage = false;
         for(Element el:pages){
-
-
             el.setIndex(elIndex);
             elIndex++;
             // 判断数据路径是否存在，如果为空则直接跳过
@@ -1027,26 +1025,29 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                     case "font/watermark":
                         CSSStyleDeclaration cssStyleDeclaration = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
-                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "left","600px",null);
-                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "top","300px",null);
+//                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "left","600px",null);
+//                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "top","300px",null);
                         if(link.attr("style").indexOf("transform") < 0){
                             link.attr("style", cssStyleDeclaration.getCssText() + ";transform:rotate(40deg)");
                         }
                         break;
                     case "img/watermark":
                         CSSStyleDeclaration cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
-                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "left","600px",null);
-                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "top","300px",null);
+//                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "left","600px",null);
+//                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "top","300px",null);
                         if(link.attr("style").indexOf("transform") < 0){
                             link.attr("style", cssStyleDeclaration1.getCssText() + ";transform:rotate(40deg)");
                         }
+                        break;
                     case "file/pdf":
                         CSSStyleDeclaration cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
-                        cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(cssStyleDeclaration2, "left","600px",null);
-                        cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(cssStyleDeclaration2, "top","300px",null);
-                        if(link.attr("style").indexOf("transform") < 0){
-                            link.attr("style", cssStyleDeclaration2.getCssText() + ";transform:rotate(40deg)");
-                        }
+//                        cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(cssStyleDeclaration2, "left","600px",null);
+//                        cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(cssStyleDeclaration2, "top","300px",null);
+                        //if(link.attr("style").indexOf("transform") < 0){
+                            link.attr("style", cssStyleDeclaration2.getCssText());
+                        //}
+                        //link.attr("style", "");
+                       // break;
 //                        break;
 //                        else{
 //                            link.attr("style", cssStyleDeclaration.getCssText());
@@ -1068,7 +1069,7 @@ public class PdfBoxGenerator implements PdfGenerator {
             openhttptopdfRenderBuilder = OpenhttptopdfRendererObjectFactory.getPdfRendererBuilderInstance();
 
             pdfRendererBuilder = openhttptopdfRenderBuilder.getPdfRendererBuilder();
-            log.debug(htmlDoc.html());
+           // log.debug(htmlDoc.html());
             try {
                 //避免使用Jsoup转换字符串进行直接转换w3c,document,因为不是严格的xml格式，转换存在问题
                 //PDFCreationListener pdfCreationListener = new XHtmlMetaToPdfInfoAdapter(w3cDoc);
@@ -1076,7 +1077,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                 W3CDom w3cDom = new W3CDom();
                 //这里的doc对象指的是jsoup里的Document对象
                 org.w3c.dom.Document w3cDoc = w3cDom.fromJsoup(htmlDoc);
-
+                log.debug(htmlDoc.toString());
                 pdfRendererBuilder.withW3cDocument(w3cDoc,"/");
 
                 pdfRendererBuilder.toStream(out);

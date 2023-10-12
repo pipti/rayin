@@ -2,30 +2,21 @@ package ink.rayin.htmladapter.openhtmltopdf.factory;
 
 import com.openhtmltopdf.extend.FSObjectDrawer;
 import com.openhtmltopdf.extend.OutputDevice;
+import com.openhtmltopdf.objects.pdf.PdfDrawerBase;
 import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
 import com.openhtmltopdf.render.RenderingContext;
-import ink.rayin.htmladapter.base.utils.CSSParser;
 import ink.rayin.tools.utils.Base64Util;
 import ink.rayin.tools.utils.IoUtil;
 import ink.rayin.tools.utils.ResourceUtil;
 import ink.rayin.tools.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.PDPageTree;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
-import org.apache.pdfbox.util.Matrix;
 import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 图片水印插件
@@ -36,8 +27,8 @@ import java.util.regex.Pattern;
  *
  */
 @Slf4j
-public class FilePdfDrawer implements FSObjectDrawer {
-    public FilePdfDrawer() {
+public class PdfFileDrawer implements FSObjectDrawer {
+    public PdfFileDrawer() {
     }
 
     @Override
