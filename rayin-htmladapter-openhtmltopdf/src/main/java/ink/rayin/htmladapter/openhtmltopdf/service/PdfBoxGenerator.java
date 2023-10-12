@@ -27,6 +27,8 @@ import ink.rayin.htmladapter.base.thymeleaf.ThymeleafHandler;
 import ink.rayin.htmladapter.base.utils.CSSParser;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.base.utils.RayinException;
+import ink.rayin.htmladapter.openhtmltopdf.factory.FontWatermarkDrawer;
+import ink.rayin.htmladapter.openhtmltopdf.factory.ImageWatermarkDrawer;
 import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRenderBuilder;
 import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRendererObjectFactory;
 import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxPositionFindByKey;
@@ -896,93 +898,93 @@ public class PdfBoxGenerator implements PdfGenerator {
             }
         }
 
-//        Elements pdfElements = htmlDoc.getElementsByAttributeValueContaining("type", "file/pdf");
-//        if(pdfElements.size() > 0){
-//            org.jsoup.nodes.Document htmlDocClone = Jsoup.parse(htmlContent);
-//           
-//            org.jsoup.nodes.Element htmlNew = new org.jsoup.nodes.Element("html");
-//            org.jsoup.nodes.Element head = htmlDocClone.head();
-//            Elements body = htmlDocClone.getElementsByTag("body");
-//            for(org.jsoup.nodes.Element element:body){
-//                org.jsoup.nodes.Element bodyNew = new org.jsoup.nodes.Element("body");
-//                List<org.jsoup.nodes.Element> bodyEls = element.children();
-//
-//                for(org.jsoup.nodes.Element bodyEl : bodyEls){
-//                    if(bodyEl.attr("type").equals("file/pdf")){
-//                        if(bodyNew.childNodes().size() > 0) {
-//                            htmlNew.appendChild(head);
-//                            htmlNew.appendChild(bodyNew);
-//                            // 之前的控件生成
-//                            apendFiles.add(this.generatePdfStreamByHtmlStr(htmlNew.html()));
-//
-//                            htmlNew = new org.jsoup.nodes.Element("html");
-//                            bodyNew = new org.jsoup.nodes.Element("body");
-//                        }
-//                            // pdf控件插入
-//                            String value = bodyEl.attr("value");
-//                            String pages = bodyEl.attr("page");
-//                            if(StringUtil.isBlank(value)) {
-//                                continue;
-//                            }
-//
-//                            ByteArrayOutputStream pdfOs = null;
-//
-//                            pdfOs = ResourceUtil.getResourceAsByte(value);
-//
-//                            PDDocument doc = PDDocument.load(pdfOs.toByteArray());
-//
-//                            //int elPageNum = doc.getNumberOfPages();
-//
-//                            if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("file:")) {
-//                                if(value.startsWith("file:")){
-//                                    value = value.replace("\\", "/");
-//                                }
-//                            }else if (value.startsWith("/") || value.startsWith("\\")) {
-//                                value = "file:" + "//" + value;
-//                                value = value.replace("\\" , "/");
-//                                log.debug("pdf url convert:\'" + value + "'");
-//                            }else{
-//                                if (os != null && os.toLowerCase().startsWith("windows")){
-//                                    value = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
-//                                }else{
-//                                    value = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
-//                                }
-//                                value = value.replace("\\" , "/");
-//                                log.debug("pdf url convert:\'" + value + "'");
-//                            }
-//
-//                            if(StringUtil.isNotBlank(pages)){
-//                                String[] pageB = pages.split(",");
-//                                PDDocument extractDoc = new PDDocument();
-//                                for(String k : pageB){
-//                                    //box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
-//                                    extractDoc.addPage(doc.getPage(Integer.valueOf(k)));
-//                                }
-//                                ByteArrayOutputStream os = new ByteArrayOutputStream();
-//                                extractDoc.save(os);
-//                                apendFiles.add(os);
-//                            }else{
-//                                apendFiles.add(ResourceUtil.getResourceAsByte(value.substring(7)));
-//                            }
-//
-//                            doc.close();
-//                            pdfOs.close();
-//
-//                    }else{
-//                        if(!StringUtil.isBlank(bodyEl.toString().trim())){
-//                            bodyNew.appendChild(bodyEl);
-//                        }
-//                    }
-//                }
-//                if(bodyNew.childNodes().size() > 0) {
-//                    htmlNew.appendChild(head);
-//                    htmlNew.appendChild(bodyNew);
-//                    // 之前的控件生成
-//                    apendFiles.add(this.generatePdfStreamByHtmlStr(htmlNew.html()));
-//                    htmlNew = new org.jsoup.nodes.Element("html");
-//                }
-//            }
-//        }
+        Elements pdfElements = htmlDoc.getElementsByAttributeValueContaining("type", "file/pdf");
+        if(pdfElements.size() > 0){
+            org.jsoup.nodes.Document htmlDocClone = Jsoup.parse(htmlContent);
+
+            org.jsoup.nodes.Element htmlNew = new org.jsoup.nodes.Element("html");
+            org.jsoup.nodes.Element head = htmlDocClone.head();
+            Elements body = htmlDocClone.getElementsByTag("body");
+            for(org.jsoup.nodes.Element element:body){
+                org.jsoup.nodes.Element bodyNew = new org.jsoup.nodes.Element("body");
+                List<org.jsoup.nodes.Element> bodyEls = element.children();
+
+                for(org.jsoup.nodes.Element bodyEl : bodyEls){
+                    if(bodyEl.attr("type").equals("file/pdf")){
+                        if(bodyNew.childNodes().size() > 0) {
+                            htmlNew.appendChild(head);
+                            htmlNew.appendChild(bodyNew);
+                            // 之前的控件生成
+                            apendFiles.add(this.generatePdfStreamByHtmlStr(htmlNew.html()));
+
+                            htmlNew = new org.jsoup.nodes.Element("html");
+                            bodyNew = new org.jsoup.nodes.Element("body");
+                        }
+                            // pdf控件插入
+                            String value = bodyEl.attr("value");
+                            String pages = bodyEl.attr("page");
+                            if(StringUtil.isBlank(value)) {
+                                continue;
+                            }
+
+                            ByteArrayOutputStream pdfOs = null;
+
+                            pdfOs = ResourceUtil.getResourceAsByte(value);
+
+                            PDDocument doc = PDDocument.load(pdfOs.toByteArray());
+
+                            //int elPageNum = doc.getNumberOfPages();
+
+                            if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("file:")) {
+                                if(value.startsWith("file:")){
+                                    value = value.replace("\\", "/");
+                                }
+                            }else if (value.startsWith("/") || value.startsWith("\\")) {
+                                value = "file:" + "//" + value;
+                                value = value.replace("\\" , "/");
+                                log.debug("pdf url convert:\'" + value + "'");
+                            }else{
+                                if (os != null && os.toLowerCase().startsWith("windows")){
+                                    value = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
+                                }else{
+                                    value = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
+                                }
+                                value = value.replace("\\" , "/");
+                                log.debug("pdf url convert:\'" + value + "'");
+                            }
+
+                            if(StringUtil.isNotBlank(pages)){
+                                String[] pageB = pages.split(",");
+                                PDDocument extractDoc = new PDDocument();
+                                for(String k : pageB){
+                                    //box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
+                                    extractDoc.addPage(doc.getPage(Integer.valueOf(k)));
+                                }
+                                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                                extractDoc.save(os);
+                                apendFiles.add(os);
+                            }else{
+                                apendFiles.add(ResourceUtil.getResourceAsByte(value.substring(7)));
+                            }
+
+                            doc.close();
+                            pdfOs.close();
+
+                    }else{
+                        if(!StringUtil.isBlank(bodyEl.toString().trim())){
+                            bodyNew.appendChild(bodyEl);
+                        }
+                    }
+                }
+                if(bodyNew.childNodes().size() > 0) {
+                    htmlNew.appendChild(head);
+                    htmlNew.appendChild(bodyNew);
+                    // 之前的控件生成
+                    apendFiles.add(this.generatePdfStreamByHtmlStr(htmlNew.html()));
+                    htmlNew = new org.jsoup.nodes.Element("html");
+                }
+            }
+        }
         Elements objectLinks = htmlDoc.getElementsByTag("object");
         for (org.jsoup.nodes.Element link : objectLinks) {
             String inner = link.text();
@@ -1025,26 +1027,23 @@ public class PdfBoxGenerator implements PdfGenerator {
 
                     case "font/watermark":
                         CSSStyleDeclaration cssStyleDeclaration = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
-//                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "left","600px",null);
-//                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "top","300px",null);
+//                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "left","1000px",null);
+//                        cssStyleDeclaration = CSSParser.addSingleStyleProperty(cssStyleDeclaration, "top","1000px",null);
                         if(link.attr("style").indexOf("transform") < 0){
                             link.attr("style", cssStyleDeclaration.getCssText() + ";transform:rotate(40deg)");
+                        }else{
+
                         }
                         break;
                     case "img/watermark":
                         CSSStyleDeclaration cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
-//                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "left","600px",null);
-//                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "top","300px",null);
+//                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "left","1000px",null);
+//                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "top","1000px",null);
                         if(link.attr("style").indexOf("transform") < 0){
                             link.attr("style", cssStyleDeclaration1.getCssText() + ";transform:rotate(40deg)");
                         }
                         break;
-                    case "file/pdf":
-                        CSSStyleDeclaration cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
-//                        cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(cssStyleDeclaration2, "left","600px",null);
-//                        cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(cssStyleDeclaration2, "top","300px",null);
-                        //if(link.attr("style").indexOf("transform") < 0){
-                            link.attr("style", cssStyleDeclaration2.getCssText());
+
                         //}
                         //link.attr("style", "");
                        // break;
@@ -1094,6 +1093,8 @@ public class PdfBoxGenerator implements PdfGenerator {
         } finally {
             OpenhttptopdfRendererObjectFactory.returnPdfBoxRenderer(openhttptopdfRenderBuilder);
         }
+
+
 
         PDDocument pdDoc = PDDocument.load(out.toByteArray());
         PDDocumentInformation pdInfo = pdDoc.getDocumentInformation();
@@ -1240,6 +1241,7 @@ public class PdfBoxGenerator implements PdfGenerator {
         ByteArrayOutputStream osCopy = new ByteArrayOutputStream();
         IOUtils.write(os.toByteArray(),osCopy);
         PDDocument doc = PDDocument.load(osCopy.toByteArray());
+        setWatermark(pagesConfig, doc);
 
         PDDocumentInformation info = doc.getDocumentInformation();
         if(!pagesConfig.isEditable() || StringUtil.isNotBlank(pagesConfig.getPassword())) {
@@ -1271,6 +1273,7 @@ public class PdfBoxGenerator implements PdfGenerator {
         doc.save(os);
         doc.close();
     }
+
 
     /**
      * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfSteamByHtmlFileAndData
@@ -1516,6 +1519,24 @@ public class PdfBoxGenerator implements PdfGenerator {
         FileUtil.toFile(new ByteArrayInputStream(out.toByteArray()),new File(outputFilePath));
     }
 
+    private void setWatermark(TemplateConfig config, PDDocument pdd) throws IOException, NoSuchFieldException, ClassNotFoundException, FontFormatException, InstantiationException, IllegalAccessException {
+        if(config.getWatermark() != null) {
+            if (config.getWatermark().getType().equalsIgnoreCase(WatermarkProperty.IMG_WATERMARK)) {
+                ImageWatermarkDrawer.setWatermark(pdd, config.getWatermark().getValue(), config.getWatermark().getStyle());
+            } else if (config.getWatermark().getType().equalsIgnoreCase(WatermarkProperty.FONT_WATERMARK)) {
+                String fontStr = CSSParser.getSingleStylePropertyValue(config.getWatermark().getStyle(), "font-family");
+                if(StringUtil.isBlank(fontStr)){
+                    fontStr = "DFPSongW7";
+                }
+                FontWatermarkDrawer.setWatermark(pdd, config.getWatermark().getValue(), config.getWatermark().getStyle(), OpenhttptopdfRendererObjectFactory.getFSSupplierCache().get(fontStr).supply());
+            }
+        }
+
+    }
+
+    private void setImgWatermark(){
+
+    }
 
 //    /**
 //     * 在线导出模板生成方法

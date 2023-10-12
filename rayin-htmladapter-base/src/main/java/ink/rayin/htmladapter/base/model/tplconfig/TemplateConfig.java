@@ -81,6 +81,10 @@ public class TemplateConfig {
      * 是否可编辑
      */
     private boolean editable = true;
+    /**
+     * 模版水印配置
+     */
+    private WatermarkProperty watermark;
     private List<PageNumDisplayPos> pageNumDisplayPoss;
     private List<SignatureProperty> signatureProperties;
 

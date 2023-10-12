@@ -13,6 +13,31 @@
     "password":{
       "type": "string","minLength": 0
     },
+    "watermark":{
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum":["img_watermark","font_watermark"]
+        },
+        "value": {
+          "type": "string"
+        },
+
+        "style": {
+          "type": "string"
+        },
+        "if": {
+          "properties": { "type": { "minLength": 1 } }
+        },
+        "then": {
+          "properties": { "value": { "minLength": 1 } }
+        },
+        "else": {
+          "properties": { "value": { "minLength": 0 } }
+        }
+      }
+    },
     "elements": {
       "type": "array",
       "items": {
