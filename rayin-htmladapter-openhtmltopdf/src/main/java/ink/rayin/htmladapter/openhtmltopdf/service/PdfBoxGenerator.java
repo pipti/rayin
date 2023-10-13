@@ -1076,7 +1076,7 @@ public class PdfBoxGenerator implements PdfGenerator {
                 W3CDom w3cDom = new W3CDom();
                 //这里的doc对象指的是jsoup里的Document对象
                 org.w3c.dom.Document w3cDoc = w3cDom.fromJsoup(htmlDoc);
-                log.debug(htmlDoc.toString());
+               // log.debug(htmlDoc.toString());
                 pdfRendererBuilder.withW3cDocument(w3cDoc,"/");
 
                 pdfRendererBuilder.toStream(out);

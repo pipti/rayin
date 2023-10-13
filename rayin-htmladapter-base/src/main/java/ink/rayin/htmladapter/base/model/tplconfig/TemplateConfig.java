@@ -85,6 +85,7 @@ public class TemplateConfig {
      * 模版水印配置
      */
     private WatermarkProperty watermark;
+    private boolean copyProtect = true;
     private List<PageNumDisplayPos> pageNumDisplayPoss;
     private List<SignatureProperty> signatureProperties;
 

@@ -1,8 +1,6 @@
 package ink.rayin.htmladapter.openhtmltopdf.factory;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -17,22 +15,15 @@ import com.openhtmltopdf.extend.OutputDevice;
 import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
 import com.openhtmltopdf.render.RenderingContext;
 
-import de.rototor.pdfbox.graphics2d.PdfBoxGraphics2D;
-import ink.rayin.tools.utils.IoUtil;
-import org.apache.pdfbox.cos.COSName;
+import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxTools;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
-import org.apache.pdfbox.util.Matrix;
 
 import org.w3c.dom.Element;
 import lombok.extern.slf4j.Slf4j;
 
 import ink.rayin.htmladapter.base.utils.CSSParser;
 import ink.rayin.tools.utils.StringUtil;
+
 /**
  * 文字水印插件
  *
@@ -56,9 +47,8 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
     public Map<Shape, String> drawObject(Element e, double x, double y, double width, double height,
                                          OutputDevice outputDevice, RenderingContext ctx, int dotsPerPixel) {
         PdfBoxOutputDevice pdfBoxOutputDevice = (PdfBoxOutputDevice) outputDevice;
-        float pageHeight = pdfBoxOutputDevice.getPage().getMediaBox().getHeight();
-        float pageWidth = pdfBoxOutputDevice.getPage().getMediaBox().getWidth();
-
+//        float pageHeight = pdfBoxOutputDevice.getPage().getMediaBox().getHeight();
+//        float pageWidth = pdfBoxOutputDevice.getPage().getMediaBox().getWidth();
         PDDocument pdd = ((PdfBoxOutputDevice) outputDevice).getWriter();
         String fontStr = null;
         try {
@@ -401,74 +391,7 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
                 margin = Float.parseFloat(marginStr);
             }
         }
-        setWatermark(pdd,value,deg, opacity, colorRGB, fontIs,fontSize, margin);
+        PdfBoxTools.setFontWatermark(pdd, value, deg, opacity, colorRGB, fontIs, fontSize, margin);
     }
-    public static void setWatermark(PDDocument pdd, String value, float deg, float opactity, Color colorRGB, InputStream fontIs, float fontSize, float margin) throws IOException, FontFormatException {
-        byte[] fontB = IoUtil.toByteArray(fontIs);
-        InputStream fontIs1 = new ByteArrayInputStream(fontB);
-        InputStream fontIs2 = new ByteArrayInputStream(fontB);
 
-        PDFont font = PDType0Font.load(pdd, fontIs1, true);
-        PDExtendedGraphicsState pdfExtState = new PDExtendedGraphicsState();
-
-        // 设置透明度
-        pdfExtState.setNonStrokingAlphaConstant(opactity);
-        pdfExtState.setAlphaSourceFlag(true);
-        pdfExtState.getCOSObject().setItem(COSName.MASK, COSName.MULTIPLY);
-
-        Font font2d;
-        Font parent = Font.createFont(Font.TRUETYPE_FONT, fontIs2);
-        font2d = parent.deriveFont(fontSize);
-        Graphics2D g2d ;
-        // 旋转后的矩形宽高
-        // width = w*cosα + h*sinα
-        // height = h*cosα + w*sinα
-        float fontWidth = 0;
-        float fontHeight = 0;
-        float rotateWidth = 0;
-        float rotateHeight = 0;
-
-        int pageCount = pdd.getNumberOfPages();
-        PDPage page;
-
-        for (int p = 0; p < pageCount; p++) {
-            page = pdd.getPage(p);
-            g2d = new PdfBoxGraphics2D(pdd, pdd.getPage(p).getMediaBox());
-            Rectangle2D bounds = font2d.getStringBounds(value, g2d.getFontRenderContext());
-            fontWidth = (float) bounds.getWidth();
-            fontHeight = (float) bounds.getHeight();
-            rotateWidth = fontWidth * (float) Math.cos(Math.toRadians(deg)) + fontHeight * (float) Math.sin(Math.toRadians(deg));
-            rotateHeight = fontHeight * (float) Math.cos(Math.toRadians(deg)) + fontWidth * (float) Math.sin(Math.toRadians(deg));
-            PDPageContentStream contentStream = new PDPageContentStream(pdd, page, PDPageContentStream.AppendMode.APPEND, true, true);
-            contentStream.setGraphicsStateParameters(pdfExtState);
-
-            // 设置水印字体颜色
-            //final int[] color = {0, 0, 0, 210};
-            contentStream.setNonStrokingColor(colorRGB);
-            // contentStream.setNonStrokingColor(color[0], color[1], color[2], color[3]);
-            contentStream.beginText();
-            contentStream.setFont(font, fontSize);
-
-            // 根据纸张大小添加水印
-            for (int h = (int)(rotateHeight/2*-1); h < page.getMediaBox().getHeight() + rotateHeight; h = h + (int) rotateHeight + (int)margin) {
-                for (int w = (int)(rotateWidth/2*-1); w < page.getMediaBox().getWidth() + rotateWidth; w = w + (int) rotateWidth + (int)margin) {
-                    try {
-                        contentStream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(deg), w, h));
-
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    try {
-                        contentStream.showText(value);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-            }
-            // 结束渲染，关闭流
-            contentStream.endText();
-            contentStream.restoreGraphicsState();
-            contentStream.close();
-        }
-    }
 }

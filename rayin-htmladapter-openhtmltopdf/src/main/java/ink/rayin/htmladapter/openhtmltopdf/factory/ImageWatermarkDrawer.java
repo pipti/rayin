@@ -11,13 +11,8 @@ import com.openhtmltopdf.extend.OutputDevice;
 import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
 import com.openhtmltopdf.render.RenderingContext;
 
-import org.apache.pdfbox.cos.COSName;
+import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxTools;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
-import org.apache.pdfbox.util.Matrix;
 
 import org.w3c.dom.Element;
 import lombok.extern.slf4j.Slf4j;
@@ -246,60 +241,7 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
             opacity = Float.parseFloat(opacityStr);
         }
 
-        setWatermark(pdd, imgBos,imgWidth, deg, opacity, margin);
-
+        PdfBoxTools.setImageWatermark(pdd, imgBos,imgWidth, deg, opacity, margin);
     }
-    public static void setWatermark(PDDocument pdd,ByteArrayOutputStream imgBos, float imgWidth, float deg,float opactity, float margin) throws IOException {
-        PDImageXObject pdImage = PDImageXObject.createFromByteArray(pdd, imgBos.toByteArray(), "");
-        PDExtendedGraphicsState pdfExtState = new PDExtendedGraphicsState();
-        float imgHeight = (imgWidth / pdImage.getWidth()) * pdImage.getHeight();
 
-        // 设置透明度
-        pdfExtState.setNonStrokingAlphaConstant(new Float(opactity));
-        pdfExtState.setAlphaSourceFlag(true);
-        pdfExtState.getCOSObject().setItem(COSName.MASK, COSName.MULTIPLY);
-
-
-        // 旋转后的矩形宽高
-        // width = w*cosα + h*sinα
-        // height = h*cosα + w*sinα
-        float rotateWidth = imgWidth * (float) Math.cos(Math.toRadians(deg)) + imgHeight * (float) Math.sin(Math.toRadians(deg));
-        float rotateHeight = imgHeight * (float) Math.cos(Math.toRadians(deg)) + imgWidth * (float) Math.sin(Math.toRadians(deg));
-
-        PDPage page;
-        PDPageContentStream contentStream;
-
-        int pageCount = pdd.getNumberOfPages();
-
-        for (int p = 0; p < pageCount; p++) {
-            page = pdd.getPage(p);
-
-            contentStream = new PDPageContentStream(pdd, page, PDPageContentStream.AppendMode.APPEND, true, true);
-            contentStream.setGraphicsStateParameters(pdfExtState);
-
-            // 根据纸张大小添加水印
-            for (int h = (int)(rotateHeight/2*-1); h < page.getMediaBox().getHeight() + rotateHeight; h = h + (int) rotateHeight + (int)margin) {
-                for (int w = (int)(rotateWidth/2*-1); w < page.getMediaBox().getWidth() + rotateWidth; w = w + (int) rotateWidth + (int)margin) {
-                    try {
-                        Matrix matrix = new Matrix();
-                        // 位置
-                        matrix.translate(w, h);
-                        // 旋转角度
-                        matrix.rotate(Math.toRadians(deg));
-                        // 修正图片大小
-                        matrix.scale(imgWidth, imgHeight);
-                        // 绘制
-                        contentStream.drawImage(pdImage, matrix);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
-                }
-            }
-
-            // 结束渲染，关闭流
-            contentStream.restoreGraphicsState();
-            contentStream.close();
-        }
-    }
 }
