@@ -49,6 +49,9 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
         PdfBoxOutputDevice pdfBoxOutputDevice = (PdfBoxOutputDevice) outputDevice;
 //        float pageHeight = pdfBoxOutputDevice.getPage().getMediaBox().getHeight();
 //        float pageWidth = pdfBoxOutputDevice.getPage().getMediaBox().getWidth();
+        if(ctx.getPageCount() != ctx.getPageNo() + 1){
+            return null;
+        }
         PDDocument pdd = ((PdfBoxOutputDevice) outputDevice).getWriter();
         String fontStr = null;
         try {
@@ -56,6 +59,7 @@ public class FontWatermarkDrawer implements FSObjectDrawer {
             if (StringUtil.isBlank(fontStr)) {
                 fontStr = "DFPSongW7";
             }
+
             setWatermark(pdd, e.getAttribute("value"), e.getAttribute("style"), fontCache.get(fontStr).supply());
         } catch (IOException ex) {
             throw new RuntimeException(ex);

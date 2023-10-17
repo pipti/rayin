@@ -459,9 +459,11 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         factory.registerDrawer("image/barcode", new ZXingObjectDrawer());
         factory.registerDrawer("jfreechart/pie", new JFreeChartPieDiagramObjectDrawer());
         factory.registerDrawer("jfreechart/bar", new JFreeChartBarDiagramObjectDrawer());
+        factory.registerDrawer("file/pdf", new PdfObjectDrawer());
 
         factory.registerDrawer("font/watermark", new FontWatermarkDrawer(fontFSSupplierCache));
         factory.registerDrawer("img/watermark", new ImageWatermarkDrawer());
+
 
         builder.useObjectDrawerFactory(factory);
         openhttptopdfRenderBuilder.setPdfRendererBuilder(builder);

@@ -1043,14 +1043,14 @@ public class PdfBoxGenerator implements PdfGenerator {
                             link.attr("style", cssStyleDeclaration1.getCssText() + ";transform:rotate(40deg)");
                         }
                         break;
-
-                        //}
-                        //link.attr("style", "");
-                       // break;
-//                        break;
-//                        else{
-//                            link.attr("style", cssStyleDeclaration.getCssText());
-//                        }
+                    case "file/pdf":
+                        CSSStyleDeclaration cssStyleDeclaration2 = CSSParser.addSingleStyleProperty(link.attr("style"), "position","absolute", null);
+//                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "left","1000px",null);
+//                        cssStyleDeclaration1 = CSSParser.addSingleStyleProperty(cssStyleDeclaration1, "top","1000px",null);
+                        if(link.attr("style").indexOf("transform") < 0){
+                            link.attr("style", cssStyleDeclaration2.getCssText() + ";transform:rotate(40deg)");
+                        }
+                        break;
 
                 }
 

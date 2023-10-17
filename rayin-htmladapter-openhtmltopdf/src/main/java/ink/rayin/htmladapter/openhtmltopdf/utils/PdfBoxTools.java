@@ -374,7 +374,6 @@ public class PdfBoxTools {
         List<BufferedImage> pdfImageList = pageConvertToImages(pdd, dpi, imageType);
         PDDocument newPdd = new PDDocument();
         for(BufferedImage bi:pdfImageList){
-
             PDPage pdpage = new PDPage(new PDRectangle(bi.getWidth(), bi.getHeight()));
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ImageIO.write(bi, format, outputStream);
