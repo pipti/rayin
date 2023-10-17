@@ -1,10 +1,12 @@
 package ink.rayin.htmladapter.openhtmltopdf.utils;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import de.rototor.pdfbox.graphics2d.PdfBoxGraphics2D;
 import ink.rayin.tools.utils.FileUtil;
 import ink.rayin.tools.utils.IoUtil;
 import lombok.SneakyThrows;
 import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+
 /**
  * PDF工具类
  *
@@ -391,5 +394,39 @@ public class PdfBoxTools {
     public static void saveFile(byte[] bs, String path) throws IOException {
         FileUtil.toFile(new ByteArrayInputStream(bs), new File(path));
     }
+    public static void saveFile(PDDocument pd, String path) throws IOException {
+        pd.save(path);
+    }
 
+    /**
+     * pdf拆分
+     * @param pdd 要拆分的pdf
+     * @param splitePoint 拆分起始点数组，1为起始页，例如1,3,5：拆分1-2,3-4,5至最后
+     * @param path 保存路径，不包含文件名
+     * @param formatFileName 文件名format ，xxx%sxxx,%s是起始页到终止页1_2
+     * @throws IOException
+     */
+    public static void pdfSplite(PDDocument pdd, int[] splitePoint, String path, String formatFileName) throws IOException {
+        List<PDDocument> pds = new ArrayList<>();
+        List<String> fileNames = new ArrayList<>();
+        for(int k = 0; k < splitePoint.length - 1; k++){
+            PDDocument pdTmp = new PDDocument();
+            for(int p = splitePoint[k] - 1; p < splitePoint[k + 1] - 2; p++){
+                pdTmp.addPage(pdd.getPage(p));
+
+            }
+            fileNames.add(String.format(formatFileName, splitePoint[k] + "_" + splitePoint[k + 1]));
+            pds.add(pdTmp);
+        }
+        for(int i = 0; i < pds.size(); i++){
+            pds.get(i).save(path + fileNames.get(i));
+        }
+    }
+
+
+    public static OutputStream pdfMerge(List<InputStream> sources) throws IOException {
+        PDFMergerUtility PDFmerger = new PDFMergerUtility();
+        PDFmerger.addSources(sources);
+        return PDFmerger.getDestinationStream();
+    }
 }
