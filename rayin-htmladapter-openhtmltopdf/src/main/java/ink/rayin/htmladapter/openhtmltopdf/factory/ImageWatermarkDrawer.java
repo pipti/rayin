@@ -42,6 +42,10 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
         PDDocument pdd = ((PdfBoxOutputDevice) outputDevice).getWriter();
 
         try {
+            if(StringUtil.isBlank(e.getAttribute("value"))){
+                log.error("value", "value is null");
+                return null;
+            }
             ImageWatermarkDrawer.setWatermark(pdd, e.getAttribute("value"), e.getAttribute("style"));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -71,6 +75,8 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
                 src = src.replace("\\" , "/");
                 imgBos = ResourceUtil.getResourceAsByte(src);
             }
+        }else{
+            throw new RuntimeException("src is null");
         }
 
         log.debug("imgBos.size()"+imgBos.size());

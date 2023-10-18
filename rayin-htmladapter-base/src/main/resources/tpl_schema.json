@@ -38,6 +38,9 @@
         }
       }
     },
+    "copyProtect":{
+      "type": "boolean","enum":[true,false]
+    },
     "elements": {
       "type": "array",
       "items": {

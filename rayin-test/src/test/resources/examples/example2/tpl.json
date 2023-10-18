@@ -8,5 +8,6 @@
     "type": "font_watermark",
     "value": "水印测试",
     "style": ""
-  }
+  },
+  "editable": false
 }
