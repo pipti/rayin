@@ -96,7 +96,7 @@ public class PdfBoxSignature implements Signature {
             InputStream inputFileIs2 = new ByteArrayInputStream(tos.toByteArray());
 
             if(signatureProperty.getSignatureImage().indexOf(";base64,") > 0){
-                byte[] b = Base64Utils.decodeFromString(signatureProperty.getSignatureImage());
+                byte[] b = Base64Utils.decodeFromString(signatureProperty.getSignatureImage().substring(signatureProperty.getSignatureImage().indexOf(";base64,") + 8));
                 signatureInfoBis = new ByteArrayInputStream(b);
             }else{
                 signatureInfoBis = ResourceUtil.getResourceAsStream(signatureProperty.getSignatureImage());
