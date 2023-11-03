@@ -12,7 +12,10 @@ import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.Base64;
 
 /**
  * 图片工具类
@@ -548,5 +551,46 @@ public final class ImageUtil {
 		// 写图片
 		//ImageIO.write(imageResult, "png", outFile);
 		return imageResult;
+	}
+
+
+	/**
+	 * 通过url生成base64
+	 * @param imgUrl
+	 * @return
+	 * @throws IOException
+	 */
+	public static String GetImgBase64StrByUrl(String imgUrl) throws IOException, URISyntaxException {
+		// 对字节数组Base64编码
+		Base64.Encoder encoder = Base64.getEncoder();
+		byte[] b = ResourceUtil.getResourceAsByte(imgUrl).toByteArray();
+		return GetImgBase64StrByByte(b);
+	}
+	/**
+	 * 通过url生成base64
+	 * @param b
+	 * @return
+	 * @throws IOException
+	 */
+	public static String GetImgBase64StrByByte(byte[] b) throws IOException, URISyntaxException {
+		// 对字节数组Base64编码
+		Base64.Encoder encoder = Base64.getEncoder();
+		//获取文件类型
+		// String ext = Fil.getImageType(b).toString();
+		String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(b));
+
+		// 返回Base64编码过的字节数组字符串
+		return "data:" + mimeType + ";base64," + new String(encoder.encode(b),"ISO8859-1");
+	}
+
+	public byte[] GenerateImage(String base64Str) {
+		if (StringUtil.isBlank(base64Str)) {
+			return null;
+		}
+		Base64.Decoder decoder = Base64.getDecoder();
+
+		// Base64解码
+		byte[] b = decoder.decode(base64Str);
+		return b;
 	}
 }
