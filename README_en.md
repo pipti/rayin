@@ -1,6 +1,6 @@
 # RAYIN
 ![Hex.pm](https://img.shields.io/hexpm/l/plug)
-![Hex.pm](https://img.shields.io/badge/Release-V1.1.0-green.svg)
+![Hex.pm](https://img.shields.io/badge/Release-V1.1.2-green.svg)
 ![Hex.pm](https://img.shields.io/badge/Author-Jonah%20Wang-ff69b4.svg) \
 ![Hex.pm](https://img.shields.io/badge/JDK-1.8+-green.svg)
 ![Hex.pm](https://img.shields.io/badge/PDFBOX-2.0.27-green.svg)
