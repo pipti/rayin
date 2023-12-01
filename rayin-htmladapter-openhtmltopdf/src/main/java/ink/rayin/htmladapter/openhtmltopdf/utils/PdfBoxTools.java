@@ -1,6 +1,5 @@
 package ink.rayin.htmladapter.openhtmltopdf.utils;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import de.rototor.pdfbox.graphics2d.PdfBoxGraphics2D;
 import ink.rayin.tools.utils.FileUtil;
 import ink.rayin.tools.utils.IoUtil;
