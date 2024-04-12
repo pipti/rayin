@@ -5,12 +5,12 @@
     <parent>
         <artifactId>rayin-parent</artifactId>
         <groupId>ink.rayin</groupId>
-        <version>1.1.2</version>
+        <version>dev-1.1.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.1.2</version>
+    <version>dev-1.1.3</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -23,10 +23,6 @@
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ink.rayin</groupId>
-            <artifactId>rayin-tools</artifactId>
         </dependency>
 
         <dependency>
@@ -50,6 +46,14 @@
                     <groupId>org.apache.pdfbox</groupId>
                     <artifactId>fontbox</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -58,7 +62,16 @@
             <groupId>com.openhtmltopdf</groupId>
             <artifactId>openhtmltopdf-java2d</artifactId>
             <version>${openhtml.version}</version>
-            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -72,6 +85,10 @@
                     <groupId>com.ibm.icu</groupId>
                     <artifactId>icu4j</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-core</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!-- 修复漏洞 原包引用版本59.1 -->
@@ -81,13 +98,6 @@
             <version>71.1</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <!-- Optional, leave out if you do not need logging via slf4j. -->
-            <groupId>com.openhtmltopdf</groupId>
-            <artifactId>openhtmltopdf-slf4j</artifactId>
-            <version>${openhtml.version}</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <!-- Optional, leave out if you do not need SVG support. -->
@@ -95,6 +105,7 @@
             <artifactId>openhtmltopdf-svg-support</artifactId>
             <version>${openhtml.version}</version>
             <scope>compile</scope>
+
             <exclusions>
                 <exclusion>
                     <groupId>xml-apis</groupId>
@@ -112,6 +123,10 @@
                     <groupId>org.apache.xmlgraphics</groupId>
                     <artifactId>batik-anim</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-core</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -121,7 +136,6 @@
             <groupId>com.openhtmltopdf</groupId>
             <artifactId>openhtmltopdf-mathml-support</artifactId>
             <version>${openhtml.version}</version>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>xml-apis</groupId>
@@ -147,6 +161,14 @@
                     <groupId>org.apache.xmlgraphics</groupId>
                     <artifactId>batik-ext</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-svg-support</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -155,13 +177,27 @@
             <groupId>com.openhtmltopdf</groupId>
             <artifactId>openhtmltopdf-latex-support</artifactId>
             <version>${openhtml.version}</version>
-            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-mathml-support</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.openhtmltopdf</groupId>
             <artifactId>openhtmltopdf-objects</artifactId>
             <version>${openhtml.version}</version>
-            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.openhtmltopdf</groupId>
+                    <artifactId>openhtmltopdf-pdfbox</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.jfree</groupId>
@@ -172,6 +208,12 @@
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <version>${pdfbox.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -182,6 +224,12 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <version>2.7.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -204,11 +252,23 @@
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
             <version>1.70</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>

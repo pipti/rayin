@@ -15,16 +15,12 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * ElementType枚举类
  *
  * @author Janah Wang / 王柱 2022-09-22
  */
-@Getter
-@AllArgsConstructor
+
 public enum ElementType {
 
 	/**
@@ -60,4 +56,16 @@ public enum ElementType {
 		return null;
 	}
 
+	public String getKey() {
+		return key;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	ElementType(String key, String name) {
+		this.key = key;
+		this.name = name;
+	}
 }

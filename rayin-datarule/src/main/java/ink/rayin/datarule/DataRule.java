@@ -11,12 +11,11 @@ import groovy.transform.ThreadInterrupt;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import ink.rayin.tools.utils.DigestUtil;
 import ink.rayin.tools.utils.ResourceUtil;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import ink.rayin.tools.utils.StringUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
-
 import org.kohsuke.groovy.sandbox.SandboxTransformer;
 
 import java.io.File;
@@ -52,8 +51,10 @@ import java.util.concurrent.*;
  * @author  Jonah Wang / 王柱 2022-08-07
  *
  */
-@Slf4j
+
 public class DataRule {
+    private static Log log = LogFactory.getLog(DataRule.class);
+
     /**
      * groovy脚本执行线程池
      */
@@ -143,9 +144,8 @@ public class DataRule {
      * @param scriptString 脚本字符串
      * @return 数据对象
      */
-    @SneakyThrows
     public Object executeGroovyScript(JSONObject data, JSONObject otherData, String dataName,
-                                           String otherDataName, String scriptString){
+                                           String otherDataName, String scriptString) throws ExecutionException, InterruptedException, TimeoutException {
         Binding binding = new Binding();
         binding.setProperty(dataName, data);
         binding.setProperty(otherDataName, otherData);
@@ -191,7 +191,7 @@ public class DataRule {
      * @throws IOException
      */
     public Object executeGroovyFile(JSONObject data, JSONObject otherData, String dataName,
-                                           String otherDataName, String scriptFileURI) throws IOException{
+                                           String otherDataName, String scriptFileURI) throws IOException, ExecutionException, InterruptedException, TimeoutException {
         String fileKey = DigestUtil.md5Hex(scriptFileURI);
         String scriptString = innerFileLruCache.getIfPresent(fileKey);
         if (scriptString == null) {
@@ -260,9 +260,9 @@ public class DataRule {
                 throw new RayinException("parameter error,'" + sndp + "' data path not found!");
             }
             groovyScriptName += JSONPath.eval(data, sndp).toString();
-            groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator)? groovyScriptName + scriptFileNameSeparator : groovyScriptName;
+            groovyScriptName = StringUtil.isNotBlank(scriptFileNameSeparator)? groovyScriptName + scriptFileNameSeparator : groovyScriptName;
         }
-        groovyScriptName = StringUtils.isNotBlank(scriptFileNameSeparator) ? groovyScriptName.substring(0, groovyScriptName.length() - 1) : groovyScriptName;
+        groovyScriptName = StringUtil.isNotBlank(scriptFileNameSeparator) ? groovyScriptName.substring(0, groovyScriptName.length() - 1) : groovyScriptName;
         log.info("groovy script name：" + File.separator + groovyScriptName + ".groovy");
         return groovyScriptName + ".groovy";
     }

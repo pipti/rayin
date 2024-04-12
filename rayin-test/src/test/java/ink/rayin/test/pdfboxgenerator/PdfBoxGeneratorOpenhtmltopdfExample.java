@@ -8,7 +8,7 @@ import ink.rayin.htmladapter.base.model.tplconfig.MarkInfo;
 import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
 import ink.rayin.htmladapter.base.model.tplconfig.SignatureProperty;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
-import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
+import ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxTools;
 import ink.rayin.tools.utils.ResourceUtil;
@@ -36,7 +36,7 @@ public class PdfBoxGeneratorOpenhtmltopdfExample {
     Signature pdfSign = new PdfBoxSignature();
     static  {
         try {
-            pdfGenerator = new PdfBoxGenerator();
+            pdfGenerator = new OpenHtmlGenerator();
             pdfGenerator.init();
         } catch (Exception e) {
             e.printStackTrace();

@@ -15,7 +15,6 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Data;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ import java.util.List;
  *
  * @author Janah Wang / 王柱 2019-08-25
  */
-@Data
+
 public class PageNumProperties {
 
     private boolean pageNumIsFirstPage;
@@ -32,4 +31,35 @@ public class PageNumProperties {
     private boolean pageNumIsDisplay;
     private List<PageNumDisplayPos> pageNumDisplayPoss;
 
+    public boolean isPageNumIsFirstPage() {
+        return pageNumIsFirstPage;
+    }
+
+    public void setPageNumIsFirstPage(boolean pageNumIsFirstPage) {
+        this.pageNumIsFirstPage = pageNumIsFirstPage;
+    }
+
+    public boolean isPageNumIsCalculate() {
+        return pageNumIsCalculate;
+    }
+
+    public void setPageNumIsCalculate(boolean pageNumIsCalculate) {
+        this.pageNumIsCalculate = pageNumIsCalculate;
+    }
+
+    public boolean isPageNumIsDisplay() {
+        return pageNumIsDisplay;
+    }
+
+    public void setPageNumIsDisplay(boolean pageNumIsDisplay) {
+        this.pageNumIsDisplay = pageNumIsDisplay;
+    }
+
+    public List<PageNumDisplayPos> getPageNumDisplayPoss() {
+        return pageNumDisplayPoss;
+    }
+
+    public void setPageNumDisplayPoss(List<PageNumDisplayPos> pageNumDisplayPoss) {
+        this.pageNumDisplayPoss = pageNumDisplayPoss;
+    }
 }

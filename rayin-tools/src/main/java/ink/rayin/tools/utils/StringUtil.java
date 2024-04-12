@@ -242,7 +242,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		if (null == template) {
 			return null;
 		}
-		if (Func.isEmpty(params) || isBlank(template)) {
+		if (ObjectUtil.isEmpty(params) || isBlank(template)) {
 			return template.toString();
 		}
 		return StrFormatter.format(template.toString(), params);
@@ -279,7 +279,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 		String template2 = template.toString();
 		for (Map.Entry<?, ?> entry : map.entrySet()) {
-			template2 = template2.replace("{" + entry.getKey() + "}", Func.toStr(entry.getValue()));
+			template2 = template2.replace("{" + entry.getKey() + "}", toStr(entry.getValue()));
 		}
 		return template2;
 	}
@@ -461,7 +461,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @since 3.2.0
 	 */
 	public static String getContainsStr(CharSequence str, CharSequence... testStrs) {
-		if (isEmpty(str) || Func.isEmpty(testStrs)) {
+		if (isEmpty(str) || ObjectUtil.isEmpty(testStrs)) {
 			return null;
 		}
 		for (CharSequence checkStr : testStrs) {
@@ -510,7 +510,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @since 3.2.0
 	 */
 	public static String getContainsStrIgnoreCase(CharSequence str, CharSequence... testStrs) {
-		if (isEmpty(str) || Func.isEmpty(testStrs)) {
+		if (isEmpty(str) || ObjectUtil.isEmpty(testStrs)) {
 			return null;
 		}
 		for (CharSequence testStr : testStrs) {
@@ -1287,7 +1287,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return 查找到的个数
 	 */
 	public static int count(CharSequence content, CharSequence strForSearch) {
-		if (Func.hasEmpty(content, strForSearch) || strForSearch.length() > content.length()) {
+		if (hasEmpty(content, strForSearch) || strForSearch.length() > content.length()) {
 			return 0;
 		}
 
@@ -1400,6 +1400,43 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		}
 		return sb.toString().toLowerCase();
 	}
+	/**
+	 * 强转string,并去掉多余空格
+	 *
+	 * @param str 字符串
+	 * @return String
+	 */
+	public static String toStr(Object str) {
+		return toStr(str, "");
+	}
 
+	/**
+	 * 强转string,并去掉多余空格
+	 *
+	 * @param str          字符串
+	 * @param defaultValue 默认值
+	 * @return String
+	 */
+	public static String toStr(Object str, String defaultValue) {
+		if (null == str) {
+			return defaultValue;
+		}
+		return String.valueOf(str);
+	}
+
+	/**
+	 * 对象组中是否存在 Empty Object
+	 *
+	 * @param os 对象组
+	 * @return boolean
+	 */
+	public static boolean hasEmpty(Object... os) {
+		for (Object o : os) {
+			if (isEmpty(o)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 

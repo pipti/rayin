@@ -23,7 +23,6 @@ import com.openhtmltopdf.extend.FSSupplier;
 import com.openhtmltopdf.extend.impl.FSDefaultCacheStore;
 import com.openhtmltopdf.latexsupport.LaTeXDOMMutator;
 import com.openhtmltopdf.mathmlsupport.MathMLDrawer;
-import com.openhtmltopdf.objects.StandardObjectDrawerFactory;
 import com.openhtmltopdf.objects.jfreechart.JFreeChartBarDiagramObjectDrawer;
 import com.openhtmltopdf.objects.jfreechart.JFreeChartPieDiagramObjectDrawer;
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
@@ -31,9 +30,11 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.openhtmltopdf.render.DefaultObjectDrawerFactory;
 import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
 import com.openhtmltopdf.util.XRLog;
+import ink.rayin.htmladapter.base.InitOptions;
+import ink.rayin.tools.utils.Exceptions;
 import ink.rayin.tools.utils.ResourceUtil;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -44,6 +45,7 @@ import org.springframework.core.io.Resource;
 import java.awt.*;
 import java.io.*;
 import java.net.JarURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.*;
@@ -59,8 +61,10 @@ import java.util.jar.JarFile;
  * @version 1.0
  * @since 1.8
  */
-@Slf4j
+
 public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<OpenhttptopdfRenderBuilder> {
+    private static Log log = LogFactory.getLog(OpenhttptopdfRendererObjectFactory.class);
+
     private  HashMap<String,File> fontFileCache = new HashMap<>();
     private  static HashMap<String, FSSupplier<InputStream>> fontFSSupplierCache = new HashMap<>();
     private  static HashMap<String, byte[]> fontFileCacheIsb = new HashMap<>();
@@ -72,17 +76,17 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
     /**
      * 最小线程数
      */
-    private static int MinIdle = 5;
+    private static Integer MinIdle = 5;
 
     /**
      * 最大空闲数
      */
-    private static int MaxIdle = 8;
+    private static Integer MaxIdle = 8;
 
     /**
      * 最大线程数
      */
-    private static int MaxTotal = 10;
+    private static Integer MaxTotal = 10;
 
     private static String cFontPathDirectory;
     /**
@@ -90,23 +94,21 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      */
     private static long SoftMinEvictableIdleTimeMillis = 30000L;
 
-    @SneakyThrows
     private String readFontPSName(File font) {
         try{
             Font f = Font.createFont(Font.TRUETYPE_FONT, font);
             return f.getPSName();
-        }catch(FontFormatException e){
+        }catch(FontFormatException | IOException e){
             log.warn("⚠️⚠️⚠️font psname read error:" + font.getAbsolutePath(),e);
         }
         return null;
     }
 
-    @SneakyThrows
     private String readFontName(File font) {
         try{
             Font f = Font.createFont(Font.TRUETYPE_FONT, font);
             return f.getFontName();
-        }catch(FontFormatException e){
+        }catch(FontFormatException | IOException e){
             log.warn("⚠️⚠️⚠️font psname read error:" + font.getAbsolutePath(),e);
         }
         return null;
@@ -114,8 +116,11 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
     public static void init() {
         synchronized(OpenhttptopdfRendererObjectFactory.class) {
-
-            factory.FontCache();
+            try{
+                factory.FontCache();
+            }catch(IOException | URISyntaxException e){
+                throw Exceptions.unchecked(e);
+            }
 
             //设置对象池的相关参数
             GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
@@ -151,7 +156,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
      * @param maxTotal 最大线程总数
      * @param customizeFontPathDirectory 自定义字体目录，可空
      */
-    public static void init(int minIdle,int maxIdle,int maxTotal, String customizeFontPathDirectory) {
+    public static void init(Integer minIdle,Integer maxIdle,Integer maxTotal, String customizeFontPathDirectory) {
         cFontPathDirectory = customizeFontPathDirectory;
 
         MinIdle = minIdle;
@@ -159,16 +164,25 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         MaxTotal = maxTotal;
         init();
     }
-
+    public static void init(InitOptions options) {
+        cFontPathDirectory = options.getCustomizeFontPathDirectory();
+        MinIdle = options.getMinIdle();
+        MaxIdle = options.getMaxIdle();
+        MaxTotal = options.getMaxTotal();
+        init();
+    }
     /**
      * 获取OpenhttptopdfRenderBuilder实例
      *
      * @return OpenhttptopdfRenderBuilder
      */
-    @SneakyThrows
     public static OpenhttptopdfRenderBuilder getPdfRendererBuilderInstance() {
         log.debug("pollActiveNum:" + objectPool.getNumActive());
-        return objectPool.borrowObject();
+        try{
+            return objectPool.borrowObject();
+        }catch(Exception e){
+            throw Exceptions.unchecked(e);
+        }
     }
 
     public static HashMap<String, File> getFontFileCache() throws Exception {
@@ -192,8 +206,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
     /**
      * 字体缓存
      */
-    @SneakyThrows
-    private void FontCache(){
+    private void FontCache() throws IOException, URISyntaxException {
         log.info("▶▶▶ adding base fonts  ▶▶▶");
         addFontsFromResource("rayin_default_fonts");
         log.info("▶▶▶ adding package fonts ▶▶▶ ");
@@ -214,7 +227,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         }
     }
 
-    private void addFontsFromResource(String resourcePath) throws IOException {
+    private void addFontsFromResource(String resourcePath) throws IOException, URISyntaxException {
         Resource fontsResource = ResourceUtil.getResource(resourcePath);
         File fontsFile = null;
         URL fontsUrl = null;
@@ -231,7 +244,7 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
         }
     }
 
-    private void addFontsFromDir(File fontsLocalDir) throws IOException {
+    private void addFontsFromDir(File fontsLocalDir) throws IOException, URISyntaxException {
         if (fontsLocalDir != null && fontsLocalDir.isDirectory()) {
             List<File> flist = new ArrayList<File>();
             dirAllFontFiles(fontsLocalDir, flist);
@@ -372,7 +385,6 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                return;
             }
         }
     }
@@ -393,17 +405,21 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
 
     }
 
-    @SneakyThrows
-    public static File inputStreamToFile(InputStream inputStream,String prefix,String suffix){
-        File tmp = File.createTempFile(prefix, suffix);
-        OutputStream os = new FileOutputStream(tmp);
-        int bytesRead = 0;
-        byte[] buffer = new byte[8192];
-        while ((bytesRead = inputStream.read(buffer, 0, 8192)) != -1) {
-            os.write(buffer, 0, bytesRead);
+    public static File inputStreamToFile(InputStream inputStream,String prefix,String suffix) {
+        try{
+            File tmp = File.createTempFile(prefix, suffix);
+            OutputStream os = new FileOutputStream(tmp);
+            int bytesRead = 0;
+            byte[] buffer = new byte[8192];
+            while ((bytesRead = inputStream.read(buffer, 0, 8192)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            inputStream.close();
+            return tmp;
+        }catch(IOException e){
+            throw Exceptions.unchecked(e);
         }
-        inputStream.close();
-        return tmp;
+
     }
 
     public static void dirAllFontFiles(File file,List<File> flist){

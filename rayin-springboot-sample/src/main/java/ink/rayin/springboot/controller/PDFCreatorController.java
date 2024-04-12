@@ -7,7 +7,6 @@ import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.tools.utils.Charsets;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 

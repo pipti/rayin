@@ -15,17 +15,12 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * 签章签名信息
  *
  * @author Janah Wang / 王柱 2019-09-08
  */
 
-@Data
 public class SignatureProperty {
     public SignatureProperty(float x, float y, int pageNum, float width,float height,
                              String signatureImage, String name, String location, String reason, boolean visualSignEnabled){
@@ -70,4 +65,85 @@ public class SignatureProperty {
     private String location;
     private String reason;
     private boolean visualSignEnabled = true;
+
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public String getSignatureImage() {
+        return signatureImage;
+    }
+
+    public void setSignatureImage(String signatureImage) {
+        this.signatureImage = signatureImage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public boolean isVisualSignEnabled() {
+        return visualSignEnabled;
+    }
+
+    public void setVisualSignEnabled(boolean visualSignEnabled) {
+        this.visualSignEnabled = visualSignEnabled;
+    }
 }

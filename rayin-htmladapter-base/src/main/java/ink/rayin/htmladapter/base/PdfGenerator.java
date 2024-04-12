@@ -19,8 +19,6 @@ import com.alibaba.fastjson2.JSONObject;
 import ink.rayin.htmladapter.base.model.tplconfig.RayinMeta;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 /**
@@ -39,6 +37,7 @@ import java.util.LinkedHashSet;
  */
 public interface PdfGenerator {
     String defaultFontName = "DFPSongW7";
+    
     String sign = "80550ec4bfc10691e6c45aa88de3f62e";
     /**
      * 根据模板配置文件路径生成pdf
@@ -81,7 +80,7 @@ public interface PdfGenerator {
      * @return RayinMeta 元数据类
      */
      RayinMeta generatePdfStreamByTplConfigStr(String tplConfigStr, JSONObject jsonData,
-                                               ByteArrayOutputStream os);
+                                               ByteArrayOutputStream os) throws Exception;
 
     /**
      * 根据单个html文件路径（非配置文件，即html路径）生成pdf至指定路径
@@ -139,6 +138,23 @@ public interface PdfGenerator {
     ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlStr);
 
     /**
+     * 链接页面转换pdf字节流
+     * Convert html string to pdf byte stream
+     * @param link 服务链接
+     * @return PDF pdf输出流
+     */
+    ByteArrayOutputStream generatePdfStreamByLink(String link);
+
+    /**
+     * html字符串转换为pdf文件
+     * Convert html string to pdf byte stream
+     * @param link 服务链接
+     * @param filePath 保存文件路径
+     * @return PDF pdf输出流
+     */
+     void generatePdfFileByLink(String link, String filePath);
+
+    /**
      * 将带动态脚本的html字符串和数据结合生成pdf字节流
      * Combine html string and data with dynamic script to generate pdf byte stream
      * @param htmlStr html输入流
@@ -181,57 +197,64 @@ public interface PdfGenerator {
     void init(int minIdle,int maxIdle,int maxTotal, String customizeFontPathDirectory);
 
     /**
+     * 初始化
+     * Initialization
+     * @param options 初始化参数
+     */
+    void init(InitOptions options);
+
+    /**
      * 获取加载的字体名称
      * Get the loaded font name
      * @return  LinkedHashSet
      */
      LinkedHashSet<String> getFontNames();
 
-    /**
-     * excel数据格式，通过模板生成pdf，每条数据一个PDF，并生成至对应的目录中
-     * 文件名为fileNamePrefix + "_" + 序号
-     * Excel data format, generate pdf through template,
-     * one PDF for each piece of data,
-     * and generate it to the corresponding directory with the file name fileNamePrefix + "_" + serial number
-     * @param tplConfigStr 模板配置串
-     * @param excelIs excel文件流
-     * @param outputDirPath 输出目录
-     * @param fileNamePrefix 文件名前缀
-     */
-     void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs,
-                                 String outputDirPath,String fileNamePrefix);
+//    /**
+//     * excel数据格式，通过模板生成pdf，每条数据一个PDF，并生成至对应的目录中
+//     * 文件名为fileNamePrefix + "_" + 序号
+//     * Excel data format, generate pdf through template,
+//     * one PDF for each piece of data,
+//     * and generate it to the corresponding directory with the file name fileNamePrefix + "_" + serial number
+//     * @param tplConfigStr 模板配置串
+//     * @param excelIs excel文件流
+//     * @param outputDirPath 输出目录
+//     * @param fileNamePrefix 文件名前缀
+//     */
+//     void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs,
+//                                 String outputDirPath,String fileNamePrefix);
 
-    /**
-     * excel数据格式，通过模板生成pdf，并合并生成单个文件
-     * Excel data format, generate pdf through template, and merge to generate a single file
-     * @param tplConfigStr 模板配置串
-     * @param excelIs excel文件流
-     * @param outputFilePath 文件路径（带文件名）
-     */
-    void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs,
-                                      String outputFilePath);
-
-    /**
-     * excel数据格式，通过构件生成pdf，每条数据一个PDF，并生成至对应的目录中
-     * 文件名为fileNamePrefix + "_" + 序号
-     * Excel data format, generate pdf through elements,
-     * one PDF for each piece of data,
-     * and generate it to the corresponding directory with the file name fileNamePrefix + "_" + serial number
-     * @param elementStr 构件字符串
-     * @param excelIs excel文件流
-     * @param outputDirPath 输出目录
-     * @param fileNamePrefix 文件名前缀
-     */
-    void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs,
-                                      String outputDirPath,String fileNamePrefix);
-
-    /**
-     * excel数据格式，通过构件生成pdf，并生成单个文件
-     * excel data format, generate pdf through elements, and generate a single file
-     * @param elementStr 构件字符串
-     * @param excelIs excel文件流
-     * @param outputFilePath 文件路径（带文件名）
-     */
-    void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs,
-                                      String outputFilePath);
+//    /**
+//     * excel数据格式，通过模板生成pdf，并合并生成单个文件
+//     * Excel data format, generate pdf through template, and merge to generate a single file
+//     * @param tplConfigStr 模板配置串
+//     * @param excelIs excel文件流
+//     * @param outputFilePath 文件路径（带文件名）
+//     */
+//    void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs,
+//                                      String outputFilePath);
+//
+//    /**
+//     * excel数据格式，通过构件生成pdf，每条数据一个PDF，并生成至对应的目录中
+//     * 文件名为fileNamePrefix + "_" + 序号
+//     * Excel data format, generate pdf through elements,
+//     * one PDF for each piece of data,
+//     * and generate it to the corresponding directory with the file name fileNamePrefix + "_" + serial number
+//     * @param elementStr 构件字符串
+//     * @param excelIs excel文件流
+//     * @param outputDirPath 输出目录
+//     * @param fileNamePrefix 文件名前缀
+//     */
+//    void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs,
+//                                      String outputDirPath,String fileNamePrefix);
+//
+//    /**
+//     * excel数据格式，通过构件生成pdf，并生成单个文件
+//     * excel data format, generate pdf through elements, and generate a single file
+//     * @param elementStr 构件字符串
+//     * @param excelIs excel文件流
+//     * @param outputFilePath 文件路径（带文件名）
+//     */
+//    void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs,
+//                                      String outputFilePath);
 }

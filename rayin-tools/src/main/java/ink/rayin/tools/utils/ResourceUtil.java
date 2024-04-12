@@ -1,16 +1,15 @@
 
 package ink.rayin.tools.utils;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.Assert;
 
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -21,7 +20,6 @@ import java.nio.charset.Charset;
  * @author L.cm
  * modify:2020-08-29 wangzhu
  */
-@Slf4j
 public class ResourceUtil extends org.springframework.util.ResourceUtils {
 	public static final String HTTP_REGEX = "^https?:.+$";
 	public static final String FTP_URL_PREFIX = "ftp:";
@@ -43,30 +41,27 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 	 * @return {Resource}
 	 * @throws IOException IOException
 	 */
-	public static Resource getResource(String resourceLocation) {
-		try{
-			Assert.notNull(resourceLocation, "Resource location must not be null");
-			if (resourceLocation.startsWith(CLASSPATH_URL_PREFIX)) {
-				return new ClassPathResource(resourceLocation);
-			}
-			if (resourceLocation.startsWith(FTP_URL_PREFIX)) {
-				return new UrlResource(resourceLocation);
-			}
-			if (resourceLocation.matches(HTTP_REGEX)) {
-				return new UrlResource(resourceLocation);
-			}
-			if (resourceLocation.startsWith(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX)) {
-				return SpringUtil.getContext().getResource(resourceLocation);
-			}
-			if(!resourceLocation.startsWith(System.getProperty("file.separator")) && resourceLocation.indexOf(":") < 0){
-				return new ClassPathResource(resourceLocation);
-			}
-			if(resourceLocation.indexOf("file:") == 0){
-				return new FileSystemResource(new URI(resourceLocation).getPath());
-			}
-		}catch(MalformedURLException | URISyntaxException e){
-			log.error("Resource load error", e);
+	public static Resource getResource(String resourceLocation) throws IOException, URISyntaxException {
+		Assert.notNull(resourceLocation, "Resource location must not be null");
+		if (resourceLocation.startsWith(CLASSPATH_URL_PREFIX)) {
+			return new ClassPathResource(resourceLocation);
 		}
+		if (resourceLocation.startsWith(FTP_URL_PREFIX)) {
+			return new UrlResource(resourceLocation);
+		}
+		if (resourceLocation.matches(HTTP_REGEX)) {
+			return new UrlResource(resourceLocation);
+		}
+//		if (resourceLocation.startsWith(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX)) {
+//			return SpringUtil.getContext().getResource(resourceLocation);
+//		}
+		if(!resourceLocation.startsWith(System.getProperty("file.separator")) && resourceLocation.indexOf(":") < 0){
+			return new ClassPathResource(resourceLocation);
+		}
+		if(resourceLocation.indexOf("file:") == 0){
+			return new FileSystemResource(new URI(resourceLocation).getPath());
+		}
+
 		return new FileSystemResource(resourceLocation);
 	}
 
@@ -88,7 +83,7 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 	 * @return {InputStream}
 	 * @throws IOException IOException
 	 */
-	public static InputStream getResourceAsStream(String resourceLocation) throws IOException {
+	public static InputStream getResourceAsStream(String resourceLocation) throws IOException, URISyntaxException {
 		return getResource(resourceLocation).getInputStream();
 	}
 
@@ -115,7 +110,7 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 		}
 		try (InputStream in = getResource(resourceLocation).getInputStream()) {
 			return IoUtil.toString(in, encoding);
-		} catch (IOException e) {
+		} catch (IOException | URISyntaxException e) {
 			throw Exceptions.unchecked(e);
 		}
 	}
@@ -138,7 +133,7 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 	 * @return {ByteArrayOutputStream}
 	 * @throws IOException IOException
 	 */
-	public static ByteArrayOutputStream getResourceAsByte(final String resourceLocation) throws IOException {
+	public static ByteArrayOutputStream getResourceAsByte(final String resourceLocation) throws IOException, URISyntaxException {
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		InputStream in = getResourceAsStream(resourceLocation);
@@ -154,7 +149,13 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 		return out;
 	}
 
-	public static String getResourceAbsolutePathByClassPath(final String classpath) throws IOException {
-		return getResource(classpath).getFile().getAbsolutePath();
+	public static String getResourceAbsolutePathByClassPath(final String classpath)  {
+		try{
+			return getResource(classpath).getFile().getAbsolutePath();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

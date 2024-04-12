@@ -17,7 +17,6 @@ package ink.rayin.htmladapter.base.thymeleaf;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-
 import ink.rayin.htmladapter.base.utils.CodeMessage;
 import ink.rayin.htmladapter.base.utils.RayinException;
 import ink.rayin.tools.utils.Charsets;
@@ -27,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -44,7 +42,7 @@ public class ThymeleafHandler {
         templateEngine.getConfiguration();
     }
 
-    private ThymeleafHandler (){
+    private ThymeleafHandler(){
     }
     public static ThymeleafHandler getInstance(){
         return thymeleafHandler;

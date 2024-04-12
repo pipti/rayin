@@ -15,17 +15,33 @@
  */
 package ink.rayin.htmladapter.base.utils;
 
-import lombok.Getter;
-import lombok.Setter;
 
 public class Extension {
-
-    @Getter @Setter
     private String oid;
-
-    @Getter @Setter
     private boolean critical;
-
-    @Getter @Setter
     private byte[] value;
+
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    public boolean isCritical() {
+        return critical;
+    }
+
+    public void setCritical(boolean critical) {
+        this.critical = critical;
+    }
+
+    public byte[] getValue() {
+        return value;
+    }
+
+    public void setValue(byte[] value) {
+        this.value = value;
+    }
 }

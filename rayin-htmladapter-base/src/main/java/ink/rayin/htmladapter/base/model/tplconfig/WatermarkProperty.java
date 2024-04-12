@@ -1,8 +1,6 @@
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Data;
 
-@Data
 public class WatermarkProperty {
     public static final String FONT_WATERMARK="font_watermark";
     public static final String IMG_WATERMARK="img_watermark";
@@ -20,4 +18,27 @@ public class WatermarkProperty {
      */
     String value;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

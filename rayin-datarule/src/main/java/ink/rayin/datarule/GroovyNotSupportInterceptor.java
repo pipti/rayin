@@ -18,7 +18,7 @@ public class GroovyNotSupportInterceptor extends GroovyInterceptor {
      * @throws Throwable
      */
     @Override
-    public Object onStaticCall(GroovyInterceptor.Invoker invoker, Class receiver, String method, Object... args) throws Throwable {
+    public Object onStaticCall(Invoker invoker, Class receiver, String method, Object... args) throws Throwable {
         if (receiver == System.class && "exit".equals(method)) {
             // System.exit(0)
             throw new SecurityException("No call on System.exit() please");
@@ -41,7 +41,7 @@ public class GroovyNotSupportInterceptor extends GroovyInterceptor {
      * @throws Throwable
      */
     @Override
-    public Object onMethodCall(GroovyInterceptor.Invoker invoker, Object receiver, String method, Object... args) throws Throwable {
+    public Object onMethodCall(Invoker invoker, Object receiver, String method, Object... args) throws Throwable {
         if (defaultMethodBlacklist.contains(method)) {
             // 方法列表黑名单
             throw new SecurityException("Not support method: " + method);

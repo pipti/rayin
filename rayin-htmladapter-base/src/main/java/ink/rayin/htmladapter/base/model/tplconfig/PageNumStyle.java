@@ -15,18 +15,56 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Data;
-
 /**
  * 单模板页码样式
  *
  * @author Janah Wang / 王柱 2019-08-25
  */
-@Data
+
 public class PageNumStyle {
     private int fontSize;
     private int color;
     private int weight;
     private String textDescript;
     private String fontStyle;
+
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public String getTextDescript() {
+        return textDescript;
+    }
+
+    public void setTextDescript(String textDescript) {
+        this.textDescript = textDescript;
+    }
+
+    public String getFontStyle() {
+        return fontStyle;
+    }
+
+    public void setFontStyle(String fontStyle) {
+        this.fontStyle = fontStyle;
+    }
 }

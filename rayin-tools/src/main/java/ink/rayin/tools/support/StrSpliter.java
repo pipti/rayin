@@ -1,12 +1,12 @@
 package ink.rayin.tools.support;
 
-
-import ink.rayin.tools.utils.Func;
+import ink.rayin.tools.utils.ObjectUtil;
 import ink.rayin.tools.utils.StringPool;
 import ink.rayin.tools.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -160,7 +160,7 @@ public class StrSpliter {
 		int len = str.length();
 		int start = 0;
 		for (int i = 0; i < len; i++) {
-			if (Func.equals(separator, str.charAt(i))) {
+			if (Objects.equals(separator, str.charAt(i))) {
 				addToList(list, str.substring(start, i), isTrim, ignoreEmpty);
 				start = i + 1;
 
@@ -361,7 +361,7 @@ public class StrSpliter {
 		int len = str.length();
 		int start = 0;
 		for (int i = 0; i < len; i++) {
-			if (Func.isEmpty(str.charAt(i))) {
+			if (ObjectUtil.isEmpty(str.charAt(i))) {
 				addToList(list, str.substring(start, i), true, true);
 				start = i + 1;
 				if (limit > 0 && list.size() > limit - 2) {

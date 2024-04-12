@@ -16,7 +16,6 @@
 package ink.rayin.htmladapter.base.model.tplconfig;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import java.util.List;
 import java.util.Set;
@@ -26,7 +25,7 @@ import java.util.Set;
  *
  * @author Janah Wang / 王柱 2019-08-25
  */
-@Data
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Element {
 
@@ -64,15 +63,15 @@ public class Element {
     /**
      * 构件内容
      *
-    @Getter
-    @Setter
-    private String content;
+     @Getter
+     @Setter
+     private String content;
 
-//    @Getter
-//    @Setter
-//    private PageNumProperties pageNumProperties;
-    /**
-     * 页码属性
+     //    @Getter
+     //    @Setter
+     //    private PageNumProperties pageNumProperties;
+     /**
+      * 页码属性
      */
     private boolean pageNumIsFirstPage;
 
@@ -132,21 +131,224 @@ public class Element {
     private String content;
 
     /**
-     * 质检内容
-     * overlap 重叠
-     * boundary 边界
-     * out 超边界
-     * garbled 乱码
-     * stamp 印章
+     * header 构件路径 chromium组件有效
      */
-//    @Getter
-//    @Setter
-//    private Set<String> qualityTestType;
+    private String marginPath;
+    /**
+     * footer 构件路径 chromium组件有效
+     */
+    private String footerPath;
+    /**
+     * header html chromium组件有效
+     */
+    private String marginContent;
+    /**
+     * footer html chromium组件有效
+     */
+    private String footerContent;
 
     /**
-     * 构件缺失检查
+     * 支持js解析模式 chromium组件有效,
      */
-//    @Getter
-//    @Setter
-//    private boolean qualityElementHiatusCheck;
+    private boolean jsMode = false;
+
+    public String getElementPath() {
+        return elementPath;
+    }
+
+    public void setElementPath(String elementPath) {
+        this.elementPath = elementPath;
+    }
+
+    public String getElementId() {
+        return elementId;
+    }
+
+    public void setElementId(String elementId) {
+        this.elementId = elementId;
+    }
+
+    public String getElementType() {
+        return elementType;
+    }
+
+    public void setElementType(String elementType) {
+        this.elementType = elementType;
+    }
+
+    public String getElementVersion() {
+        return elementVersion;
+    }
+
+    public void setElementVersion(String elementVersion) {
+        this.elementVersion = elementVersion;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isPageNumIsFirstPage() {
+        return pageNumIsFirstPage;
+    }
+
+    public void setPageNumIsFirstPage(boolean pageNumIsFirstPage) {
+        this.pageNumIsFirstPage = pageNumIsFirstPage;
+    }
+
+    public boolean isPageNumIsCalculate() {
+        return pageNumIsCalculate;
+    }
+
+    public void setPageNumIsCalculate(boolean pageNumIsCalculate) {
+        this.pageNumIsCalculate = pageNumIsCalculate;
+    }
+
+    public boolean isPageNumIsDisplay() {
+        return pageNumIsDisplay;
+    }
+
+    public void setPageNumIsDisplay(boolean pageNumIsDisplay) {
+        this.pageNumIsDisplay = pageNumIsDisplay;
+    }
+
+    public List<PageNumDisplayPos> getPageNumDisplayPoss() {
+        return pageNumDisplayPoss;
+    }
+
+    public void setPageNumDisplayPoss(List<PageNumDisplayPos> pageNumDisplayPoss) {
+        this.pageNumDisplayPoss = pageNumDisplayPoss;
+    }
+
+    public PageNumStyle getPageNumStyle() {
+        return pageNumStyle;
+    }
+
+    public void setPageNumStyle(PageNumStyle pageNumStyle) {
+        this.pageNumStyle = pageNumStyle;
+    }
+
+    public boolean isAddBlankPage() {
+        return addBlankPage;
+    }
+
+    public void setAddBlankPage(boolean addBlankPage) {
+        this.addBlankPage = addBlankPage;
+    }
+
+    public String getBlankElementPath() {
+        return blankElementPath;
+    }
+
+    public void setBlankElementPath(String blankElementPath) {
+        this.blankElementPath = blankElementPath;
+    }
+
+    public String getBlankElementContent() {
+        return blankElementContent;
+    }
+
+    public void setBlankElementContent(String blankElementContent) {
+        this.blankElementContent = blankElementContent;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public int getLogicPageNum() {
+        return logicPageNum;
+    }
+
+    public void setLogicPageNum(int logicPageNum) {
+        this.logicPageNum = logicPageNum;
+    }
+
+    public Set<MarkInfo> getMarkKeys() {
+        return markKeys;
+    }
+
+    public void setMarkKeys(Set<MarkInfo> markKeys) {
+        this.markKeys = markKeys;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public String getElementAvaliableDataPath() {
+        return elementAvaliableDataPath;
+    }
+
+    public void setElementAvaliableDataPath(String elementAvaliableDataPath) {
+        this.elementAvaliableDataPath = elementAvaliableDataPath;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getMarginPath() {
+        return marginPath;
+    }
+
+    public void setMarginPath(String marginPath) {
+        this.marginPath = marginPath;
+    }
+
+    public String getFooterPath() {
+        return footerPath;
+    }
+
+    public void setFooterPath(String footerPath) {
+        this.footerPath = footerPath;
+    }
+
+    public String getMarginContent() {
+        return marginContent;
+    }
+
+    public void setMarginContent(String marginContent) {
+        this.marginContent = marginContent;
+    }
+
+    public String getFooterContent() {
+        return footerContent;
+    }
+
+    public void setFooterContent(String footerContent) {
+        this.footerContent = footerContent;
+    }
+
+    public boolean isJsMode() {
+        return jsMode;
+    }
+
+    public void setJsMode(boolean jsMode) {
+        this.jsMode = jsMode;
+    }
 }

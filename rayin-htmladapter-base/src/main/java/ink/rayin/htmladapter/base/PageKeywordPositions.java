@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 package ink.rayin.htmladapter.base;
-
-import lombok.Data;
-
 import java.util.List;
 
 /**
  * 关键字位置bean
  * @author Janah Wang / 王柱
  */
-@Data
+
 public class PageKeywordPositions {
     private String content;
 
@@ -33,4 +30,20 @@ public class PageKeywordPositions {
      * float[2]:y 坐标
      */
     private List<float[]> positions;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public List<float[]> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(List<float[]> positions) {
+        this.positions = positions;
+    }
 }

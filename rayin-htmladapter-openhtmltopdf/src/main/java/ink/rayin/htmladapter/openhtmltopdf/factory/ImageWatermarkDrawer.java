@@ -1,24 +1,28 @@
 package ink.rayin.htmladapter.openhtmltopdf.factory;
 
-import java.awt.*;
-import java.io.*;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.openhtmltopdf.extend.FSObjectDrawer;
 import com.openhtmltopdf.extend.OutputDevice;
 import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
 import com.openhtmltopdf.render.RenderingContext;
-
-import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxTools;
-import org.apache.pdfbox.pdmodel.PDDocument;
-
-import org.w3c.dom.Element;
-import lombok.extern.slf4j.Slf4j;
-
 import ink.rayin.htmladapter.base.utils.CSSParser;
-import ink.rayin.tools.utils.*;
+import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
+import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxTools;
+import ink.rayin.tools.utils.Base64Util;
+import ink.rayin.tools.utils.IoUtil;
+import ink.rayin.tools.utils.ResourceUtil;
+import ink.rayin.tools.utils.StringUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.w3c.dom.Element;
+
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 图片水印插件
@@ -28,8 +32,9 @@ import ink.rayin.tools.utils.*;
  * &lt;object type="img/watermark" src="images/rayin.png" style="opacity: 0.5;transform:rotate(30deg);width:100px"/&gt;
  *
  */
-@Slf4j
 public class ImageWatermarkDrawer implements FSObjectDrawer {
+    private static Log log = LogFactory.getLog(PdfBoxSignature.class);
+
     public ImageWatermarkDrawer() {
     }
 
@@ -43,17 +48,17 @@ public class ImageWatermarkDrawer implements FSObjectDrawer {
 
         try {
             if(StringUtil.isBlank(e.getAttribute("value"))){
-                log.error("value", "value is null");
+                log.error("value is null" );
                 return null;
             }
             ImageWatermarkDrawer.setWatermark(pdd, e.getAttribute("value"), e.getAttribute("style"));
-        } catch (IOException ex) {
+        } catch (IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
         }
         return null;
     }
 
-    public static void setWatermark(PDDocument pdd, String src, String style) throws IOException {
+    public static void setWatermark(PDDocument pdd, String src, String style) throws IOException, URISyntaxException {
         ByteArrayOutputStream imgBos = new ByteArrayOutputStream();
         if(StringUtil.isNotBlank(src)){
             if(src.startsWith("data:image/")){

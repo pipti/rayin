@@ -1,8 +1,8 @@
 package ink.rayin.tools.support;
 
-
-import ink.rayin.tools.utils.Func;
+import ink.rayin.tools.utils.ObjectUtil;
 import ink.rayin.tools.utils.StringPool;
+import ink.rayin.tools.utils.StringUtil;
 
 /**
  * 字符串格式化
@@ -25,7 +25,7 @@ public class StrFormatter {
 	 * @return 结果
 	 */
 	public static String format(final String strPattern, final Object... argArray) {
-		if (Func.isBlank(strPattern) || Func.isEmpty(argArray)) {
+		if (StringUtil.isBlank(strPattern) || ObjectUtil.isEmpty(argArray)) {
 			return strPattern;
 		}
 		final int strPatternLength = strPattern.length();
@@ -70,7 +70,7 @@ public class StrFormatter {
 					if (delimIndex > 1 && strPattern.charAt(delimIndex - 2) == StringPool.BACK_SLASH) {
 						//转义符之前还有一个转义符，占位符依旧有效
 						sbuf.append(strPattern, handledPosition, delimIndex - 1);
-						sbuf.append(Func.toStr(argArray[argIndex]));
+						sbuf.append(StringUtil.toStr(argArray[argIndex]));
 						handledPosition = delimIndex + 2;
 					} else {
 						//占位符被转义
@@ -81,7 +81,7 @@ public class StrFormatter {
 					}
 				} else {//正常占位符
 					sbuf.append(strPattern, handledPosition, delimIndex);
-					sbuf.append(Func.toStr(argArray[argIndex]));
+					sbuf.append(StringUtil.toStr(argArray[argIndex]));
 					handledPosition = delimIndex + 2;
 				}
 			}

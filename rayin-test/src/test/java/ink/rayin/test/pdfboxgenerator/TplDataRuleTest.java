@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONPath;
 import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
-import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
+import ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -12,6 +12,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 public class TplDataRuleTest {
@@ -19,7 +21,7 @@ public class TplDataRuleTest {
     static DataRule dataRule;
     static  {
         try {
-            pdfGenerator = new PdfBoxGenerator();
+            pdfGenerator = new OpenHtmlGenerator();
             pdfGenerator.init();
             dataRule = new DataRule();
         } catch (Exception e) {
@@ -80,7 +82,7 @@ public class TplDataRuleTest {
      * @throws IllegalAccessException
      */
     @Test
-    public void ruleScriptDynamicJointTemplateTest() throws IOException, InstantiationException, IllegalAccessException {
+    public void ruleScriptDynamicJointTemplateTest() throws IOException, InstantiationException, IllegalAccessException, ExecutionException, InterruptedException, TimeoutException {
         JSONObject jsonData = new JSONObject();
         // 可以更换orgId = 110 或 orgId = 120，对应生成pdf也不同
         String orgId = "110";

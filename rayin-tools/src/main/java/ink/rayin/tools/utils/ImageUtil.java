@@ -553,7 +553,6 @@ public final class ImageUtil {
 		return imageResult;
 	}
 
-
 	/**
 	 * 通过url生成base64
 	 * @param imgUrl

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import ink.rayin.htmladapter.base.InitOptions;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.model.tplconfig.*;
 import ink.rayin.htmladapter.base.thymeleaf.ThymeleafHandler;
@@ -33,13 +34,16 @@ import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRenderBuilder;
 import ink.rayin.htmladapter.openhtmltopdf.factory.OpenhttptopdfRendererObjectFactory;
 import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxPositionFindByKey;
 import ink.rayin.tools.utils.*;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
-import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.encryption.*;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline;
@@ -51,7 +55,7 @@ import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import org.w3c.dom.css.*;
+import org.w3c.dom.css.CSSStyleDeclaration;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerFactory;
@@ -60,9 +64,10 @@ import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,8 +77,10 @@ import java.util.regex.Pattern;
  * @author Jonah Wang / 2019-08-25
  */
 
-@Slf4j
-public class PdfBoxGenerator implements PdfGenerator {
+
+public class OpenHtmlGenerator implements PdfGenerator {
+    private static Log log = LogFactory.getLog(OpenHtmlGenerator.class);
+
     private ThymeleafHandler thymeleafHandler = ThymeleafHandler.getInstance();
 
     private final String jsonSchema = "tpl_schema.json";
@@ -83,7 +90,7 @@ public class PdfBoxGenerator implements PdfGenerator {
     private final String tmpDir = System.getProperty("java.io.tmpdir");
 
     //private final String defaultFontName = "ZWenYi";
-    public PdfBoxGenerator() throws IOException {
+    public OpenHtmlGenerator() throws IOException, URISyntaxException {
             jsonSchemaNode = JsonSchemaValidator.getJsonNodeFromInputStream(ResourceUtil.getResourceAsStream(jsonSchema));
 
             if(jsonSchemaNode == null){
@@ -92,36 +99,37 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#init()
+     * @see PdfGenerator#init()
      */
-    @SneakyThrows
     @Override
     public void init(){
         OpenhttptopdfRendererObjectFactory.init();
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#init(String customizeFontPathDirectory)
+     * @see PdfGenerator#init(String customizeFontPathDirectory)
      */
-    @SneakyThrows
     @Override
     public void init(String customizeFontPathDirectory){
         OpenhttptopdfRendererObjectFactory.init(customizeFontPathDirectory);
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#init(int minIdle, int maxIdle, int maxTotal, String customizeFontPathDirectory)
+     * @see PdfGenerator#init(int minIdle, int maxIdle, int maxTotal, String customizeFontPathDirectory)
      */
-    @SneakyThrows
     @Override
     public void init(int minIdle, int maxIdle, int maxTotal, String customizeFontPathDirectory) {
         OpenhttptopdfRendererObjectFactory.init(minIdle, maxIdle, maxTotal, customizeFontPathDirectory);
     }
 
+    @Override
+    public void init(InitOptions options) {
+        OpenhttptopdfRendererObjectFactory.init(options);
+    }
+
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByTplConfigFile
+     * @see PdfGenerator#generatePdfFileByTplConfigFile
      */
-    @SneakyThrows
     @Override
     public RayinMeta generatePdfFileByTplConfigFile(String templateLocation, JSONObject jsonData,
                                                     String outputFilePath) {
@@ -129,9 +137,8 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByTplConfigStr
+     * @see PdfGenerator#generatePdfFileByTplConfigStr
      */
-    @SneakyThrows
     @Override
     public RayinMeta generatePdfFileByTplConfigStr(String tplConfigStr, JSONObject jsonData,
                                                     String outputFilePath){
@@ -141,29 +148,31 @@ public class PdfBoxGenerator implements PdfGenerator {
         //生成的文件
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         String tplConfigJsonStr = tplConfigJsonDataNode.toString();
-        RayinMeta fileInfo = generatePdfStreamByTplConfigStr(tplConfigJsonStr,jsonData,bos);
-
-        //修改文件属性
-        TemplateConfig pagesConfig = JSONObject.parseObject(tplConfigJsonStr, TemplateConfig.class);
-        writePDFAttrs(bos,fileInfo,pagesConfig);
-
-        File file = new File(outputFilePath);
-        File dir = file.getParentFile();
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        file.createNewFile();
-        FileOutputStream fos = new FileOutputStream(outputFilePath);
+        RayinMeta fileInfo = null;
+        FileOutputStream fos = null;
         try {
+            fileInfo = generatePdfStreamByTplConfigStr(tplConfigJsonStr,jsonData,bos);
+
+            //修改文件属性
+            TemplateConfig pagesConfig = JSONObject.parseObject(tplConfigJsonStr, TemplateConfig.class);
+            writePDFAttrs(bos,fileInfo,pagesConfig);
+
+            File file = new File(outputFilePath);
+            File dir = file.getParentFile();
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            file.createNewFile();
+            fos = new FileOutputStream(outputFilePath);
+
             fos.write(bos.toByteArray());
             fos.flush();
             fos.close();
 
             bos.close();
         }catch(Exception e){
-            throw e;
+           throw Exceptions.unchecked(e);
         }finally {
-
             if(fos != null){
                 try{
                     fos.close();
@@ -185,33 +194,35 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generateEncryptPdfStreamByConfigStr
+     * @see PdfGenerator#generateEncryptPdfStreamByConfigStr
      */
-    @SneakyThrows
     @Override
     public RayinMeta generateEncryptPdfStreamByConfigStr(String tplConfigStr, JSONObject jsonData,
                                                          ByteArrayOutputStream os, String password) {
+        try{
+            //生成的文件
+            RayinMeta fileInfo = generatePdfStreamByTplConfigStr(tplConfigStr,jsonData,os);
 
-        //生成的文件
-        RayinMeta fileInfo = generatePdfStreamByTplConfigStr(tplConfigStr,jsonData,os);
-
-        //修改文件属性
-        TemplateConfig pagesConfig = JSONObject.parseObject(tplConfigStr, TemplateConfig.class);
-        if (StringUtil.isNotBlank(password)) {
-            fileInfo.setSecretKey(password);
+            //修改文件属性
+            TemplateConfig pagesConfig = JSONObject.parseObject(tplConfigStr, TemplateConfig.class);
+            if (StringUtil.isNotBlank(password)) {
+                fileInfo.setSecretKey(password);
+            }
+            writePDFAttrs(os,fileInfo,pagesConfig);
+            return fileInfo;
+        }catch(Exception e){
+            throw Exceptions.unchecked(e);
         }
-        writePDFAttrs(os,fileInfo,pagesConfig);
-        return fileInfo;
+
 
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfStreamByTplConfigStr
+     * @see PdfGenerator#generatePdfStreamByTplConfigStr
      */
-    @SneakyThrows
     @Override
     public RayinMeta generatePdfStreamByTplConfigStr(String tplConfigStr, JSONObject dataJson,
-                                                     ByteArrayOutputStream os) {
+                                                     ByteArrayOutputStream os) throws Exception {
         /** 校验配置开始 **/
 
         JsonNode tplConfigJsonDataNode = JsonSchemaValidator.getJsonNodeFromString(tplConfigStr);
@@ -573,9 +584,8 @@ public class PdfBoxGenerator implements PdfGenerator {
         return dest;
     }
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByHtmlAndData
+     * @see PdfGenerator#generatePdfFileByHtmlAndData
      */
-    @SneakyThrows
     @Override
     public boolean generatePdfFileByHtmlAndData(String htmlLocation, JSONObject jsonObject,
                                                 String outputFilePath) {
@@ -585,9 +595,8 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfSteamByHtmlStrAndData
+     * @see PdfGenerator#generatePdfSteamByHtmlStrAndData
      */
-    @SneakyThrows
     @Override
     public ByteArrayOutputStream generatePdfSteamByHtmlStrAndData(String htmlStr, JSONObject jsonData) {
         String htmlContent = htmlStrDataFilling(htmlStr, jsonData);
@@ -595,10 +604,9 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfSteamByHtmlFileAndData
+     * @see PdfGenerator#generatePdfSteamByHtmlFileAndData
      */
-    @SneakyThrows
-    private ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) {
+    private ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(TemplateConfig pagesConfig, Element config, JSONObject data, List<Element> pp) throws Exception {
 
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
         if(StringUtil.isNotBlank(config.getElementType()) && config.getElementType().equals(ElementType.CATALOG.getKey())){
@@ -725,9 +733,8 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
         /**
-         * @see ink.rayin.htmladapter.base.PdfGenerator#htmlFileDataFilling
+         * @see PdfGenerator#htmlFileDataFilling
          */
-    @SneakyThrows
     @Override
     public String htmlFileDataFilling(String htmlLocation, JSONObject data) {
         String htmlContent = "";
@@ -738,9 +745,8 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#htmlStrDataFilling
+     * @see PdfGenerator#htmlStrDataFilling
      */
-    @SneakyThrows
     @Override
     public String htmlStrDataFilling(String htmlStr, JSONObject data) {
         String htmlContent = "";
@@ -754,9 +760,8 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByHtmlStr(String htmlStr, String outputFile)
+     * @see PdfGenerator#generatePdfFileByHtmlStr(String htmlStr, String outputFile)
      */
-    @SneakyThrows
     @Override
     public void generatePdfFileByHtmlStr(String htmlStr, String outputFile){
 
@@ -764,29 +769,47 @@ public class PdfBoxGenerator implements PdfGenerator {
         if (f != null && !f.getParentFile().exists()) {
             f.getParentFile().mkdir();
         }
-        FileUtils.writeByteArrayToFile(new File(outputFile), generatePdfStreamByHtmlStr(htmlStr).toByteArray());
+        try{
+            FileUtils.writeByteArrayToFile(new File(outputFile), generatePdfStreamByHtmlStr(htmlStr).toByteArray());
+        }catch(Exception e){
+            throw Exceptions.unchecked(e);
+        }
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByHtmlStr(String htmlStr, JSONObject data, String outputFile)
+     * @see PdfGenerator#generatePdfFileByHtmlStr(String htmlStr, JSONObject data, String outputFile)
      */
-    @SneakyThrows
     @Override
     public void generatePdfFileByHtmlStr(String htmlStr, JSONObject data, String outputFile){
         generatePdfFileByHtmlStr(htmlStrDataFilling(htmlStr,data),outputFile);
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfStreamByHtmlStr
+     * @see PdfGenerator#generatePdfStreamByHtmlStr
      */
-    @SneakyThrows
     @Override
     public ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlContent){
-        return generatePdfStreamByHtmlStr(htmlContent, null);
+        try{
+            return generatePdfStreamByHtmlStr(htmlContent, null);
+        }catch(Exception e){
+            throw Exceptions.unchecked(e);
+        }
+    }
+
+    @Deprecated
+    @Override
+    public ByteArrayOutputStream generatePdfStreamByLink(String link) {
+        return null;
+    }
+
+    @Deprecated
+    @Override
+    public void generatePdfFileByLink(String link, String filePath) {
+
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfStreamByHtmlStr
+     * @see PdfGenerator#generatePdfStreamByHtmlStr
      */
     private ByteArrayOutputStream generatePdfStreamByHtmlStr(String htmlContent, Set<MarkInfo> markKeys)
             throws Exception {
@@ -1276,9 +1299,8 @@ public class PdfBoxGenerator implements PdfGenerator {
 
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfSteamByHtmlFileAndData
+     * @see PdfGenerator#generatePdfSteamByHtmlFileAndData
      */
-    @SneakyThrows
     @Override
     public ByteArrayOutputStream generatePdfSteamByHtmlFileAndData(String templatePath, JSONObject jsonData){
 
@@ -1355,10 +1377,10 @@ public class PdfBoxGenerator implements PdfGenerator {
         return sb.toString();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         String html = "<br><br>html文本测试带标签的值，<b>佛挡杀佛</b><br>fdsf,f对方身份的<br><br><br>433ffdsfds";
 
-        PdfBoxGenerator pbts = new PdfBoxGenerator();
+        OpenHtmlGenerator pbts = new OpenHtmlGenerator();
         int offset = 0;
         pbts.SubStringIgnoreHtml(html,0,0 + 5);
         pbts.SubStringIgnoreHtml(html,0 + 5,0 + 10);
@@ -1451,75 +1473,75 @@ public class PdfBoxGenerator implements PdfGenerator {
     }
 
     /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#getFontNames
+     * @see PdfGenerator#getFontNames
      */
     @Override
     public LinkedHashSet<String> getFontNames(){
         return OpenhttptopdfRendererObjectFactory.getFontNames();
     }
 
-    /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFilesByTplAndExcel
-     */
-    @SneakyThrows
-    @Override
-    public void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
-        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
-        for(int i = 0; i < ja.size(); i++){
-            generatePdfFileByTplConfigStr(tplConfigStr,ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1) + ".pdf");
-        }
-    }
+//    /**
+//     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFilesByTplAndExcel
+//     */
+//    @SneakyThrows
+//    @Override
+//    public void generatePdfFilesByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
+//        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
+//        for(int i = 0; i < ja.size(); i++){
+//            generatePdfFileByTplConfigStr(tplConfigStr,ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1) + ".pdf");
+//        }
+//    }
 
-    /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByTplAndExcel
-     */
-    @SneakyThrows
-    @Override
-    public void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) {
-        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
+//    /**
+//     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByTplAndExcel
+//     */
+//    @SneakyThrows
+//    @Override
+//    public void generatePdfFileByTplAndExcel(String tplConfigStr, InputStream excelIs, String outputFilePath) {
+//        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
+//
+//        List<ByteArrayOutputStream> bosl = new ArrayList();
+//
+//        for(int i = 0; i < ja.size(); i++){
+//            ByteArrayOutputStream os = new ByteArrayOutputStream();
+//            generatePdfStreamByTplConfigStr(tplConfigStr,ja.getJSONObject(i),os);
+//            bosl.add(os);
+//        }
+//        ByteArrayOutputStream out = this.mergePDF(bosl);
+//        FileUtil.toFile(new ByteArrayInputStream(out.toByteArray()),new File(outputFilePath));
+//    }
 
-        List<ByteArrayOutputStream> bosl = new ArrayList();
+//    /**
+//     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFilesByEleAndExcel
+//     */
+//    @SneakyThrows
+//    @Override
+//    public void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
+//        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
+//
+//        for(int i = 0; i < ja.size(); i++){
+//            generatePdfFileByHtmlStr(elementStr, ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1)  + ".pdf");
+//        }
+//    }
 
-        for(int i = 0; i < ja.size(); i++){
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            generatePdfStreamByTplConfigStr(tplConfigStr,ja.getJSONObject(i),os);
-            bosl.add(os);
-        }
-        ByteArrayOutputStream out = this.mergePDF(bosl);
-        FileUtil.toFile(new ByteArrayInputStream(out.toByteArray()),new File(outputFilePath));
-    }
+//    /**
+//     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByEleAndExcel
+//     */
+//    @SneakyThrows
+//    @Override
+//    public void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) {
+//        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
+//
+//        List<ByteArrayOutputStream> bosl = new ArrayList();
+//
+//        for(int i = 0; i < ja.size(); i++){
+//            bosl.add(generatePdfSteamByHtmlStrAndData(elementStr, ja.getJSONObject(i)));
+//        }
+//        ByteArrayOutputStream out = this.mergePDF(bosl);
+//        FileUtil.toFile(new ByteArrayInputStream(out.toByteArray()),new File(outputFilePath));
+//    }
 
-    /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFilesByEleAndExcel
-     */
-    @SneakyThrows
-    @Override
-    public void generatePdfFilesByEleAndExcel(String elementStr, InputStream excelIs, String outputDirPath, String fileNamePrefix) {
-        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
-
-        for(int i = 0; i < ja.size(); i++){
-            generatePdfFileByHtmlStr(elementStr, ja.getJSONObject(i),outputDirPath + File.separator + fileNamePrefix + "_" + (i + 1)  + ".pdf");
-        }
-    }
-
-    /**
-     * @see ink.rayin.htmladapter.base.PdfGenerator#generatePdfFileByEleAndExcel
-     */
-    @SneakyThrows
-    @Override
-    public void generatePdfFileByEleAndExcel(String elementStr, InputStream excelIs, String outputFilePath) {
-        JSONArray ja = JSONObject.parseObject(EasyExcelUtils.readWithoutHead(excelIs), JSONArray.class);
-
-        List<ByteArrayOutputStream> bosl = new ArrayList();
-
-        for(int i = 0; i < ja.size(); i++){
-            bosl.add(generatePdfSteamByHtmlStrAndData(elementStr, ja.getJSONObject(i)));
-        }
-        ByteArrayOutputStream out = this.mergePDF(bosl);
-        FileUtil.toFile(new ByteArrayInputStream(out.toByteArray()),new File(outputFilePath));
-    }
-
-    private void setWatermark(TemplateConfig config, PDDocument pdd) throws IOException, NoSuchFieldException, ClassNotFoundException, FontFormatException, InstantiationException, IllegalAccessException {
+    private void setWatermark(TemplateConfig config, PDDocument pdd) throws IOException, NoSuchFieldException, ClassNotFoundException, FontFormatException, InstantiationException, IllegalAccessException, URISyntaxException {
         if(config.getWatermark() != null) {
             if (config.getWatermark().getType().equalsIgnoreCase(WatermarkProperty.IMG_WATERMARK)) {
                 ImageWatermarkDrawer.setWatermark(pdd, config.getWatermark().getValue(), config.getWatermark().getStyle());

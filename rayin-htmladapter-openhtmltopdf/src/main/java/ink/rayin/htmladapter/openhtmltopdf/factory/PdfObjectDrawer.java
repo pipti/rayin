@@ -5,26 +5,25 @@ import com.openhtmltopdf.extend.FSSupplier;
 import com.openhtmltopdf.extend.OutputDevice;
 import com.openhtmltopdf.pdfboxout.PdfBoxOutputDevice;
 import com.openhtmltopdf.render.RenderingContext;
-import ink.rayin.htmladapter.base.utils.CSSParser;
-import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxTools;
 import ink.rayin.tools.utils.ResourceUtil;
 import ink.rayin.tools.utils.StringUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
-@Slf4j
+
 public class PdfObjectDrawer implements FSObjectDrawer {
+    private static Log log = LogFactory.getLog(PdfObjectDrawer.class);
+
     HashMap<String, FSSupplier<InputStream>> fontCache;
 
     public PdfObjectDrawer(HashMap<String, FSSupplier<InputStream>> fontCache){

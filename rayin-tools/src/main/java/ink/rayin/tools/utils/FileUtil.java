@@ -2,8 +2,6 @@
 
 package ink.rayin.tools.utils;
 
-import lombok.experimental.UtilityClass;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.FileSystemUtils;
@@ -21,7 +19,7 @@ import java.util.Objects;
  *
  * @author L.cm
  */
-@UtilityClass
+
 public class FileUtil extends org.springframework.util.FileCopyUtils {
 
 	/**
@@ -293,13 +291,17 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * @param in InputStream
 	 * @param file File
 	 */
-	public static void toFile(InputStream in, final File file) throws IOException {
+	public static void toFile(InputStream in, final File file){
 		Objects.requireNonNull(file, "file");
-		if (file.exists()) {
-			requireFile(file, "file");
-			requireCanWrite(file, "file");
-		} else {
-			createParentDirectories(file);
+		try {
+			if (file.exists()) {
+				requireFile(file, "file");
+				requireCanWrite(file, "file");
+			} else {
+				createParentDirectories(file);
+			}
+		}catch(IOException e){
+			throw Exceptions.unchecked(e);
 		}
 
 		try (OutputStream out = new FileOutputStream(file)) {
@@ -405,30 +407,30 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 		}
 	}
 
-	/**
-	 * 获取文件MD5
-	 * @param inputStream
-	 * @return
-	 * @throws IOException
-	 */
-	public static String getFileMd5(InputStream inputStream) throws IOException {
-		String md5;
-		try {
-			md5 = DigestUtils.md5Hex(inputStream);
-		} catch (FileNotFoundException e) {
-			throw e;
-		} catch (IOException e) {
-			throw e;
-		} finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e) {
-					throw e;
-				}
-			}
-		}
-		return md5;
-	}
+//	/**
+//	 * 获取文件MD5
+//	 * @param inputStream
+//	 * @return
+//	 * @throws IOException
+//	 */
+//	public static String getFileMd5(InputStream inputStream) throws IOException {
+//		String md5;
+//		try {
+//			md5 = DigestUtils.md5Hex(inputStream);
+//		} catch (FileNotFoundException e) {
+//			throw e;
+//		} catch (IOException e) {
+//			throw e;
+//		} finally {
+//			if (inputStream != null) {
+//				try {
+//					inputStream.close();
+//				} catch (IOException e) {
+//					throw e;
+//				}
+//			}
+//		}
+//		return md5;
+//	}
 
 }

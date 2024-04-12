@@ -15,14 +15,13 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Data;
 
 /**
  * 标记信息
  *
  * @author Janah Wang / 王柱 2020-03-22
  */
-@Data
+
 public class MarkInfo {
     private String keyword;
     private int pageNum;
@@ -30,4 +29,52 @@ public class MarkInfo {
     private float y;
     private float width;
     private float height;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
 }

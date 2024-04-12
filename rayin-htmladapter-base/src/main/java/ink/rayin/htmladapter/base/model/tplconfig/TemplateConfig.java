@@ -15,7 +15,6 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import lombok.Data;
 import java.util.List;
 
 /**
@@ -23,7 +22,6 @@ import java.util.List;
  *
  * @author Janah Wang / 王柱 2019-08-25
  */
-@Data
 public class TemplateConfig {
 
     private List<Element> elements;
@@ -89,4 +87,155 @@ public class TemplateConfig {
     private List<PageNumDisplayPos> pageNumDisplayPoss;
     private List<SignatureProperty> signatureProperties;
 
+    public List<Element> getElements() {
+        return elements;
+    }
+
+    public void setElements(List<Element> elements) {
+        this.elements = elements;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    public String getBlankElementPath() {
+        return blankElementPath;
+    }
+
+    public void setBlankElementPath(String blankElementPath) {
+        this.blankElementPath = blankElementPath;
+    }
+
+    public String getBlankElementContent() {
+        return blankElementContent;
+    }
+
+    public void setBlankElementContent(String blankElementContent) {
+        this.blankElementContent = blankElementContent;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return EndTime;
+    }
+
+    public void setEndTime(String endTime) {
+        EndTime = endTime;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public WatermarkProperty getWatermark() {
+        return watermark;
+    }
+
+    public void setWatermark(WatermarkProperty watermark) {
+        this.watermark = watermark;
+    }
+
+    public boolean isCopyProtect() {
+        return copyProtect;
+    }
+
+    public void setCopyProtect(boolean copyProtect) {
+        this.copyProtect = copyProtect;
+    }
+
+    public List<PageNumDisplayPos> getPageNumDisplayPoss() {
+        return pageNumDisplayPoss;
+    }
+
+    public void setPageNumDisplayPoss(List<PageNumDisplayPos> pageNumDisplayPoss) {
+        this.pageNumDisplayPoss = pageNumDisplayPoss;
+    }
+
+    public List<SignatureProperty> getSignatureProperties() {
+        return signatureProperties;
+    }
+
+    public void setSignatureProperties(List<SignatureProperty> signatureProperties) {
+        this.signatureProperties = signatureProperties;
+    }
 }

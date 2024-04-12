@@ -15,19 +15,51 @@
  */
 package ink.rayin.htmladapter.base.model.tplconfig;
 
-import com.alibaba.fastjson2.JSONArray;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+
+import java.util.List;
 
 
 /**
  * 目录实体
  * @author Janah Wang / 王柱 2022-08-21
  */
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Catalog {
     private String title;
     private long pageNum;
-    private JSONArray catalogs;
+    private List catalogs;
+    private MarkInfo markInfo;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(long pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public List getCatalogs() {
+        return catalogs;
+    }
+
+    public void setCatalogs(List catalogs) {
+        this.catalogs = catalogs;
+    }
+
+    public MarkInfo getMarkInfo() {
+        return markInfo;
+    }
+
+    public void setMarkInfo(MarkInfo markInfo) {
+        this.markInfo = markInfo;
+    }
 }

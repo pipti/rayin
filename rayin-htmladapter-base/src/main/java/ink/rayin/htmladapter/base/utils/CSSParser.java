@@ -3,7 +3,8 @@ package ink.rayin.htmladapter.base.utils;
 import com.steadystate.css.parser.CSSOMParser;
 import com.steadystate.css.parser.SACParserCSS3;
 import ink.rayin.tools.utils.StringUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.*;
 
@@ -14,8 +15,8 @@ import java.io.StringReader;
  * css解析器
  *
  */
-@Slf4j
 public class CSSParser {
+    private static Log log = LogFactory.getLog(CSSParser.class);
 
     /**
      * 检查css属性是否存在

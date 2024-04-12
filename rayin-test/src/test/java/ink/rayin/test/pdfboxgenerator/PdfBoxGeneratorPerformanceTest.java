@@ -10,7 +10,7 @@ import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
-import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
+import ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 简单的性能测试类
@@ -35,7 +37,7 @@ public class PdfBoxGeneratorPerformanceTest {
 
     static{
         try {
-            pdfGenerator = new PdfBoxGenerator();
+            pdfGenerator = new OpenHtmlGenerator();
             pdfGenerator.init();
             dataRule = new DataRule();
         } catch (Exception e) {
@@ -85,7 +87,7 @@ public class PdfBoxGeneratorPerformanceTest {
     @Test
     @JunitPerfConfig(duration = 30_000,threads = 1,warmUp = 1_000,
             reporter = {HtmlReporter.class, ConsoleReporter.class})
-    public void ruleScriptDynamicJointTemplateTest() throws IOException, InstantiationException, IllegalAccessException {
+    public void ruleScriptDynamicJointTemplateTest() throws IOException, InstantiationException, IllegalAccessException, ExecutionException, InterruptedException, TimeoutException {
         JSONObject jsonData = new JSONObject();
         // 可以更换value = 110 或 value = 120，对应生成pdf也不同
         JSONPath.set(jsonData, "public.orgId" ,"120");
@@ -105,6 +107,34 @@ public class PdfBoxGeneratorPerformanceTest {
 //                + "/tmp/"
 //                + "ruleScriptDynamicJointTemplateTest_openhtmltopdf_"+System.currentTimeMillis() + ".pdf";
 //        pdfGenerator.generatePdfFileByTplConfigStr(JSONObject.toJSONString(result), jsonData, outputFile);
+    }
+
+    @Test
+    @JunitPerfConfig(duration = 60_000,threads = 3,warmUp = 1_000,
+            reporter = {HtmlReporter.class, ConsoleReporter.class})
+    public void custest() throws Exception {
+        String jsonDataFilePath = ResourceUtil.getResourceAbsolutePathByClassPath("examples/custest/data.json");
+        JsonNode jsonDataNode = JsonSchemaValidator.getJsonNodeFromFile(jsonDataFilePath);
+
+        //依据构建配置生成PDF
+        JSONObject jsonData = JSONObject.parseObject(jsonDataNode.toString());
+
+
+        String outputFile ="";
+        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("./");
+
+        // 生成pdf路径
+        outputFile = (outputFile == null || outputFile.equals(""))? new File(outputFileClass)
+                .getParentFile().getParent()
+                + "/tmp/"
+                + "custest_openhtmltopdf_"+System.currentTimeMillis() + ".pdf" : outputFile;
+
+        StopWatch watch = StopWatch.createStarted();
+
+        pdfGenerator.generatePdfFileByHtmlAndData(ResourceUtil.getResourceAbsolutePathByClassPath("examples/custest/iMileStandardAwb.html"),jsonData,outputFile);
+        watch.stop();
+
+        log.info("exp4TemplateBindDataGenerateTest duration：" +  watch.getTime() + "ms");
     }
 
 }

@@ -16,7 +16,6 @@
 package ink.rayin.htmladapter.base.model.tplconfig;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import java.util.List;
 
@@ -25,7 +24,6 @@ import java.util.List;
  *
  * @author Janah Wang / 王柱 2019-08-25
  */
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RayinMeta {
     private String filePath;
@@ -36,4 +34,68 @@ public class RayinMeta {
     private List<MarkInfo> markInfos;
     private String secretKey;
     private String sign = "80550ec4bfc10691e6c45aa88de3f62e";
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public int getFileTotalPageCount() {
+        return fileTotalPageCount;
+    }
+
+    public void setFileTotalPageCount(int fileTotalPageCount) {
+        this.fileTotalPageCount = fileTotalPageCount;
+    }
+
+    public String getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(String fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getFileMD5() {
+        return fileMD5;
+    }
+
+    public void setFileMD5(String fileMD5) {
+        this.fileMD5 = fileMD5;
+    }
+
+    public List<Element> getPagesInfo() {
+        return pagesInfo;
+    }
+
+    public void setPagesInfo(List<Element> pagesInfo) {
+        this.pagesInfo = pagesInfo;
+    }
+
+    public List<MarkInfo> getMarkInfos() {
+        return markInfos;
+    }
+
+    public void setMarkInfos(List<MarkInfo> markInfos) {
+        this.markInfos = markInfos;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
 }

@@ -111,4 +111,5 @@ public class Base64Util extends org.springframework.util.Base64Utils {
 		byte[] decodedValue = Base64Util.decodeUrlSafe(val);
 		return new String(decodedValue, charset);
 	}
+
 }

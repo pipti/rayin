@@ -1,9 +1,6 @@
 
 package ink.rayin.tools.utils;
 
-import ink.rayin.tools.support.FastStringWriter;
-
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 
@@ -58,10 +55,10 @@ public class Exceptions {
 	 * @param ex Throwable
 	 * @return {String}
 	 */
-	public static String getStackTraceAsString(Throwable ex) {
-		FastStringWriter stringWriter = new FastStringWriter();
-		ex.printStackTrace(new PrintWriter(stringWriter));
-		return stringWriter.toString();
-	}
+//	public static String getStackTraceAsString(Throwable ex) {
+//		FastStringWriter stringWriter = new FastStringWriter();
+//		ex.printStackTrace(new PrintWriter(stringWriter));
+//		return stringWriter.toString();
+//	}
 
 }

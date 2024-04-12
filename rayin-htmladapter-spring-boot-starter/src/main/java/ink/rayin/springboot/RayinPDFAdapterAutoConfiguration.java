@@ -18,7 +18,7 @@ package ink.rayin.springboot;
 import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.base.Signature;
-import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator;
+import ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -39,10 +39,10 @@ public class RayinPDFAdapterAutoConfiguration {
     @Bean
     @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator")
     public PdfGenerator createHtmlToPdfRunnable() throws Exception {
-        PdfBoxGenerator pdfBoxGenerator = new ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator();
-        pdfBoxGenerator.init(pdfProperties.getMinIdle(),pdfProperties.getMaxIdle(), pdfProperties.getMaxTotal(), pdfProperties.getFontPath());
+        OpenHtmlGenerator openHtmlGenerator = new ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator();
+        openHtmlGenerator.init(pdfProperties.getMinIdle(),pdfProperties.getMaxIdle(), pdfProperties.getMaxTotal(), pdfProperties.getFontPath());
 
-        return pdfBoxGenerator;
+        return openHtmlGenerator;
     }
 
     @Bean
@@ -69,33 +69,4 @@ public class RayinPDFAdapterAutoConfiguration {
                 dataRuleProperties.getGroovyExecuteThreadPoolNum());
         return dataRule;
     }
-    //    @Bean
-//    @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature")
-//    public Runnable createPdfBoxSignRunnable(){
-//        return () -> {};
-//    }
-//
-//    @Bean
-//    @ConditionalOnClass(name= "ink.rayin.htmladapter.itext5.service.PDFGenerator")
-//    public Runnable createItext5Runnable(){
-//        return () -> {};
-//    }
-//
-//    @Bean
-//    @ConditionalOnClass(name= "ink.rayin.htmladapter.itext2.service.PDFGenerator")
-//    public Runnable createItext2Runnable(){
-//        return () -> {};
-//    }
-
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public PDFGeneratorInterface pdfGeneratorCreate() throws Exception {
-//        if(properties.getGeneratorClass().equals("") || properties.getGeneratorClass() == null){
-//            throw new RayinException("请配置需要实例化的pdf生成器类型-rayin.generatorClass！");
-//        }
-//        Class generatorClass = Class.forName(properties.getGeneratorClass()).newInstance().getClass();
-//        PDFGeneratorInterface c = (PDFGeneratorInterface) generatorClass.newInstance();
-//        c.init();
-//        return c;
-//    }
 }
