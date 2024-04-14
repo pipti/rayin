@@ -22,10 +22,6 @@
             <artifactId>rayin-htmladapter-base</artifactId>
         </dependency>
         <dependency>
-            <groupId>ink.rayin</groupId>
-            <artifactId>rayin-tools</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
@@ -43,6 +39,10 @@
         <dependency>
             <groupId>org.craftercms</groupId>
             <artifactId>groovy-sandbox</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
     <build>

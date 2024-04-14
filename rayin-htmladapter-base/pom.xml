@@ -21,10 +21,10 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
-<!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
         <!-- 非严格html5检查依赖 -->
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
@@ -86,6 +86,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--            <artifactId>jackson-databind</artifactId>-->
+        <!--            <version>2.13.3</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.mozilla</groupId>
             <artifactId>rhino</artifactId>
@@ -119,19 +124,25 @@
 
         <dependency>
             <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>3.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
             <version>3.5.0</version>
         </dependency>
+
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.jai-imageio</groupId>-->
+        <!--            <artifactId>jai-imageio-core</artifactId>-->
+        <!--            <version>1.4.0</version>-->
+        <!--        </dependency>-->
+
         <dependency>
             <groupId>net.sourceforge.cssparser</groupId>
             <artifactId>cssparser</artifactId>
             <version>0.9.29</version>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.jsoup</groupId>-->
+        <!--            <artifactId>jsoup</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <build>

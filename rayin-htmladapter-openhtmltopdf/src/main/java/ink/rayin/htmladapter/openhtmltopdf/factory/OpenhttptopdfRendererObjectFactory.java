@@ -385,6 +385,8 @@ public class OpenhttptopdfRendererObjectFactory implements PooledObjectFactory<O
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
             }
         }
     }

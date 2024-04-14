@@ -15,7 +15,8 @@
  */
 package ink.rayin.htmladapter.openhtmltopdf.utils;
 
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.TextPosition;
@@ -30,8 +31,8 @@ import java.util.List;
  * @author Janah Wang / 王柱
  * 2022-02-08
  */
-@Slf4j
 public class PdfBoxPositionFindByKey {
+    private static Log log = LogFactory.getLog(PdfBoxPositionFindByKey.class);
 
     /**
      * 搜索PDF关键字

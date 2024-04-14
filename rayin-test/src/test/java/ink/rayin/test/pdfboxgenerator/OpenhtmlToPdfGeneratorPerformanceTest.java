@@ -12,9 +12,12 @@ import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.htmladapter.base.utils.JsonSchemaValidator;
 import ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature;
+import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxPositionFindByKey;
 import ink.rayin.tools.utils.ResourceUtil;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -27,9 +30,9 @@ import java.util.concurrent.TimeoutException;
 /**
  * 简单的性能测试类
  */
-@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PdfBoxGeneratorPerformanceTest {
+public class OpenhtmlToPdfGeneratorPerformanceTest {
+    private static Log log = LogFactory.getLog(PdfBoxPositionFindByKey.class);
 
     static PdfGenerator pdfGenerator;
     static DataRule dataRule;

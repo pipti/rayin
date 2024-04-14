@@ -5,8 +5,10 @@ import com.alibaba.fastjson2.JSONPath;
 import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator;
+import ink.rayin.htmladapter.openhtmltopdf.utils.PdfBoxPositionFindByKey;
 import ink.rayin.tools.utils.ResourceUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 import java.io.File;
@@ -15,8 +17,9 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-@Slf4j
 public class TplDataRuleTest {
+    private static Log log = LogFactory.getLog(PdfBoxPositionFindByKey.class);
+
     static PdfGenerator pdfGenerator;
     static DataRule dataRule;
     static  {

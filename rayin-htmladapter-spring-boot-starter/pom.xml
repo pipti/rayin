@@ -21,10 +21,6 @@
         </dependency>
         <dependency>
             <groupId>ink.rayin</groupId>
-            <artifactId>rayin-htmladapter-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
             <scope>provided</scope>
         </dependency>

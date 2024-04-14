@@ -74,6 +74,8 @@ public class PdfObjectDrawer implements FSObjectDrawer {
             throw new RuntimeException(ex);
         } catch(IndexOutOfBoundsException ex){
             log.error(ex.getMessage());
+        } catch (URISyntaxException ex) {
+            throw new RuntimeException(ex);
         }
         return null;
     }

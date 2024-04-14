@@ -5,7 +5,6 @@ import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.tools.utils.Charsets;
 import ink.rayin.tools.utils.ResourceUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 
-@Slf4j
 @RestController
 @RequestMapping(value="/",produces = MediaType.APPLICATION_JSON_VALUE)
 public class PDFCreatorController {

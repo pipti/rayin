@@ -3,7 +3,6 @@ package ink.rayin.htmladapter.openhtmltopdf.utils;
 import de.rototor.pdfbox.graphics2d.PdfBoxGraphics2D;
 import ink.rayin.tools.utils.FileUtil;
 import ink.rayin.tools.utils.IoUtil;
-import lombok.SneakyThrows;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -43,8 +42,7 @@ public class PdfBoxTools {
      * @param pdf pdf输入流
      * @return 元数据HashMap
      */
-    @SneakyThrows
-    public static HashMap<String, String> pdfAttrsRead(InputStream pdf){
+    public static HashMap<String, String> pdfAttrsRead(InputStream pdf) throws IOException {
         // 读取要合并的文档
         PDDocument document = PDDocument.load(pdf);
         PDDocumentInformation info = document.getDocumentInformation();
@@ -67,8 +65,7 @@ public class PdfBoxTools {
      * @param pdf pdf流
      * @return json 字符串
      */
-    @SneakyThrows
-    public static String pdfPageInfoRead(InputStream pdf){
+    public static String pdfPageInfoRead(InputStream pdf) throws IOException {
         HashMap pra = pdfAttrsRead(pdf);
         //写入文件相关配置信息包括页码，单模板类型以及页码起始页
         final Base64.Decoder decoder = Base64.getDecoder();
