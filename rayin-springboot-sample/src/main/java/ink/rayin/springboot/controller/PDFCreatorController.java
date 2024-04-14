@@ -1,7 +1,7 @@
 package ink.rayin.springboot.controller;
 
 import com.alibaba.fastjson2.JSONObject;
-import ink.rayin.datarule.DataRule;
+//import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
 import ink.rayin.tools.utils.Charsets;
 import ink.rayin.tools.utils.ResourceUtil;
@@ -19,8 +19,8 @@ import java.io.OutputStream;
 public class PDFCreatorController {
     @Resource
     PdfGenerator pdfGenerator;
-    @Resource
-    DataRule dataRule;
+//    @Resource
+//    DataRule dataRule;
 
 
     /**
@@ -48,25 +48,25 @@ public class PDFCreatorController {
      * @param jsonData
      * @throws Exception
      */
-    @PostMapping(value = "/pdf/create/file", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void pdfCreateToFile(@RequestBody JSONObject jsonData) throws Exception {
-        // templateId数据规则转换
-        JSONObject tplIdData = (JSONObject)dataRule.executeGroovyFile(jsonData, null, "input", "other", "rules/tpl_id_convert.groovy");
-        // 生成数据数据规则转换
-        String scriptFileName = dataRule.getGroovyFileNameByData(tplIdData, "_", "public.orgId", "public.prdCode");
-        JSONObject outputData = (JSONObject)dataRule.executeGroovyFile(tplIdData, null,"input", "other",
-                "rules" + File.separator + scriptFileName);
-
-
-        String templateId = tplIdData.getString("templateId");
-
-        // 生成pdf路径
-        // generate pdf path
-        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
-        String outputFile = "./tmp/"
-                + templateId + "_"+System.currentTimeMillis() + ".pdf";
-        pdfGenerator.generatePdfFileByTplConfigFile("tpl/" + templateId + "/tpl.json" , outputData, outputFile);
-    }
+//    @PostMapping(value = "/pdf/create/file", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public void pdfCreateToFile(@RequestBody JSONObject jsonData) throws Exception {
+//        // templateId数据规则转换
+//        JSONObject tplIdData = (JSONObject)dataRule.executeGroovyFile(jsonData, null, "input", "other", "rules/tpl_id_convert.groovy");
+//        // 生成数据数据规则转换
+//        String scriptFileName = dataRule.getGroovyFileNameByData(tplIdData, "_", "public.orgId", "public.prdCode");
+//        JSONObject outputData = (JSONObject)dataRule.executeGroovyFile(tplIdData, null,"input", "other",
+//                "rules" + File.separator + scriptFileName);
+//
+//
+//        String templateId = tplIdData.getString("templateId");
+//
+//        // 生成pdf路径
+//        // generate pdf path
+//        String outputFileClass = ResourceUtil.getResourceAbsolutePathByClassPath("");
+//        String outputFile = "./tmp/"
+//                + templateId + "_"+System.currentTimeMillis() + ".pdf";
+//        pdfGenerator.generatePdfFileByTplConfigFile("tpl/" + templateId + "/tpl.json" , outputData, outputFile);
+//    }
 
     /**
      * 项目模板生成输出流

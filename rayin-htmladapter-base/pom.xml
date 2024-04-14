@@ -25,6 +25,10 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
         <!-- 非严格html5检查依赖 -->
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
