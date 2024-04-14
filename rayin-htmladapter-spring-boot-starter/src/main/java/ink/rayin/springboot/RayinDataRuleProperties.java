@@ -15,10 +15,9 @@
  */
 package ink.rayin.springboot;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Data
+
 @ConfigurationProperties(prefix = "rayin.datarule")
 public class RayinDataRuleProperties {
 
@@ -51,5 +50,61 @@ public class RayinDataRuleProperties {
      * 执行任务队列数
      */
     private int groovyExecuteThreadPoolNum = 500;
+
+    public String getRuleScriptPath() {
+        return ruleScriptPath;
+    }
+
+    public void setRuleScriptPath(String ruleScriptPath) {
+        this.ruleScriptPath = ruleScriptPath;
+    }
+
+    public int getScriptObjectMaximumCacheSize() {
+        return scriptObjectMaximumCacheSize;
+    }
+
+    public void setScriptObjectMaximumCacheSize(int scriptObjectMaximumCacheSize) {
+        this.scriptObjectMaximumCacheSize = scriptObjectMaximumCacheSize;
+    }
+
+    public int getScriptObjectCacheExpireAfterAccessSeconds() {
+        return scriptObjectCacheExpireAfterAccessSeconds;
+    }
+
+    public void setScriptObjectCacheExpireAfterAccessSeconds(int scriptObjectCacheExpireAfterAccessSeconds) {
+        this.scriptObjectCacheExpireAfterAccessSeconds = scriptObjectCacheExpireAfterAccessSeconds;
+    }
+
+    public int getScriptFileMaximumCacheSize() {
+        return scriptFileMaximumCacheSize;
+    }
+
+    public void setScriptFileMaximumCacheSize(int scriptFileMaximumCacheSize) {
+        this.scriptFileMaximumCacheSize = scriptFileMaximumCacheSize;
+    }
+
+    public int getScriptFileCacheExpireAfterAccessSeconds() {
+        return scriptFileCacheExpireAfterAccessSeconds;
+    }
+
+    public void setScriptFileCacheExpireAfterAccessSeconds(int scriptFileCacheExpireAfterAccessSeconds) {
+        this.scriptFileCacheExpireAfterAccessSeconds = scriptFileCacheExpireAfterAccessSeconds;
+    }
+
+    public int getGroovyExecuteKeepAliveTime() {
+        return groovyExecuteKeepAliveTime;
+    }
+
+    public void setGroovyExecuteKeepAliveTime(int groovyExecuteKeepAliveTime) {
+        this.groovyExecuteKeepAliveTime = groovyExecuteKeepAliveTime;
+    }
+
+    public int getGroovyExecuteThreadPoolNum() {
+        return groovyExecuteThreadPoolNum;
+    }
+
+    public void setGroovyExecuteThreadPoolNum(int groovyExecuteThreadPoolNum) {
+        this.groovyExecuteThreadPoolNum = groovyExecuteThreadPoolNum;
+    }
 }
 

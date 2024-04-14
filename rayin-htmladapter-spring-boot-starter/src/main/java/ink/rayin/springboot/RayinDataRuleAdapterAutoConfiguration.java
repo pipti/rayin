@@ -16,10 +16,8 @@
 package ink.rayin.springboot;
 
 import ink.rayin.datarule.DataRule;
-import ink.rayin.htmladapter.base.PdfGenerator;
-import ink.rayin.htmladapter.base.Signature;
-import ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,29 +25,14 @@ import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Resource;
 
-@Slf4j
 @SpringBootConfiguration
-@ConditionalOnClass({PdfGenerator.class, DataRule.class})
-@EnableConfigurationProperties({RayinPdfProperties.class,RayinDataRuleProperties.class})
-public class RayinPDFAdapterAutoConfiguration {
+@ConditionalOnClass({DataRule.class})
+@EnableConfigurationProperties({RayinDataRuleProperties.class})
+public class RayinDataRuleAdapterAutoConfiguration {
+    private static Log log = LogFactory.getLog(RayinDataRuleAdapterAutoConfiguration.class);
+
     @Resource
     private RayinDataRuleProperties dataRuleProperties;
-    @Resource
-    private RayinPdfProperties pdfProperties;
-    @Bean
-    @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxGenerator")
-    public PdfGenerator createHtmlToPdfRunnable() throws Exception {
-        OpenHtmlGenerator openHtmlGenerator = new ink.rayin.htmladapter.openhtmltopdf.service.OpenHtmlGenerator();
-        openHtmlGenerator.init(pdfProperties.getMinIdle(),pdfProperties.getMaxIdle(), pdfProperties.getMaxTotal(), pdfProperties.getFontPath());
-
-        return openHtmlGenerator;
-    }
-
-    @Bean
-    @ConditionalOnClass(name= "ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature")
-    public Signature createSignRunnable() {
-        return new ink.rayin.htmladapter.openhtmltopdf.service.PdfBoxSignature();
-    }
 
     @Bean
     @ConditionalOnClass(name= "ink.rayin.datarule.DataRule")
@@ -69,4 +52,5 @@ public class RayinPDFAdapterAutoConfiguration {
                 dataRuleProperties.getGroovyExecuteThreadPoolNum());
         return dataRule;
     }
+
 }

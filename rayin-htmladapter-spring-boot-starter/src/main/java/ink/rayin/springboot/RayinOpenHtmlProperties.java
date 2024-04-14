@@ -15,17 +15,11 @@
  */
 package ink.rayin.springboot;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Data
-@ConfigurationProperties(prefix = "rayin.pdf")
-public class RayinPdfProperties {
 
-    /**
-     * pdf生成类名
-     */
-    private String generatorClass;
+@ConfigurationProperties(prefix = "rayin.pdf.openhtml")
+public class RayinOpenHtmlProperties {
 
     /**
      * 字体路径
@@ -46,5 +40,49 @@ public class RayinPdfProperties {
      */
     int maxTotal = 10;
 
+    /**
+     * macos 需要设置，其他可不设置
+     */
+    private String chromiumPath;
+
+    public String getFontPath() {
+        return fontPath;
+    }
+
+    public void setFontPath(String fontPath) {
+        this.fontPath = fontPath;
+    }
+
+    public int getMinIdle() {
+        return minIdle;
+    }
+
+    public void setMinIdle(int minIdle) {
+        this.minIdle = minIdle;
+    }
+
+    public int getMaxIdle() {
+        return maxIdle;
+    }
+
+    public void setMaxIdle(int maxIdle) {
+        this.maxIdle = maxIdle;
+    }
+
+    public int getMaxTotal() {
+        return maxTotal;
+    }
+
+    public void setMaxTotal(int maxTotal) {
+        this.maxTotal = maxTotal;
+    }
+
+    public String getChromiumPath() {
+        return chromiumPath;
+    }
+
+    public void setChromiumPath(String chromiumPath) {
+        this.chromiumPath = chromiumPath;
+    }
 }
 

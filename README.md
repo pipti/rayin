@@ -156,7 +156,7 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 <dependency>
     <groupId>ink.rayin</groupId>
     <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 
 ```
@@ -197,6 +197,10 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 
 本项目采用Apache 2.0许可，请尊重开源项目作者，在软件中附带睿印开源软件许可。  
 
+# 收费版本
+支持css3，echarts
+具体参见：[收费版本说明](https://www.yuque.com/liuer_doc/rayin/hgqn2pd30gswwdhn)
+![img.png](img.png)
 # 免责申明：
 任何直接或间接因使用睿印生成的任何内容所导致的全部后果与睿印的开发者无关，内容不限于字体，图片，文字等相关内容。
 

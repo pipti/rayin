@@ -3,7 +3,6 @@ package ink.rayin.springboot.controller;
 import com.alibaba.fastjson2.JSONObject;
 import ink.rayin.datarule.DataRule;
 import ink.rayin.htmladapter.base.PdfGenerator;
-import ink.rayin.htmladapter.base.Signature;
 import ink.rayin.tools.utils.Charsets;
 import ink.rayin.tools.utils.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +23,7 @@ public class PDFCreatorController {
     PdfGenerator pdfGenerator;
     @Resource
     DataRule dataRule;
-    @Resource
-    Signature signature;
+
 
     /**
      * 项目模板生成至目录

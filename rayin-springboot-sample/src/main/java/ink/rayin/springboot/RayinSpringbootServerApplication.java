@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 
 @SpringBootApplication
-@EnableRayinPdfAdpter
+@EnableRayinOpenHtmlPdfAdpter
 @EnableRayinDataRuleAdpter
 public class RayinSpringbootServerApplication extends SpringBootServletInitializer {
 

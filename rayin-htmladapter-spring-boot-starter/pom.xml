@@ -26,14 +26,12 @@
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-datarule</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ink.rayin</groupId>
-            <artifactId>rayin-tools</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
