@@ -952,16 +952,8 @@ public class OpenHtmlGenerator implements PdfGenerator {
 
                             ByteArrayOutputStream pdfOs = null;
 
-                            pdfOs = ResourceUtil.getResourceAsByte(value);
-
-                            PDDocument doc = PDDocument.load(pdfOs.toByteArray());
-
-                            //int elPageNum = doc.getNumberOfPages();
-
                             if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("file:")) {
-                                if(value.startsWith("file:")){
-                                    value = value.replace("\\", "/");
-                                }
+
                             }else if (value.startsWith("/") || value.startsWith("\\")) {
                                 value = "file:" + "//" + value;
                                 value = value.replace("\\" , "/");
@@ -976,18 +968,22 @@ public class OpenHtmlGenerator implements PdfGenerator {
                                 log.debug("pdf url convert:\'" + value + "'");
                             }
 
+                            pdfOs = ResourceUtil.getResourceAsByte(value);
+
+                            PDDocument doc = PDDocument.load(pdfOs.toByteArray());
+
                             if(StringUtil.isNotBlank(pages)){
                                 String[] pageB = pages.split(",");
                                 PDDocument extractDoc = new PDDocument();
                                 for(String k : pageB){
                                     //box.append("<img width=\"100%\" src=\""+ value +"\" page=\""+ k + "\"/>\n");
-                                    extractDoc.addPage(doc.getPage(Integer.valueOf(k)));
+                                    extractDoc.addPage(doc.getPage(Integer.valueOf(k) - 1));
                                 }
                                 ByteArrayOutputStream os = new ByteArrayOutputStream();
                                 extractDoc.save(os);
                                 apendFiles.add(os);
                             }else{
-                                apendFiles.add(ResourceUtil.getResourceAsByte(value.substring(7)));
+                                apendFiles.add(pdfOs);
                             }
 
                             doc.close();

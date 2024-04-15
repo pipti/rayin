@@ -21,7 +21,8 @@ import java.nio.charset.Charset;
  * modify:2020-08-29 wangzhu
  */
 public class ResourceUtil extends org.springframework.util.ResourceUtils {
-	public static final String HTTP_REGEX = "^https?:.+$";
+	public static final String HTTPS_REGEX = "^https?:.+$";
+	public static final String HTTP_REGEX = "^http?:.+$";
 	public static final String FTP_URL_PREFIX = "ftp:";
 
 	/**
@@ -49,7 +50,7 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 		if (resourceLocation.startsWith(FTP_URL_PREFIX)) {
 			return new UrlResource(resourceLocation);
 		}
-		if (resourceLocation.matches(HTTP_REGEX)) {
+		if (resourceLocation.matches(HTTP_REGEX) || (resourceLocation.matches(HTTPS_REGEX))){
 			return new UrlResource(resourceLocation);
 		}
 //		if (resourceLocation.startsWith(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX)) {
