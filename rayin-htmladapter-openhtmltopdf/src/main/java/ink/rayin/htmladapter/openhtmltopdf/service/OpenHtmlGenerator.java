@@ -952,22 +952,6 @@ public class OpenHtmlGenerator implements PdfGenerator {
 
                             ByteArrayOutputStream pdfOs = null;
 
-                            if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("file:")) {
-
-                            }else if (value.startsWith("/") || value.startsWith("\\")) {
-                                value = "file:" + "//" + value;
-                                value = value.replace("\\" , "/");
-                                log.debug("pdf url convert:\'" + value + "'");
-                            }else{
-                                if (os != null && os.toLowerCase().startsWith("windows")){
-                                    value = "file:" + "///" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
-                                }else{
-                                    value = "file:" + "//" + ResourceUtil.getResourceAbsolutePathByClassPath(value);
-                                }
-                                value = value.replace("\\" , "/");
-                                log.debug("pdf url convert:\'" + value + "'");
-                            }
-
                             pdfOs = ResourceUtil.getResourceAsByte(value);
 
                             PDDocument doc = PDDocument.load(pdfOs.toByteArray());
