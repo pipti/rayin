@@ -151,14 +151,25 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 ### 开始使用
 * 第一步：新建项目，引入依赖包  
   如果使用阿里云最新的版本可能会存在同步滞后，如果不能自动下载可使用原始的maven源。
-
 ```xml
-<dependency>
-    <groupId>ink.rayin</groupId>
-    <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.1.2</version>
-</dependency>
-
+   <!-- ${rayin.version} 为版本号  -->
+   <dependency>
+       <groupId>ink.rayin</groupId>
+       <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
+       <version>${rayin.version}</version>
+   </dependency>
+   
+   <dependency>
+      <groupId>ink.rayin</groupId>
+      <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
+      <version>${rayin.version}</version>
+   </dependency>
+    <!-- 数据规则模块，根据实际使用进行引用,不需要可不引用 -->
+    <dependency>
+      <groupId>ink.rayin</groupId>
+      <artifactId>rayin-datarule</artifactId>
+      <version>${rayin.version}</version>
+   </dependency>
 ```
 
 * 第二步：创建构件（即单个html）
@@ -198,9 +209,12 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 本项目采用Apache 2.0许可，请尊重开源项目作者，在软件中附带睿印开源软件许可。  
 
 # 收费版本
-支持css3，echarts
-具体参见：[收费版本说明](https://www.yuque.com/liuer_doc/rayin/hgqn2pd30gswwdhn)
+支持css3（flex等）
+支持js
+支持echarts
 ![img.png](img.png)
+具体参见：[收费版本说明](https://www.yuque.com/liuer_doc/rayin/hgqn2pd30gswwdhn)
+
 # 免责申明：
 任何直接或间接因使用睿印生成的任何内容所导致的全部后果与睿印的开发者无关，内容不限于字体，图片，文字等相关内容。
 
