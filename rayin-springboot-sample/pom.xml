@@ -18,6 +18,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <rayin.version>dev-1.1.3</rayin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -35,7 +36,7 @@
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-spring-boot-starter</artifactId>
-            <version>dev-1.1.3</version>
+            <version>${rayin.version}</version>
         </dependency>
 
         <dependency>
@@ -47,12 +48,12 @@
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-            <version>dev-1.1.3</version>
+            <version>${rayin.version}</version>
         </dependency>
         <dependency>
             <groupId>ink.rayin</groupId>
             <artifactId>rayin-datarule</artifactId>
-            <version>dev-1.1.3</version>
+            <version>${rayin.version}</version>
         </dependency>
     </dependencies>
 
