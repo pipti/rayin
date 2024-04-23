@@ -147,11 +147,24 @@ GitHub: [https://github.com/pipti/rayin](https://github.com/pipti/rayin)
 * Step one: new project, the introduction of depend on the package.  
 
 ```xml
-<dependency>
-    <groupId>ink.rayin</groupId>
-    <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
-    <version>1.1.0</version>
-</dependency>
+   <!-- ${rayin.version}   -->
+   <dependency>
+      <groupId>ink.rayin</groupId>
+      <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
+      <version>${rayin.version}</version>
+   </dependency>
+   
+   <dependency>
+   <groupId>ink.rayin</groupId>
+   <artifactId>rayin-htmladapter-openhtmltopdf</artifactId>
+   <version>${rayin.version}</version>
+   </dependency>
+   <!-- Data rule module, referenced based on actual usage; optional if not required. -->
+   <dependency>
+   <groupId>ink.rayin</groupId>
+   <artifactId>rayin-datarule</artifactId>
+   <version>${rayin.version}</version>
+   </dependency>
 
 ```
 
@@ -189,6 +202,14 @@ All the test cases included in the project
 
 # Disclaimer：
 Any direct or indirect with farce printing generated any content for all the consequences has nothing to do with the farce of developers, content is not limited to, font, graphics, text and other related content;
+
+# 收费版本
+Paid version Supports CSS3 (including Flex) 
+Supports JavaScript 
+Supports ECharts
+![img.png](img.png)
+See specifically:[Paid Version Description](https://www.yuque.com/liuer_doc/rayin/hgqn2pd30gswwdhn)
+
 
 ## Communication group
 Enterprise WeChat convenient communication, can use WeChat scan code to add group
